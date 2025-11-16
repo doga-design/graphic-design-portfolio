@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+    <title>Doga | Portfolio</title>
+    
+    <!-- Preconnect to external resources for faster loading -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="styles.css" as="style" />
+    
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <!-- HOME VIEW -->
+    <section id="home">
+    <main class="container py-5">
+      <section class="intro text-start text-md-start mb-5">
+        <div class="row align-items-start g-4">
+          <div class="col-12 col-md-6">
+            <h1 class="display-5 mb-3">
+              <span class="subtitle">Hi, I’m Doga.</span>
+            </h1>
+          </div>
+          <div class="col-12 col-md-6">
+            <p class="intro-body">
+              I’m currently a graphic design student based in Toronto, working across web, branding, and 
+              interactive projects. I like working with digital interfaces, creating visual identities and working with design systems.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="work-section text-center text-md-start">
+        <div class="d-flex justify-content-between align-items-baseline mb-3">
+          <h2 class="work-title mb-0">check out my work</h2>
+          <span class="work-count d-none d-md-inline">7 projects</span>
+        </div>
+
+        <div class="filters mb-4">
+          Filters:
+          <a href="#" class="filter-link active" data-filter="all">all</a> |
+          <a href="#" class="filter-link" data-filter="web">web</a> |
+          <a href="#" class="filter-link" data-filter="branding">branding</a> |
+          <a href="#" class="filter-link" data-filter="advertisement"
+            >advertising</a
+          >
+        </div>
+
+        <div class="row g-4">
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+            <a href="#project-school-design" class="project-link" data-project="project-school-design"
+              ><img
+                src="./img/schoolofdesign-thumb.png"
+                class="gallery-img img-fluid"
+                alt="School of Design website redesign"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-red">web design</span>
+              <span class="project-name">School of Design</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+            <a href="#project-ideas-images" class="project-link" data-project="project-ideas-images"
+              ><img
+                src="./img/ideasimages-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Screenshot from Ideas & Images web project"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-red">web design</span>
+              <span class="project-name">Ideas &amp; Images</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+            <a href="#" class="external-project-link" data-external-url="https://dogacimen.com/"
+              ><img
+                src="./img/betbot-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Betbot AI interface mockups"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-purple">product design</span>
+              <span class="project-name">Betbot AI</span>
+            </div>
+          </div>
+
+          <div
+            class="col-12 col-sm-6 col-lg-4 work-card"
+            data-category="product design">
+            <a href="#project-visual-platform" class="project-link" data-project="project-visual-platform"
+              ><img
+                src="./img/ctrlbreak-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Visual Platform branding"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-green">branding</span>
+              <span class="project-name">CTRLBREAK</span>
+            </div>
+          </div>
+
+          <div
+            class="col-12 col-sm-6 col-lg-4 work-card"
+            data-category="branding"
+          >
+            <a href="#project-boots-hearts" class="project-link" data-project="project-boots-hearts"
+              ><img
+                src="./img/bootshearts-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Branding assets for Boots &amp; Hearts"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-green">branding</span>
+              <span class="project-name">Boots &amp; Hearts</span>
+            </div>
+          </div>
+
+      
+          
+          <div
+            class="col-12 col-sm-6 col-lg-4 work-card"
+            data-category="advertisement"
+          >
+            <a href="#project-spotify" class="project-link" data-project="project-spotify"
+              ><img
+                src="./img/spotify-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Spotify subway ad campaign visuals"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-yellow"
+                >advertising</span
+              >
+              <span class="project-name">Spotify subway ad campaign</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+            <a href="#project-pilates" class="project-link" data-project="project-pilates"
+              ><img
+                src="./img/pilatesstudio-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Screenshot from D&amp;Y Pilates Studio website"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-red">web design</span>
+              <span class="project-name">Pilates Studio</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer mt-5 pt-4 pb-4">
+        <div class="footer-inner">
+          <span class="footer-label d-block mb-2">Get in touch</span>
+          <p class="footer-text mb-3">
+            Built by me, with love ♡
+          </p>
+          <div class="footer-links">
+            <a
+              href="https://www.linkedin.com/in/dogacimen/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <i class="fa-brands fa-linkedin-in"></i>
+              <span>LinkedIn</span>
+            </a>
+            <a href="mailto:dogacimen35@gmail.com" class="footer-link">
+              <i class="fa-regular fa-envelope"></i>
+              <span>dogacimen35@gmail.com</span>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </main>
+    </section>
+    <!-- END HOME VIEW -->
+
+    <!-- PROJECT 1: Ideas & Images -->
+    <section id="project-ideas-images" class="project-page d-none">
+      <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <ul class="nav gap-3">
+            <li class="nav-item">
+              <a class="nav-link" href="#home" data-go-home>home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section
+        class="parallax"
+        style="background-image: url('./img/ideasimages/ideas-page-banner.png')"
+      ></section>
+
+      <main class="container py-5 project-main">
+        <div class="row g-5 align-items-start">
+          <div class="col-12 col-lg-5">
+            <p class="project-kicker text-uppercase">web design</p>
+            <h2 class="project-title">Ideas &amp; Images</h2>
+            <p class="project-intro">
+              This site collects a series of my course assignments, reimagined as interactive, kinetic, text-based pieces. Each project began as a static design—posters, visual studies, or other exploratory exercises. For the final assignment, we were asked to bring together all the creative work we’d produced throughout the program, so I transformed those earlier experiments into a single collection that uses motion, sound, and interaction to push the original ideas further.
+            </p>
+
+            <dl class="project-meta-list">
+              <div>
+                <dt>Role</dt>
+                <dd>Interaction design, creative coding</dd>
+              </div>
+              <div>
+                <dt>Tech</dt>
+                <dd>p5.js, HTML, CSS</dd>
+              </div>
+            </dl>
+
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <a href="#home" data-go-home class="ghost-btn">&larr; back to all work</a>
+              <a
+                href="https://dodocimen.github.io/Ideas-and-Images--repository/"
+                target="_blank"
+                class="ghost-btn ideas-btn"
+                >check out website</a
+              >
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <div class="project-hero-frame">
+              <a href="https://dodocimen.github.io/Ideas-and-Images--repository/" target="_blank" class="hero-gif-link">
+                <img
+                  src="./img/ideasimages/ideas1.jpg"
+                  data-gif="./img/ideasimages/ideas-cover-gif.gif"
+                  class="img-fluid hero-gif-loader"
+                  alt="Ideas and Images homepage"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <section class="project-iterations mt-5">
+          <h3 class="project-section-title mb-4 text-center">process documentation &amp; reflection</h3>
+          <div class="pdf-viewer-container">
+            <iframe
+              src="./img/ideasimages/ideas-process.pdf"
+              class="pdf-viewer"
+              loading="lazy"
+              title="Ideas & Images process documentation"
+            ></iframe>
+          </div>
+        </section>
+
+        <div class="scroll-to-top-container">
+          <hr class="scroll-separator" />
+          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- PROJECT 2: Pilates Studio -->
+    <section id="project-pilates" class="project-page d-none">
+      <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <ul class="nav gap-3">
+            <li class="nav-item">
+              <a class="nav-link" href="#home" data-go-home>home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section
+        class="parallax"
+        style="background-image: url('./img/pilatesstudio-thumb.png')"
+      ></section>
+
+      <main class="container py-5 project-main">
+        <div class="row g-5 align-items-start">
+          <div class="col-12 col-lg-5">
+            <p class="project-kicker text-uppercase">web design</p>
+            <h2 class="project-title">D&Y Pilates Studio Website</h2>
+            <p class="project-intro">
+              This project is a full redesign of my sister's real Pilates studio
+              website. While her physical studio reflects her personality and
+              values—calm, strength, and mindfulness—the original website did the
+              opposite. It used a loud, aggressive gym template that felt completely
+              disconnected from her brand and actually pushed potential clients away.
+            </p>
+
+            <p class="project-intro mt-3">
+              Pilates isn't about intensity for intensity's sake. It's about
+              thoughtful movement, body awareness, and creating space to feel strong
+              and balanced. The original site's visuals and user experience didn't
+              communicate any of that. It was cluttered, overwhelming, and even had
+              random filler blog posts that didn't serve any purpose.
+            </p>
+
+            <dl class="project-meta-list">
+              <div>
+                <dt>Role</dt>
+                <dd>UI, visual design</dd>
+              </div>
+              <div>
+                <dt>Focus</dt>
+                <dd>Homepage, booking flow, responsive layout</dd>
+              </div>
+            </dl>
+
+            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <div class="project-hero-frame">
+              <img
+                src="./img/pilatesstudio/CimenD_InteractionDesign_Project1-images-1.jpg"
+                data-gif="./img/pilatesstudio/pilates-demo.gif"
+                class="img-fluid hero-gif-loader"
+                alt="D&Y Pilates Studio homepage mockup"
+              />
+            </div>
+          </div>
+        </div>
+
+        <section class="project-body copy mt-5">
+          <p>
+            I redesigned the site to feel clean, modern, and calming—removing
+            distractions and focusing on what really matters: her expertise, the
+            benefits of Pilates, and making it easy for clients to book or learn
+            more. The result is a digital presence that finally matches the
+            real-world experience of her studio.
+          </p>
+        </section>
+
+        <section class="project-gallery mt-5">
+          <h3 class="project-section-title mb-3">screens &amp; details</h3>
+          <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/pilatesstudio/CimenD_InteractionDesign_Project1-images-3.jpg"
+                  class="gallery-thumb img-fluid"
+                  alt="Pilates studio internal page layout"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/pilatesstudio/CimenD_InteractionDesign_Project1-images-4.jpg"
+                  class="gallery-thumb img-fluid"
+                  alt="Pilates studio mobile view"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/pilatesstudio/CimenD_InteractionDesign_Project1-images-5.jpg"
+                  class="gallery-thumb img-fluid"
+                  alt="Booking or class information screen"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="scroll-to-top-container">
+          <hr class="scroll-separator" />
+          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- PROJECT 3: Boots & Hearts -->
+    <section id="project-boots-hearts" class="project-page d-none">
+      <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <ul class="nav gap-3">
+            <li class="nav-item">
+              <a class="nav-link" href="#home" data-go-home>home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section
+        class="parallax"
+        style="background-image: url('./img/bootshearts-thumb.png')"
+      ></section>
+
+      <main class="container py-5 project-main">
+        <div class="row g-5 align-items-start">
+          <div class="col-12 col-lg-5">
+            <p class="project-kicker text-uppercase">branding</p>
+            <h2 class="project-title">Boots &amp; Hearts Festival Branding</h2>
+            <p class="project-intro">
+              This project is a full branding and digital design concept for Boots and
+              Hearts, Canada's biggest country music festival. The goal was to create
+              a cohesive visual identity that captures the spirit of the
+              event—celebrating community, music, and the country lifestyle—while also
+              encouraging ticket sales and online engagement.
+            </p>
+
+            <p class="project-intro mt-3">
+              The original focus was on building a sense of warmth, fun, and
+              authenticity through color, typography, and layout. I used bittersweet
+              peach and soft yellow as brand colors to keep the vibe vibrant and
+              welcoming, while rustic textures and iconography helped tie everything
+              back to the country aesthetic.
+            </p>
+
+            <dl class="project-meta-list">
+              <div>
+                <dt>Role</dt>
+                <dd>Brand design, digital design</dd>
+              </div>
+              <div>
+                <dt>Deliverables</dt>
+                <dd>Brand kit, poster series, web &amp; app mockups</dd>
+              </div>
+            </dl>
+
+            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <div class="project-hero-frame">
+              <img
+                src="./img/bootsnhearts/bootsnhearts-brandingkit_Page_1.png"
+                class="img-fluid"
+                alt="Boots and Hearts branding overview"
+              />
+            </div>
+          </div>
+        </div>
+
+        <section class="project-iterations mt-5">
+          <h3 class="project-section-title mb-4 text-center">complete brand guide</h3>
+          <div class="pdf-viewer-container">
+            <iframe
+              src="./img/bootsnhearts/Boots and Hearts Branding Guide.pdf"
+              class="pdf-viewer"
+              loading="lazy"
+              title="Boots and Hearts complete brand guide"
+            ></iframe>
+          </div>
+        </section>
+
+        <div class="scroll-to-top-container">
+          <hr class="scroll-separator" />
+          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- PROJECT 5: School of Design -->
+    <section id="project-school-design" class="project-page d-none">
+      <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <ul class="nav gap-3">
+            <li class="nav-item">
+              <a class="nav-link" href="#home" data-go-home>home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section
+        class="parallax"
+        style="background-image: url('./img/schoolofdesign-thumb.png')"
+      ></section>
+
+      <main class="container py-5 project-main">
+        <div class="row g-5 align-items-start">
+          <div class="col-12 col-lg-5">
+            <p class="project-kicker text-uppercase">web design</p>
+            <h2 class="project-title">School of Design Website</h2>
+            <p class="project-intro">
+              This project is a modern website redesign for George Brown's School of
+              Design, created to reflect the school's vibrant personality while
+              staying clean and functional. The goal was to fuse
+              creativity and technology into a minimalistic design language that feels
+              both professional and energetic—just like the school itself.
+            </p>
+
+            <dl class="project-meta-list">
+              <div>
+                <dt>Role</dt>
+                <dd>Interaction design, UI development</dd>
+              </div>
+              <div>
+                <dt>Tech</dt>
+                <dd>HTML, CSS, JS</dd>
+              </div>
+            </dl>
+
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <a href="#home" data-go-home class="ghost-btn">&larr; back to all work</a>
+              <a
+                href="https://dodocimen.github.io/School-of-design-website-redesign/"
+                target="_blank"
+                class="ghost-btn"
+                >check out website</a
+              >
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <div class="project-hero-frame">
+              <a href="https://dodocimen.github.io/School-of-design-website-redesign/" target="_blank" class="hero-gif-link">
+                <img
+                  src="./img/schoolofdesign/sodthumb1.png"
+                  data-gif="./img/schoolofdesign/sod-site-gif.gif"
+                  class="img-fluid hero-gif-loader"
+                  alt="School of Design homepage mockup"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <section class="project-gallery mt-5">
+          <h3 class="project-section-title mb-3">key screens</h3>
+          <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/schoolofdesign/sodthumb1.png"
+                  class="gallery-thumb img-fluid"
+                  alt="Program listing screen"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/schoolofdesign/sodthumb2.png"
+                  class="gallery-thumb img-fluid"
+                  alt="Detail or information-heavy view"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/schoolofdesign/sodthumb3.png"
+                  class="gallery-thumb img-fluid"
+                  alt="Additional hero or landing variation"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="scroll-to-top-container">
+          <hr class="scroll-separator" />
+          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- PROJECT: Spotify Subway Ad Campaign -->
+    <section id="project-spotify" class="project-page d-none">
+      <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <ul class="nav gap-3">
+            <li class="nav-item">
+              <a class="nav-link" href="#home" data-go-home>home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section
+        class="parallax"
+        style="background-image: url('./img/spotify-ad/spotify-banner.png')"
+      ></section>
+
+      <main class="container py-5 project-main">
+        <div class="row g-5 align-items-start">
+          <div class="col-12 col-lg-5">
+            <p class="project-kicker text-uppercase">Advertising</p>
+            <h2 class="project-title">Spotify Subway Ad Campaign</h2>
+            <p class="project-intro">
+              A bold, type-led outdoor campaign concept for Spotify, designed for
+              subway environments. The focus is on simple, high-contrast layouts
+              that read quickly in motion and feel unmistakably "Spotify".
+            </p>
+
+            <dl class="project-meta-list">
+              <div>
+                <dt>Role</dt>
+                <dd>Art direction, visual design</dd>
+              </div>
+              <div>
+                <dt>Medium</dt>
+                <dd>OOH, print, concept mockups</dd>
+              </div>
+              <div>
+                <dt>Tools</dt>
+                <dd>Illustrator, Photoshop, Figma</dd>
+              </div>
+            </dl>
+
+            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <div class="project-hero-frame">
+              <img
+                src="./img/spotify-ad/spotify-hero.jpg"
+                class="img-fluid"
+                alt="Spotify subway ad campaign hero visual"
+              />
+            </div>
+          </div>
+        </div>
+
+        <section class="project-body copy mt-5">
+          <p>
+            This page is a placeholder for the full case study. Here you can walk
+            through the campaign story—how the concept started, how type, color,
+            and photography work together, and how the ads adapt across different
+            subway formats.
+          </p>
+        </section>
+
+        <section class="project-iterations mt-5">
+          <h3 class="project-section-title mb-4 text-center">campaign presentation</h3>
+          <div class="pdf-viewer-container">
+            <iframe
+              src="./img/spotify-ad/spotify-presentation-doc.pdf"
+              class="pdf-viewer"
+              loading="lazy"
+              title="Spotify subway ad campaign presentation"
+            ></iframe>
+          </div>
+        </section>
+
+        <div class="scroll-to-top-container">
+          <hr class="scroll-separator" />
+          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- PROJECT: Visual Platform -->
+    <section id="project-visual-platform" class="project-page d-none">
+      <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <ul class="nav gap-3">
+            <li class="nav-item">
+              <a class="nav-link" href="#home" data-go-home>home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section
+        class="parallax"
+        style="background-image: url('./img/ctrlbreak-thumb.png')"
+      ></section>
+
+      <main class="container py-5 project-main">
+        <div class="row g-5 align-items-start">
+          <div class="col-12 col-lg-5">
+            <p class="project-kicker text-uppercase">branding</p>
+            <p class="project-note">(very early, 3-day-old draft phase for ongoing project)</p>
+            <h2 class="project-title">CTRLBREAK</h2>
+            <p class="project-intro">
+              This is an ongoing school project where I’m designing a full exhibition identity for a Neville Brody retrospective. We are currently moving into the pitchbook stage in the course, where all of the information, design systems, and visual assets gets organized into a clear, convincing proposal for the exhibition.
+            </p>
+
+            <dl class="project-meta-list">
+              <div>
+                <dt>Role</dt>
+                <dd>Brand design, visual identity</dd>
+              </div>
+              <div>
+                <dt>Deliverables</dt>
+                <dd>Logo, color system, typography, brand guidelines</dd>
+              </div>
+              <div>
+                <dt>Tools</dt>
+                <dd>Illustrator, Figma, InDesign</dd>
+              </div>
+            </dl>
+
+            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <div class="project-hero-frame">
+              <img
+                src="./img/ctrlbreak/buildingmockup.png"
+                class="img-fluid"
+                alt="Visual Platform brand identity hero"
+              />
+            </div>
+          </div>
+        </div>
+
+        <section class="project-body copy mt-5">
+          <p>
+            This project explores how a visual platform can establish trust and
+            creativity through consistent, thoughtful branding. The identity balances
+            professionalism with playfulness, ensuring the brand feels both reliable
+            and inspiring.
+          </p>
+        </section>
+
+        <section class="project-gallery mt-5">
+          <h3 class="project-section-title mb-3">brand assets</h3>
+          <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/ctrlbreak/project-hero.png"
+                  class="gallery-thumb img-fluid"
+                  alt="Visual Platform brand asset 1"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/ctrlbreak/banner-mockups.png"
+                  class="gallery-thumb img-fluid"
+                  alt="Visual Platform brand asset 2"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="project-figure">
+                <img
+                  src="./img/ctrlbreak/banner-colors.png"
+                  class="gallery-thumb img-fluid"
+                  alt="Visual Platform brand asset 3"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="project-iterations mt-5">
+          <h3 class="project-section-title mb-4 text-center">Early<span class="word-emphasis"> Namestyle</span> explorations &amp; iterations</h3>
+          <div class="pdf-viewer-container">
+            <iframe
+              src="./img/ctrlbreak/iterations.pdf"
+              class="pdf-viewer"
+              loading="lazy"
+              title="Design explorations and iterations"
+            ></iframe>
+          </div>
+        </section>
+
+        <div class="scroll-to-top-container">
+          <hr class="scroll-separator" />
+          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- GLOBAL LIGHTBOX -->
+    <div id="lightbox" class="lightbox">
+      <button class="lightbox-close">&times;</button>
+      <button class="lightbox-nav lightbox-prev">&larr;</button>
+      <button class="lightbox-nav lightbox-next">&rarr;</button>
+      <img src="" alt="" class="lightbox-img">
+    </div>
+
+    <!-- EXTERNAL REDIRECT MODAL -->
+    <div id="externalModal" class="external-modal">
+      <div class="external-modal-content">
+        <h3 class="external-modal-title">Redirecting to another page</h3>
+        <p class="external-modal-text">This will redirect you to another, external portfolio page. Continue?</p>
+        <div class="external-modal-actions">
+          <button class="ghost-btn" id="externalCancel">Cancel</button>
+          <button class="ghost-btn" id="externalConfirm">Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="lightbox.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const homeSection = document.getElementById("home");
+        const projectSections = document.querySelectorAll(".project-page");
+        const projectLinks = document.querySelectorAll(".project-link");
+        const homeLinks = document.querySelectorAll("[data-go-home]");
+
+        // --- home filter logic ---
+        const links = document.querySelectorAll(".filter-link");
+        const cards = document.querySelectorAll(".work-card");
+
+        links.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            links.forEach((l) => l.classList.remove("active"));
+            link.classList.add("active");
+
+            const filter = link.dataset.filter;
+            cards.forEach((card) => {
+              card.classList.toggle(
+                "d-none",
+                filter !== "all" && card.dataset.category !== filter
+              );
+            });
+          });
+        });
+
+        // --- view switching ---
+        function showHome() {
+          homeSection.classList.remove("d-none");
+          projectSections.forEach((sec) => sec.classList.add("d-none"));
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function showProject(id) {
+          homeSection.classList.add("d-none");
+          projectSections.forEach((sec) => {
+            sec.classList.toggle("d-none", sec.id !== id);
+          });
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        projectLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const id = link.dataset.project;
+            if (id) {
+              showProject(id);
+              history.pushState({ page: id }, "", "#" + id);
+            }
+          });
+        });
+
+        homeLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            showHome();
+            history.pushState({ page: "home" }, "", "#home");
+          });
+        });
+
+        // Handle back/forward buttons
+        window.addEventListener("popstate", () => {
+          const hash = window.location.hash.replace("#", "");
+          if (!hash || hash === "home") {
+            showHome();
+          } else {
+            const sec = document.getElementById(hash);
+            if (sec && sec.classList.contains("project-page")) {
+              showProject(hash);
+            } else {
+              showHome();
+            }
+          }
+        });
+
+        // Open correct view on first load if there is a hash
+        const initialHash = window.location.hash.replace("#", "");
+        if (!initialHash || initialHash === "home") {
+          showHome();
+        } else {
+          const sec = document.getElementById(initialHash);
+          if (sec && sec.classList.contains("project-page")) {
+            showProject(initialHash);
+          } else {
+            showHome();
+          }
+        }
+
+        // Aggressive image optimization - handled by lightbox.js now
+        // All images are automatically lazy-loaded and optimized
+
+        // Handle external project links (e.g., Betbot)
+        const externalModal = document.getElementById("externalModal");
+        const externalConfirm = document.getElementById("externalConfirm");
+        const externalCancel = document.getElementById("externalCancel");
+        const externalLinks = document.querySelectorAll(".external-project-link");
+        let pendingUrl = null;
+
+        externalLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            pendingUrl = link.dataset.externalUrl;
+            externalModal.classList.add("active");
+            document.body.style.overflow = "hidden";
+          });
+        });
+
+        externalConfirm.addEventListener("click", () => {
+          if (pendingUrl) {
+            window.open(pendingUrl, "_blank");
+            externalModal.classList.remove("active");
+            document.body.style.overflow = "";
+            pendingUrl = null;
+          }
+        });
+
+        externalCancel.addEventListener("click", () => {
+          externalModal.classList.remove("active");
+          document.body.style.overflow = "";
+          pendingUrl = null;
+        });
+
+        // Close modal on background click
+        externalModal.addEventListener("click", (e) => {
+          if (e.target === externalModal) {
+            externalModal.classList.remove("active");
+            document.body.style.overflow = "";
+            pendingUrl = null;
+          }
+        });
+
+        // Hero GIF loader - display placeholder until GIF loads
+        const heroGifLoaders = document.querySelectorAll('.hero-gif-loader');
+        heroGifLoaders.forEach((img) => {
+          const gifSrc = img.getAttribute('data-gif');
+          if (!gifSrc) return;
+
+          // Preload the GIF
+          const gifImg = new Image();
+          gifImg.onload = () => {
+            // Once GIF is loaded, swap src with smooth transition
+            img.style.opacity = '0.7';
+            setTimeout(() => {
+              img.src = gifSrc;
+              img.style.opacity = '1';
+            }, 200);
+          };
+          gifImg.src = gifSrc;
+        });
+
+        // Scroll to top buttons
+        const scrollToTopBtns = document.querySelectorAll('.scroll-to-top-btn');
+        scrollToTopBtns.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
