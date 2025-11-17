@@ -174,17 +174,19 @@ span.subtitle {
 }
 
 .ghost-btn {
-  padding: 0.5rem 1.2rem;
-  border: 2px solid var(--text);
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--text);
   color: var(--text);
   border-radius: 50px;
   text-decoration: none;
   transition: background 0.3s ease, color 0.3s ease;
   z-index: 999;
+  font-size: 0.8rem;
+  text-transform: lowercase;
 }
 
 .ghost-btn.ideas-btn {
-  border: 2px solid var(--accent);
+  border: 1px solid var(--accent);
   color: var(--accent);
 }
 
@@ -195,9 +197,18 @@ span.subtitle {
 
 /* Add more gaps to "back to all work" buttons */
 .ghost-btn[data-go-home] {
-  padding: 0.75rem 1.5rem;
   margin-top: 2rem;
   display: inline-block;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.342);
+  opacity: 0.85;
+}
+
+.ghost-btn[data-go-home]:hover {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.123);
+  color: var(--text);
 }
 
 /* Project page CTAs (non-back buttons) use accent colors */
@@ -205,7 +216,6 @@ span.subtitle {
   background: var(--accent);
   color: var(--bg);
   border-color: var(--accent);
-  padding: 0.75rem 1.5rem;
 }
 
 .project-main .ghost-btn:not([data-go-home]):hover {
@@ -543,6 +553,8 @@ span.subtitle {
   cursor: pointer;
   text-decoration: none;
   text-align: center;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .pdf-mobile-btn:hover {
@@ -563,16 +575,26 @@ span.subtitle {
 /* Mobile optimization for PDF - hide iframe, show button */  
 @media (max-width: 768px) {
   .pdf-viewer {
-    display: none;
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
   }
   
   .pdf-mobile-btn {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    text-align: center;
   }
   
   .pdf-viewer-container {
     background: transparent;
-    padding: 2rem 1rem;
+    padding: 0;
+    text-align: center;
   }
 }
 
@@ -734,6 +756,10 @@ span.subtitle {
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
+  }
+
+  .project-main .ghost-btn[data-go-home] {
+    margin-top: 2rem !important;
   }
 
   .project-main .row.align-items-start {
