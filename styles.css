@@ -423,8 +423,7 @@ span.subtitle {
 }
 
 .project-note {
-  font-size: 0.85rem;
-  opacity: 0.85;
+  font-size: 0.8rem;
   margin-bottom: 0.75rem;
   color: var(--accent);
   animation: colorLoop 8s ease-in-out infinite;
