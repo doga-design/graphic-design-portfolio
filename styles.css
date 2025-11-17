@@ -554,7 +554,7 @@ span.subtitle {
   padding: 1.5rem;
   background: transparent;
   color: var(--accent);
-  border: 1px solid var(--accent);
+  border: .8px solid var(--accent);
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
@@ -563,6 +563,8 @@ span.subtitle {
   text-align: center;
   line-height: 1.4;
   word-break: break-word;
+  opacity: 0.8;
+  margin-top: 10px;
 }
 
 .pdf-mobile-btn:hover {
@@ -813,17 +815,16 @@ span.subtitle {
     justify-content: flex-start;
   }
 
-  /* Force all buttons to be uniform on mobile */
-  .ghost-btn,
-  .pdf-mobile-btn {
+  /* Force all project-related buttons to share the same size on mobile */
+  .project-main .ghost-btn,
+  .pdf-mobile-btn,
+  .scroll-to-top-btn,
+  .external-modal-actions .ghost-btn {
     padding: 0.75rem 1.5rem !important;
     font-size: 0.8rem !important;
     text-transform: lowercase !important;
     border-radius: 50px !important;
     border-width: 1px !important;
-    display: block !important;
-    margin: 0.5rem auto !important;
-    text-align: center !important;
   }
 
   .ghost-btn[data-go-home] {
@@ -836,22 +837,13 @@ span.subtitle {
   }
 
   .scroll-to-top-btn {
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.8rem !important;
     border: 1px solid rgba(255, 255, 255, 0.342) !important;
     display: inline-block !important;
     margin: 0.5rem auto !important;
   }
 
   .pdf-mobile-btn {
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.8rem !important;
     margin: 0.5rem auto 10px !important;
-  }
-
-  .project-main .ghost-btn:not([data-go-home]) {
-    padding: 0.75rem 1.5rem !important;
-    font-size: 0.8rem !important;
   }
 
   /* Keep paired project buttons grouped horizontally on mobile */
@@ -868,12 +860,6 @@ span.subtitle {
   .external-modal-actions .ghost-btn {
     display: block !important;
     margin: 0.5rem auto !important;
-  }
-
-  #externalCancel {
-    background: var(--red);
-    color: var(--bg);
-    border-color: var(--red);
   }
 
   /* Tighten spacing below PDF section and before scroll-to-top on mobile */
@@ -958,7 +944,7 @@ span.subtitle {
 
   /* External modal mobile */
   .external-modal-content {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .external-modal-actions {
@@ -1138,6 +1124,11 @@ span.subtitle {
   flex: 1;
   max-width: 140px;
   text-align: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8rem;
+  text-transform: lowercase;
+  border-radius: 50px;
+  border-width: 1px;
   background: var(--text);
   color: var(--bg);
   border-color: var(--text);
@@ -1146,6 +1137,12 @@ span.subtitle {
 .external-modal-actions .ghost-btn:hover {
   background: var(--bg);
   color: var(--text);
+}
+
+#externalCancel {
+  background: var(--red);
+  color: var(--bg);
+  border-color: var(--red);
 }
 
 
