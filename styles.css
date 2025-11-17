@@ -643,11 +643,12 @@ span.subtitle {
 
 .project-meta {
   margin-top: 0.75rem;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .project-title-name{
-  display: block;
   font-size: .9rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -657,7 +658,9 @@ span.subtitle {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
     system-ui, "Segoe UI", sans-serif;
   font-weight: 400;
-  font-style: normal;  font-size: .85rem;
+  font-style: normal;
+  font-size: .85rem;
+  text-align: right;
 }
 
 .category-red {
@@ -685,9 +688,9 @@ span.subtitle {
     transition: none !important;
   }
 
-.work-title{
+/* .work-title{
   margin: 0 auto;
-}
+} */
 
   body {
     padding-bottom: 0 !important;
@@ -722,17 +725,26 @@ span.subtitle {
 
   .intro {
     text-align: center;
-    padding: 0 1.5rem;
+    padding: 0 .85rem;
   }
 
   .work-section {
     margin-top: 2.5rem;
+    text-align: left;
   }
 
   .work-section .d-flex {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .work-title {
+    text-align: left;
+  }
+
+  .filters {
+    text-align: left;
   }
 
   /* Footer mobile styling */
@@ -945,6 +957,30 @@ span.subtitle {
   
   .external-modal-actions .ghost-btn {
     max-width: 100%;
+  }
+
+  .work-cards-group {
+    padding: 0 .8rem;
+  }
+}
+
+/* Tablet - align filters left */
+@media (max-width: 1024px) {
+  .filters {
+    text-align: left;
+  }
+
+  .work-title {
+    text-align: left;
+  }
+
+  .work-section {
+    text-align: left;
+  }
+
+  .work-section .d-flex {
+    align-items: flex-start;
+    text-align: left;
   }
 }
 
