@@ -193,11 +193,19 @@ span.subtitle {
   color: var(--bg);
 }
 
+/* Add more gaps to "back to all work" buttons */
+.ghost-btn[data-go-home] {
+  padding: 0.75rem 1.5rem;
+  margin-top: 2rem;
+  display: inline-block;
+}
+
 /* Project page CTAs (non-back buttons) use accent colors */
 .project-main .ghost-btn:not([data-go-home]) {
   background: var(--accent);
   color: var(--bg);
   border-color: var(--accent);
+  padding: 0.75rem 1.5rem;
 }
 
 .project-main .ghost-btn:not([data-go-home]):hover {
@@ -506,8 +514,8 @@ span.subtitle {
   margin: 0 auto;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  background: transparent;
+  position: relative;
 }
 
 .pdf-viewer {
@@ -521,11 +529,50 @@ span.subtitle {
   contain: content;
 }
 
-/* Mobile optimization for PDF */
+/* Mobile-friendly PDF button */
+.pdf-mobile-btn {
+  display: none;
+  width: 100%;
+  padding: 1.5rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+.pdf-mobile-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+
+.pdf-mobile-btn:hover i {
+  color: var(--bg);
+}
+
+.pdf-mobile-btn i {
+  margin-right: 0.5rem;
+  color: var(--accent);
+}
+
+/* Mobile optimization for PDF - hide iframe, show button */  
 @media (max-width: 768px) {
   .pdf-viewer {
-    height: 70vh;
-    min-height: 500px;
+    display: none;
+  }
+  
+  .pdf-mobile-btn {
+    display: block;
+  }
+  
+  .pdf-viewer-container {
+    background: transparent;
+    padding: 2rem 1rem;
   }
 }
 
@@ -626,6 +673,13 @@ span.subtitle {
 }
 
 @media (max-width: 768px) {
+  /* Disable all transitions on mobile for better performance */
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
   .gallery-img {
       filter: none;
   }
@@ -668,6 +722,26 @@ span.subtitle {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+  }
+
+  /* Center all buttons and content in project pages on mobile */
+  .project-main .d-flex {
+    justify-content: center;
+  }
+
+  .project-main .ghost-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  }
+
+  .project-main .row.align-items-start {
+    text-align: center;
+  }
+
+  .project-main .project-meta-list {
+    justify-content: center;
   }
 }
 

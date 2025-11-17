@@ -33,7 +33,7 @@
     // Exclude images inside .hero-gif-link (clickable website redirects)
     const images = document.querySelectorAll('.project-hero-frame img:not(.hero-gif-link img), .gallery-thumb');
     images.forEach((img, index) => {
-      // Skip if image is inside a clickable link (except Pilates which doesn't have the link)
+      // Skip if image is inside a clickable link
       if (img.closest('.hero-gif-link')) {
         return;
       }
