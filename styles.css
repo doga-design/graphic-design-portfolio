@@ -6,6 +6,9 @@
   --blue:      #4a90e2;
   --green:     #4ecb71;
   --purple:    #ff71f8;
+  /* Case study section spacing (reduced for tighter flow) */
+  --space-section: 2.5rem;
+  --space-block: 2rem;
 }
 
 @font-face {
@@ -168,38 +171,7 @@ span.subtitle {
 }
 
 .intro {
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-@media (min-width: 768px) {
-  .intro .row {
-    flex-wrap: nowrap;
-  }
-
-  /* Editable column widths: title (left) and content (right) */
-  .intro .col-12.col-md-6:first-child {
-    flex: 0 0 calc(100% - var(--intro-right-col-width, 55%));
-    max-width: calc(100% - var(--intro-right-col-width, 55%));
-  }
-
-  .intro .col-12.col-md-6:last-child {
-    flex: 0 0 var(--intro-right-col-width, 55%);
-    max-width: var(--intro-right-col-width, 55%);
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-  }
-
-  .intro .intro-body {
-    flex: var(--intro-bio-flex, 1.8);
-    margin-bottom: 0;
-  }
-
-  .intro .currently-building {
-    flex: var(--intro-building-flex, 1);
-    margin-top: 0;
-  }
+  /* Uses same row g-4 + col-12 col-sm-6 col-lg-4 as work cards for grid alignment */
 }
 
 .intro-tagline {
@@ -218,9 +190,9 @@ span.subtitle {
 
 /* Currently building section */
 .currently-building {
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.25rem 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   max-width: 25rem;
@@ -444,15 +416,6 @@ span.subtitle {
 
 .site-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 .footer-label {
@@ -849,29 +812,13 @@ span.subtitle {
     text-align: left;
   }
 
-  /* Footer mobile styling */
-  .footer-inner {
-    padding: 1.5rem 1.5rem 1rem;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.5rem;
-  }
-  
-  .footer-label {
-    margin-bottom: 0 !important;
-  }
-  
-  .footer-text {
-    margin-bottom: 0.5rem !important;
+  /* Footer mobile: stacked columns stay left-aligned to match card grid */
+  .site-footer .footer-label {
+    margin-bottom: 0.25rem;
   }
 
-  .footer-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    align-items: center;
-    justify-content: center;
+  .site-footer .footer-text {
+    margin-bottom: 0.5rem;
   }
 
   .footer-link {
@@ -879,10 +826,10 @@ span.subtitle {
     align-items: center;
     gap: 0.35rem;
   }
-  
+
   .site-footer {
     margin-bottom: 0;
-    padding-bottom: 0 !important;
+    padding-bottom: 3rem !important;
   }
 
   main.container {
@@ -1441,7 +1388,7 @@ body.is-project-view .cs-page-marker { display: block; }
 
 /* --- Section containers --- */
 .cs-section {
-  padding: var(--space-section, 8rem) 0;
+  padding: var(--space-section) 0;
   position: relative;
 }
 .cs-container {
@@ -1498,9 +1445,9 @@ body.is-project-view .cs-page-marker { display: block; }
 .cs-split-layout {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
-  gap: 6rem;
+  gap: 3rem;
   align-items: start;
-  margin-bottom: var(--space-block, 4rem);
+  margin-bottom: var(--space-block);
 }
 .cs-split-layout.reverse {
   grid-template-columns: 1.5fr 1fr;
@@ -1534,7 +1481,7 @@ body.is-project-view .cs-page-marker { display: block; }
   width: 100%;
   aspect-ratio: 16/9;
   background: rgba(255, 255, 255, 0.02);
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   overflow: hidden;
   border-radius: 0.5rem;
 }
@@ -1659,21 +1606,21 @@ body.is-project-view .cs-page-marker { display: block; }
 .cs-gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-top: 3rem;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 .cs-gallery-grid .cs-image-frame { aspect-ratio: 4/3; }
 
 /* --- Appendix (PDF section) --- */
 .cs-appendix {
-  padding: var(--space-section, 8rem) 0;
+  padding: var(--space-section) 0;
   background: rgba(0, 0, 0, 0.3);
 }
 .cs-appendix-title {
   font-size: var(--text-lg, 1.125rem);
   font-weight: 400;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   color: var(--text-muted, #a8a6a3);
 }
 .cs-appendix .pdf-viewer-container {
@@ -1732,7 +1679,7 @@ body.is-project-view .cs-page-marker { display: block; }
 
 /* --- Footer nav --- */
 .cs-footer-nav {
-  padding: 4rem 0;
+  padding: 2rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1806,6 +1753,21 @@ body.is-project-view .cs-page-marker { display: block; }
     left: 1.25rem;
     font-size: 0.75rem;
     padding: 0.4rem 1rem;
+  }
+
+  /* No smooth fade-in on mobile: show everything immediately */
+  .cs-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .cs-cover .cs-cover-title,
+  .cs-cover .cs-cover-subtitle,
+  .cs-cover .cs-cover-meta,
+  .cs-cover .cs-cover-scroll-hint {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   .intro-body {

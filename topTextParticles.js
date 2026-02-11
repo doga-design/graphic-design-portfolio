@@ -56,6 +56,11 @@
       let radius = 140;
       let sampleStep = 3;
 
+      /** Touch state for magnet on mobile */
+      let touchActive = false;
+      let touchX = 0;
+      let touchY = 0;
+
       p.preload = () => {
         // Load the same "AwesomeSerif" font used in CSS for reliable canvas rendering.
         font = p.loadFont("./fonts/AwesomeSerif-Regular.otf");
@@ -139,17 +144,22 @@
         }
 
         update() {
-          // Only influence when mouse is inside the banner.
-          const mx = p.mouseX;
-          const my = p.mouseY;
+          // Use touch position on mobile, mouse on desktop.
+          const mx = touchActive ? touchX : p.mouseX;
+          const my = touchActive ? touchY : p.mouseY;
+          const pressed = touchActive || p.mouseIsPressed;
           const mouseInside =
             mx >= 0 && mx <= p.width && my >= 0 && my <= p.height;
 
           let hoverT = 0;
           let mouseForce = p.createVector(0, 0);
 
-          const isDesktop = p.width >= MOBILE_BREAKPOINT;
-          const magnetActive = isDesktop && mouseInside && p.mouseIsPressed;
+          // Stronger swirl on mobile
+          const isMobile = p.width < MOBILE_BREAKPOINT;
+          const magnetSwirlAmt = isMobile ? MAGNET_SWIRL * 1.8 : MAGNET_SWIRL;
+          const hoverSwirlAmt = isMobile ? SWIRL * 1.8 : SWIRL;
+
+          const magnetActive = mouseInside && pressed;
 
           if (magnetActive) {
             const m = p.createVector(mx, my);
@@ -174,7 +184,7 @@
 
             const pull = toMouse.copy().mult(MAGNET_PULL * t * wobble);
             const swirl = p.createVector(-toMouse.y, toMouse.x).mult(
-              MAGNET_SWIRL * t * wobble
+              magnetSwirlAmt * t * wobble
             );
 
             mouseForce.add(pull).add(swirl);
@@ -209,7 +219,7 @@
                       this.home.y * 0.03
                   );
               const swirl = p.createVector(-away.y, away.x).mult(
-                SWIRL * amp * wobble
+                hoverSwirlAmt * amp * wobble
               );
 
               mouseForce.add(away).add(swirl);
@@ -298,6 +308,28 @@
         radius = Math.max(90, Math.min(170, h * 0.9));
 
         buildParticles();
+
+        // Touch support for magnet pull on mobile
+        const el = p.canvas;
+        if (el) {
+          function touchToCanvas(e) {
+            if (!e.touches.length) return;
+            const rect = el.getBoundingClientRect();
+            touchX = ((e.touches[0].clientX - rect.left) / rect.width) * p.width;
+            touchY = ((e.touches[0].clientY - rect.top) / rect.height) * p.height;
+          }
+          el.addEventListener("touchstart", (e) => {
+            touchActive = true;
+            touchToCanvas(e);
+            e.preventDefault();
+          }, { passive: false });
+          el.addEventListener("touchmove", (e) => {
+            touchToCanvas(e);
+            e.preventDefault();
+          }, { passive: false });
+          el.addEventListener("touchend", () => { touchActive = false; });
+          el.addEventListener("touchcancel", () => { touchActive = false; });
+        }
       };
 
       p.draw = () => {
