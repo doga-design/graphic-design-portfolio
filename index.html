@@ -28,21 +28,32 @@
   </head>
 
   <body>
+    <!-- Case study global overlays -->
+    <div class="cs-progress-line" id="csProgressLine"></div>
+    <div class="cs-page-marker" id="csPageMarker"></div>
+
     <!-- HOME VIEW -->
     <section id="home">
+      <div id="topTextParticles" aria-hidden="true"></div>
     <main class="container py-5">
       <section class="intro text-start text-md-start mb-5">
         <div class="row align-items-start g-4">
           <div class="col-12 col-md-6">
             <h1 class="display-5 mb-3">
-              <span class="subtitle">Hi, I’m Doga.</span>
+              <span class="subtitle">Hi, I'm Doga.</span>
             </h1>
           </div>
           <div class="col-12 col-md-6">
             <p class="intro-body">
-              I’m currently a graphic design student based in Toronto, working across web, branding, and 
-              interactive projects. I like working with digital interfaces, creating visual identities and working with design systems.
+              I'm a graphic design student in Toronto working across branding, web, and product design. I care about digital products, visual systems, and the strategy that makes them work.
             </p>
+            <div class="currently-building">
+              <span class="currently-building-label">What I'm currently building</span>
+              <div class="currently-building-list">
+                <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="currently-building-item">Visugenie</a>
+                <span class="currently-building-item currently-building-disabled">Bountt (currently very early in progress)</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -50,7 +61,7 @@
       <section class="work-section text-center text-md-start">
         <div class="d-flex justify-content-between align-items-baseline mb-3">
           <h2 class="work-title mb-0">check out my work</h2>
-          <span class="work-count d-none d-md-inline">7 projects</span>
+          <span class="work-count d-none d-md-inline">6 projects</span>
         </div>
 
         <div class="filters mb-4">
@@ -64,6 +75,32 @@
         </div>
 
         <div class="row g-4 work-cards-group">
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
+            <a href="#project-visual-platform" class="project-link" data-project="project-visual-platform"
+              ><img
+                src="./img/ctrlbreak/project-hero.png"
+                class="gallery-img img-fluid"
+                alt="CTRLBREAK exhibition identity branding overview"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-green">branding</span>
+              <span class="project-name">CTRLBREAK</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
+            <a href="#project-ferns-sons" class="project-link" data-project="project-ferns-sons"
+              ><img
+                src="./img/fernsandsons/fernandsons-thumb.png"
+                class="gallery-img img-fluid"
+                alt="Fern &amp; Sons Cycle Co. poster campaign mockups"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-green">branding</span>
+              <span class="project-name">Fern &amp; Sons Cycle Co.</span>
+            </div>
+          </div>
+
           <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
             <a href="#project-school-design" class="project-link" data-project="project-school-design"
               ><img
@@ -90,38 +127,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
-            <a href="#" class="external-project-link" data-external-url="https://dogacimen.com/#betbot"
-              ><img
-                src="./img/betbot-thumb.png"
-                class="gallery-img img-fluid"
-                alt="Betbot AI interface mockups"
-            /></a>
-            <div class="project-meta">
-              <span class="project-title-name category-purple">product design</span>
-              <span class="project-name">Betbot.ai</span>
-            </div>
-          </div>
-
-          <div
-            class="col-12 col-sm-6 col-lg-4 work-card"
-            data-category="branding">
-            <a href="#project-visual-platform" class="project-link" data-project="project-visual-platform"
-              ><img
-                src="./img/ctrlbreak-thumb.png"
-                class="gallery-img img-fluid"
-                alt="Visual Platform branding"
-            /></a>
-            <div class="project-meta">
-              <span class="project-title-name category-green">branding</span>
-              <span class="project-name">CTRLBREAK</span>
-            </div>
-          </div>
-
-          <div
-            class="col-12 col-sm-6 col-lg-4 work-card"
-            data-category="branding"
-          >
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
             <a href="#project-boots-hearts" class="project-link" data-project="project-boots-hearts"
               ><img
                 src="./img/bootshearts-thumb2.png"
@@ -134,23 +140,16 @@
             </div>
           </div>
 
-      
-          
-          <div
-            class="col-12 col-sm-6 col-lg-4 work-card"
-            data-category="advertisement"
-          >
-            <a href="#project-spotify" class="project-link" data-project="project-spotify"
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="advertisement">
+            <a href="#project-adobe-express" class="project-link" data-project="project-adobe-express"
               ><img
-                src="./img/spotify-thumb.png"
+                src="./img/adobe/bus_mockup.png"
                 class="gallery-img img-fluid"
-                alt="Spotify subway ad campaign visuals"
+                alt="Adobe Express campaign thumbnail"
             /></a>
             <div class="project-meta">
-              <span class="project-title-name category-yellow"
-                >advertising</span
-              >
-              <span class="project-name">Spotify subway ad campaign</span>
+              <span class="project-title-name category-yellow">advertising</span>
+              <span class="project-name">Adobe Express</span>
             </div>
           </div>
 
@@ -184,466 +183,481 @@
     </section>
     <!-- END HOME VIEW -->
 
-    <!-- PROJECT 1: Ideas & Images -->
-    <section id="project-ideas-images" class="project-page d-none">
-      <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-          <ul class="nav gap-3">
-            <li class="nav-item">
-              <a class="nav-link" href="#home" data-go-home>home</a>
-            </li>
-          </ul>
+    <!-- ========== PROJECT: Fern & Sons Cycle Co. ========== -->
+    <section id="project-ferns-sons" class="project-page d-none" data-project-name="Fern &amp; Sons Cycle Co.">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/fernsandsons/community-poster-1.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">FERN &amp; SONS CYCLE CO.</h1>
+          <p class="cs-cover-subtitle">Community-rooted bicycle workshop brand identity</p>
+          <div class="cs-cover-meta"><span>Brand Identity</span><span>2024 · Illustrator, InDesign, Photoshop</span></div>
         </div>
-      </nav>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
 
-      <section
-        class="parallax"
-        style="background-image: url('./img/ideasimages/ideas-page-banner.png')"
-      ></section>
-
-      <main class="container py-5 project-main">
-        <div class="row g-5 align-items-start">
-          <div class="col-12 col-lg-5">
-            <p class="project-kicker text-uppercase">web design</p>
-            <h2 class="project-title">Ideas &amp; Images</h2>
-            <p class="project-intro">
-              This site collects a series of my course assignments, reimagined as interactive, kinetic, text-based pieces. Each project began as a static design—posters, visual studies, or other exploratory exercises. For the final assignment, we were asked to bring together all the creative work we’d produced throughout the program, so I transformed those earlier experiments into a single collection that uses motion, sound, and interaction to push the original ideas further.
-            </p>
-
-            <dl class="project-meta-list">
-              <div>
-                <dt>Role</dt>
-                <dd>Interaction design, creative coding</dd>
-              </div>
-              <div>
-                <dt>Tech</dt>
-                <dd>p5.js, HTML, CSS</dd>
-              </div>
-            </dl>
-
-            <div class="project-cta-group">
-              <a href="#home" data-go-home class="ghost-btn">&larr; back to all work</a>
-              <a
-                href="https://dodocimen.github.io/Ideas-and-Images--repository/"
-                target="_blank"
-                class="ghost-btn ideas-btn"
-                >check out website</a
-              >
-            </div>
-          </div>
-
-          <div class="col-12 col-lg-7">
-            <div class="project-hero-frame">
-              <a href="https://dodocimen.github.io/Ideas-and-Images--repository/" target="_blank" class="hero-gif-link">
-                <img
-                  src="./img/ideasimages/ideas1.jpg"
-                  data-gif="./img/ideasimages/ideas-cover-gif.gif"
-                  class="img-fluid hero-gif-loader"
-                  alt="Ideas and Images homepage"
-                />
-              </a>
-            </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">Branding a Three-Generation Workshop</h2>
+          <p class="cs-intro-text">How do you create an identity for a 75-year-old family bicycle shop that feels rooted without feeling stuck in the past?</p>
+          <p class="cs-body-text">Fern &amp; Sons Cycle Co. is a third-generation bicycle workshop in Toronto's Annex neighbourhood. For over 75 years, they've focused on honest repair, skilled hands, and long-term relationships with local riders.</p>
+          <p class="cs-body-text">This was a school project to design a complete brand identity for a small, community-based business. The challenge was to reflect the shop's legacy while making it feel approachable and relevant to today's riders—not precious, not corporate, just real.</p>
+          <p class="cs-body-text">I explored three visual directions: Swiss precision (too clinical), Bauhaus energy (too playful), and organic craft (just right). The final direction combined Art Nouveau-inspired flowing lines with structured clarity—rooted but not rustic, elegant but not fussy.</p>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Timeline</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">3 weeks (concept through campaign)</p>
+            <span class="cs-label">Deliverables</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">Brand identity system, stationery, poster campaign, website mockups, branded merchandise</p>
+            <span class="cs-label">Positioning</span>
+            <p class="cs-body-text">The Annex's community-focused bicycle workshop—providing careful, reliable repair for riders who depend on honest service and familiar hands</p>
           </div>
         </div>
+      </section>
 
-        <section class="project-iterations mt-5">
-          <h3 class="project-section-title mb-4 text-center">process documentation &amp; reflection</h3>
-          <div class="pdf-viewer-container">
-            <iframe
-              src="./img/ideasimages/ideas-process.pdf"
-              class="pdf-viewer"
-              loading="lazy"
-              title="Ideas & Images process documentation"
-            ></iframe>
-            <a href="./img/ideasimages/ideas-process.pdf" target="_blank" class="pdf-mobile-btn">
-              <i class="fas fa-file-pdf"></i> Open Process Documentation PDF
-            </a>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">Movement and Heritage</h2>
+          <p class="cs-body-text">The wordmark uses Awesome Serif—a display face with character and warmth. The chevron icon is modular, referencing bicycle chain links and forward motion. The fern-inspired pattern wraps around the arrow, creating texture without clutter.</p>
+          <p class="cs-body-text">The lockup is flexible enough to work on everything from business cards to bike tags. It feels handmade but not fussy, confident but not corporate.</p>
+          <p class="cs-body-text">The palette—evergreen, antique white, and night bordeaux—avoids bright sporty colors in favor of calm, trustworthy tones. These aren't trend colors. They're the colors of a shop that's been there for decades.</p>
+          <div class="cs-image-frame" style="margin-top: 3rem;">
+            <img src="./img/fernsandsons/movementheritagethumb.png" alt="Fern &amp; Sons Cycle Co. brand image with fern-chevron pattern overlay" />
           </div>
-        </section>
-
-        <div class="scroll-to-top-container">
-          <hr class="scroll-separator" />
-          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
-        </div>
-      </main>
-    </section>
-
-    <!-- PROJECT 3: Boots & Hearts -->
-    <section id="project-boots-hearts" class="project-page d-none">
-      <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-          <ul class="nav gap-3">
-            <li class="nav-item">
-              <a class="nav-link" href="#home" data-go-home>home</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <section
-        class="parallax"
-        style="background-image: url('./img/bootsnhearts/bnh-banner.png')"
-      ></section>
-
-      <main class="container py-5 project-main">
-        <div class="row g-5 align-items-start">
-          <div class="col-12 col-lg-5">
-            <p class="project-kicker text-uppercase">branding</p>
-            <h2 class="project-title">Boots &amp; Hearts Festival Branding</h2>
-            <p class="project-intro">
-              This project was an entry to the world of branding and digital design, developed as a concept for the Boots and Hearts brand—Canada’s largest country music festival. The aim is to establish a cohesive visual identity that reflects the festival’s core themes of community, music, and country culture, while also driving ticket sales and strengthening online engagement.
-            </p>
-
-            <dl class="project-meta-list">
-              <div>
-                <dt>Role</dt>
-                <dd>Brand design, digital design</dd>
-              </div>
-              <div>
-                <dt>Deliverables</dt>
-                <dd>Brand kit, poster series, web &amp; app mockups</dd>
-              </div>
-            </dl>
-
-            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
-          </div>
-
-          <div class="col-12 col-lg-7">
-            <div class="project-hero-frame">
+          <div class="cs-link-center" style="margin-top: 2rem;">
+            <a
+              href="https://doga-design.github.io/fernsandsonswebsite/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cs-shine-link"
+            >
               <img
-                src="./img/bootsnhearts/bnh-hero.png"
-                class="img-fluid"
-                alt="Boots and Hearts branding overview"
+                src="./img/fernsandsons/icon.png"
+                class="cs-shine-link-icon"
+                alt=""
+                aria-hidden="true"
+                onerror="this.style.display='none'"
               />
-            </div>
-          </div>
-        </div>
-
-        <section class="project-iterations mt-5">
-          <h3 class="project-section-title mb-4 text-center">brand concept book</h3>
-          <div class="pdf-viewer-container">
-            <iframe
-              src="./img/bootsnhearts/Boots and Hearts BrandBook.pdf"
-              class="pdf-viewer"
-              loading="lazy"
-              title="Boots and Hearts complete brand guide"
-            ></iframe>
-            <a href="./img/bootsnhearts/Boots and Hearts BrandBook.pdf" target="_blank" class="pdf-mobile-btn">
-              <i class="fas fa-file-pdf"></i> Open Brand Book PDF
+              <span class="cs-shine-link-text">view brand website</span>
             </a>
           </div>
-        </section>
-
-        <div class="scroll-to-top-container">
-          <hr class="scroll-separator" />
-          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
         </div>
-      </main>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">03</span>
+          <h2 class="cs-section-title">Community Ride Posters</h2>
+          <p class="cs-intro-text">The shop hosts weekly community rides every Sunday at 9AM. The poster campaign became the brand's public face.</p>
+          <p class="cs-body-text">Three poster variations use the same layout with different color treatments: yellow, green, and red. Each features bold type, grayscale photography, and the fern-chevron pattern as a graphic device. The copy is simple: "Community Ride | Sunday | 9AM."</p>
+          <p class="cs-body-text">The posters work at distance (bold color blocks, large type) and up close (pattern details, brand signature). Designed for bus shelters, shop windows, and community boards—wherever riders might see them.</p>
+          <div class="cs-gallery-grid fern-posters-grid">
+            <img src="./img/fernsandsons/community-poster-1.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (yellow)" />
+            <img src="./img/fernsandsons/community-poster-2.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (green)" />
+            <img src="./img/fernsandsons/community-poster-3.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (red)" />
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">04</span>
+          <h2 class="cs-section-title">System in Action</h2>
+          <p class="cs-intro-text">The identity needed to work across stationery, digital, print, and merchandise—every touchpoint where riders interact with the shop.</p>
+          <p class="cs-body-text">Each application uses the same core elements—logo, patterns, color palette, typography—but adapts to context. Business cards reveal the pattern on the back. Bike tags use simple messages like "Your bike is ready. Shaped with care by our hands." The website balances warmth with usability.</p>
+          <div class="cs-gallery-grid">
+            <div class="cs-image-frame"><img src="./img/fernsandsons/biketags.png" class="gallery-thumb" alt="Bike tag design applications" /></div>
+            <div class="cs-image-frame"><img src="./img/fernsandsons/PACKAGIN TAPE MOCKUP - RED.png" class="gallery-thumb" alt="Packaging tape mockup application" /></div>
+            <div class="cs-image-frame"><img src="./img/fernsandsons/TOTEBAG-MOCKUP.png" class="gallery-thumb" alt="Tote bag mockup with Fern &amp; Sons branding" /></div>
+            <div class="cs-image-frame"><img src="./img/fernsandsons/TSHIRTMOCKUP.png" class="gallery-thumb" alt="T-shirt mockup with Fern &amp; Sons branding" /></div>
+            <div class="cs-image-frame"><img src="./img/fernsandsons/waterbottle-mockup.png" class="gallery-thumb" alt="Water bottle mockup with Fern &amp; Sons branding" /></div>
+            <div class="cs-image-frame"><img src="./img/fernsandsons/ig-carousel-mockup.png" class="gallery-thumb" alt="Instagram carousel mockup for Fern &amp; Sons" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">05</span>
+          <h2 class="cs-section-title">A Brand That Feels Like Home</h2>
+          <p class="cs-intro-text">An identity that honors 75 years of skilled work without feeling stuck in the past.</p>
+          <p class="cs-body-text">The final system is warm, trustworthy, and flexible. It positions Fern &amp; Sons as rooted in community and craft—approachable but never casual, skilled but never intimidating. The kind of shop you'd bring your bike to for decades.</p>
+          <div class="cs-image-hero" style="margin-top: 3rem;">
+            <img src="./img/fernsandsons/brandfeelshome.png" alt="Fern &amp; Sons Cycle Co. brand overview" />
+          </div>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Highlights</span>
+            <p class="cs-body-text">- Rooted visual language that feels local, not corporate<br />- Flexible system that works across all touchpoints<br />- Campaign-ready with posters and branded merchandise<br />- Approachable premium positioning</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">06</span>
+          <h2 class="cs-section-title">Complete Documentation</h2>
+          <div class="pdf-viewer-container" style="margin-top: 2.5rem;">
+            <iframe src="./img/fernsandsons/CimenD_Fernandsons_BrandRollout.pdf" class="pdf-viewer" loading="lazy" title="Fern &amp; Sons Cycle Co. brand guidelines"></iframe>
+            <a href="./img/fernsandsons/CimenD_Fernandsons_BrandRollout.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> Open Full Brand Guidelines</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-school-design" class="cs-btn-secondary project-link" data-project="project-school-design">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
     </section>
 
-    <!-- PROJECT 5: School of Design -->
-    <section id="project-school-design" class="project-page d-none">
-      <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-          <ul class="nav gap-3">
-            <li class="nav-item">
-              <a class="nav-link" href="#home" data-go-home>home</a>
-            </li>
-          </ul>
+    <!-- ========== PROJECT: Adobe Express ========== -->
+    <section id="project-adobe-express" class="project-page d-none" data-project-name="Adobe Express">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/adobe/adobe-banner.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">ADOBE EXPRESS</h1>
+          <p class="cs-cover-subtitle">Integrated campaign to shift Gen Z perception</p>
+          <div class="cs-cover-meta"><span>Campaign Strategy</span><span>2024 · Advertising I Course Project</span></div>
         </div>
-      </nav>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
 
-      <section
-        class="parallax"
-        style="background-image: url('./img/schoolofdesign-thumb.png')"
-      ></section>
-
-      <main class="container py-5 project-main">
-        <div class="row g-5 align-items-start">
-          <div class="col-12 col-lg-5">
-            <p class="project-kicker text-uppercase">web design</p>
-            <h2 class="project-title">School of Design Website</h2>
-            <p class="project-intro">
-              This project is a modern website redesign for George Brown's School of
-              Design, created to reflect the school's vibrant personality while
-              staying clean and functional. The goal was to fuse
-              creativity and technology into a minimalistic design language that feels
-              both professional and energetic—just like the school itself.
-            </p>
-
-            <dl class="project-meta-list">
-              <div>
-                <dt>Role</dt>
-                <dd>Interaction design, UI development</dd>
-              </div>
-              <div>
-                <dt>Tech</dt>
-                <dd>HTML, CSS, JS</dd>
-              </div>
-            </dl>
-
-            <div class="project-cta-group">
-              <a href="#home" data-go-home class="ghost-btn">&larr; back to all work</a>
-              <a
-                href="https://dodocimen.github.io/School-of-design-website-redesign/"
-                target="_blank"
-                class="ghost-btn"
-                >check out website</a
-              >
-            </div>
-          </div>
-
-          <div class="col-12 col-lg-7">
-            <div class="project-hero-frame">
-              <a href="https://dodocimen.github.io/School-of-design-website-redesign/" target="_blank" class="hero-gif-link">
-                <img
-                  src="./img/schoolofdesign/sodthumb1.png"
-                  data-gif="./img/schoolofdesign/sod-site-gif.gif"
-                  class="img-fluid hero-gif-loader"
-                  alt="School of Design homepage mockup"
-                />
-              </a>
-            </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">Making Adobe Feel Like Theirs</h2>
+          <p class="cs-intro-text">How do you convince a generation that sees Adobe as "too professional" that it's actually built for the way they create?</p>
+          <p class="cs-body-text">Adobe is iconic. But Gen Z doesn't see it that way. To them, Adobe feels too complex, too slow, too professional—not for people like them. Meanwhile, Canva and Figma feel instant, cultural, made for them.</p>
+          <p class="cs-body-text">This was a school advertising project to reposition Adobe Express for Gen Z creators. The challenge: shift perception without changing the product. Show that Adobe isn't intimidating—it's already built for the way Gen Z creates: fast, experimental, playful.</p>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Timeline</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">School project (Advertising I)</p>
+            <span class="cs-label">Deliverables</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">Campaign strategy, digital ads, OOH, experiential activation</p>
+            <span class="cs-label">Target</span>
+            <p class="cs-body-text">18–26-year-old creatives already making things, mostly with free tools</p>
           </div>
         </div>
+      </section>
 
-        <section class="project-gallery mt-5">
-          <h3 class="project-section-title mb-3">key screens</h3>
-          <div class="row g-3">
-            <div class="col-12 col-md-4">
-              <div class="project-figure">
-                <img
-                  src="./img/schoolofdesign/sodthumb1.png"
-                  class="gallery-thumb img-fluid"
-                  alt="Program listing screen"
-                />
-              </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="project-figure">
-                <img
-                  src="./img/schoolofdesign/sodthumb2.png"
-                  class="gallery-thumb img-fluid"
-                  alt="Detail or information-heavy view"
-                />
-              </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="project-figure">
-                <img
-                  src="./img/schoolofdesign/sodthumb3.png"
-                  class="gallery-thumb img-fluid"
-                  alt="Additional hero or landing variation"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="scroll-to-top-container">
-          <hr class="scroll-separator" />
-          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">From Toys to Tools</h2>
+          <p class="cs-intro-text">Gen Z grew up building and experimenting with physical toys. That instinct never disappeared—they just create the same way digitally now.</p>
+          <p class="cs-body-text">The insight: Gen Z creates nonstop using fast, mobile-first tools. Adobe Express fits this naturally. The campaign bridges past and present: "What you built then, you can build now. Just with different tools."</p>
+          <p class="cs-body-text">The shift needed: BEFORE—"Adobe is for professionals, not for me." AFTER—"Adobe fits the way I create. I'm legit, finally using Adobe tools." Strategy: show Adobe is approachable. Behavior: sign up for Express, start using Photoshop to refine.</p>
         </div>
-      </main>
-    </section>
+      </section>
 
-    <!-- PROJECT: Spotify Subway Ad Campaign -->
-    <section id="project-spotify" class="project-page d-none">
-      <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-          <ul class="nav gap-3">
-            <li class="nav-item">
-              <a class="nav-link" href="#home" data-go-home>home</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <section
-        class="parallax"
-        style="background-image: url('./img/spotify-ad/spotify-banner.png')"
-      ></section>
-
-      <main class="container py-5 project-main">
-        <div class="row g-5 align-items-start">
-          <div class="col-12 col-lg-5">
-            <p class="project-kicker text-uppercase">Advertising</p>
-            <h2 class="project-title">Spotify Subway Ad Campaign</h2>
-            <p class="project-intro">
-              A bold, type-led outdoor campaign concept for Spotify, designed for
-              subway environments. The focus is on simple, high-contrast layouts
-              that read quickly in motion and feel unmistakably "Spotify".
-            </p>
-
-            <dl class="project-meta-list">
-              <div>
-                <dt>Role</dt>
-                <dd>Art direction, visual design</dd>
-              </div>
-              <div>
-                <dt>Medium</dt>
-                <dd>OOH, print, concept mockups</dd>
-              </div>
-              <div>
-                <dt>Tools</dt>
-                <dd>Illustrator, Photoshop, Figma</dd>
-              </div>
-            </dl>
-
-            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">03</span>
+          <h2 class="cs-section-title">Remember Building?</h2>
+          <p class="cs-body-text">Instagram carousels use nostalgic visuals—sticker sheets and building blocks. Copy: "Remember sticker-sheets? Collecting, arranging, placing?" → "Well, you still do all that. Just with different tools. Adobe."</p>
+          <p class="cs-body-text">OOH and transit campaigns show Adobe Express UI overlaid on childhood creative activities. "What you drew then, you can build now." Bus wraps, billboards, transit posters—all with "Build with Adobe" CTAs.</p>
+          <div class="cs-image-hero" style="margin-top: 3rem;">
+            <img src="./img/adobe/postermockup.png" alt="Adobe Express Instagram carousel sequence mockup" />
           </div>
-
-          <div class="col-12 col-lg-7">
-            <div class="project-hero-frame">
-              <img
-                src="./img/spotify-ad/spotify-hero.jpg"
-                class="img-fluid"
-                alt="Spotify subway ad campaign hero visual"
-              />
-            </div>
+          <div class="cs-gallery-grid">
+            <div class="cs-image-frame"><img src="./img/adobe/adobe-socialpost-preview.png" class="gallery-thumb" alt="Adobe Express poster mockup" /></div>
+            <div class="cs-image-frame"><img src="./img/adobe/bus_mockup.png" class="gallery-thumb" alt="Adobe Express bus mockup" /></div>
+            <div class="cs-image-frame"><img src="./img/adobe/buidlingmockup.png" class="gallery-thumb" alt="Adobe Express building billboard mockup" /></div>
           </div>
         </div>
+      </section>
 
-        <section class="project-iterations mt-5">
-          <h3 class="project-section-title mb-4 text-center">campaign presentation</h3>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">04</span>
+          <h2 class="cs-section-title">The Playout Wall</h2>
+          <p class="cs-intro-text">An interactive installation that turns physical play into finished digital posters—powered by Adobe.</p>
+          <p class="cs-body-text">Playout Wall is a physical grid where people place modular blocks to build layouts. A camera captures it, translates it into a digital poster in Adobe Express and Photoshop. You play on the wall, Adobe turns it into a real poster.</p>
+          <div class="cs-image-hero" style="margin-top: 3rem;">
+            <img src="./img/adobe/playwall1.jpg" alt="Diagram of Playout Wall showing physical grid and Adobe Express workspace" />
+          </div>
+          <div class="cs-image-hero" style="margin-top: 2rem;">
+            <img src="./img/adobe/playwall2.jpg" alt="Close-up of Playout Wall interaction and resulting digital poster" />
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-appendix cs-reveal">
+        <div class="cs-container-narrow">
+          <h3 class="cs-appendix-title">Full Campaign Documentation</h3>
           <div class="pdf-viewer-container">
-            <iframe
-              src="./img/spotify-ad/spotify-presentation-doc.pdf"
-              class="pdf-viewer"
-              loading="lazy"
-              title="Spotify subway ad campaign presentation"
-            ></iframe>
-            <a href="./img/spotify-ad/spotify-presentation-doc.pdf" target="_blank" class="pdf-mobile-btn">
-              <i class="fas fa-file-pdf"></i> Open Campaign Presentation PDF
+            <iframe src="./img/adobe/adobe 1-compressed.pdf" class="pdf-viewer" loading="lazy" title="Adobe Express campaign deck"></iframe>
+            <a href="./img/adobe/adobe 1-compressed.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> View Campaign Deck</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ========== PROJECT: Ideas & Images ========== -->
+    <section id="project-ideas-images" class="project-page d-none" data-project-name="Ideas &amp; Images">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/ideasimages/ideas-page-banner.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">IDEAS &amp; IMAGES</h1>
+          <p class="cs-cover-subtitle">Interactive kinetic text-based collection</p>
+          <div class="cs-cover-meta"><span>Web Design</span><span>p5.js &middot; HTML &middot; CSS</span></div>
+        </div>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">The Brief</h2>
+          <p class="cs-intro-text">This site collects a series of my course assignments, reimagined as interactive, kinetic, text-based pieces.</p>
+          <p class="cs-body-text">Each project began as a static design&mdash;posters, visual studies, or other exploratory exercises. For the final assignment, we were asked to bring together all the creative work we'd produced throughout the program, so I transformed those earlier experiments into a single collection that uses motion, sound, and interaction to push the original ideas further.</p>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Role</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">Interaction design, creative coding</p>
+            <span class="cs-label">Tech</span>
+            <p class="cs-body-text">p5.js, HTML, CSS</p>
+          </div>
+          <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+            <a href="https://doga-design.github.io/Ideas-and-Images--repository/" target="_blank" class="cs-btn-ideas">check out website</a>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">The Work</h2>
+          <div class="cs-image-hero">
+            <a href="https://doga-design.github.io/Ideas-and-Images--repository/" target="_blank" class="hero-gif-link">
+              <img src="./img/ideasimages/ideas1.jpg" data-gif="./img/ideasimages/ideas-cover-gif.gif" class="hero-gif-loader" alt="Ideas and Images homepage" />
             </a>
           </div>
-        </section>
-
-        <div class="scroll-to-top-container">
-          <hr class="scroll-separator" />
-          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
         </div>
-      </main>
+      </section>
+      <section class="cs-appendix cs-reveal">
+        <div class="cs-container-narrow">
+          <h3 class="cs-appendix-title">Process Documentation &amp; Reflection</h3>
+          <div class="pdf-viewer-container">
+            <iframe src="./img/ideasimages/ideas-process.pdf" class="pdf-viewer" loading="lazy" title="Ideas & Images process documentation"></iframe>
+            <a href="./img/ideasimages/ideas-process.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> Open Process Documentation PDF</a>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-boots-hearts" class="cs-btn-secondary project-link" data-project="project-boots-hearts">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
     </section>
 
-    <!-- PROJECT: Visual Platform -->
-    <section id="project-visual-platform" class="project-page d-none">
-      <nav class="navbar">
-        <div class="container d-flex justify-content-between align-items-center">
-          <ul class="nav gap-3">
-            <li class="nav-item">
-              <a class="nav-link" href="#home" data-go-home>home</a>
-            </li>
-          </ul>
+    <!-- ========== PROJECT: Boots & Hearts ========== -->
+    <section id="project-boots-hearts" class="project-page d-none" data-project-name="Boots &amp; Hearts">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/bootsnhearts/bnh-banner.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">BOOTS &amp; HEARTS</h1>
+          <p class="cs-cover-subtitle">Festival branding for Canada's largest country music festival</p>
+          <div class="cs-cover-meta"><span>Branding</span><span>Brand kit &middot; Poster series &middot; Web &amp; app mockups</span></div>
         </div>
-      </nav>
-
-      <section
-        class="parallax"
-        style="background-image: url('./img/ctrlbreak-thumb.png')"
-      ></section>
-
-      <main class="container py-5 project-main">
-        <div class="row g-5 align-items-start">
-          <div class="col-12 col-lg-5">
-            <p class="project-kicker text-uppercase">branding</p>
-            <p class="project-note">(early stage, 3-day-old draft phase for an ongoing project)</p>
-            <h2 class="project-title">CTRLBREAK</h2>
-            <p class="project-intro">
-              This is an ongoing school project where I’m designing a full exhibition identity for a Neville Brody retrospective. We are currently moving into the pitchbook stage in the course, where all of the information, design systems, and visual assets gets organized into a clear, convincing proposal for the exhibition.
-            </p>
-
-            <dl class="project-meta-list">
-              <div>
-                <dt>Role</dt>
-                <dd>Brand design, visual identity</dd>
-              </div>
-              <div>
-                <dt>Deliverables</dt>
-                <dd>Logo, color system, typography</dd>
-              </div>
-              <div>
-                <dt>Tools</dt>
-                <dd>Illustrator, Figma, InDesign</dd>
-              </div>
-            </dl>
-
-            <a href="#home" data-go-home class="ghost-btn mt-3">&larr; back to all work</a>
-          </div>
-
-          <div class="col-12 col-lg-7">
-            <div class="project-hero-frame">
-              <img
-                src="./img/ctrlbreak/buildingmockup.png"
-                class="img-fluid"
-                alt="Visual Platform brand identity hero"
-              />
-            </div>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">The Brief</h2>
+          <p class="cs-intro-text">An entry to the world of branding and digital design, developed as a concept for the Boots and Hearts brand.</p>
+          <p class="cs-body-text">The aim is to establish a cohesive visual identity that reflects the festival's core themes of community, music, and country culture, while also driving ticket sales and strengthening online engagement.</p>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Role</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">Brand design, digital design</p>
+            <span class="cs-label">Deliverables</span>
+            <p class="cs-body-text">Brand kit, poster series, web &amp; app mockups</p>
           </div>
         </div>
-
-        <section class="project-body copy mt-5">
-          <p>
-            This project explores how a visual platform can establish trust and
-            creativity through consistent, thoughtful branding. The identity balances
-            professionalism with playfulness, ensuring the brand feels both reliable
-            and inspiring.
-          </p>
-        </section>
-
-        <section class="project-gallery mt-5">
-          <h3 class="project-section-title mb-3">brand assets</h3>
-          <div class="row g-3">
-            <div class="col-12 col-md-4">
-              <div class="project-figure">
-                <img
-                  src="./img/ctrlbreak/project-hero.png"
-                  class="gallery-thumb img-fluid"
-                  alt="Visual Platform brand asset 1"
-                />
-              </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="project-figure">
-                <img
-                  src="./img/ctrlbreak/banner-mockups.png"
-                  class="gallery-thumb img-fluid"
-                  alt="Visual Platform brand asset 2"
-                />
-              </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="project-figure">
-                <img
-                  src="./img/ctrlbreak/banner-colors.png"
-                  class="gallery-thumb img-fluid"
-                  alt="Visual Platform brand asset 3"
-                />
-              </div>
-            </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">The Work</h2>
+          <div class="cs-image-hero">
+            <img src="./img/bootsnhearts/bnh-hero.png" alt="Boots and Hearts branding overview" />
           </div>
-        </section>
-
-        <section class="project-iterations mt-5">
-          <h3 class="project-section-title mb-4 text-center">Early<span class="word-emphasis"> Namestyle</span> explorations &amp; iterations</h3>
+        </div>
+      </section>
+      <section class="cs-appendix cs-reveal">
+        <div class="cs-container-narrow">
+          <h3 class="cs-appendix-title">Brand Concept Book</h3>
           <div class="pdf-viewer-container">
-            <iframe
-              src="./img/ctrlbreak/iterations.pdf"
-              class="pdf-viewer"
-              loading="lazy"
-              title="Design explorations and iterations"
-            ></iframe>
-            <a href="./img/ctrlbreak/iterations.pdf" target="_blank" class="pdf-mobile-btn">
-              <i class="fas fa-file-pdf"></i> Open Design Iterations PDF
+            <iframe src="./img/bootsnhearts/Boots and Hearts BrandBook.pdf" class="pdf-viewer" loading="lazy" title="Boots and Hearts complete brand guide"></iframe>
+            <a href="./img/bootsnhearts/Boots and Hearts BrandBook.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> Open Brand Book PDF</a>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-adobe-express" class="cs-btn-secondary project-link" data-project="project-adobe-express">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ========== PROJECT: School of Design ========== -->
+    <section id="project-school-design" class="project-page d-none" data-project-name="School of Design">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/schoolofdesign-thumb.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">SCHOOL OF DESIGN</h1>
+          <p class="cs-cover-subtitle">Modern website redesign for George Brown College</p>
+          <div class="cs-cover-meta"><span>Web Design</span><span>HTML &middot; CSS &middot; JS</span></div>
+        </div>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">The Brief</h2>
+          <p class="cs-intro-text">A modern website redesign for George Brown's School of Design, created to reflect the school's vibrant personality while staying clean and functional.</p>
+          <p class="cs-body-text">The goal was to fuse creativity and technology into a minimalistic design language that feels both professional and energetic&mdash;just like the school itself.</p>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Role</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">Interaction design, UI development</p>
+            <span class="cs-label">Tech</span>
+            <p class="cs-body-text">HTML, CSS, JS</p>
+          </div>
+          <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+            <a href="https://doga-design.github.io/School-of-design-website-redesign/" target="_blank" class="cs-btn-primary">check out website</a>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">The Work</h2>
+          <div class="cs-image-hero">
+            <a href="https://doga-design.github.io/School-of-design-website-redesign/" target="_blank" class="hero-gif-link">
+              <img src="./img/schoolofdesign/sodthumb1.png" data-gif="./img/schoolofdesign/sod-site-gif.gif" class="hero-gif-loader" alt="School of Design homepage mockup" />
             </a>
           </div>
-        </section>
-
-        <div class="scroll-to-top-container">
-          <hr class="scroll-separator" />
-          <button class="scroll-to-top-btn">&uarr; scroll back up</button>
         </div>
-      </main>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">03</span>
+          <h2 class="cs-section-title">Key Screens</h2>
+          <div class="cs-gallery-grid">
+            <div class="cs-image-frame"><img src="./img/schoolofdesign/sodthumb1.png" class="gallery-thumb" alt="Program listing screen" /></div>
+            <div class="cs-image-frame"><img src="./img/schoolofdesign/sodthumb2.png" class="gallery-thumb" alt="Detail or information-heavy view" /></div>
+            <div class="cs-image-frame"><img src="./img/schoolofdesign/sodthumb3.png" class="gallery-thumb" alt="Additional hero or landing variation" /></div>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-ideas-images" class="cs-btn-secondary project-link" data-project="project-ideas-images">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ========== PROJECT: CTRLBREAK ========== -->
+    <section id="project-visual-platform" class="project-page d-none" data-project-name="CTRLBREAK">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/ctrlbreak/ctrl-red.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">CTRLBREAK</h1>
+          <p class="cs-cover-subtitle">Exhibition identity for a Neville Brody retrospective</p>
+          <div class="cs-cover-meta"><span>Branding</span><span>Illustrator &middot; Figma &middot; InDesign</span></div>
+        </div>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">Breaking the rules, on purpose.</h2>
+          <p class="cs-intro-text">How do you design an identity for a designer who spent his career dismantling everyone else's rules?</p>
+          <p class="cs-body-text">Neville Brody rewrote typography in the 1980s. As art director of The Face, he fractured letterforms, ignored grids, treated type as image. His work was aggressive, political, unapologetic.</p>
+          <p class="cs-body-text">The challenge wasn't to mimic his work—that would be lazy. It was to channel his ethos: breaking conventions requires understanding them first. CTRL+BREAK became the answer. A keyboard command that interrupts a running process.</p>
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Timeline</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">3 weeks</p>
+            <span class="cs-label">Deliverables</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;">Logo system, exhibition graphics, brand guidelines</p>
+            <span class="cs-label">Context</span>
+            <p class="cs-body-text">School project — pitchbook stage</p>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">Influence &amp; Intent</h2>
+
+          <div style="margin-top: 3rem;">
+            <span class="cs-label">Influence</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;"><strong>Controlled Chaos</strong><br />Brody's layouts felt chaotic but were meticulously controlled. Every violation was intentional. I wanted CTRL+BREAK to work the same way.</p>
+
+            <span class="cs-label">The Grid</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;"><strong>Structure Built to Break</strong><br />Built a rigid modular grid, then designed the identity to deliberately violate it. Logos shift. Type runs off edges. But every break follows logic.</p>
+
+            <span class="cs-label">Typography</span>
+            <p class="cs-body-text" style="margin-bottom: 2rem;"><strong>Punk Meets Precision</strong><br />Industrial typography, hard angles, stencil cuts—visual languages from protest posters. Raw energy with technical rigor.</p>
+
+            <span class="cs-label">Overview</span>
+            <p class="cs-body-text">This was a school project to design a complete exhibition identity and pitchbook. The pitchbook is a visual proposal showing how the identity would work across posters, signage, merchandise, and gallery spaces—designed to pitch the retrospective to museums and cultural institutions.</p>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container">
+          <span class="cs-chapter-number">03</span>
+          <h2 class="cs-section-title">Brand Assets</h2>
+          <div class="cs-gallery-grid">
+            <div class="cs-image-frame"><img src="./img/ctrlbreak/ctrl-letter-texture.png" class="gallery-thumb" alt="CTRLBREAK letter texture" /></div>
+            <div class="cs-image-frame"><img src="./img/ctrlbreak/ctrl-tshirt-mockup.png" class="gallery-thumb" alt="CTRLBREAK t-shirt mockup" /></div>
+            <div class="cs-image-frame"><img src="./img/ctrlbreak/ctrl-wall-mockup.png" class="gallery-thumb" alt="CTRLBREAK wall mockup" /></div>
+          </div>
+        </div>
+      </section>
+      <section class="cs-appendix cs-reveal">
+        <div class="cs-container-narrow">
+          <h3 class="cs-appendix-title">Final Pitchbook</h3>
+          <div class="pdf-viewer-container">
+            <iframe src="./img/ctrlbreak/CTRLBREAK_PITCHBOOK.pdf" class="pdf-viewer" loading="lazy" title="CTRLBREAK pitchbook"></iframe>
+            <a href="./img/ctrlbreak/CTRLBREAK_PITCHBOOK.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> Open Pitchbook PDF</a>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-ferns-sons" class="cs-btn-secondary project-link" data-project="project-ferns-sons">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
     </section>
 
     <!-- GLOBAL LIGHTBOX -->
@@ -654,19 +668,10 @@
       <img src="" alt="" class="lightbox-img">
     </div>
 
-    <!-- EXTERNAL REDIRECT MODAL -->
-    <div id="externalModal" class="external-modal">
-      <div class="external-modal-content">
-        <h3 class="external-modal-title">Redirecting to another page</h3>
-        <p class="external-modal-text">This will redirect you to another, external portfolio page. Continue?</p>
-        <div class="external-modal-actions">
-          <button class="ghost-btn" id="externalConfirm">Continue</button>
-          <button class="ghost-btn" id="externalCancel">Cancel</button>
-        </div>
-      </div>
-    </div>
-
+    <script defer src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+    <script defer src="topTextParticles.js"></script>
     <script src="lightbox.js"></script>
+    <script src="casestudy.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const homeSection = document.getElementById("home");
@@ -698,7 +703,9 @@
         function showHome() {
           homeSection.classList.remove("d-none");
           projectSections.forEach((sec) => sec.classList.add("d-none"));
+          document.body.classList.remove("is-project-view");
           window.scrollTo({ top: 0, behavior: "smooth" });
+          document.dispatchEvent(new CustomEvent("homeShown"));
         }
 
         function showProject(id) {
@@ -706,7 +713,9 @@
           projectSections.forEach((sec) => {
             sec.classList.toggle("d-none", sec.id !== id);
           });
+          document.body.classList.add("is-project-view");
           window.scrollTo({ top: 0, behavior: "smooth" });
+          document.dispatchEvent(new CustomEvent("projectShown", { detail: { id } }));
         }
 
         projectLinks.forEach((link) => {
@@ -758,46 +767,6 @@
 
         // Aggressive image optimization - handled by lightbox.js now
         // All images are automatically lazy-loaded and optimized
-
-        // Handle external project links (e.g., Betbot)
-        const externalModal = document.getElementById("externalModal");
-        const externalConfirm = document.getElementById("externalConfirm");
-        const externalCancel = document.getElementById("externalCancel");
-        const externalLinks = document.querySelectorAll(".external-project-link");
-        let pendingUrl = null;
-
-        externalLinks.forEach((link) => {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            pendingUrl = link.dataset.externalUrl;
-            externalModal.classList.add("active");
-            document.body.style.overflow = "hidden";
-          });
-        });
-
-        externalConfirm.addEventListener("click", () => {
-          if (pendingUrl) {
-            window.open(pendingUrl, "_blank");
-            externalModal.classList.remove("active");
-            document.body.style.overflow = "";
-            pendingUrl = null;
-          }
-        });
-
-        externalCancel.addEventListener("click", () => {
-          externalModal.classList.remove("active");
-          document.body.style.overflow = "";
-          pendingUrl = null;
-        });
-
-        // Close modal on background click
-        externalModal.addEventListener("click", (e) => {
-          if (e.target === externalModal) {
-            externalModal.classList.remove("active");
-            document.body.style.overflow = "";
-            pendingUrl = null;
-          }
-        });
 
         // Hero GIF loader - display placeholder until GIF loads
         const heroGifLoaders = document.querySelectorAll('.hero-gif-loader');
