@@ -7,8 +7,8 @@
   --green:     #4ecb71;
   --purple:    #ff71f8;
   /* Case study section spacing (reduced for tighter flow) */
-  --space-section: 2.5rem;
-  --space-block: 2rem;
+  --space-section: 2rem;
+  --space-block: 1.5rem;
 }
 
 @font-face {
@@ -746,11 +746,14 @@ span.subtitle {
 
 /* Mobile view - 400px and below */
 @media (max-width: 400px) {
-  /* Disable all transitions on mobile for better performance */
-  *,
+  /* Disable most transitions on small mobile for performance — but preserve scroll-reveal */
+  *:not(.cs-reveal),
   *::before,
   *::after {
     transition: none !important;
+  }
+  .cs-reveal {
+    transition: opacity 0.6s ease, transform 0.6s ease !important;
   }
 
 /* .work-title{
@@ -1243,8 +1246,8 @@ span.subtitle {
   --text-xl: 1.75rem;
   --text-2xl: 2.5rem;
   --text-muted: #a8a6a3;
-  --space-section: clamp(8rem, 15vw, 12rem);
-  --space-block: clamp(4rem, 8vw, 6rem);
+  --space-section: clamp(2.5rem, 5vw, 4rem);
+  --space-block: clamp(1.5rem, 3vw, 2.5rem);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
@@ -1408,28 +1411,28 @@ body.is-project-view .cs-page-marker { display: block; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   display: block;
 }
 .cs-section-title {
   font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 300;
   letter-spacing: 0.02em;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   line-height: 1.2;
 }
 .cs-intro-text {
   font-size: var(--text-lg, 1.125rem);
   line-height: 1.7;
   color: var(--text);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   max-width: 42rem;
 }
 .cs-body-text {
   font-size: var(--text-base, 0.9375rem);
   line-height: 1.75;
   color: var(--text-muted, #a8a6a3);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
   max-width: 38rem;
 }
 .cs-label {
@@ -1477,11 +1480,49 @@ body.is-project-view .cs-page-marker { display: block; }
   display: block;
 }
 
+/* Fern & Sons – tilt SVG hero (no bg) */
+#project-ferns-sons .cs-tilt-hero {
+  padding: 8rem;
+  padding-bottom: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+#project-ferns-sons .tilt-wrap {
+  perspective: 350px;
+  display: inline-block;
+}
+#project-ferns-sons .tilt-wrap svg {
+  display: block;
+  width: 180px;
+  height: auto;
+  transform-style: preserve-3d;
+  will-change: transform, filter;
+  transition: transform 0.08s linear, filter 0.3s ease;
+  filter: drop-shadow(var(--sx, 0px) var(--sy, 4px) var(--sb, 12px) rgba(246, 233, 217, var(--sa, 0.15))) brightness(var(--br, 1));
+}
+#project-ferns-sons .tilt-wrap:not(.is-hovering) svg {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  #project-ferns-sons .tilt-wrap svg {
+    transform: none !important;
+    transition: none !important;
+    filter: drop-shadow(0 4px 12px rgba(246, 233, 217, 0.15)) !important;
+  }
+}
+@media (hover: none) {
+  #project-ferns-sons .tilt-wrap svg {
+    transform: none !important;
+  }
+}
+
 .cs-image-hero {
   width: 100%;
   aspect-ratio: 16/9;
   background: rgba(255, 255, 255, 0.02);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   overflow: hidden;
   border-radius: 0.5rem;
 }
@@ -1606,8 +1647,8 @@ body.is-project-view .cs-page-marker { display: block; }
 .cs-gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 .cs-gallery-grid .cs-image-frame { aspect-ratio: 4/3; }
 
@@ -1620,7 +1661,7 @@ body.is-project-view .cs-page-marker { display: block; }
   font-size: var(--text-lg, 1.125rem);
   font-weight: 400;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--text-muted, #a8a6a3);
 }
 .cs-appendix .pdf-viewer-container {
@@ -1679,7 +1720,7 @@ body.is-project-view .cs-page-marker { display: block; }
 
 /* --- Footer nav --- */
 .cs-footer-nav {
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1718,8 +1759,8 @@ body.is-project-view .cs-page-marker { display: block; }
 /* --- Responsive (editorial) --- */
 @media (max-width: 991px) {
   .project-page {
-    --space-section: 6rem;
-    --space-block: 3rem;
+    --space-section: 2.5rem;
+    --space-block: 1.5rem;
   }
   .cs-split-layout,
   .cs-split-layout.reverse {
@@ -1755,12 +1796,7 @@ body.is-project-view .cs-page-marker { display: block; }
     padding: 0.4rem 1rem;
   }
 
-  /* No smooth fade-in on mobile: show everything immediately */
-  .cs-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  /* Mobile: keep cover entrance instant for perf, but allow scroll-reveal */
   .cs-cover .cs-cover-title,
   .cs-cover .cs-cover-subtitle,
   .cs-cover .cs-cover-meta,
@@ -1768,6 +1804,13 @@ body.is-project-view .cs-page-marker { display: block; }
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  /* Lighter reveal animation on mobile (shorter distance, faster) */
+  .cs-reveal {
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .intro-body {
