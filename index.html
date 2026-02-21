@@ -4,42 +4,34 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+      content="width=device-width,initial-scale=1"
     />
     <title>Doga | Portfolio</title>
-    
-    <!-- Preconnect to external resources for faster loading -->
+    <meta name="description" content="Doga Cimen — graphic design student in Toronto. Branding, identity, and end-to-end product design portfolio." />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
-    <!-- Preload critical CSS -->
-    <link rel="preload" href="styles.css" as="style" />
-    <!-- Preload p5, font, and particle script so landing canvas is ready ASAP -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js" as="script" />
+
+    <link rel="preload" href="styles.min.css" as="style" />
     <link rel="preload" href="/fonts/AwesomeSerif-Regular.otf" as="font" type="font/otf" crossorigin />
-    <link rel="preload" href="topTextParticles.js" as="script" />
     
+    <meta name="theme-color" content="#151515" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" /></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /></noscript>
+    <style>*,*::before,*::after{box-sizing:border-box}.container{width:100%;padding-right:.75rem;padding-left:.75rem;margin-right:auto;margin-left:auto}@media(min-width:576px){.container{max-width:540px}}@media(min-width:768px){.container{max-width:720px}}@media(min-width:992px){.container{max-width:960px}}@media(min-width:1200px){.container{max-width:1140px}}.row{display:flex;flex-wrap:wrap;margin-right:-.75rem;margin-left:-.75rem}.row>*{flex-shrink:0;width:100%;max-width:100%;padding-right:.75rem;padding-left:.75rem}.g-4{--bs-gutter-x:1.5rem;--bs-gutter-y:1.5rem}.g-4>*{padding-right:calc(var(--bs-gutter-x)*.5);padding-left:calc(var(--bs-gutter-x)*.5);margin-top:var(--bs-gutter-y)}.col-12{flex:0 0 auto;width:100%}@media(min-width:576px){.col-sm-6{flex:0 0 auto;width:50%}}@media(min-width:992px){.col-lg-4{flex:0 0 auto;width:33.333%}}.d-none{display:none!important}.d-flex{display:flex!important}.mb-0{margin-bottom:0!important}.mb-3{margin-bottom:1rem!important}.mb-4{margin-bottom:1.5rem!important}.mb-5{margin-bottom:3rem!important}.mt-5{margin-top:3rem!important}.py-5{padding-top:3rem!important;padding-bottom:3rem!important}.pt-4{padding-top:1.5rem!important}.pb-4{padding-bottom:1.5rem!important}.text-start{text-align:left!important}@media(min-width:768px){.text-md-start{text-align:left!important}}.justify-content-between{justify-content:space-between!important}.align-items-baseline{align-items:baseline!important}.align-items-start{align-items:flex-start!important}.img-fluid{max-width:100%;height:auto}@media(min-width:768px){.d-md-inline{display:inline!important}}</style>
+    <link rel="stylesheet" href="styles.min.css" />
   </head>
 
   <body>
-    <!-- Case study global overlays -->
+    
     <div class="cs-progress-line" id="csProgressLine"></div>
     <div class="cs-page-marker" id="csPageMarker"></div>
 
-    <!-- HOME VIEW -->
     <section id="home">
       <div id="topTextParticles" aria-hidden="true"></div>
     <main class="container py-5">
@@ -85,7 +77,7 @@
           <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
             <a href="#project-visual-platform" class="project-link" data-project="project-visual-platform"
               ><img
-                src="/img/ctrlbreak/project-hero.png"
+                fetchpriority="high" src="/img/ctrlbreak/project-hero.png"
                 class="gallery-img img-fluid"
                 alt="CTRLBREAK exhibition identity branding overview"
             /></a>
@@ -169,7 +161,7 @@
             <span class="footer-label d-block">Get in touch</span>
           </div>
           <div class="col-12 col-sm-6 col-lg-4">
-            <p class="footer-text mb-0">Built by me, with love ♡</p>
+            <p class="footer-text mb-0">Built with love ♡</p>
           </div>
           <div class="col-12 col-sm-6 col-lg-4">
             <div class="footer-links">
@@ -184,7 +176,7 @@
               </a>
               <a href="mailto:dogacimen35@gmail.com" class="footer-link">
                 <i class="fa-regular fa-envelope"></i>
-                <span>dogacimen35@gmail.com</span>
+                <span>Email</span>
               </a>
             </div>
           </div>
@@ -192,9 +184,7 @@
       </footer>
     </main>
     </section>
-    <!-- END HOME VIEW -->
 
-    <!-- ========== PROJECT: Fern & Sons Cycle Co. ========== -->
     <section id="project-ferns-sons" class="project-page d-none" data-project-name="Fern &amp; Sons Cycle Co.">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('/img/fernsandsons/community-poster-1.png')"></div>
@@ -284,7 +274,6 @@
           <span class="cs-chapter-number">01</span>
           <h2 class="cs-section-title">Branding a Three-Generation Workshop</h2>
           <p class="cs-intro-text">How do you create an identity for a 75-year-old family bicycle shop that feels rooted without feeling stuck in the past?</p>
-          <p class="cs-body-text">Fern &amp; Sons Cycle Co. is a third-generation bicycle workshop in Toronto's Annex neighbourhood. For over 75 years, they've focused on honest repair, skilled hands, and long-term relationships with local riders.</p>
           <p class="cs-body-text">This was a school project to design a complete brand identity for a small, community-based business. The challenge was to reflect the shop's legacy while making it feel approachable and relevant to today's riders—not precious, not corporate, just real.</p>
           <p class="cs-body-text">I explored three visual directions: Swiss precision (too clinical), Bauhaus energy (too playful), and organic craft (just right). The final direction combined Art Nouveau-inspired flowing lines with structured clarity—rooted but not rustic, elegant but not fussy.</p>
           <div style="margin-top: 3rem;">
@@ -305,8 +294,25 @@
           <p class="cs-body-text">The wordmark uses Awesome Serif—a display face with character and warmth. The chevron icon is modular, referencing bicycle chain links and forward motion. The fern-inspired pattern wraps around the arrow, creating texture without clutter.</p>
           <p class="cs-body-text">The lockup is flexible enough to work on everything from business cards to bike tags. It feels handmade but not fussy, confident but not corporate.</p>
           <p class="cs-body-text">The palette—evergreen, antique white, and night bordeaux—avoids bright sporty colors in favor of calm, trustworthy tones. These aren't trend colors. They're the colors of a shop that's been there for decades.</p>
+          <div class="cs-brand-colors">
+            <span class="cs-label">Brand colors</span>
+            <div class="cs-palette-row">
+              <div class="cs-palette-swatch">
+                <span class="cs-palette-circle" style="background-color:#2D5A27;"></span>
+                <span class="cs-palette-info">Evergreen <code>#2D5A27</code></span>
+              </div>
+              <div class="cs-palette-swatch">
+                <span class="cs-palette-circle" style="background-color:#F6E9D9;"></span>
+                <span class="cs-palette-info">Antique white <code>#F6E9D9</code></span>
+              </div>
+              <div class="cs-palette-swatch">
+                <span class="cs-palette-circle" style="background-color:#5C2E2E;"></span>
+                <span class="cs-palette-info">Night bordeaux <code>#5C2E2E</code></span>
+              </div>
+            </div>
+          </div>
           <div class="cs-image-frame" style="margin-top: 3rem;">
-            <img src="/img/fernsandsons/movementheritagethumb.png" alt="Fern &amp; Sons Cycle Co. brand image with fern-chevron pattern overlay" />
+            <img decoding="async" loading="lazy" src="/img/fernsandsons/movementheritagethumb.png" alt="Fern &amp; Sons Cycle Co. brand image with fern-chevron pattern overlay" />
           </div>
           <div class="cs-link-center" style="margin-top: 2rem;">
             <a
@@ -322,7 +328,7 @@
                 aria-hidden="true"
                 onerror="this.style.display='none'"
               />
-              <span class="cs-shine-link-text">view brand website</span>
+              <span class="cs-shine-link-text">view demo website</span>
             </a>
           </div>
         </div>
@@ -334,11 +340,10 @@
           <h2 class="cs-section-title">Community Ride Posters</h2>
           <p class="cs-intro-text">The shop hosts weekly community rides every Sunday at 9AM. The poster campaign became the brand's public face.</p>
           <p class="cs-body-text">Three poster variations use the same layout with different color treatments: yellow, green, and red. Each features bold type, grayscale photography, and the fern-chevron pattern as a graphic device. The copy is simple: "Community Ride | Sunday | 9AM."</p>
-          <p class="cs-body-text">The posters work at distance (bold color blocks, large type) and up close (pattern details, brand signature). Designed for bus shelters, shop windows, and community boards—wherever riders might see them.</p>
-          <div class="cs-gallery-grid fern-posters-grid">
-            <img src="/img/fernsandsons/community-poster-1.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (yellow)" />
-            <img src="/img/fernsandsons/community-poster-2.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (green)" />
-            <img src="/img/fernsandsons/community-poster-3.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (red)" />
+          <div class="cs-gallery-grid fern-posters-grid" style="margin-top: 2.5rem;">
+            <img decoding="async" loading="lazy" src="/img/fernsandsons/community-poster-1.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (yellow)" />
+            <img decoding="async" loading="lazy" src="/img/fernsandsons/community-poster-2.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (green)" />
+            <img decoding="async" loading="lazy" src="/img/fernsandsons/community-poster-3.png" class="fern-poster gallery-thumb" alt="Community ride poster variation (red)" />
           </div>
         </div>
       </section>
@@ -350,12 +355,12 @@
           <p class="cs-intro-text">The identity needed to work across stationery, digital, print, and merchandise—every touchpoint where riders interact with the shop.</p>
           <p class="cs-body-text">Each application uses the same core elements—logo, patterns, color palette, typography—but adapts to context. Business cards reveal the pattern on the back. Bike tags use simple messages like "Your bike is ready. Shaped with care by our hands." The website balances warmth with usability.</p>
           <div class="cs-gallery-grid">
-            <div class="cs-image-frame"><img src="/img/fernsandsons/biketags.png" class="gallery-thumb" alt="Bike tag design applications" /></div>
-            <div class="cs-image-frame"><img src="/img/fernsandsons/PACKAGIN TAPE MOCKUP - RED.png" class="gallery-thumb" alt="Packaging tape mockup application" /></div>
-            <div class="cs-image-frame"><img src="/img/fernsandsons/TOTEBAG-MOCKUP.png" class="gallery-thumb" alt="Tote bag mockup with Fern &amp; Sons branding" /></div>
-            <div class="cs-image-frame"><img src="/img/fernsandsons/TSHIRTMOCKUP.png" class="gallery-thumb" alt="T-shirt mockup with Fern &amp; Sons branding" /></div>
-            <div class="cs-image-frame"><img src="/img/fernsandsons/waterbottle-mockup.png" class="gallery-thumb" alt="Water bottle mockup with Fern &amp; Sons branding" /></div>
-            <div class="cs-image-frame"><img src="/img/fernsandsons/ig-carousel-mockup.png" class="gallery-thumb" alt="Instagram carousel mockup for Fern &amp; Sons" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/biketags.png" class="gallery-thumb" alt="Bike tag design applications" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/PACKAGIN TAPE MOCKUP - RED.png" class="gallery-thumb" alt="Packaging tape mockup application" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/TOTEBAG-MOCKUP.png" class="gallery-thumb" alt="Tote bag mockup with Fern &amp; Sons branding" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/TSHIRTMOCKUP.png" class="gallery-thumb" alt="T-shirt mockup with Fern &amp; Sons branding" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/waterbottle-mockup.png" class="gallery-thumb" alt="Water bottle mockup with Fern &amp; Sons branding" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/ig-carousel-mockup.png" class="gallery-thumb" alt="Instagram carousel mockup for Fern &amp; Sons" /></div>
           </div>
         </div>
       </section>
@@ -367,7 +372,7 @@
           <p class="cs-intro-text">An identity that honors 75 years of skilled work without feeling stuck in the past.</p>
           <p class="cs-body-text">The final system is warm, trustworthy, and flexible. It positions Fern &amp; Sons as rooted in community and craft—approachable but never casual, skilled but never intimidating. The kind of shop you'd bring your bike to for decades.</p>
           <div class="cs-image-hero" style="margin-top: 3rem;">
-            <img src="/img/fernsandsons/brandfeelshome.png" alt="Fern &amp; Sons Cycle Co. brand overview" />
+            <img decoding="async" loading="lazy" src="/img/fernsandsons/brandfeelshome.png" alt="Fern &amp; Sons Cycle Co. brand overview" />
           </div>
           <div style="margin-top: 3rem;">
             <span class="cs-label">Highlights</span>
@@ -397,7 +402,6 @@
       </section>
     </section>
 
-    <!-- ========== PROJECT: Ideas & Images ========== -->
     <section id="project-ideas-images" class="project-page d-none" data-project-name="Ideas &amp; Images">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('/img/ideasimages/ideas-page-banner.png')"></div>
@@ -432,7 +436,7 @@
           <h2 class="cs-section-title">The Work</h2>
           <div class="cs-image-hero">
             <a href="https://doga-design.github.io/Ideas-and-Images--repository/" target="_blank" class="hero-gif-link">
-              <img src="/img/ideasimages/ideas1.jpg" data-gif="/img/ideasimages/ideas-cover-gif.gif" class="hero-gif-loader" alt="Ideas and Images homepage" />
+              <img decoding="async" loading="lazy" src="/img/ideasimages/ideas1.jpg" data-gif="/img/ideasimages/ideas-cover-gif.gif" class="hero-gif-loader" alt="Ideas and Images homepage" />
             </a>
           </div>
         </div>
@@ -456,7 +460,6 @@
       </section>
     </section>
 
-    <!-- ========== PROJECT: Boots & Hearts ========== -->
     <section id="project-boots-hearts" class="project-page d-none" data-project-name="Boots &amp; Hearts">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('/img/bootsnhearts/bnh-banner.png')"></div>
@@ -487,7 +490,7 @@
           <span class="cs-chapter-number">02</span>
           <h2 class="cs-section-title">The Work</h2>
           <div class="cs-image-hero">
-            <img src="/img/bootsnhearts/bnh-hero.png" alt="Boots and Hearts branding overview" />
+            <img decoding="async" loading="lazy" src="/img/bootsnhearts/bnh-hero.png" alt="Boots and Hearts branding overview" />
           </div>
         </div>
       </section>
@@ -510,7 +513,6 @@
       </section>
     </section>
 
-    <!-- ========== PROJECT: School of Design ========== -->
     <section id="project-school-design" class="project-page d-none" data-project-name="School of Design">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('/img/schoolofdesign-thumb.png')"></div>
@@ -545,7 +547,7 @@
           <h2 class="cs-section-title">The Work</h2>
           <div class="cs-image-hero">
             <a href="https://doga-design.github.io/School-of-design-website-redesign/" target="_blank" class="hero-gif-link">
-              <img src="/img/schoolofdesign/sodthumb1.png" data-gif="/img/schoolofdesign/sod-site-gif.gif" class="hero-gif-loader" alt="School of Design homepage mockup" />
+              <img decoding="async" loading="lazy" src="/img/schoolofdesign/sodthumb1.png" data-gif="/img/schoolofdesign/sod-site-gif.gif" class="hero-gif-loader" alt="School of Design homepage mockup" />
             </a>
           </div>
         </div>
@@ -555,9 +557,9 @@
           <span class="cs-chapter-number">03</span>
           <h2 class="cs-section-title">Key Screens</h2>
           <div class="cs-gallery-grid">
-            <div class="cs-image-frame"><img src="/img/schoolofdesign/sodthumb1.png" class="gallery-thumb" alt="Program listing screen" /></div>
-            <div class="cs-image-frame"><img src="/img/schoolofdesign/sodthumb2.png" class="gallery-thumb" alt="Detail or information-heavy view" /></div>
-            <div class="cs-image-frame"><img src="/img/schoolofdesign/sodthumb3.png" class="gallery-thumb" alt="Additional hero or landing variation" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/schoolofdesign/sodthumb1.png" class="gallery-thumb" alt="Program listing screen" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/schoolofdesign/sodthumb2.png" class="gallery-thumb" alt="Detail or information-heavy view" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/schoolofdesign/sodthumb3.png" class="gallery-thumb" alt="Additional hero or landing variation" /></div>
           </div>
         </div>
       </section>
@@ -571,7 +573,6 @@
       </section>
     </section>
 
-    <!-- ========== PROJECT: Visugenie ========== -->
     <section id="project-visugenie" class="project-page d-none" data-project-name="Visugenie">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('/img/visugenie/visugenie-hero.png')"></div>
@@ -638,16 +639,33 @@
         <div class="cs-container-narrow">
           <span class="cs-chapter-number">03</span>
           <h2 class="cs-section-title">Design Strategy</h2>
-          <p class="cs-body-text">The redesign followed three principles: clarity over cleverness, proof over promises, and speed over perfection.</p>
-          <p class="cs-body-text"><strong>Information architecture</strong> — I restructured the site to answer the user's mental model in order: (1) What is this? — Hero with clear value prop. (2) Does it actually work? — Before/after gallery. (3) Who uses it? — Client logos + testimonials. (4) How does it work? — Feature breakdown. (5) What's next? — CTA: Book demo / sign up.</p>
-          <p class="cs-body-text"><strong>Visual design:</strong> Clean, not sterile—generous white space, bold typography, restrained palette (off-white, dark grey, soft gold accent). Image-first hierarchy: before/after comparisons became the visual anchor; interactive sliders let users explore transformations themselves.</p>
+          <p class="cs-body-text">The redesign followed three principles:</p>
+          <ul class="cs-strategy-list">
+            <li>Clarity over cleverness</li>
+            <li>Proof over promises</li>
+            <li>Speed over perfection</li>
+          </ul>
+          <p class="cs-body-text"><strong>Information architecture</strong> — I restructured the site to answer the user's mental model in order:</p>
+          <ol class="cs-strategy-list">
+            <li><strong>What is this?</strong> — Hero with clear value prop.</li>
+            <li><strong>Does it actually work?</strong> — Before/after gallery.</li>
+            <li><strong>Who uses it?</strong> — Client logos + testimonials.</li>
+            <li><strong>How does it work?</strong> — Feature breakdown.</li>
+            <li><strong>What's next?</strong> — CTA: Book demo / sign up.</li>
+          </ol>
+          <p class="cs-body-text"><strong>Visual design</strong></p>
+          <ul class="cs-strategy-list">
+            <li>Clean, not sterile—generous white space, bold typography, restrained palette (off-white, dark grey, soft gold accent).</li>
+            <li>Image-first hierarchy: before/after comparisons became the visual anchor.</li>
+            <li>Interactive sliders let users explore transformations themselves.</li>
+          </ul>
         </div>
       </section>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
           <span class="cs-chapter-number">04</span>
           <h2 class="cs-section-title">Before &amp; After</h2>
-          <p class="cs-body-text">The original homepage attempted to do everything at once and communicated nothing clearly: vague headline, buried value prop, generic stock imagery, weak CTA, inconsistent color. The redesigned homepage communicates value immediately—clear headline, immediate proof with before/after right under the hero, consistent brand language, strong CTA with urgency copy, and clean hierarchy with single visual focus per section.</p>
+          <p class="cs-body-text">The redesigned homepage communicates value immediately—clear headline, immediate proof with before/after right under the hero, consistent brand language, strong CTA with urgency copy, and clean hierarchy with single visual focus per section.</p>
 
           <div class="cs-before-after-grid-wrap">
           <div class="cs-before-after-grid">
@@ -661,7 +679,7 @@
                   loading="lazy"
                 />
               </div>
-              <p class="cs-before-after-label">Before: Old Hero</p>
+              <p class="cs-before-after-label">Before: Old Marketing Page</p>
             </div>
             <div class="cs-before-after-card">
               <div class="cs-gif-wrapper">
@@ -673,7 +691,7 @@
                   loading="lazy"
                 />
               </div>
-              <p class="cs-before-after-label">After: New Hero</p>
+              <p class="cs-before-after-label">After: New Marketing Page</p>
             </div>
           </div>
           </div>
@@ -705,7 +723,7 @@
               </div>
             </div>
             <div class="context-note">
-              Based on limited user data over 3 weeks (<em>&lt;1,000 users</em>). Metrics tracked via Google Analytics over 30-day period post-launch.
+              Based on limited visitor data over 3 weeks (<em>&lt;1,000 users</em>). Metrics tracked via Google Analytics over 30-day period post-launch.
             </div>
             <p class="results-cta-wrap">
               <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-site">Visit Visugenie.com</a>
@@ -747,7 +765,6 @@
       </section>
     </section>
 
-    <!-- ========== PROJECT: CTRLBREAK ========== -->
     <section id="project-visual-platform" class="project-page d-none" data-project-name="CTRLBREAK">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('/img/ctrlbreak/ctrl-red.png')"></div>
@@ -801,9 +818,9 @@
           <span class="cs-chapter-number">03</span>
           <h2 class="cs-section-title">Brand Assets</h2>
           <div class="cs-gallery-grid">
-            <div class="cs-image-frame"><img src="/img/ctrlbreak/ctrl-letter-texture.png" class="gallery-thumb" alt="CTRLBREAK letter texture" /></div>
-            <div class="cs-image-frame"><img src="/img/ctrlbreak/ctrl-tshirt-mockup.png" class="gallery-thumb" alt="CTRLBREAK t-shirt mockup" /></div>
-            <div class="cs-image-frame"><img src="/img/ctrlbreak/ctrl-wall-mockup.png" class="gallery-thumb" alt="CTRLBREAK wall mockup" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/ctrlbreak/ctrl-letter-texture.png" class="gallery-thumb" alt="CTRLBREAK letter texture" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/ctrlbreak/ctrl-tshirt-mockup.png" class="gallery-thumb" alt="CTRLBREAK t-shirt mockup" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/ctrlbreak/ctrl-wall-mockup.png" class="gallery-thumb" alt="CTRLBREAK wall mockup" /></div>
           </div>
         </div>
       </section>
@@ -826,185 +843,16 @@
       </section>
     </section>
 
-    <!-- GLOBAL LIGHTBOX -->
     <div id="lightbox" class="lightbox">
       <button class="lightbox-close">&times;</button>
       <button class="lightbox-nav lightbox-prev">&larr;</button>
       <button class="lightbox-nav lightbox-next">&rarr;</button>
-      <img src="" alt="" class="lightbox-img">
+      <img decoding="async" loading="lazy" src="" alt="" class="lightbox-img">
     </div>
 
     <script defer src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
     <script defer src="topTextParticles.js"></script>
-    <script src="lightbox.js"></script>
-    <script src="casestudy.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const homeSection = document.getElementById("home");
-        const projectSections = document.querySelectorAll(".project-page");
-        const projectLinks = document.querySelectorAll(".project-link");
-        const homeLinks = document.querySelectorAll("[data-go-home]");
+    <script defer src="app.js"></script>
 
-        // --- home filter logic ---
-        const links = document.querySelectorAll(".filter-link");
-        const cards = document.querySelectorAll(".work-card");
-
-        links.forEach((link) => {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            links.forEach((l) => l.classList.remove("active"));
-            link.classList.add("active");
-
-            const filter = link.dataset.filter;
-            cards.forEach((card) => {
-              card.classList.toggle(
-                "d-none",
-                filter !== "all" && card.dataset.category !== filter
-              );
-            });
-          });
-        });
-
-        // --- view switching ---
-        function showHome() {
-          homeSection.classList.remove("d-none");
-          projectSections.forEach((sec) => sec.classList.add("d-none"));
-          document.body.classList.remove("is-project-view");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          document.dispatchEvent(new CustomEvent("homeShown"));
-        }
-
-        function showProject(id) {
-          homeSection.classList.add("d-none");
-          projectSections.forEach((sec) => {
-            sec.classList.toggle("d-none", sec.id !== id);
-          });
-          document.body.classList.add("is-project-view");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          document.dispatchEvent(new CustomEvent("projectShown", { detail: { id } }));
-        }
-
-        projectLinks.forEach((link) => {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            const id = link.dataset.project;
-            if (id) {
-              showProject(id);
-              history.pushState({ page: id }, "", "#" + id);
-            }
-          });
-        });
-
-        homeLinks.forEach((link) => {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            showHome();
-            history.pushState({ page: "home" }, "", "#home");
-          });
-        });
-
-        // Handle back/forward buttons
-        window.addEventListener("popstate", () => {
-          const hash = window.location.hash.replace("#", "");
-          if (!hash || hash === "home") {
-            showHome();
-          } else {
-            const sec = document.getElementById(hash);
-            if (sec && sec.classList.contains("project-page")) {
-              showProject(hash);
-            } else {
-              showHome();
-            }
-          }
-        });
-
-        // Open correct view on first load if there is a hash
-        const initialHash = window.location.hash.replace("#", "");
-        if (!initialHash || initialHash === "home") {
-          showHome();
-        } else {
-          const sec = document.getElementById(initialHash);
-          if (sec && sec.classList.contains("project-page")) {
-            showProject(initialHash);
-          } else {
-            showHome();
-          }
-        }
-
-        // Aggressive image optimization - handled by lightbox.js now
-        // All images are automatically lazy-loaded and optimized
-
-        // Hero GIF loader - display placeholder until GIF loads
-        const heroGifLoaders = document.querySelectorAll('.hero-gif-loader');
-        heroGifLoaders.forEach((img) => {
-          const gifSrc = img.getAttribute('data-gif');
-          if (!gifSrc) return;
-
-          // Preload the GIF
-          const gifImg = new Image();
-          gifImg.onload = () => {
-            // Once GIF is loaded, swap src with smooth transition
-            img.style.opacity = '0.7';
-            setTimeout(() => {
-              img.src = gifSrc;
-              img.style.opacity = '1';
-            }, 200);
-          };
-          gifImg.src = gifSrc;
-        });
-
-        // Scroll to top buttons
-        const scrollToTopBtns = document.querySelectorAll('.scroll-to-top-btn');
-        scrollToTopBtns.forEach((btn) => {
-          btn.addEventListener('click', () => {
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          });
-        });
-
-        // GIF: hover-to-play on desktop, auto-play on mobile/touch
-        const isTouch = !matchMedia('(hover: hover)').matches;
-        const hoverGifs = document.querySelectorAll('.cs-hover-gif');
-        if (!isTouch) {
-          hoverGifs.forEach((img) => {
-            const gifSrc = img.getAttribute('data-gif');
-            const staticSrc = img.getAttribute('src') || img.src;
-            if (!gifSrc || !staticSrc) return;
-            let gifPreloaded = false;
-
-            img.addEventListener('mouseenter', () => {
-              if (!gifPreloaded) {
-                const preload = new Image();
-                preload.onload = () => {
-                  img.src = gifSrc;
-                  gifPreloaded = true;
-                };
-                preload.src = gifSrc;
-              } else {
-                img.src = gifSrc;
-              }
-            });
-
-            img.addEventListener('mouseleave', () => {
-              img.src = staticSrc;
-            });
-          });
-        } else {
-          // Mobile: load and show GIF when in view (auto-play)
-          const gifObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              const img = entry.target;
-              const gifSrc = img.getAttribute('data-gif');
-              if (gifSrc) img.src = gifSrc;
-              gifObserver.unobserve(img);
-            });
-          }, { rootMargin: '100px' });
-          hoverGifs.forEach((img) => gifObserver.observe(img));
-        }
-      });
-    </script>
   </body>
 </html>
