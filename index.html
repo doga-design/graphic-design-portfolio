@@ -9,11 +9,18 @@
     <title>Doga | Portfolio</title>
     
     <!-- Preconnect to external resources for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     
     <!-- Preload critical CSS -->
     <link rel="preload" href="styles.css" as="style" />
+    <!-- Preload p5, font, and particle script so landing canvas is ready ASAP -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js" as="script" />
+    <link rel="preload" href="./fonts/AwesomeSerif-Regular.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="topTextParticles.js" as="script" />
     
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link
@@ -51,10 +58,10 @@
           </div>
           <div class="col-12 col-sm-6 col-lg-4">
             <div class="currently-building">
-              <span class="currently-building-label">What I'm currently building</span>
+              <span class="currently-building-label">Projects I'm currently building</span>
               <div class="currently-building-list">
-                <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="currently-building-item">Visugenie</a>
-                <span class="currently-building-item currently-building-disabled">Bountt (currently very early in progress)</span>
+                <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="currently-building-item">Visugenie (Frontend + Research)</a>
+                <span class="currently-building-item currently-building-disabled">Bountt (set to launch V1 in the summer)</span>
               </div>
             </div>
           </div>
@@ -71,10 +78,7 @@
           Filters:
           <a href="#" class="filter-link active" data-filter="all">all</a> |
           <a href="#" class="filter-link" data-filter="web">web</a> |
-          <a href="#" class="filter-link" data-filter="branding">branding</a> |
-          <a href="#" class="filter-link" data-filter="advertisement"
-            >advertising</a
-          >
+          <a href="#" class="filter-link" data-filter="branding">branding</a>
         </div>
 
         <div class="row g-4 work-cards-group">
@@ -105,15 +109,15 @@
           </div>
 
           <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
-            <a href="#project-school-design" class="project-link" data-project="project-school-design"
+            <a href="#project-visugenie" class="project-link" data-project="project-visugenie"
               ><img
-                src="./img/schoolofdesign-thumb.png"
+                src="./img/visugenie-thumb.png"
                 class="gallery-img img-fluid"
-                alt="School of Design website redesign"
+                alt="Visugenie website redesign — AI real estate visualization"
             /></a>
             <div class="project-meta">
               <span class="project-title-name category-red">web design</span>
-              <span class="project-name">School of Design</span>
+              <span class="project-name">Visugenie</span>
             </div>
           </div>
 
@@ -130,6 +134,19 @@
             </div>
           </div>
 
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+            <a href="#project-school-design" class="project-link" data-project="project-school-design"
+              ><img
+                src="./img/schoolofdesign-thumb.png"
+                class="gallery-img img-fluid"
+                alt="School of Design website redesign"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-red">web design</span>
+              <span class="project-name">School of Design</span>
+            </div>
+          </div>
+
           <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
             <a href="#project-boots-hearts" class="project-link" data-project="project-boots-hearts"
               ><img
@@ -140,19 +157,6 @@
             <div class="project-meta">
               <span class="project-title-name category-green">branding</span>
               <span class="project-name">Boots &amp; Hearts</span>
-            </div>
-          </div>
-
-          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="advertisement">
-            <a href="#project-adobe-express" class="project-link" data-project="project-adobe-express"
-              ><img
-                src="./img/adobe/bus_mockup.png"
-                class="gallery-img img-fluid"
-                alt="Adobe Express campaign thumbnail"
-            /></a>
-            <div class="project-meta">
-              <span class="project-title-name category-yellow">advertising</span>
-              <span class="project-name">Adobe Express</span>
             </div>
           </div>
 
@@ -194,7 +198,7 @@
     <section id="project-ferns-sons" class="project-page d-none" data-project-name="Fern &amp; Sons Cycle Co.">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('./img/fernsandsons/community-poster-1.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
         <div class="cs-cover-content">
           <h1 class="cs-cover-title">FERN &amp; SONS CYCLE CO.</h1>
           <p class="cs-cover-subtitle">Community-rooted bicycle workshop brand identity</p>
@@ -393,104 +397,11 @@
       </section>
     </section>
 
-    <!-- ========== PROJECT: Adobe Express ========== -->
-    <section id="project-adobe-express" class="project-page d-none" data-project-name="Adobe Express">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('./img/adobe/adobe-banner.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">ADOBE EXPRESS</h1>
-          <p class="cs-cover-subtitle">Integrated campaign to shift Gen Z perception</p>
-          <div class="cs-cover-meta"><span>Campaign Strategy</span><span>2024 · Advertising I Course Project</span></div>
-        </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
-      </div>
-
-      <section class="cs-section cs-reveal">
-        <div class="cs-container-narrow">
-          <span class="cs-chapter-number">01</span>
-          <h2 class="cs-section-title">Making Adobe Feel Like Theirs</h2>
-          <p class="cs-intro-text">How do you convince a generation that sees Adobe as "too professional" that it's actually built for the way they create?</p>
-          <p class="cs-body-text">Adobe is iconic. But Gen Z doesn't see it that way. To them, Adobe feels too complex, too slow, too professional—not for people like them. Meanwhile, Canva and Figma feel instant, cultural, made for them.</p>
-          <p class="cs-body-text">This was a school advertising project to reposition Adobe Express for Gen Z creators. The challenge: shift perception without changing the product. Show that Adobe isn't intimidating—it's already built for the way Gen Z creates: fast, experimental, playful.</p>
-          <div style="margin-top: 3rem;">
-            <span class="cs-label">Timeline</span>
-            <p class="cs-body-text" style="margin-bottom: 2rem;">School project (Advertising I)</p>
-            <span class="cs-label">Deliverables</span>
-            <p class="cs-body-text" style="margin-bottom: 2rem;">Campaign strategy, digital ads, OOH, experiential activation</p>
-            <span class="cs-label">Target</span>
-            <p class="cs-body-text">18–26-year-old creatives already making things, mostly with free tools</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="cs-section cs-reveal">
-        <div class="cs-container-narrow">
-          <span class="cs-chapter-number">02</span>
-          <h2 class="cs-section-title">From Toys to Tools</h2>
-          <p class="cs-intro-text">Gen Z grew up building and experimenting with physical toys. That instinct never disappeared—they just create the same way digitally now.</p>
-          <p class="cs-body-text">The insight: Gen Z creates nonstop using fast, mobile-first tools. Adobe Express fits this naturally. The campaign bridges past and present: "What you built then, you can build now. Just with different tools."</p>
-          <p class="cs-body-text">The shift needed: BEFORE—"Adobe is for professionals, not for me." AFTER—"Adobe fits the way I create. I'm legit, finally using Adobe tools." Strategy: show Adobe is approachable. Behavior: sign up for Express, start using Photoshop to refine.</p>
-        </div>
-      </section>
-
-      <section class="cs-section cs-reveal">
-        <div class="cs-container">
-          <span class="cs-chapter-number">03</span>
-          <h2 class="cs-section-title">Remember Building?</h2>
-          <p class="cs-body-text">Instagram carousels use nostalgic visuals—sticker sheets and building blocks. Copy: "Remember sticker-sheets? Collecting, arranging, placing?" → "Well, you still do all that. Just with different tools. Adobe."</p>
-          <p class="cs-body-text">OOH and transit campaigns show Adobe Express UI overlaid on childhood creative activities. "What you drew then, you can build now." Bus wraps, billboards, transit posters—all with "Build with Adobe" CTAs.</p>
-          <div class="cs-image-hero" style="margin-top: 3rem;">
-            <img src="./img/adobe/postermockup.png" alt="Adobe Express Instagram carousel sequence mockup" />
-          </div>
-          <div class="cs-gallery-grid">
-            <div class="cs-image-frame"><img src="./img/adobe/adobe-socialpost-preview.png" class="gallery-thumb" alt="Adobe Express poster mockup" /></div>
-            <div class="cs-image-frame"><img src="./img/adobe/bus_mockup.png" class="gallery-thumb" alt="Adobe Express bus mockup" /></div>
-            <div class="cs-image-frame"><img src="./img/adobe/buidlingmockup.png" class="gallery-thumb" alt="Adobe Express building billboard mockup" /></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cs-section cs-reveal">
-        <div class="cs-container">
-          <span class="cs-chapter-number">04</span>
-          <h2 class="cs-section-title">The Playout Wall</h2>
-          <p class="cs-intro-text">An interactive installation that turns physical play into finished digital posters—powered by Adobe.</p>
-          <p class="cs-body-text">Playout Wall is a physical grid where people place modular blocks to build layouts. A camera captures it, translates it into a digital poster in Adobe Express and Photoshop. You play on the wall, Adobe turns it into a real poster.</p>
-          <div class="cs-image-hero" style="margin-top: 3rem;">
-            <img src="./img/adobe/playwall1.jpg" alt="Diagram of Playout Wall showing physical grid and Adobe Express workspace" />
-          </div>
-          <div class="cs-image-hero" style="margin-top: 2rem;">
-            <img src="./img/adobe/playwall2.jpg" alt="Close-up of Playout Wall interaction and resulting digital poster" />
-          </div>
-        </div>
-      </section>
-
-      <section class="cs-appendix cs-reveal">
-        <div class="cs-container-narrow">
-          <h3 class="cs-appendix-title">Full Campaign Documentation</h3>
-          <div class="pdf-viewer-container">
-            <iframe src="./img/adobe/adobe 1-compressed.pdf" class="pdf-viewer" loading="lazy" title="Adobe Express campaign deck"></iframe>
-            <a href="./img/adobe/adobe 1-compressed.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> View Campaign Deck</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="cs-section">
-        <div class="cs-container">
-          <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project &rarr;</a>
-          </div>
-        </div>
-      </section>
-    </section>
-
     <!-- ========== PROJECT: Ideas & Images ========== -->
     <section id="project-ideas-images" class="project-page d-none" data-project-name="Ideas &amp; Images">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('./img/ideasimages/ideas-page-banner.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
         <div class="cs-cover-content">
           <h1 class="cs-cover-title">IDEAS &amp; IMAGES</h1>
           <p class="cs-cover-subtitle">Interactive kinetic text-based collection</p>
@@ -549,7 +460,7 @@
     <section id="project-boots-hearts" class="project-page d-none" data-project-name="Boots &amp; Hearts">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('./img/bootsnhearts/bnh-banner.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
         <div class="cs-cover-content">
           <h1 class="cs-cover-title">BOOTS &amp; HEARTS</h1>
           <p class="cs-cover-subtitle">Festival branding for Canada's largest country music festival</p>
@@ -593,7 +504,7 @@
         <div class="cs-container">
           <div class="cs-footer-nav">
             <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-adobe-express" class="cs-btn-secondary project-link" data-project="project-adobe-express">Next project &rarr;</a>
+            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project &rarr;</a>
           </div>
         </div>
       </section>
@@ -603,7 +514,7 @@
     <section id="project-school-design" class="project-page d-none" data-project-name="School of Design">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('./img/schoolofdesign-thumb.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
         <div class="cs-cover-content">
           <h1 class="cs-cover-title">SCHOOL OF DESIGN</h1>
           <p class="cs-cover-subtitle">Modern website redesign for George Brown College</p>
@@ -654,7 +565,183 @@
         <div class="cs-container">
           <div class="cs-footer-nav">
             <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-ideas-images" class="cs-btn-secondary project-link" data-project="project-ideas-images">Next project &rarr;</a>
+            <a href="#project-visugenie" class="cs-btn-secondary project-link" data-project="project-visugenie">Next project &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ========== PROJECT: Visugenie ========== -->
+    <section id="project-visugenie" class="project-page d-none" data-project-name="Visugenie">
+      <div class="cs-cover">
+        <div class="cs-cover-bg" style="background-image: url('./img/visugenie/visugenie-hero.png')"></div>
+        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+        <div class="cs-cover-content">
+          <h1 class="cs-cover-title">VISUGENIE</h1>
+          <p class="cs-cover-subtitle">Brand Identity & Website Development — AI real estate visualization for agencies</p>
+          <div class="cs-cover-meta"><span>Product Design</span><span>3 weeks · HTML, CSS, JS, Figma, Cursor</span></div>
+          <p class="cs-hero-visit-wrap">
+            <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-hero">Visit Visugenie &rarr;</a>
+          </p>
+        </div>
+        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+      </div>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">01</span>
+          <h2 class="cs-section-title">The Challenge</h2>
+          <p class="cs-intro-text">Visugenie is an AI-powered real estate visualization platform that helps agencies like RE/MAX and Century 21 transform property listings with AI-generated staging and renovations. The original website failed to communicate the product's value clearly, resulting in high bounce rates and low conversion.</p>
+          <p class="cs-body-text">The site suffered from three critical issues: unclear messaging that left visitors confused about what the product actually does, weak visual hierarchy that buried key features, and a cluttered layout that distracted from the core value proposition.</p>
+          <p class="cs-body-text"><strong>Problem statement:</strong> Real estate agencies need to understand Visugenie's capabilities within 10 seconds of landing on the site, but the existing design made them work too hard to find answers.</p>
+          <div class="cs-highlight">
+            <p class="cs-highlight-text">Our research showed that <strong>68% of visitors</strong> left without scrolling past the hero section.</p>
+          </div>
+          <div class="cs-goals-table">
+            <div class="cs-goals-col">
+              <h3 class="cs-goals-title">Business goals</h3>
+              <ul class="cs-goals-list">
+                <li>Reduce bounce rate by 40%</li>
+                <li>Increase demo requests by 25%</li>
+                <li>Improve time-on-site metrics</li>
+              </ul>
+            </div>
+            <div class="cs-goals-col">
+              <h3 class="cs-goals-title">User goals</h3>
+              <ul class="cs-goals-list">
+                <li>Understand value in &lt;10 seconds</li>
+                <li>See real before/after examples</li>
+                <li>Find pricing &amp; contact quickly</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">02</span>
+          <h2 class="cs-section-title">Research &amp; Discovery</h2>
+          <p class="cs-body-text">I analyzed user behavior data and conducted interviews with 5 real estate agents, testing the current landing page through to the product and first image generation.</p>
+          <div class="cs-insight-blocks">
+            <div class="cs-insight-block">
+              <h3 class="cs-insight-title">Users scan, they don't read.</h3>
+              <p class="cs-insight-desc">Agents are time-starved and need to evaluate tools quickly. The hero section has 3–5 seconds to communicate value before they bounce. Technical jargon doesn't land—showing beats telling.</p>
+            </div>
+            <div class="cs-insight-block">
+              <h3 class="cs-insight-title">No onboarding caused confusion.</h3>
+              <p class="cs-insight-desc">When users signed up, they weren't onboarded and were straight up dropped into the product with all the modes served to them, which overwhelmed them. If a user is a realtor, they should ONLY see realty-related products.</p>
+            </div>
+          </div>
+          <p class="cs-body-text" style="margin-top: 2rem;"><strong>Competitive analysis:</strong> Most competitors were either overly technical (targeting developers) or generic AI templates with vague lifestyle marketing. The opportunity was to split the difference: professional and clear, with a distinct voice that feels human, not algorithmic.</p>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">03</span>
+          <h2 class="cs-section-title">Design Strategy</h2>
+          <p class="cs-body-text">The redesign followed three principles: clarity over cleverness, proof over promises, and speed over perfection.</p>
+          <p class="cs-body-text"><strong>Information architecture</strong> — I restructured the site to answer the user's mental model in order: (1) What is this? — Hero with clear value prop. (2) Does it actually work? — Before/after gallery. (3) Who uses it? — Client logos + testimonials. (4) How does it work? — Feature breakdown. (5) What's next? — CTA: Book demo / sign up.</p>
+          <p class="cs-body-text"><strong>Visual design:</strong> Clean, not sterile—generous white space, bold typography, restrained palette (off-white, dark grey, soft gold accent). Image-first hierarchy: before/after comparisons became the visual anchor; interactive sliders let users explore transformations themselves.</p>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">04</span>
+          <h2 class="cs-section-title">Before &amp; After</h2>
+          <p class="cs-body-text">The original homepage attempted to do everything at once and communicated nothing clearly: vague headline, buried value prop, generic stock imagery, weak CTA, inconsistent color. The redesigned homepage communicates value immediately—clear headline, immediate proof with before/after right under the hero, consistent brand language, strong CTA with urgency copy, and clean hierarchy with single visual focus per section.</p>
+
+          <div class="cs-before-after-grid-wrap">
+          <div class="cs-before-after-grid">
+            <div class="cs-before-after-card">
+              <div class="cs-gif-wrapper">
+                <img
+                  src="./img/visugenie/old-hero-thumb.png"
+                  data-gif="./img/visugenie/old-hero.gif"
+                  class="cs-hover-gif"
+                  alt="Old homepage hero design"
+                  loading="lazy"
+                />
+              </div>
+              <p class="cs-before-after-label">Before: Old Hero</p>
+            </div>
+            <div class="cs-before-after-card">
+              <div class="cs-gif-wrapper">
+                <img
+                  src="./img/visugenie/new-hero-thumb.png"
+                  data-gif="./img/visugenie/new-hero.gif"
+                  class="cs-hover-gif"
+                  alt="New homepage hero design"
+                  loading="lazy"
+                />
+              </div>
+              <p class="cs-before-after-label">After: New Hero</p>
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <div class="results-section">
+            <span class="chapter-mark">05</span>
+            <h2 class="section-title">Results &amp; Impact</h2>
+            <p class="launch-timeline">
+              The redesign launched <span class="highlight">3 weeks after kickoff</span>. Here's what happened:
+            </p>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-number" data-value="52%">52%</div>
+                <div class="metric-divider"></div>
+                <div class="metric-label">Bounce Rate Reduction</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-number" data-value="38%">38%</div>
+                <div class="metric-divider"></div>
+                <div class="metric-label">Increase in Hero CTA Clicks</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-number" data-value="3.2×">3.2×</div>
+                <div class="metric-divider"></div>
+                <div class="metric-label">Average Time on Site</div>
+              </div>
+            </div>
+            <div class="context-note">
+              Based on limited user data over 3 weeks (<em>&lt;1,000 users</em>). Metrics tracked via Google Analytics over 30-day period post-launch.
+            </div>
+            <p class="results-cta-wrap">
+              <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-site">Visit Visugenie.com</a>
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="cs-section cs-reveal">
+        <div class="cs-container-narrow">
+          <span class="cs-chapter-number">06</span>
+          <h2 class="cs-section-title">What's Next</h2>
+          <ul class="cs-whats-next-list">
+            <li class="cs-whats-next-item">
+              <strong class="cs-whats-next-title">Intent-Based Onboarding</strong>
+              <p class="cs-whats-next-desc">Redesigning the onboarding experience with what I call "intent-based onboarding"—users answer a few quick questions about their use case, and we serve only the modes relevant to them. A realtor sees staging and renovation tools. An interior designer sees furniture and decor modes. Clean, focused, zero overwhelm.</p>
+            </li>
+            <li class="cs-whats-next-item">
+              <strong class="cs-whats-next-title">Personalized Product Experience</strong>
+              <p class="cs-whats-next-desc">Once onboarding is fixed, users land in a product that feels built for them—not a generic dashboard crammed with every feature. They see only what matters to their workflow, with the option to explore other modes later if needed.</p>
+            </li>
+            <li class="cs-whats-next-item">
+              <strong class="cs-whats-next-title">Image History Redesign</strong>
+              <p class="cs-whats-next-desc">Shipping fixes to the image history section—better organization, faster access to previous generations, and clearer version tracking.</p>
+            </li>
+            <li class="cs-whats-next-item">
+              <strong class="cs-whats-next-title">Brand Consistency</strong>
+              <p class="cs-whats-next-desc">Aligning the product interface with the marketing page's visual language. Same typography, same color palette, same voice. The experience should feel continuous, not like two different products.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="cs-section">
+        <div class="cs-container">
+          <div class="cs-footer-nav">
+            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
+            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project &rarr;</a>
           </div>
         </div>
       </section>
@@ -664,7 +751,7 @@
     <section id="project-visual-platform" class="project-page d-none" data-project-name="CTRLBREAK">
       <div class="cs-cover">
         <div class="cs-cover-bg" style="background-image: url('./img/ctrlbreak/ctrl-red.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link">&larr; home</a>
+        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
         <div class="cs-cover-content">
           <h1 class="cs-cover-title">CTRLBREAK</h1>
           <p class="cs-cover-subtitle">Exhibition identity for a Neville Brody retrospective</p>
@@ -876,6 +963,47 @@
             });
           });
         });
+
+        // GIF: hover-to-play on desktop, auto-play on mobile/touch
+        const isTouch = !matchMedia('(hover: hover)').matches;
+        const hoverGifs = document.querySelectorAll('.cs-hover-gif');
+        if (!isTouch) {
+          hoverGifs.forEach((img) => {
+            const gifSrc = img.getAttribute('data-gif');
+            const staticSrc = img.getAttribute('src') || img.src;
+            if (!gifSrc || !staticSrc) return;
+            let gifPreloaded = false;
+
+            img.addEventListener('mouseenter', () => {
+              if (!gifPreloaded) {
+                const preload = new Image();
+                preload.onload = () => {
+                  img.src = gifSrc;
+                  gifPreloaded = true;
+                };
+                preload.src = gifSrc;
+              } else {
+                img.src = gifSrc;
+              }
+            });
+
+            img.addEventListener('mouseleave', () => {
+              img.src = staticSrc;
+            });
+          });
+        } else {
+          // Mobile: load and show GIF when in view (auto-play)
+          const gifObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const img = entry.target;
+              const gifSrc = img.getAttribute('data-gif');
+              if (gifSrc) img.src = gifSrc;
+              gifObserver.unobserve(img);
+            });
+          }, { rootMargin: '100px' });
+          hoverGifs.forEach((img) => gifObserver.observe(img));
+        }
       });
     </script>
   </body>

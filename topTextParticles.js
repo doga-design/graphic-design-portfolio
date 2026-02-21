@@ -28,10 +28,10 @@
   /** Edge feather: distance (px) from edge over which particles fade to transparent */
   const FEATHER_PX = 80;
 
-  /** Accent color when particle is activated (heat/sizeHeat) – matches CSS --accent #EEFF00 */
-  const ACCENT = [238, 255, 0];
-  /** Red while magnet-pulled (matches CSS --red #ff5959) */
-  const RED = [255, 0, 0];
+  /** Accent color when particle is activated (heat/sizeHeat) – matches CSS --accent #FEDC97 */
+  const ACCENT = [255, 230, 109];
+  /** Olive while magnet-pulled (matches CSS --red #B5B682) */
+  const RED = [197, 34, 51];
 
   // Desktop click magnet feel
   const MAGNET_PULL = 10.5; // stronger = snappier pull
@@ -63,6 +63,7 @@
 
       p.preload = () => {
         // Load the same "AwesomeSerif" font used in CSS for reliable canvas rendering.
+        // Preload in <head> ensures font (and p5) start loading immediately for fast first paint.
         font = p.loadFont("./fonts/AwesomeSerif-Regular.otf");
       };
 
@@ -105,7 +106,7 @@
 
         let fontSize = Math.min(p.width * 0.22, p.height * 0.75);
         let targetWidth = Math.min(TEXT_WIDTH_PX, p.width * 0.92);
-        if (isMobile) targetWidth *= 0.62; // smaller text on mobile
+        if (isMobile) targetWidth = p.width * 0.9; // full-width text on mobile, centered
 
         pg.textSize(fontSize);
         const measured = isMobile
@@ -117,7 +118,7 @@
         pg.textSize(fontSize);
         if (isMobile) pg.textLeading(fontSize * 0.82); // tight line height
         pg.textAlign(p.CENTER, p.CENTER);
-        const textY = p.height * 0.45;
+        const textY = isMobile ? p.height * 0.5 : p.height * 0.45; // vertically centered on mobile
         pg.text(textStr, p.width * 0.5, textY);
 
         pg.loadPixels();
@@ -309,9 +310,10 @@
 
         buildParticles();
 
-        // Touch support for magnet pull on mobile
+        // Touch support for magnet pull on mobile + block long-press copy/select
         const el = p.canvas;
         if (el) {
+          el.addEventListener("contextmenu", (e) => e.preventDefault(), { passive: false });
           function touchToCanvas(e) {
             if (!e.touches.length) return;
             const rect = el.getBoundingClientRect();
