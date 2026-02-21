@@ -64,7 +64,7 @@
       p.preload = () => {
         // Load the same "AwesomeSerif" font used in CSS for reliable canvas rendering.
         // Preload in <head> ensures font (and p5) start loading immediately for fast first paint.
-        font = p.loadFont("./fonts/AwesomeSerif-Regular.otf");
+        font = p.loadFont("/fonts/AwesomeSerif-Regular.otf");
       };
 
       function getSize() {
