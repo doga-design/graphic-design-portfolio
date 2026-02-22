@@ -2165,6 +2165,12 @@ body.is-project-view .cs-page-marker { display: block; }
     rgba(255, 251, 0, 0.3) 0px 30px 60px -30px;
 }
 
+/* --- Footer CTA on case study pages --- */
+.cs-page-footer-cta-wrap {
+  padding: 2.5rem 0 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
 /* --- Footer nav --- */
 .cs-footer-nav {
   padding: 1.5rem 0;

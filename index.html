@@ -160,13 +160,13 @@
           <div class="about-text">
             <span class="about-label">About</span>
             <h2 class="about-heading">A bit about me</h2>
-            <p class="about-body">I'm a graphic design student at George Brown College in Toronto — originally from Turkey. I'm drawn to the intersection of design, psychology, and code (which I am currently self-teaching myself). When I'm not pushing pixels or writing CSS, I'm probably playing puck, basketball or deep-diving into vibe-coding and trying to learn something new.</p>
+            <p class="about-body">I'm a graphic design student at George Brown College in Toronto — originally from Turkey. I'm drawn to the intersection of design and psychology. When I'm not pushing pixels or writing CSS, I'm probably playing puck, basketball or deep-diving into vibe-coding and trying to learn something new.</p>
             <div class="about-status">
-              <span class="about-status-dot"></span>
               <span class="about-status-text">Open <span class="about-status-subtle">to</span> Design internship opportunities <span class="about-status-subtle">for the</span> <span class="about-status-accent">Summer 2026</span></span>
             </div>
           </div>
           <div class="about-photos" id="aboutPhotos">
+            <img src="/img/dodo-mascot.png" alt="" class="about-mascot" loading="lazy" decoding="async" />
             <div class="about-card-stack">
               <div class="about-card about-card--back" id="aboutCardBack">
                 <img src="/img/dodo1.png" alt="Doga — candid" loading="lazy" decoding="async" />
@@ -202,18 +202,18 @@
           </div>
         </div>
       </footer>
-
-      <div class="email-toast" id="emailToast" aria-live="polite">
-        <div class="email-toast-inner">
-          <svg class="email-toast-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="9" cy="9" r="8" stroke="var(--accent)" stroke-width="1.5" opacity="0.3"/>
-            <path class="email-toast-check" d="M5.5 9.5L7.8 11.8L12.5 6.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="email-toast-text">Email copied</span>
-        </div>
-      </div>
     </main>
     </section>
+
+    <div class="email-toast" id="emailToast" aria-live="polite">
+      <div class="email-toast-inner">
+        <svg class="email-toast-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="8" stroke="var(--accent)" stroke-width="1.5" opacity="0.3"/>
+          <path class="email-toast-check" d="M5.5 9.5L7.8 11.8L12.5 6.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="email-toast-text">Email copied</span>
+      </div>
+    </div>
 
     <section id="project-ferns-sons" class="project-page d-none" data-project-name="Fern &amp; Sons Cycle Co.">
       <div class="cs-cover">
@@ -328,8 +328,8 @@
             <span class="cs-label">Brand colors</span>
             <div class="cs-palette-row">
               <div class="cs-palette-swatch">
-                <span class="cs-palette-circle" style="background-color:#2D5A27;"></span>
-                <span class="cs-palette-info">Evergreen <code>#2D5A27</code></span>
+                <span class="cs-palette-circle" style="background-color:#043222;"></span>
+                <span class="cs-palette-info">Evergreen <code>#043222</code></span>
               </div>
               <div class="cs-palette-swatch">
                 <span class="cs-palette-circle" style="background-color:#F6E9D9;"></span>
@@ -422,11 +422,25 @@
         </div>
       </section>
 
+      <section class="cs-section cs-page-footer-cta-wrap">
+        <div class="cs-container">
+          <div class="footer-top">
+            <div class="footer-cta">
+              <span class="footer-cta-label">Let's work together</span>
+              <button class="footer-cta-email" data-email="dogacimen35@gmail.com" type="button">dogacimen35@gmail.com</button>
+            </div>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/dogacimen/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="/doga_cimen_resume.docx" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-link--text" aria-label="Resume">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="cs-section">
         <div class="cs-container">
           <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-school-design" class="cs-btn-secondary project-link" data-project="project-school-design">Next project &rarr;</a>
+            <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
+            <a href="#project-school-design" class="cs-btn-secondary project-link" data-project="project-school-design">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
@@ -456,7 +470,7 @@
             <p class="cs-body-text">p5.js, HTML, CSS</p>
           </div>
           <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem;">
-            <a href="https://doga-design.github.io/Ideas-and-Images--repository/" target="_blank" class="cs-btn-ideas">check out website</a>
+            <a href="https://doga-design.github.io/Ideas-and-Images--repository/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-site">check out website</a>
           </div>
         </div>
       </section>
@@ -480,11 +494,25 @@
           </div>
         </div>
       </section>
+      <section class="cs-section cs-page-footer-cta-wrap">
+        <div class="cs-container">
+          <div class="footer-top">
+            <div class="footer-cta">
+              <span class="footer-cta-label">Let's work together</span>
+              <button class="footer-cta-email" data-email="dogacimen35@gmail.com" type="button">dogacimen35@gmail.com</button>
+            </div>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/dogacimen/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="/doga_cimen_resume.docx" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-link--text" aria-label="Resume">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="cs-section">
         <div class="cs-container">
           <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-boots-hearts" class="cs-btn-secondary project-link" data-project="project-boots-hearts">Next project &rarr;</a>
+            <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
+            <a href="#project-boots-hearts" class="cs-btn-secondary project-link" data-project="project-boots-hearts">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
@@ -533,11 +561,25 @@
           </div>
         </div>
       </section>
+      <section class="cs-section cs-page-footer-cta-wrap">
+        <div class="cs-container">
+          <div class="footer-top">
+            <div class="footer-cta">
+              <span class="footer-cta-label">Let's work together</span>
+              <button class="footer-cta-email" data-email="dogacimen35@gmail.com" type="button">dogacimen35@gmail.com</button>
+            </div>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/dogacimen/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="/doga_cimen_resume.docx" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-link--text" aria-label="Resume">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="cs-section">
         <div class="cs-container">
           <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project &rarr;</a>
+            <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
+            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
@@ -567,7 +609,7 @@
             <p class="cs-body-text">HTML, CSS, JS</p>
           </div>
           <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem;">
-            <a href="https://doga-design.github.io/School-of-design-website-redesign/" target="_blank" class="cs-btn-primary">check out website</a>
+            <a href="https://doga-design.github.io/School-of-design-website-redesign/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-site">check out website</a>
           </div>
         </div>
       </section>
@@ -593,11 +635,25 @@
           </div>
         </div>
       </section>
+      <section class="cs-section cs-page-footer-cta-wrap">
+        <div class="cs-container">
+          <div class="footer-top">
+            <div class="footer-cta">
+              <span class="footer-cta-label">Let's work together</span>
+              <button class="footer-cta-email" data-email="dogacimen35@gmail.com" type="button">dogacimen35@gmail.com</button>
+            </div>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/dogacimen/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="/doga_cimen_resume.docx" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-link--text" aria-label="Resume">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="cs-section">
         <div class="cs-container">
           <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-visugenie" class="cs-btn-secondary project-link" data-project="project-visugenie">Next project &rarr;</a>
+            <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
+            <a href="#project-visugenie" class="cs-btn-secondary project-link" data-project="project-visugenie">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
@@ -612,7 +668,7 @@
           <p class="cs-cover-subtitle">Brand Identity & Website Development — AI real estate visualization for agencies</p>
           <div class="cs-cover-meta"><span>Product Design</span><span>3 weeks · HTML, CSS, JS, Figma, Cursor</span></div>
           <p class="cs-hero-visit-wrap">
-            <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-hero">Visit Visugenie &rarr;</a>
+            <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-hero">Visit Visugenie <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </p>
         </div>
         <div class="cs-cover-scroll-hint">Scroll to explore</div>
@@ -785,11 +841,25 @@
           </ul>
         </div>
       </section>
+      <section class="cs-section cs-page-footer-cta-wrap">
+        <div class="cs-container">
+          <div class="footer-top">
+            <div class="footer-cta">
+              <span class="footer-cta-label">Let's work together</span>
+              <button class="footer-cta-email" data-email="dogacimen35@gmail.com" type="button">dogacimen35@gmail.com</button>
+            </div>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/dogacimen/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="/doga_cimen_resume.docx" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-link--text" aria-label="Resume">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="cs-section">
         <div class="cs-container">
           <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project &rarr;</a>
+            <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
+            <a href="#project-visual-platform" class="cs-btn-secondary project-link" data-project="project-visual-platform">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
@@ -863,11 +933,25 @@
           </div>
         </div>
       </section>
+      <section class="cs-section cs-page-footer-cta-wrap">
+        <div class="cs-container">
+          <div class="footer-top">
+            <div class="footer-cta">
+              <span class="footer-cta-label">Let's work together</span>
+              <button class="footer-cta-email" data-email="dogacimen35@gmail.com" type="button">dogacimen35@gmail.com</button>
+            </div>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/dogacimen/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="/doga_cimen_resume.docx" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-link--text" aria-label="Resume">Resume</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="cs-section">
         <div class="cs-container">
           <div class="cs-footer-nav">
-            <a href="#home" data-go-home class="cs-btn-secondary">&larr; All Work</a>
-            <a href="#project-ferns-sons" class="cs-btn-secondary project-link" data-project="project-ferns-sons">Next project &rarr;</a>
+            <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
+            <a href="#project-ferns-sons" class="cs-btn-secondary project-link" data-project="project-ferns-sons">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
@@ -875,8 +959,8 @@
 
     <div id="lightbox" class="lightbox">
       <button class="lightbox-close">&times;</button>
-      <button class="lightbox-nav lightbox-prev">&larr;</button>
-      <button class="lightbox-nav lightbox-next">&rarr;</button>
+      <button class="lightbox-nav lightbox-prev" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+      <button class="lightbox-nav lightbox-next" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
       <img decoding="async" loading="lazy" src="" alt="" class="lightbox-img">
     </div>
 
