@@ -178,5 +178,38 @@ d.addEventListener("DOMContentLoaded",function(){
 
   /* Initial reveal observe */
   d.querySelectorAll(".project-page").forEach(function(p){observeReveals(p)});
+
+  /* About Me photo card swap */
+  var aboutFront=d.getElementById("aboutCardFront"),aboutBack=d.getElementById("aboutCardBack"),aboutBtn=d.getElementById("aboutSwapBtn");
+  if(aboutFront&&aboutBack&&aboutBtn){
+    function aboutSwap(){
+      aboutFront.classList.toggle("about-card--swapped");
+      aboutBack.classList.toggle("about-card--swapped");
+      aboutBtn.classList.toggle("about-card-swap--rotated");
+    }
+    aboutBtn.addEventListener("click",aboutSwap);
+    aboutFront.addEventListener("click",aboutSwap);
+    aboutBack.addEventListener("click",aboutSwap);
+  }
+
+  /* Email copy-to-clipboard with toast (follows cursor until it disappears) */
+  var toast=d.getElementById("emailToast"),toastTimer=null,toastFollowHandler=null;
+  function positionToastAt(clientX,clientY){
+    var x=Math.max(60,Math.min(w.innerWidth-60,clientX)),y=clientY;
+    var bottomPx=w.innerHeight-y+20;
+    if(bottomPx<24)bottomPx=24;else if(bottomPx>w.innerHeight-24)bottomPx=w.innerHeight-24;
+    toast.style.left=x+"px";toast.style.bottom=bottomPx+"px";toast.style.right="auto";toast.style.top="auto";
+  }
+  function showToastAt(ev){
+    if(toastTimer){clearTimeout(toastTimer);toast.classList.remove("email-toast--visible")}
+    if(toastFollowHandler){w.removeEventListener("mousemove",toastFollowHandler);toastFollowHandler=null}
+    positionToastAt(ev.clientX,ev.clientY);
+    void toast.offsetWidth;toast.classList.add("email-toast--visible");
+    toastFollowHandler=function(e){positionToastAt(e.clientX,e.clientY)};
+    w.addEventListener("mousemove",toastFollowHandler,{passive:true});
+    toastTimer=setTimeout(function(){toast.classList.remove("email-toast--visible");toastTimer=null;if(toastFollowHandler){w.removeEventListener("mousemove",toastFollowHandler);toastFollowHandler=null}},2400);
+  }
+  function copyEmail(e){e.preventDefault();var email=this.dataset.email;if(!email)return;navigator.clipboard.writeText(email).then(function(){showToastAt(e)}).catch(function(){var t=d.createElement("textarea");t.value=email;t.style.position="fixed";t.style.opacity="0";b.appendChild(t);t.select();d.execCommand("copy");b.removeChild(t);showToastAt(e)})}
+  d.querySelectorAll("[data-email]").forEach(function(el){el.addEventListener("click",copyEmail)});
 });
 })();
