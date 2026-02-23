@@ -4,26 +4,28 @@
   const WORD_MOBILE = "DOGA\nCIMEN";
   const MOBILE_BREAKPOINT = 768;
 
-  // Feel knobs — higher REPEL/SWIRL + MAX_SPEED = fast push + fast spin; DAMPING keeps it controlled
-  const SPRING = 0.0015;
-  const DAMPING = 0.84;
-  const REPEL = 1.2;
-  const SWIRL = 14;
-  const MAX_SPEED = 32;
+  
+  // Feel knobs
+  const SPRING = 0.01;
+  const DAMPING = 0.78;
+  const REPEL = 6;
+  const SWIRL = 2.2;
+  const MAX_SPEED = 20;
 
   // Size / density knobs
   const TEXT_WIDTH_PX = 980;
-  const POINT_SIZE = 2.4;
+  const POINT_SIZE = 2.5;
   const SIZE_MIN = 1.5;
-  const SIZE_MAX = 6.5;
-  const SIZE_HEAT_UP = 0.2;
+  const SIZE_MAX = 5.5;
+  const SIZE_HEAT_UP = 0.08;
   const SIZE_HEAT_DECAY = 0.285;
-  const SIZE_LERP = 0.10;
+  const SIZE_LERP = 0.12;
 
-  const HEAT_UP = 0.24;
-  const HEAT_DECAY = 0.98;
+  const HEAT_UP = 0.18;
+  const HEAT_DECAY = 1;
   const HOT_SPRING_MIN = 0.05;
-  const HOT_DAMP_MAX = 0.86;
+  const HOT_DAMP_MAX = 0.89;
+
 
   const FEATHER_PX = 0;
 
@@ -31,8 +33,8 @@
   const RED = [197, 34, 51];
 
   // Desktop click magnet feel
-  const MAGNET_PULL = 10;
-  const MAGNET_SWIRL = 3;
+  const MAGNET_PULL = 20;
+  const MAGNET_SWIRL = 4;
   const MAGNET_DECAY = 0.88;
 
   // ── Flag-wave idle animation ──────────────────────────────────
