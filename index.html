@@ -11,7 +11,6 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <link rel="preload" href="styles.min.css" as="style" />
@@ -23,37 +22,68 @@
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" /></noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /></noscript>
-    <style>*,*::before,*::after{box-sizing:border-box}.container{width:100%;padding-right:.75rem;padding-left:.75rem;margin-right:auto;margin-left:auto}@media(min-width:576px){.container{max-width:540px}}@media(min-width:768px){.container{max-width:720px}}@media(min-width:992px){.container{max-width:960px}}@media(min-width:1200px){.container{max-width:1140px}}.row{display:flex;flex-wrap:wrap;margin-right:-.75rem;margin-left:-.75rem}.row>*{flex-shrink:0;width:100%;max-width:100%;padding-right:.75rem;padding-left:.75rem}.g-4{--bs-gutter-x:1.5rem;--bs-gutter-y:1.5rem}.g-4>*{padding-right:calc(var(--bs-gutter-x)*.5);padding-left:calc(var(--bs-gutter-x)*.5);margin-top:var(--bs-gutter-y)}.col-12{flex:0 0 auto;width:100%}@media(min-width:576px){.col-sm-6{flex:0 0 auto;width:50%}}@media(min-width:992px){.col-lg-4{flex:0 0 auto;width:33.333%}}.d-none{display:none!important}.d-flex{display:flex!important}.mb-0{margin-bottom:0!important}.mb-3{margin-bottom:1rem!important}.mb-4{margin-bottom:1.5rem!important}.mb-5{margin-bottom:3rem!important}.mt-5{margin-top:3rem!important}.py-5{padding-top:3rem!important;padding-bottom:3rem!important}.pt-4{padding-top:1.5rem!important}.pb-4{padding-bottom:1.5rem!important}.text-start{text-align:left!important}@media(min-width:768px){.text-md-start{text-align:left!important}}.justify-content-between{justify-content:space-between!important}.align-items-baseline{align-items:baseline!important}.align-items-start{align-items:flex-start!important}.img-fluid{max-width:100%;height:auto}@media(min-width:768px){.d-md-inline{display:inline!important}}</style>
+    <style>*,*::before,*::after{box-sizing:border-box}.container{width:100%;padding-right:.75rem;padding-left:.75rem;margin-right:auto;margin-left:auto}@media(min-width:576px){.container{max-width:540px}}@media(min-width:768px){.container{max-width:720px}}@media(min-width:992px){.container{max-width:960px}}@media(min-width:1200px){.container{max-width:1140px}}.row{display:flex;flex-wrap:wrap;margin-right:-.75rem;margin-left:-.75rem}.row>*{flex-shrink:0;width:100%;max-width:100%;padding-right:.75rem;padding-left:.75rem}.g-4{--bs-gutter-x:1.5rem;--bs-gutter-y:1.5rem}.g-4>*{padding-right:calc(var(--bs-gutter-x)*.5);padding-left:calc(var(--bs-gutter-x)*.5);margin-top:var(--bs-gutter-y)}.col-12{flex:0 0 auto;width:100%}@media(min-width:576px){.col-sm-6{flex:0 0 auto;width:50%}}@media(min-width:992px){.col-lg-4{flex:0 0 auto;width:33.333%}}.d-none{display:none!important}.d-flex{display:flex!important}.mb-0{margin-bottom:0!important}.mb-3{margin-bottom:1rem!important}.mb-4{margin-bottom:1.5rem!important}.mb-5{margin-bottom:3rem!important}.mt-5{margin-top:3rem!important}.py-5{padding-top:3rem!important;padding-bottom:3rem!important}.pt-4{padding-top:1.5rem!important}.pb-4{padding-bottom:1.5rem!important}.text-start{text-align:left!important}@media(min-width:768px){.text-md-start{text-align:left!important}}.justify-content-between{justify-content:space-between!important}.align-items-baseline{align-items:baseline!important}.align-items-start{align-items:flex-start!important}.img-fluid{max-width:100%;height:auto}@media(min-width:768px){.d-md-inline{display:inline!important}}#home main.container.py-5{padding-top:0!important}</style>
     <link rel="stylesheet" href="styles.min.css" />
   </head>
 
   <body>
     
     <div class="cs-progress-line" id="csProgressLine"></div>
-    <div class="cs-page-marker" id="csPageMarker"></div>
+    <div class="cs-fixed-right" id="csFixedRight">
+      <a href="#" id="csNextProjectBtn" class="cs-next-project-btn project-link d-none" data-project="" aria-label="Next project"><span class="cs-next-project-btn-text">Next project</span> <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+      <div class="cs-page-marker" id="csPageMarker"></div>
+    </div>
 
     <section id="home">
       <div id="topTextParticles" aria-hidden="true"></div>
     <main class="container py-5">
-      <section class="intro text-start text-md-start mb-5">
-        <div class="row g-4 align-items-start">
-          <div class="col-12 col-sm-6 col-lg-4">
-            <h1 class="display-5 mb-3">
+      <section class="intro-v2" aria-label="Introduction">
+        <div class="intro-v2-grid">
+          <div class="intro-v2-identity">
+            <div class="intro-v2-role-tag">
+              <span class="intro-v2-role-dot" aria-hidden="true"></span>
+              <span>Design & Frontend</span>
+            </div>
+            <h1 class="intro-v2-name">
               <span class="subtitle">Hi, I'm Doga.</span>
             </h1>
+            <div class="intro-v2-location">
+              <span class="intro-v2-location-lines">
+                <span class="intro-v2-location-scratched">Antalya, Turkey</span>
+                <span class="intro-v2-location-current-line">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span class="intro-v2-location-current">Toronto, CA</span>
+                </span>
+              </span>
+            </div>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4">
-            <p class="intro-body">
-              
-              I'm a graphic design student in Toronto working across branding, identity, and end-to-end product design. I care about typography, visual systems, and the strategy that makes them work.
+          <div class="intro-v2-bio">
+            <p class="intro-v2-bio-text">
+              Graphic design student exploring the space between typography, brand identity, and interaction design.
             </p>
+            <div class="intro-v2-skills">
+              <span class="intro-v2-skill">Branding</span>
+              <span class="intro-v2-skill-sep" aria-hidden="true">&middot;</span>
+              <span class="intro-v2-skill">Product Design</span>
+              <span class="intro-v2-skill-sep" aria-hidden="true">&middot;</span>
+              <span class="intro-v2-skill">Research</span>
+            </div>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4">
-            <div class="currently-building">
-              <span class="currently-building-label">Projects I'm currently building</span>
-              <div class="currently-building-list">
-                <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="currently-building-item">Visugenie (Frontend + Research)</a>
-                <span class="currently-building-item currently-building-disabled">Bountt (set to launch V1 in the summer)</span>
+          <div class="intro-v2-live">
+            <span class="intro-v2-live-label">
+              <span class="intro-v2-live-pulse" aria-hidden="true"></span>
+              What i'm building
+            </span>
+            <div class="intro-v2-live-list">
+              <a href="#project-visugenie" class="intro-v2-live-item project-link" data-project="project-visugenie">
+                <span class="intro-v2-live-item-name">Visugenie</span>
+                <span class="intro-v2-live-item-sub">Frontend + Research</span>
+                <svg class="intro-v2-live-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              </a>
+              <div class="intro-v2-live-item intro-v2-live-item--soon">
+                <span class="intro-v2-live-item-name">Bountt</span>
+                <span class="intro-v2-live-item-sub">V1 &mdash; Summer 2026</span>
+                <span class="intro-v2-live-badge">demo soon</span>
               </div>
             </div>
           </div>
@@ -62,7 +92,7 @@
 
       <section class="work-section text-center text-md-start">
         <div class="d-flex justify-content-between align-items-baseline mb-3">
-          <h2 class="work-title mb-0">check out my work</h2>
+          <h2 class="work-title mb-0">selected work</h2>
           <span class="work-count d-none d-md-inline">6 projects</span>
         </div>
 
@@ -78,7 +108,7 @@
             <a href="#project-visual-platform" class="project-link" data-project="project-visual-platform"
               ><img
                 fetchpriority="high" src="/img/ctrlbreak/project-hero.png"
-                class="gallery-img img-fluid"
+                class="gallery-img img-fluid" width="400" height="300"
                 alt="CTRLBREAK exhibition identity branding overview"
             /></a>
             <div class="project-meta">
@@ -87,24 +117,11 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
-            <a href="#project-ferns-sons" class="project-link" data-project="project-ferns-sons"
-              ><img
-                src="/img/fernsandsons/fernandsons-thumb.png"
-                class="gallery-img img-fluid"
-                alt="Fern &amp; Sons Cycle Co. poster campaign mockups"
-            /></a>
-            <div class="project-meta">
-              <span class="project-title-name category-green">branding</span>
-              <span class="project-name">Fern &amp; Sons Cycle Co.</span>
-            </div>
-          </div>
-
           <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
             <a href="#project-visugenie" class="project-link" data-project="project-visugenie"
               ><img
                 src="/img/visugenie-thumb.png"
-                class="gallery-img img-fluid"
+                class="gallery-img img-fluid" width="400" height="300"
                 alt="Visugenie website redesign — AI real estate visualization"
             /></a>
             <div class="project-meta">
@@ -113,11 +130,24 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
+            <a href="#project-ferns-sons" class="project-link" data-project="project-ferns-sons"
+              ><img
+                src="/img/fernsandsons/fernandsons-thumb-2.png"
+                class="gallery-img img-fluid" width="400" height="300"
+                alt="Fern &amp; Sons Cycle Co. poster campaign mockups"
+            /></a>
+            <div class="project-meta">
+              <span class="project-title-name category-green">branding</span>
+              <span class="project-name">Fern &amp; Sons Cycle Co.</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 work-card work-card--hidden" data-category="web">
             <a href="#project-ideas-images" class="project-link" data-project="project-ideas-images"
               ><img
                 src="/img/ideasimages-thumb.png"
-                class="gallery-img img-fluid"
+                class="gallery-img img-fluid" width="400" height="300"
                 alt="Screenshot from Ideas & Images web project"
             /></a>
             <div class="project-meta">
@@ -126,11 +156,11 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="web">
+          <div class="col-12 col-sm-6 col-lg-4 work-card work-card--hidden" data-category="web">
             <a href="#project-school-design" class="project-link" data-project="project-school-design"
               ><img
                 src="/img/schoolofdesign-thumb.png"
-                class="gallery-img img-fluid"
+                class="gallery-img img-fluid" width="400" height="300"
                 alt="School of Design website redesign"
             /></a>
             <div class="project-meta">
@@ -139,11 +169,11 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 col-lg-4 work-card" data-category="branding">
+          <div class="col-12 col-sm-6 col-lg-4 work-card work-card--hidden" data-category="branding">
             <a href="#project-boots-hearts" class="project-link" data-project="project-boots-hearts"
               ><img
                 src="/img/bootshearts-thumb2.png"
-                class="gallery-img img-fluid"
+                class="gallery-img img-fluid" width="400" height="300"
                 alt="Branding assets for Boots &amp; Hearts"
             /></a>
             <div class="project-meta">
@@ -153,6 +183,13 @@
           </div>
 
         </div>
+
+        <div class="work-reveal-wrap" id="workRevealWrap">
+          <button class="work-reveal-btn" id="workRevealBtn" type="button" aria-expanded="false">
+            <span class="work-reveal-btn-text">View more projects</span>
+            <svg class="work-reveal-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </button>
+        </div>
       </section>
 
       <section class="about-section" id="about">
@@ -160,9 +197,11 @@
           <div class="about-text">
             <span class="about-label">About</span>
             <h2 class="about-heading">A bit about me</h2>
-            <p class="about-body">I'm a graphic design student at George Brown College in Toronto — originally from Turkey. I'm drawn to the intersection of design and psychology. When I'm not pushing pixels or writing CSS, I'm probably playing puck, basketball or deep-diving into vibe-coding and trying to learn something new.</p>
+            <p class="about-body">
+              I’m a graphic design student at George Brown College in Toronto, originally from Turkey. I’m drawn to the intersection of design and psychology. When I’m not pushing pixels, I’m probably playing hockey or basketball—or teaching myself React.
+              </p>
             <div class="about-status">
-              <span class="about-status-text">Open <span class="about-status-subtle">to</span> Design internship opportunities <span class="about-status-subtle">for the</span> <span class="about-status-accent">Summer 2026</span></span>
+              <span class="about-status-text"><span class="about-status-white">Open</span> <span class="about-status-subtle">to</span> <span class="about-status-white">Design internship opportunities</span> <span class="about-status-subtle">for the</span> <span class="about-status-accent">Summer 2026</span></span>
             </div>
           </div>
           <div class="about-photos" id="aboutPhotos">
@@ -172,7 +211,7 @@
                 <img src="/img/dodo1.png" alt="Doga — candid" loading="lazy" decoding="async" />
               </div>
               <div class="about-card about-card--front" id="aboutCardFront">
-                <img src="/img/ dodo2.png" alt="Doga — portrait" loading="lazy" decoding="async" />
+                <img src="/img/dodo2.png" alt="Doga — portrait" loading="lazy" decoding="async" />
               </div>
             </div>
             <button class="about-card-swap" id="aboutSwapBtn" aria-label="Swap photos">
@@ -198,7 +237,7 @@
           </div>
           <div class="footer-bottom">
             <span class="footer-copy">&copy; 2025 Doga Cimen</span>
-            <span class="footer-craft">Designed &amp; built by hand</span>
+            <span class="footer-craft">Designed &amp; built with love</span>
           </div>
         </div>
       </footer>
@@ -216,15 +255,69 @@
     </div>
 
     <section id="project-ferns-sons" class="project-page d-none" data-project-name="Fern &amp; Sons Cycle Co.">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('/img/fernsandsons/community-poster-1.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">FERN &amp; SONS CYCLE CO.</h1>
-          <p class="cs-cover-subtitle">Community-rooted bicycle workshop brand identity</p>
-          <div class="cs-cover-meta"><span>Brand Identity</span><span>2024 · Illustrator, InDesign, Photoshop</span></div>
+      <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+      <div class="hero">
+        <div class="v-divider" aria-hidden="true"></div>
+        <div class="hero-left">
+          <div class="hero-bg" aria-hidden="true" style="background-image: url('/img/fernsandsons/community-poster-1.png');"></div>
+          <div class="hero-left-content">
+            <div class="category-stamp">
+              <span class="category-line" aria-hidden="true"></span>
+              <span class="category-text">Branding & Brand-Launch Rollout</span>
+            </div>
+            <div role="heading" aria-level="1">
+              <span class="title-word"><span class="title-glyph">FERN &amp; SONS</span></span>
+              <span class="title-word"><span class="title-glyph">CYCLE CO.</span></span>
+            </div>
+            <p class="hero-subtitle">Community-rooted bicycle workshop brand identity.</p>
+            <div class="deliverables" role="list">
+              <span class="d-tag" role="listitem">Illustrator</span>
+              <span class="d-tag" role="listitem">InDesign</span>
+              <span class="d-tag" role="listitem">Photoshop</span>
+            </div>
+          </div>
         </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+        <aside class="hero-right" aria-label="Project details">
+          <div class="year-block">
+            <span class="year-label">Timeline</span>
+            <span class="year-value">2 Weeks</span>
+            <span class="year-rule" aria-hidden="true"></span>
+          </div>
+          <ul class="meta-list">
+            <li class="meta-item">
+              <div class="meta-inner">
+                <span class="meta-label">Category</span>
+                <span class="meta-value">Branding</span>
+              </div>
+            </li>
+            <li class="meta-item">
+              <div class="meta-inner">
+                <span class="meta-label">Tools</span>
+                <span class="meta-value">Illustrator, InDesign, Photoshop</span>
+              </div>
+            </li>
+            <li class="meta-item">
+              <div class="meta-inner">
+                <span class="meta-label">Role</span>
+                <span class="meta-value">Designer</span>
+              </div>
+            </li>
+            <li class="meta-item">
+              <div class="meta-inner">
+                <span class="meta-label">Context</span>
+                <span class="meta-value">Rebranding Work</span>
+              </div>
+            </li>
+          </ul>
+          <div class="scroll-indicator" aria-hidden="true">
+            <span class="scroll-track"><span class="scroll-thumb"></span></span>
+            <span class="scroll-text">Scroll to explore</span>
+          </div>
+        </aside>
+      </div>
+
+      <div class="cs-quirk-tape" aria-hidden="true">
+        <img src="/img/fernsandsons/tape2.png" alt="" width="1920" height="auto" loading="lazy" decoding="async" />
       </div>
 
       <div class="cs-tilt-hero">
@@ -299,26 +392,32 @@
       </div>
 
       <section class="cs-section cs-reveal">
-        
-        <div class="cs-container-narrow">
+        <div class="cs-container cs-container--center">
           <span class="cs-chapter-number">01</span>
           <h2 class="cs-section-title">Branding a Three-Generation Workshop</h2>
           <p class="cs-intro-text">How do you create an identity for a 75-year-old family bicycle shop that feels rooted without feeling stuck in the past?</p>
-          <p class="cs-body-text">This was a school project to design a complete brand identity for a small, community-based business. The challenge was to reflect the shop's legacy while making it feel approachable and relevant to today's riders—not precious, not corporate, just real.</p>
-          <p class="cs-body-text">I explored three visual directions: Swiss precision (too clinical), Bauhaus energy (too playful), and organic craft (just right). The final direction combined Art Nouveau-inspired flowing lines with structured clarity—rooted but not rustic, elegant but not fussy.</p>
-          <div style="margin-top: 3rem;">
-            <span class="cs-label">Timeline</span>
-            <p class="cs-body-text" style="margin-bottom: 2rem;">3 weeks (concept through campaign)</p>
-            <span class="cs-label">Deliverables</span>
-            <p class="cs-body-text" style="margin-bottom: 2rem;">Brand identity system, stationery, poster campaign, website mockups, branded merchandise</p>
-            <span class="cs-label">Positioning</span>
-            <p class="cs-body-text">The Annex's community-focused bicycle workshop—providing careful, reliable repair for riders who depend on honest service and familiar hands</p>
+          <div class="cs-explore-directions">
+            <p class="cs-explore-intro">I explored three visual directions:</p>
+            <ul class="cs-direction-list">
+              <li class="cs-direction-item">
+                <span class="cs-direction-name">Swiss precision</span>
+                <span class="cs-direction-verdict">too clinical</span>
+              </li>
+              <li class="cs-direction-item">
+                <span class="cs-direction-name">Bauhaus energy</span>
+                <span class="cs-direction-verdict">too playful</span>
+              </li>
+              <li class="cs-direction-item cs-direction-item--chosen">
+                <span class="cs-direction-name">Organic craft | Art Nouveau-inspired</span>
+                <span class="cs-direction-verdict cs-direction-verdict--chosen">just right</span>
+              </li>
+            </ul> 
           </div>
         </div>
       </section>
 
       <section class="cs-section cs-reveal">
-        <div class="cs-container-narrow">
+        <div class="cs-container cs-container--center">
           <span class="cs-chapter-number">02</span>
           <h2 class="cs-section-title">Movement and Heritage</h2>
           <p class="cs-body-text">The wordmark uses Awesome Serif—a display face with character and warmth. The chevron icon is modular, referencing bicycle chain links and forward motion. The fern-inspired pattern wraps around the arrow, creating texture without clutter.</p>
@@ -336,12 +435,12 @@
                 <span class="cs-palette-info">Antique white <code>#F6E9D9</code></span>
               </div>
               <div class="cs-palette-swatch">
-                <span class="cs-palette-circle" style="background-color:#5C2E2E;"></span>
-                <span class="cs-palette-info">Night bordeaux <code>#5C2E2E</code></span>
+                <span class="cs-palette-circle" style="background-color:#53161D;"></span>
+                <span class="cs-palette-info">Night bordeaux <code>#53161D</code></span>
               </div>
             </div>
           </div>
-          <div class="cs-image-frame" style="margin-top: 3rem;">
+          <div class="cs-image-frame cs-image-frame--small" style="margin-top: 3rem;">
             <img decoding="async" loading="lazy" src="/img/fernsandsons/movementheritagethumb.png" alt="Fern &amp; Sons Cycle Co. brand image with fern-chevron pattern overlay" />
           </div>
           <div class="cs-link-center" style="margin-top: 2rem;">
@@ -390,7 +489,7 @@
             <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/TOTEBAG-MOCKUP.png" class="gallery-thumb" alt="Tote bag mockup with Fern &amp; Sons branding" /></div>
             <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/TSHIRTMOCKUP.png" class="gallery-thumb" alt="T-shirt mockup with Fern &amp; Sons branding" /></div>
             <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/waterbottle-mockup.png" class="gallery-thumb" alt="Water bottle mockup with Fern &amp; Sons branding" /></div>
-            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/ig-carousel-mockup.png" class="gallery-thumb" alt="Instagram carousel mockup for Fern &amp; Sons" /></div>
+            <div class="cs-image-frame"><img decoding="async" loading="lazy" src="/img/fernsandsons/bike-tag.png" class="gallery-thumb" alt="bike tag mockup for Fern &amp; Sons" /></div>
           </div>
         </div>
       </section>
@@ -440,22 +539,49 @@
         <div class="cs-container">
           <div class="cs-footer-nav">
             <a href="#home" data-go-home class="cs-btn-secondary"><i class="fas fa-chevron-left" aria-hidden="true"></i> All Work</a>
-            <a href="#project-school-design" class="cs-btn-secondary project-link" data-project="project-school-design">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+            <a href="#project-visugenie" class="cs-btn-secondary project-link" data-project="project-visugenie">Next project <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
           </div>
         </div>
       </section>
     </section>
 
     <section id="project-ideas-images" class="project-page d-none" data-project-name="Ideas &amp; Images">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('/img/ideasimages/ideas-page-banner.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">IDEAS &amp; IMAGES</h1>
-          <p class="cs-cover-subtitle">Interactive kinetic text-based collection</p>
-          <div class="cs-cover-meta"><span>Web Design</span><span>p5.js &middot; HTML &middot; CSS</span></div>
+      <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+      <div class="hero">
+        <div class="v-divider" aria-hidden="true"></div>
+        <div class="hero-left">
+          <div class="hero-bg" aria-hidden="true" style="background-image: url('/img/ideasimages/ideas1.jpg');"></div>
+          <div class="hero-left-content">
+            <div class="category-stamp">
+              <span class="category-line" aria-hidden="true"></span>
+              <span class="category-text">Web Design</span>
+            </div>
+            <div role="heading" aria-level="1">
+              <span class="title-word"><span class="title-glyph">IDEAS &amp;</span></span>
+              <span class="title-word"><span class="title-glyph">IMAGES</span></span>
+            </div>
+            <p class="hero-subtitle">Interactive kinetic text-based collection.</p>
+            <div class="deliverables" role="list">
+              <span class="d-tag" role="listitem">p5.js</span>
+              <span class="d-tag" role="listitem">HTML</span>
+              <span class="d-tag" role="listitem">CSS</span>
+            </div>
+          </div>
         </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+        <aside class="hero-right" aria-label="Project details">
+          <div class="year-block">
+            <span class="year-label">Timeline</span>
+            <span class="year-value">1 Week</span>
+            <span class="year-rule" aria-hidden="true"></span>
+          </div>
+          <ul class="meta-list">
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Category</span><span class="meta-value">Web Design</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Tools</span><span class="meta-value">p5.js, HTML, CSS</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Role</span><span class="meta-value">Interaction design, creative coding</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Context</span><span class="meta-value">Academic Project</span></div></li>
+          </ul>
+          <div class="scroll-indicator" aria-hidden="true"><span class="scroll-track"><span class="scroll-thumb"></span></span><span class="scroll-text">Scroll to explore</span></div>
+        </aside>
       </div>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
@@ -519,15 +645,42 @@
     </section>
 
     <section id="project-boots-hearts" class="project-page d-none" data-project-name="Boots &amp; Hearts">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('/img/bootsnhearts/bnh-banner.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">BOOTS &amp; HEARTS</h1>
-          <p class="cs-cover-subtitle">Festival branding for Canada's largest country music festival</p>
-          <div class="cs-cover-meta"><span>Branding</span><span>Brand kit &middot; Poster series &middot; Web &amp; app mockups</span></div>
+      <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+      <div class="hero">
+        <div class="v-divider" aria-hidden="true"></div>
+        <div class="hero-left">
+          <div class="hero-bg" aria-hidden="true" style="background-image: url('/img/bootsnhearts/bnh-hero.png');"></div>
+          <div class="hero-left-content">
+            <div class="category-stamp">
+              <span class="category-line" aria-hidden="true"></span>
+              <span class="category-text">Branding</span>
+            </div>
+            <div role="heading" aria-level="1">
+              <span class="title-word"><span class="title-glyph">BOOTS &amp;</span></span>
+              <span class="title-word"><span class="title-glyph">HEARTS</span></span>
+            </div>
+            <p class="hero-subtitle">Festival branding for Canada's largest country music festival.</p>
+            <div class="deliverables" role="list">
+              <span class="d-tag" role="listitem">Brand kit</span>
+              <span class="d-tag" role="listitem">Poster series</span>
+              <span class="d-tag" role="listitem">Web &amp; app mockups</span>
+            </div>
+          </div>
         </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+        <aside class="hero-right" aria-label="Project details">
+          <div class="year-block">
+            <span class="year-label">Timeline</span>
+            <span class="year-value">1 Week</span>
+            <span class="year-rule" aria-hidden="true"></span>
+          </div>
+          <ul class="meta-list">
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Category</span><span class="meta-value">Branding</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Tools</span><span class="meta-value">Brand kit, Poster series, Web &amp; app mockups</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Role</span><span class="meta-value">Brand Designer</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Context</span><span class="meta-value">Portfolio Case Study</span></div></li>
+          </ul>
+          <div class="scroll-indicator" aria-hidden="true"><span class="scroll-track"><span class="scroll-thumb"></span></span><span class="scroll-text">Scroll to explore</span></div>
+        </aside>
       </div>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
@@ -586,15 +739,42 @@
     </section>
 
     <section id="project-school-design" class="project-page d-none" data-project-name="School of Design">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('/img/schoolofdesign-thumb.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">SCHOOL OF DESIGN</h1>
-          <p class="cs-cover-subtitle">Modern website redesign for George Brown College</p>
-          <div class="cs-cover-meta"><span>Web Design</span><span>HTML &middot; CSS &middot; JS</span></div>
+      <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+      <div class="hero">
+        <div class="v-divider" aria-hidden="true"></div>
+        <div class="hero-left">
+          <div class="hero-bg" aria-hidden="true" style="background-image: url('/img/schoolofdesign/sodthumb1.png');"></div>
+          <div class="hero-left-content">
+            <div class="category-stamp">
+              <span class="category-line" aria-hidden="true"></span>
+              <span class="category-text">Web Design</span>
+            </div>
+            <div role="heading" aria-level="1">
+              <span class="title-word"><span class="title-glyph">SCHOOL OF</span></span>
+              <span class="title-word"><span class="title-glyph">DESIGN</span></span>
+            </div>
+            <p class="hero-subtitle">Modern website redesign for George Brown College.</p>
+            <div class="deliverables" role="list">
+              <span class="d-tag" role="listitem">HTML</span>
+              <span class="d-tag" role="listitem">CSS</span>
+              <span class="d-tag" role="listitem">JS</span>
+            </div>
+          </div>
         </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+        <aside class="hero-right" aria-label="Project details">
+          <div class="year-block">
+            <span class="year-label">Timeline</span>
+            <span class="year-value">2 Weeks</span>
+            <span class="year-rule" aria-hidden="true"></span>
+          </div>
+          <ul class="meta-list">
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Category</span><span class="meta-value">Web Design</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Tools</span><span class="meta-value">HTML, CSS, JS</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Role</span><span class="meta-value">UI development</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Context</span><span class="meta-value">George Brown College</span></div></li>
+          </ul>
+          <div class="scroll-indicator" aria-hidden="true"><span class="scroll-track"><span class="scroll-thumb"></span></span><span class="scroll-text">Scroll to explore</span></div>
+        </aside>
       </div>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
@@ -660,26 +840,57 @@
     </section>
 
     <section id="project-visugenie" class="project-page d-none" data-project-name="Visugenie">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('/img/visugenie/visugenie-hero.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">VISUGENIE</h1>
-          <p class="cs-cover-subtitle">Brand Identity & Website Development — AI real estate visualization for agencies</p>
-          <div class="cs-cover-meta"><span>Product Design</span><span>3 weeks · HTML, CSS, JS, Figma, Cursor</span></div>
-          <p class="cs-hero-visit-wrap">
-            <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-hero">Visit Visugenie <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
-          </p>
+      <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+      <div class="hero">
+        <div class="v-divider" aria-hidden="true"></div>
+        <div class="hero-left">
+          <div class="hero-bg" aria-hidden="true" style="background-image: url('/img/visugenie/visugenie-hero.png');"></div>
+          <div class="hero-left-content">
+            <div class="category-stamp">
+              <span class="category-line" aria-hidden="true"></span>
+              <span class="category-text">Marketing Website Redesign</span>
+            </div>
+            <div role="heading" aria-level="1">
+              <span class="title-word"><span class="title-glyph"></span></span>
+              <span class="title-word"><span class="title-glyph">VISUGENIE</span></span>
+            </div>
+            <p class="hero-subtitle">Brand Identity &amp; Website Development — AI real estate visualization for agencies.</p>
+            <p class="cs-hero-visit-wrap">
+              <a href="https://visugenie.com/" target="_blank" rel="noopener noreferrer" class="cs-btn-visit-hero">Visit Visugenie <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+            </p>
+            <div class="deliverables" role="list">
+              <span class="d-tag" role="listitem">HTML, CSS, JS</span>
+              <span class="d-tag" role="listitem">Figma</span>
+              <span class="d-tag" role="listitem">Cursor</span>
+            </div>
+          </div>
         </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+        <aside class="hero-right" aria-label="Project details">
+          <div class="year-block">
+            <span class="year-label">Timeline</span>
+            <span class="year-value">3 Weeks Design & Stakeholder Management, <br> 1 Week Development</span>
+            <span class="year-rule" aria-hidden="true"></span>
+          </div>
+          <ul class="meta-list">
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Category</span><span class="meta-value">Web Design & Development</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Tools</span><span class="meta-value">HTML, CSS, JS, Figma, Cursor</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Role</span><span class="meta-value">Brand &amp; Web</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Context</span><span class="meta-value">Shipped Work</span></div></li>
+          </ul>
+          <div class="scroll-indicator" aria-hidden="true"><span class="scroll-track"><span class="scroll-thumb"></span></span><span class="scroll-text">Scroll to explore</span></div>
+        </aside>
       </div>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
           <span class="cs-chapter-number">01</span>
           <h2 class="cs-section-title">The Challenge</h2>
           <p class="cs-intro-text">Visugenie is an AI-powered real estate visualization platform that helps agencies like RE/MAX and Century 21 transform property listings with AI-generated staging and renovations. The original website failed to communicate the product's value clearly, resulting in high bounce rates and low conversion.</p>
-          <p class="cs-body-text">The site suffered from three critical issues: unclear messaging that left visitors confused about what the product actually does, weak visual hierarchy that buried key features, and a cluttered layout that distracted from the core value proposition.</p>
-          <p class="cs-body-text"><strong>Problem statement:</strong> Real estate agencies need to understand Visugenie's capabilities within 10 seconds of landing on the site, but the existing design made them work too hard to find answers.</p>
+          <ul class="cs-issue-list">
+            <li>Unclear messaging — visitors confused about what the product does</li>
+            <li>Weak visual hierarchy — key features buried</li>
+            <li>Cluttered layout — distracted from the core value proposition</li>
+          </ul>
+          <p class="cs-body-text"><span class="cs-problem-label">Problem statement:</span> Real estate agencies need to understand Visugenie's capabilities within 10 seconds of landing on the site, but the existing design made them work too hard to find answers.</p>
           <div class="cs-highlight">
             <p class="cs-highlight-text">Our research showed that <strong>68% of visitors</strong> left without scrolling past the hero section.</p>
           </div>
@@ -711,26 +922,21 @@
           <div class="cs-insight-blocks">
             <div class="cs-insight-block">
               <h3 class="cs-insight-title">Users scan, they don't read.</h3>
-              <p class="cs-insight-desc">Agents are time-starved and need to evaluate tools quickly. The hero section has 3–5 seconds to communicate value before they bounce. Technical jargon doesn't land—showing beats telling.</p>
+              <p class="cs-insight-desc">Agents are time-starved and need to evaluate tools quickly. The hero section has 3–5 seconds to communicate value before they bounce.</p>
             </div>
             <div class="cs-insight-block">
               <h3 class="cs-insight-title">No onboarding caused confusion.</h3>
-              <p class="cs-insight-desc">When users signed up, they weren't onboarded and were straight up dropped into the product with all the modes served to them, which overwhelmed them. If a user is a realtor, they should ONLY see realty-related products.</p>
+              <p class="cs-insight-desc">When users signed up, they weren't onboarded and were straight up dropped into the product with all the modes served to them, which overwhelmed them.</p>
             </div>
           </div>
-          <p class="cs-body-text" style="margin-top: 2rem;"><strong>Competitive analysis:</strong> Most competitors were either overly technical (targeting developers) or generic AI templates with vague lifestyle marketing. The opportunity was to split the difference: professional and clear, with a distinct voice that feels human, not algorithmic.</p>
+          
         </div>
       </section>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
           <span class="cs-chapter-number">03</span>
           <h2 class="cs-section-title">Design Strategy</h2>
-          <p class="cs-body-text">The redesign followed three principles:</p>
-          <ul class="cs-strategy-list">
-            <li>Clarity over cleverness</li>
-            <li>Proof over promises</li>
-            <li>Speed over perfection</li>
-          </ul>
+          
           <p class="cs-body-text"><strong>Information architecture</strong> — I restructured the site to answer the user's mental model in order:</p>
           <ol class="cs-strategy-list">
             <li><strong>What is this?</strong> — Hero with clear value prop.</li>
@@ -751,7 +957,7 @@
         <div class="cs-container-narrow">
           <span class="cs-chapter-number">04</span>
           <h2 class="cs-section-title">Before &amp; After</h2>
-          <p class="cs-body-text">The redesigned homepage communicates value immediately—clear headline, immediate proof with before/after right under the hero, consistent brand language, strong CTA with urgency copy, and clean hierarchy with single visual focus per section.</p>
+
 
           <div class="cs-before-after-grid-wrap">
           <div class="cs-before-after-grid">
@@ -866,31 +1072,52 @@
     </section>
 
     <section id="project-visual-platform" class="project-page d-none" data-project-name="CTRLBREAK">
-      <div class="cs-cover">
-        <div class="cs-cover-bg" style="background-image: url('/img/ctrlbreak/ctrl-red.png')"></div>
-        <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
-        <div class="cs-cover-content">
-          <h1 class="cs-cover-title">CTRLBREAK</h1>
-          <p class="cs-cover-subtitle">Exhibition identity for a Neville Brody retrospective</p>
-          <div class="cs-cover-meta"><span>Branding</span><span>Illustrator &middot; Figma &middot; InDesign</span></div>
+      <a href="#home" data-go-home class="cs-back-link"><i class="fas fa-chevron-left" aria-hidden="true"></i> home</a>
+      <div class="hero">
+        <div class="v-divider" aria-hidden="true"></div>
+        <div class="hero-left">
+          <div class="hero-bg" aria-hidden="true" style="background-image: url('/img/ctrlbreak/project-hero.png');"></div>
+          <div class="hero-left-content">
+            <div class="category-stamp">
+              <span class="category-line" aria-hidden="true"></span>
+              <span class="category-text">Branding</span>
+            </div>
+            <div role="heading" aria-level="1">
+              <span class="title-word"><span class="title-glyph">CTRL</span></span>
+              <span class="title-word"><span class="title-glyph">BREAK</span></span>
+            </div>
+            <p class="hero-subtitle">Exhibition identity for a Neville Brody retrospective.</p>
+            <div class="deliverables" role="list">
+              <span class="d-tag" role="listitem">Illustrator</span>
+              <span class="d-tag" role="listitem">Figma</span>
+              <span class="d-tag" role="listitem">InDesign</span>
+            </div>
+          </div>
         </div>
-        <div class="cs-cover-scroll-hint">Scroll to explore</div>
+        <aside class="hero-right" aria-label="Project details">
+          <div class="year-block">
+            <span class="year-label">Timeline</span>
+            <span class="year-value">3 Weeks Design + 1 Week Print Production</span>
+            <span class="year-rule" aria-hidden="true"></span>
+          </div>
+          <ul class="meta-list">
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Category</span><span class="meta-value">Branding</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Tools</span><span class="meta-value">Illustrator, Figma, InDesign</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Role</span><span class="meta-value">Exhibition Identity</span></div></li>
+            <li class="meta-item"><div class="meta-inner"><span class="meta-label">Context</span><span class="meta-value">Conceptual Pitchbook Design</span></div></li>
+          </ul>
+          <div class="scroll-indicator" aria-hidden="true"><span class="scroll-track"><span class="scroll-thumb"></span></span><span class="scroll-text">Scroll to explore</span></div>
+        </aside>
+      </div>
+      <div class="cs-ctrlbreak-overlap-img" aria-hidden="true">
+        <img src="/img/ctrlbreak/lines-overlay.png" alt="" loading="lazy" decoding="async" />
       </div>
       <section class="cs-section cs-reveal">
         <div class="cs-container-narrow">
           <span class="cs-chapter-number">01</span>
           <h2 class="cs-section-title">Breaking the rules, on purpose.</h2>
           <p class="cs-intro-text">How do you design an identity for a designer who spent his career dismantling everyone else's rules?</p>
-          <p class="cs-body-text">Neville Brody rewrote typography in the 1980s. As art director of The Face, he fractured letterforms, ignored grids, treated type as image. His work was aggressive, political, unapologetic.</p>
-          <p class="cs-body-text">The challenge wasn't to mimic his work—that would be lazy. It was to channel his ethos: breaking conventions requires understanding them first. CTRL+BREAK became the answer. A keyboard command that interrupts a running process.</p>
-          <div style="margin-top: 3rem;">
-            <span class="cs-label">Timeline</span>
-            <p class="cs-body-text" style="margin-bottom: 2rem;">3 weeks</p>
-            <span class="cs-label">Deliverables</span>
-            <p class="cs-body-text" style="margin-bottom: 2rem;">Logo system, exhibition graphics, brand guidelines</p>
-            <span class="cs-label">Context</span>
-            <p class="cs-body-text">School project — pitchbook stage</p>
-          </div>
+          <p class="cs-body-text"><span class="cs-problem-label">Challenge:</span> It wasn't about copying his work, that's the easy way out. The real challenge was tapping into his mindset. You can't break the rules if you don't actually understand them first.</p>
         </div>
       </section>
       <section class="cs-section cs-reveal">
@@ -908,8 +1135,6 @@
             <span class="cs-label">Typography</span>
             <p class="cs-body-text" style="margin-bottom: 2rem;"><strong>Punk Meets Precision</strong><br />Industrial typography, hard angles, stencil cuts—visual languages from protest posters. Raw energy with technical rigor.</p>
 
-            <span class="cs-label">Overview</span>
-            <p class="cs-body-text">This was a school project to design a complete exhibition identity and pitchbook. The pitchbook is a visual proposal showing how the identity would work across posters, signage, merchandise, and gallery spaces—designed to pitch the retrospective to museums and cultural institutions.</p>
           </div>
         </div>
       </section>
@@ -926,7 +1151,7 @@
       </section>
       <section class="cs-appendix cs-reveal">
         <div class="cs-container-narrow">
-          <h3 class="cs-appendix-title">Final Pitchbook</h3>
+          <h3 class="cs-appendix-title">Final Work</h3>
           <div class="pdf-viewer-container">
             <iframe src="/img/ctrlbreak/CTRLBREAK_PITCHBOOK.pdf" class="pdf-viewer" loading="lazy" title="CTRLBREAK pitchbook"></iframe>
             <a href="/img/ctrlbreak/CTRLBREAK_PITCHBOOK.pdf" target="_blank" class="pdf-mobile-btn"><i class="fas fa-file-pdf"></i> Open Pitchbook PDF</a>
@@ -959,14 +1184,13 @@
 
     <div id="lightbox" class="lightbox">
       <button class="lightbox-close">&times;</button>
-      <button class="lightbox-nav lightbox-prev" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
-      <button class="lightbox-nav lightbox-next" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
-      <img decoding="async" loading="lazy" src="" alt="" class="lightbox-img">
+      <button class="lightbox-nav lightbox-prev">&larr;</button>
+      <button class="lightbox-nav lightbox-next">&rarr;</button>
+      <img decoding="async" src="" alt="" class="lightbox-img">
     </div>
 
     <script defer src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
     <script defer src="topTextParticles.js"></script>
     <script defer src="app.js"></script>
-
   </body>
 </html>

@@ -4,46 +4,46 @@
   const WORD_MOBILE = "DOGA\nCIMEN";
   const MOBILE_BREAKPOINT = 768;
 
-  // Feel knobs
-  const SPRING = 0.01;
-  const DAMPING = 0.78;
-  const REPEL = 6;
-  const SWIRL = 2.2;
-  const MAX_SPEED = 20;
+  // Feel knobs — higher REPEL/SWIRL + MAX_SPEED = fast push + fast spin; DAMPING keeps it controlled
+  const SPRING = 0.0015;
+  const DAMPING = 0.84;
+  const REPEL = 1.2;
+  const SWIRL = 14;
+  const MAX_SPEED = 32;
 
   // Size / density knobs
   const TEXT_WIDTH_PX = 980;
-  const POINT_SIZE = 2.5;
+  const POINT_SIZE = 2.4;
   const SIZE_MIN = 1.5;
-  const SIZE_MAX = 5.5;
-  const SIZE_HEAT_UP = 0.05;
+  const SIZE_MAX = 6.5;
+  const SIZE_HEAT_UP = 0.2;
   const SIZE_HEAT_DECAY = 0.285;
-  const SIZE_LERP = 0.12;
+  const SIZE_LERP = 0.10;
 
-  const HEAT_UP = 0.18;
-  const HEAT_DECAY = 1;
+  const HEAT_UP = 0.24;
+  const HEAT_DECAY = 0.98;
   const HOT_SPRING_MIN = 0.05;
-  const HOT_DAMP_MAX = 0.89;
+  const HOT_DAMP_MAX = 0.86;
 
-  const FEATHER_PX = 80;
+  const FEATHER_PX = 0;
 
   const ACCENT = [255, 230, 109];
   const RED = [197, 34, 51];
 
   // Desktop click magnet feel
-  const MAGNET_PULL = 10.5;
-  const MAGNET_SWIRL = 2.2;
-  const MAGNET_DECAY = 0.86;
+  const MAGNET_PULL = 10;
+  const MAGNET_SWIRL = 3;
+  const MAGNET_DECAY = 0.88;
 
   // ── Flag-wave idle animation ──────────────────────────────────
   // Two sine layers for organic cloth motion. Displacement is in px.
   // Runs continuously but particles blend back to home when interacted.
-  const WAVE_AMP_X = 7.5;       // horizontal sway amplitude
-  const WAVE_AMP_Y = 4.2;       // vertical ripple amplitude
+  const WAVE_AMP_X = 6.5;       // horizontal sway amplitude
+  const WAVE_AMP_Y = 2.8;       // vertical ripple amplitude
   const WAVE_FREQ_X = 0.005;    // spatial freq along x-axis
   const WAVE_FREQ_Y = 0.007;    // spatial freq along y-axis
-  const WAVE_SPEED_1 = 0.026;   // primary wave speed (radians/frame)
-  const WAVE_SPEED_2 = 0.019;   // secondary wave speed (slightly offset)
+  const WAVE_SPEED_1 = 0.08;   // primary wave speed (radians/frame)
+  const WAVE_SPEED_2 = 0.025;   // secondary wave speed (slightly offset)
   const WAVE_PHASE_Y = 2.3;     // phase offset for y-layer variety
 
   window.addEventListener("DOMContentLoaded", () => {
@@ -57,7 +57,7 @@
       let lastW = 0;
       let lastH = 0;
       let radius = 140;
-      let sampleStep = 3;
+      let sampleStep = 4;
 
       // Cached wave time – avoids recalculating per-particle
       let waveT = 0;
@@ -279,6 +279,12 @@
           }
           this.pos.x += this.vel.x;
           this.pos.y += this.vel.y;
+
+          // Keep particles inside canvas (walls) — desktop + mobile
+          if (this.pos.x < 0) { this.pos.x = 0; this.vel.x = 0; }
+          if (this.pos.x > p.width) { this.pos.x = p.width; this.vel.x = 0; }
+          if (this.pos.y < 0) { this.pos.y = 0; this.vel.y = 0; }
+          if (this.pos.y > p.height) { this.pos.y = p.height; this.vel.y = 0; }
 
           // Size heat
           if (hoverT > 0) {

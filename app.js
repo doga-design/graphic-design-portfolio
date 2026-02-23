@@ -9,12 +9,17 @@ function throttle(fn,ms){var t=0;return function(){var n=Date.now();if(n-t>=ms){
 /* ── Scroll progress + page marker ── */
 var progressLine=d.getElementById("csProgressLine"),
     pageMarker=d.getElementById("csPageMarker"),
+    nextProjectBtn=d.getElementById("csNextProjectBtn"),
     prefersReduced=w.matchMedia("(prefers-reduced-motion:reduce)").matches;
 
 function updateScroll(){
   if(!b.classList.contains("is-project-view"))return;
   if(progressLine){var h=d.documentElement.scrollHeight-w.innerHeight;progressLine.style.width=(h>0?(w.scrollY/h)*100:0)+"%"}
   if(pageMarker){if(w.scrollY<300)pageMarker.classList.remove("visible");else pageMarker.classList.add("visible")}
+  if(nextProjectBtn&&!nextProjectBtn.classList.contains("d-none")){
+    var nearBottom=w.scrollY+w.innerHeight>=d.documentElement.scrollHeight-120;
+    if(nearBottom)nextProjectBtn.classList.add("at-bottom");else nextProjectBtn.classList.remove("at-bottom");
+  }
 }
 w.addEventListener("scroll",throttle(updateScroll,16),{passive:true});
 
@@ -98,17 +103,26 @@ d.addEventListener("DOMContentLoaded",function(){
     w.scrollTo({top:0,behavior:"smooth"});
     if(progressLine)progressLine.style.width="0%";
     if(pageMarker)pageMarker.classList.remove("visible");
+    if(nextProjectBtn)nextProjectBtn.classList.add("d-none");
   }
   function showProject(id){
     homeSection.classList.add("d-none");
     projectSections.forEach(function(s){s.classList.toggle("d-none",s.id!==id)});
     b.classList.add("is-project-view");
     w.scrollTo({top:0,behavior:"smooth"});
-    /* Reset progress + marker */
     if(progressLine)progressLine.style.width="0%";
     var sec=d.getElementById(id);
     if(sec&&pageMarker){pageMarker.textContent=sec.dataset.projectName||"";pageMarker.classList.remove("visible")}
-    /* Re-trigger cover animation */
+    if(nextProjectBtn){
+      var nextLink=sec?sec.querySelector(".cs-footer-nav a.project-link[data-project]"):null;
+      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-visugenie";
+      if(showNext&&nextLink){
+        nextProjectBtn.href=nextLink.getAttribute("href")||"#";
+        nextProjectBtn.dataset.project=nextLink.dataset.project||"";
+        nextProjectBtn.classList.remove("d-none");
+        nextProjectBtn.classList.remove("at-bottom");
+      }else nextProjectBtn.classList.add("d-none");
+    }
     if(sec){
       var cover=sec.querySelector(".cs-cover");
       if(cover){cover.classList.remove("cs-animate");void cover.offsetWidth;cover.classList.add("cs-animate")}
@@ -151,6 +165,31 @@ d.addEventListener("DOMContentLoaded",function(){
   d.querySelectorAll(".scroll-to-top-btn").forEach(function(btn){
     btn.addEventListener("click",function(){w.scrollTo({top:0,behavior:"smooth"})});
   });
+
+  /* ── Work cards expand / collapse ── */
+  var workRevealBtn=d.getElementById("workRevealBtn"),
+      workRevealText=workRevealBtn?workRevealBtn.querySelector(".work-reveal-btn-text"):null,
+      hiddenCards=d.querySelectorAll(".work-card--hidden");
+  if(workRevealBtn&&workRevealText&&hiddenCards.length){
+    workRevealBtn.addEventListener("click",function(){
+      var expanded=workRevealBtn.getAttribute("aria-expanded")==="true";
+      if(expanded){
+        hiddenCards.forEach(function(card){card.classList.remove("work-card--revealed")});
+        workRevealBtn.setAttribute("aria-expanded","false");
+        workRevealText.textContent="View all 6 projects";
+        w.requestAnimationFrame(function(){
+          w.scrollBy({top:-280,behavior:"smooth"});
+        });
+      }else{
+        hiddenCards.forEach(function(card){card.classList.add("work-card--revealed")});
+        workRevealBtn.setAttribute("aria-expanded","true");
+        workRevealText.textContent="View less";
+        w.requestAnimationFrame(function(){
+          w.scrollBy({top:280,behavior:"smooth"});
+        });
+      }
+    });
+  }
 
   /* ── Hover GIFs (desktop) / auto-play GIFs (mobile) ── */
   var isTouch=!matchMedia("(hover:hover)").matches;
