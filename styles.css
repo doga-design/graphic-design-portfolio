@@ -1534,18 +1534,21 @@ ol.cs-strategy-list { list-style-type: decimal; }
 .hero-gif-link { display: block; cursor: pointer; transition: opacity .3s ease; }
 .hero-gif-link:hover { opacity: .9; }
 
-/* ─── VISUGENIE HERO VISIT BUTTON ────────────────────────────── */
-#project-visugenie .cs-hero-visit-wrap {
+/* ─── HERO VISIT BUTTON (Visugenie, Bountt) ───────────────────── */
+#project-visugenie .cs-hero-visit-wrap,
+#project-bountt .cs-hero-visit-wrap {
   margin: 2rem 0 0;
   opacity: 0;
   transform: translateY(20px);
 }
-#project-visugenie .hero-left-content .cs-hero-visit-wrap {
+#project-visugenie .hero-left-content .cs-hero-visit-wrap,
+#project-bountt .hero-left-content .cs-hero-visit-wrap {
   margin-top: 1.5rem;
   opacity: 0;
   animation: a-up .6s cubic-bezier(0.16,1,0.3,1) 1.5s both;
 }
-#project-visugenie .cs-btn-visit-hero {
+#project-visugenie .cs-btn-visit-hero,
+#project-bountt .cs-btn-visit-hero {
   display: inline-block;
   padding: .75rem 1.5rem;
   font-size: var(--text-sm, .8125rem);
@@ -1561,7 +1564,8 @@ ol.cs-strategy-list { list-style-type: decimal; }
   font-weight: 500;
   transition: border-color .25s ease, background .25s ease, color .25s ease;
 }
-#project-visugenie .cs-btn-visit-hero:hover {
+#project-visugenie .cs-btn-visit-hero:hover,
+#project-bountt .cs-btn-visit-hero:hover {
   color: var(--accent);
   background: rgba(254,220,151,0.2);
   border-color: var(--accent);
@@ -1990,3 +1994,399 @@ ol.cs-strategy-list { list-style-type: decimal; }
 
 /* ─── SPECIAL LAYOUT: home main top padding ──────────────────── */
 #home main.container.py-5 { padding-top: 0 !important; }
+
+/* ─── BOUNTT PROJECT — CUSTOM COMPONENTS ─────────────────────── */
+
+/* Grey placeholder images */
+.bountt-placeholder-img {
+  background: #242424;
+  border-radius: 4px;
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+.bountt-placeholder-img--wide { aspect-ratio: 21/9; }
+.bountt-thumb-placeholder {
+  background: #242424;
+  border-radius: 4px;
+  display: block;
+}
+
+/* Horizontal auto-scroll strip */
+.bountt-scroll-strip {
+  width: 100%;
+  overflow: hidden;
+  margin: 3rem 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.bountt-scroll-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: bounttScroll 28s linear infinite;
+}
+.bountt-scroll-item {
+  flex-shrink: 0;
+  width: 260px;
+  height: 160px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+@keyframes bounttScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bountt-scroll-track { animation: none; }
+}
+
+/* Research paragraph — no container on section; splits get individual boxes */
+.bountt-research-callout {
+  margin: 1.75rem 0;
+}
+.bountt-research-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.bountt-research-icon {
+  flex-shrink: 0;
+  color: var(--accent);
+  opacity: 0.85;
+}
+.bountt-research-label {
+  font-size: var(--text-sm, 0.8125rem);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.bountt-research-callout .cs-body-text {
+  margin: 0;
+}
+.bountt-research-lead {
+  display: block;
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.6em;
+  line-height: 1.35;
+}
+.bountt-research-split {
+  display: block;
+  margin-top: 0.5em;
+  padding: 0.65rem 1rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 0.95em;
+}
+.bountt-research-split + .bountt-research-split { margin-top: 0.4em; }
+
+/* Highlighted callout */
+.bountt-highlight {
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  margin: 2.5rem 0;
+  background: rgba(254, 220, 151, 0.05);
+  border-radius: 0 4px 4px 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-style: normal;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+}
+.bountt-highlight strong { color: var(--accent); font-weight: 500; }
+
+/* Separator line above second research callout (not above stat grid) */
+.bountt-research-callout + .bountt-research-callout {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 1.75rem;
+  margin-top: 1.75rem;
+}
+/* Count-up stats grid */
+.bountt-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 0 0 3rem;
+  padding: 0 0 2.5rem;
+}
+@media (max-width: 576px) {
+  .bountt-stat-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+.bountt-stat-item { display: flex; flex-direction: column; gap: 0.75rem; }
+.bountt-stat-number-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1em;
+  line-height: 1;
+}
+.bountt-stat-number {
+  font-family: 'AwesomeSerif', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+}
+.bountt-stat-suffix {
+  font-family: 'AwesomeSerif', serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--accent);
+  opacity: 0.6;
+  line-height: 1;
+}
+.bountt-stat-label {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Competitive map placeholder — smaller, no hover (interactive elements added later) */
+.bountt-map-placeholder {
+  margin: 2.5rem auto;
+  max-width: 78%;
+}
+.bountt-map-placeholder img {
+  transition: none;
+}
+.bountt-map-placeholder img:hover {
+  transform: none;
+}
+
+/* ─── BOUNTT: DECISION LIST (Section 03) ─────────────────────── */
+.bountt-decision-list {
+  margin-top: 3rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.bountt-decision-item {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 2rem;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .bountt-decision-item {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+}
+.bountt-decision-number {
+  font-family: 'AwesomeSerif', serif;
+  font-style: italic;
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  padding-top: 0.05em;
+}
+.bountt-decision-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.bountt-decision-title {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 500;
+  color: var(--accent);
+  margin: 0;
+  line-height: 1.4;
+}
+.bountt-decision-content .cs-body-text {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+/* ─── BOUNTT: SIDE-BY-SIDE COMPARISON ────────────────────────── */
+.bountt-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 640px) {
+  .bountt-comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    max-width: 100%;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+.bountt-comparison-col { display: flex; flex-direction: column; gap: 0.75rem; }
+.bountt-comparison-label {
+  font-family: "SF Mono","Cascadia Mono","Consolas",monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+}
+.bountt-comparison-img-wrap {
+  border-radius: 6px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.bountt-comparison-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.bountt-comparison-caption {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ─── BOUNTT: WIREFRAME ROW (Section 04) ─────────────────────── */
+.bountt-wireframe-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.bountt-wireframe-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.bountt-wireframe-label {
+  font-family: "SF Mono","Cascadia Mono","Consolas",monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--accent);
+  opacity: 0.8;
+}
+.bountt-wireframe-img-wrap {
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bountt-wireframe-img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: none !important;
+  cursor: default;
+}
+.bountt-wireframe-img-wrap img:hover,
+.bountt-wireframe-img-wrap .gallery-thumb:hover {
+  transform: none !important;
+  opacity: 1;
+}
+.bountt-placeholder-img--mobile {
+  aspect-ratio: 9/16;
+}
+.bountt-flow-overview {
+  margin-top: 1.5rem;
+}
+.bountt-fullwidth-media-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.bountt-fullwidth-media-item img {
+  transition: none !important;
+  cursor: default;
+}
+.bountt-fullwidth-media-item img:hover {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+/* ─── BOUNTT: BUILD SCREENSHOT (Section 05) ──────────────────── */
+.bountt-build-screenshot {
+  margin-top: 2.5rem;
+}
+
+/* ─── BOUNTT: WIP BANNER ─────────────────────────────────────── */
+.bountt-wip-banner {
+  padding: 5rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.bountt-wip-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(254,220,151,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bountt-wip-inner {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: a-up .9s cubic-bezier(0.16,1,0.3,1) .15s both;
+}
+.bountt-wip-icon {
+  display: block;
+  font-family: 'AwesomeSerif', serif;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  opacity: 0.9;
+  letter-spacing: 0;
+}
+.bountt-wip-text {
+  font-size: clamp(0.88rem, 1.4vw, 1rem);
+  line-height: 1.8;
+  color: var(--accent);
+  margin: 0;
+}
+
+/* ─── BOUNTT: SITE BUTTON ────────────────────────────────────── */
+.bountt-site-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.cs-reveal.cs-revealed .bountt-site-btn-wrap {
+  animation: a-up .8s cubic-bezier(0.16,1,0.3,1) .5s both;
+}
+.bountt-site-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.15rem 2.75rem;
+  font-size: 0.95rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  text-transform: lowercase;
+  text-decoration: none;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  transition: opacity .25s ease, transform .25s ease, box-shadow .4s ease;
+  animation: bounttBtnGlow 3s ease-in-out 1.2s infinite;
+}
+.bountt-site-btn i {
+  color: currentColor;
+}
+.bountt-site-btn:hover {
+  opacity: .88;
+  transform: translateY(-2px);
+}
+@keyframes bounttBtnGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(254,220,151,0); }
+  50%       { box-shadow: 0 0 28px 6px rgba(254,220,151,0.22); }
+}

@@ -115,7 +115,7 @@ d.addEventListener("DOMContentLoaded",function(){
     if(sec&&pageMarker){pageMarker.textContent=sec.dataset.projectName||"";pageMarker.classList.remove("visible")}
     if(nextProjectBtn){
       var nextLink=sec?sec.querySelector(".cs-footer-nav a.project-link[data-project]"):null;
-      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-visugenie";
+      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-bountt";
       if(showNext&&nextLink){
         nextProjectBtn.href=nextLink.getAttribute("href")||"#";
         nextProjectBtn.dataset.project=nextLink.dataset.project||"";
@@ -251,4 +251,32 @@ d.addEventListener("DOMContentLoaded",function(){
   function copyEmail(e){e.preventDefault();var email=this.dataset.email;if(!email)return;navigator.clipboard.writeText(email).then(function(){showToastAt(e)}).catch(function(){var t=d.createElement("textarea");t.value=email;t.style.position="fixed";t.style.opacity="0";b.appendChild(t);t.select();d.execCommand("copy");b.removeChild(t);showToastAt(e)})}
   d.querySelectorAll("[data-email]").forEach(function(el){el.addEventListener("click",copyEmail)});
 });
+})();
+
+/* ── Bountt: count-up on scroll ── */
+(function(){
+  function animateCountUp(el){
+    var target=parseInt(el.dataset.target,10);
+    var duration=1400;
+    var start=performance.now();
+    function tick(now){
+      var elapsed=Math.min(now-start,duration);
+      var progress=elapsed/duration;
+      var eased=1-Math.pow(1-progress,3);
+      el.textContent=Math.round(eased*target);
+      if(elapsed<duration){requestAnimationFrame(tick);}
+      else{el.textContent=target;}
+    }
+    requestAnimationFrame(tick);
+  }
+  var countObserver=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting&&!entry.target.dataset.counted){
+        entry.target.dataset.counted="1";
+        animateCountUp(entry.target);
+        countObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.3});
+  document.querySelectorAll("[data-count-up]").forEach(function(el){countObserver.observe(el);});
 })();
