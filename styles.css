@@ -2086,15 +2086,15 @@ ol.cs-strategy-list { list-style-type: decimal; }
 
 /* Highlighted callout */
 .bountt-highlight {
-  border-left: 3px solid var(--accent);
   padding: 1.25rem 1.5rem;
   margin: 2.5rem 0;
-  background: rgba(254, 220, 151, 0.05);
-  border-radius: 0 4px 4px 0;
   font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   font-style: normal;
   line-height: 1.7;
-  color: rgba(255,255,255,0.85);
+  color: var(--accent);
+  font-family: "IBM Plex Sans", sans-serif;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
 }
 .bountt-highlight strong { color: var(--accent); font-weight: 500; }
 
@@ -2231,7 +2231,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   opacity: 0.7;
 }
 .bountt-comparison-img-wrap {
-  border-radius: 6px;
+  border-radius: 15px;
   overflow: hidden;
   flex: 1;
   min-height: 0;
@@ -2242,6 +2242,10 @@ ol.cs-strategy-list { list-style-type: decimal; }
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: inherit;
+}
+.bountt-comparison-img--splitwise {
+  object-fit: contain;
 }
 .bountt-comparison-caption {
   font-size: 0.78rem;

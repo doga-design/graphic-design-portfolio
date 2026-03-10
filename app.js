@@ -132,7 +132,7 @@ d.addEventListener("DOMContentLoaded",function(){
     if(sec&&pageMarker){pageMarker.textContent=sec.dataset.projectName||"";pageMarker.classList.remove("visible")}
     if(nextProjectBtn){
       var nextLink=sec?sec.querySelector(".cs-footer-nav a.project-link[data-project]"):null;
-      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-bountt";
+      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-bountt"||id==="project-visugenie";
       if(showNext&&nextLink){
         nextProjectBtn.href=nextLink.getAttribute("href")||"#";
         nextProjectBtn.dataset.project=nextLink.dataset.project||"";
