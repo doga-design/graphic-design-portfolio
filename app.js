@@ -85,13 +85,30 @@ d.addEventListener("DOMContentLoaded",function(){
   /* ── Filter logic ── */
   var filterLinks=d.querySelectorAll(".filter-link"),
       cards=d.querySelectorAll(".work-card");
+  // Mark originally hidden cards once so we can restore them when going back to "all"
+  cards.forEach(function(c){
+    if(c.classList.contains("work-card--hidden"))c.dataset.originallyHidden="1";
+  });
   filterLinks.forEach(function(link){
     link.addEventListener("click",function(e){
       e.preventDefault();
       filterLinks.forEach(function(l){l.classList.remove("active")});
       link.classList.add("active");
       var f=link.dataset.filter;
-      cards.forEach(function(c){c.classList.toggle("d-none",f!=="all"&&c.dataset.category!==f)});
+      cards.forEach(function(c){
+        // Restore hidden state for originally-hidden unrevealed cards before each filter run
+        if(c.dataset.originallyHidden&&!c.classList.contains("work-card--revealed")){
+          c.classList.add("work-card--hidden");
+        }
+        c.classList.remove("d-none");
+        if(f!=="all"){
+          if(c.dataset.category===f){
+            c.classList.remove("work-card--hidden"); // force-show matching hidden cards
+          }else{
+            c.classList.add("d-none"); // hide non-matching
+          }
+        }
+      });
     });
   });
 
