@@ -82,6 +82,31 @@ d.addEventListener("DOMContentLoaded",function(){
     lbTargets[i].addEventListener("click",function(){lbOpen(this)});
   }
 
+  /* dd-inline-image-row expand overlay */
+  var ddExpand=d.getElementById("dd-inline-expand"),
+      ddExpandImg=ddExpand&&ddExpand.querySelector(".dd-inline-expand-img"),
+      ddExpandClose=ddExpand&&ddExpand.querySelector(".dd-inline-expand-close");
+  function closeDDExpand(){
+    if(!ddExpand)return;
+    ddExpand.classList.remove("active");
+    b.style.overflow="";
+    ddExpand.setAttribute("aria-hidden","true");
+  }
+  if(ddExpand&&ddExpandImg){
+    d.querySelectorAll(".dd-inline-image-row img").forEach(function(img){
+      img.addEventListener("click",function(){
+        ddExpandImg.src=this.src;
+        ddExpandImg.alt=this.alt;
+        ddExpand.classList.add("active");
+        b.style.overflow="hidden";
+        ddExpand.setAttribute("aria-hidden","false");
+      });
+    });
+    ddExpand.addEventListener("click",function(e){if(e.target===ddExpand)closeDDExpand()});
+    if(ddExpandClose)ddExpandClose.addEventListener("click",closeDDExpand);
+    d.addEventListener("keydown",function(e){if(ddExpand.classList.contains("active")&&e.key==="Escape")closeDDExpand()});
+  }
+
   /* ── Filter logic ── */
   var filterLinks=d.querySelectorAll(".filter-link"),
       cards=d.querySelectorAll(".work-card");
@@ -132,7 +157,7 @@ d.addEventListener("DOMContentLoaded",function(){
     if(sec&&pageMarker){pageMarker.textContent=sec.dataset.projectName||"";pageMarker.classList.remove("visible")}
     if(nextProjectBtn){
       var nextLink=sec?sec.querySelector(".cs-footer-nav a.project-link[data-project]"):null;
-      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-bountt"||id==="project-visugenie";
+      var showNext=id==="project-visual-platform"||id==="project-ferns-sons"||id==="project-bountt"||id==="project-visugenie"||id==="project-rgd-distro-disco";
       if(showNext&&nextLink){
         nextProjectBtn.href=nextLink.getAttribute("href")||"#";
         nextProjectBtn.dataset.project=nextLink.dataset.project||"";
