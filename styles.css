@@ -2491,6 +2491,110 @@ a:hover .dd-card-thumb {
 /* ── Chapter numbers tinted orange ── */
 #project-rgd-distro-disco .cs-chapter-number { color: var(--dd-orange); }
 
+/* ── Exploration media (rebuild) ── */
+.dd-exploration-media {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.dd-exploration-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 260px));
+  gap: 1.25rem;
+  align-items: start;
+  justify-content: center;
+}
+
+.dd-exploration-tile { margin: 0; }
+.dd-exploration-wide { margin: 0; }
+
+.dd-exploration-caption {
+  margin: 0 0 .65rem 0;
+}
+
+.dd-exploration-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  display: inline-block;
+}
+
+.dd-exploration-kicker--active { color: var(--dd-orange); }
+
+.dd-exploration-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.025);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.55);
+}
+
+.dd-exploration-frame--phone {
+  aspect-ratio: auto;
+  width: min(260px, 44vw);
+  margin: 0 auto;
+}
+
+.dd-exploration-frame--phone > img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.dd-exploration-frame--wide { aspect-ratio: auto; }
+.dd-exploration-frame--wide-tall { aspect-ratio: auto; }
+
+.dd-exploration-frame > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Phone mockups must preserve intrinsic proportions */
+.dd-exploration-frame.dd-exploration-frame--phone > img {
+  height: auto;
+  object-fit: contain;
+}
+
+/* Wide exploration visuals should not crop on mobile */
+.dd-exploration-frame.dd-exploration-frame--wide > img,
+.dd-exploration-frame.dd-exploration-frame--wide-tall > img {
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .dd-exploration-compare {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dd-exploration-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 1.6rem;
+  }
+  .dd-exploration-frame--wide {
+    aspect-ratio: auto;
+  }
+  .dd-exploration-frame--wide-tall {
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .dd-exploration-compare {
+    grid-template-columns: 1fr;
+  }
+  .dd-exploration-frame--phone {
+    width: min(320px, 92%);
+  }
+}
+
 /* ── Asset placeholder blocks ── */
 .dd-asset-placeholder {
   width: 100%;
@@ -2832,13 +2936,14 @@ a:hover .dd-card-thumb {
   .dd-ui-grid           { grid-template-columns: repeat(2, 1fr); }
   .dd-code-content pre  { overflow-x: auto; }
   .dd-motion-demo__head { flex-direction: column; gap: 0.75rem; }
+  .dd-direction-grid    { flex-direction: column; align-items: center; }
+  .dd-direction-item    { width: 100%; }
+  .dd-direction-thumb   { max-width: 100%; width: 100%; }
 }
 
 @media (max-width: 600px) {
   .dd-inline-image-row          { flex-direction: column; align-items: center; }
   .dd-inline-image-row img      { max-width: 100%; }
-  .dd-direction-grid            { flex-direction: column; align-items: center; }
-  .dd-direction-thumb           { max-width: 100%; width: 100%; }
 }
 
 /* ── iPhone prototype frame ── */
@@ -3474,5 +3579,16 @@ button, [role="button"], .nav-item, .demo-card, .donate-icon-btn { cursor: point
     width: 100%;
     max-width: 390px;
     padding: 5px;
+  }
+}
+
+/* Wider bottom-nav on small screens */
+@media (max-width: 700px) {
+  .nav-demo-wrapper {
+    max-width: none;
+  }
+  .bottom-nav {
+    max-width: none;
+    width: calc(100% - 16px);
   }
 }
