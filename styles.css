@@ -338,7 +338,7 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
 /* Gallery images */
 .gallery-img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 0.5rem;
   filter: grayscale(1);
