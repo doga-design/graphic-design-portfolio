@@ -3381,6 +3381,7 @@ a:hover .dd-card-thumb {
   gap: 2rem;
 }
 .dd-micro-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+.dd-micro-item:last-child { border-bottom: none; }
 .dd-micro-item-text {
   max-width: 640px;
   width: 100%;
@@ -3552,10 +3553,9 @@ button, [role="button"], .nav-item, .demo-card, .donate-icon-btn { cursor: point
 .demo-panel .demo-btn { box-shadow: rgba(0,0,0,0.6) 0px 2px 4px, rgba(0,0,0,0.5) 0px 7px 13px -3px, rgba(0,0,0,0.3) 0px -3px 0px inset; }
 .demo-panel .demo-card { box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
 .demo-panel .nav-demo-wrapper { filter: drop-shadow(0 8px 32px rgba(0,0,0,0.6)); }
-.demo-panel .rain-demo-container { box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
 .demo-panel .demo-panel-label { color: rgba(130,185,255,0.5); }
-.demo-panel .rain-trigger-btn { border-color: rgba(130,185,255,0.5); color: rgba(130,185,255,0.8); }
-.demo-panel .rain-trigger-btn:hover { background: rgba(130,185,255,0.1); color: rgba(130,185,255,1); }
+.demo-panel .dd-demo-btn-outline { border-color: rgba(130,185,255,0.5); color: rgba(130,185,255,0.8); }
+.demo-panel .dd-demo-btn-outline:hover { background: rgba(130,185,255,0.1); color: rgba(130,185,255,1); }
 .demo-panel-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9896A8; margin-top: 8px; }
 
 /* ── Slide to Confirm ── */
@@ -3657,13 +3657,9 @@ button, [role="button"], .nav-item, .demo-card, .donate-icon-btn { cursor: point
 @keyframes globe-accent-pop { 0%{transform:scale(1)} 40%{transform:scale(1.14)} 65%{transform:scale(0.93)} 100%{transform:scale(1)} }
 @keyframes spark-flick { 0%{transform:scale(1) rotate(0deg)} 35%{transform:scale(1.4) rotate(8deg)} 65%{transform:scale(0.9) rotate(-3deg)} 100%{transform:scale(1) rotate(0deg)} }
 
-/* ── Item Rain ── */
-.rain-demo-container { position: relative; width: 240px; height: 280px; background: #F8F7F4; border-radius: 20px; overflow: hidden; border: 1px solid #E8E6E0; }
-.rain-demo-label-inner { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #9896A8; pointer-events: none; }
-.rain-trigger-btn { margin-top: 16px; padding: 10px 20px; border: 1.5px solid #23214A; background: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #23214A; cursor: pointer; transition: background 0.15s, color 0.15s; }
-.rain-trigger-btn:hover { background: #23214A; color: white; }
-
-@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+/* ── Demo buttons (shared) ── */
+.dd-demo-btn-outline { margin-top: 16px; padding: 10px 20px; border: 1.5px solid #23214A; background: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #23214A; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.dd-demo-btn-outline:hover { background: #23214A; color: white; }
 
 /* ── Interaction demo code panels ── */
 .dd-code-panel { width: 100%; background: rgba(8,18,32,0.7); border: 1px solid rgba(90,140,210,0.18); border-radius: 12px; overflow: hidden; }

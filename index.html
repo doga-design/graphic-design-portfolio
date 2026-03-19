@@ -1913,7 +1913,7 @@
                     </div>
                   </div>
                 </div>
-                <button id="slide-reset-btn" class="rain-trigger-btn" style="display:none;">Reset</button>
+                <button id="slide-reset-btn" class="dd-demo-btn-outline" style="display:none;">Reset</button>
                 <p class="demo-panel-label">Drag right to confirm</p>
               </div>
               <div class="dd-code-panel">
@@ -2172,63 +2172,6 @@ nav.<span class="t-fn">querySelectorAll</span>(<span class="t-str">'.nav-item'</
     item.<span class="t-fn">addEventListener</span>(<span class="t-str">'click'</span>,
       <span class="t-fn">function</span>() { <span class="t-fn">activate</span>(<span class="t-key">this</span>); });
   });</pre></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 04 · Item rain -->
-            <div class="dd-micro-item cs-reveal">
-              <div class="dd-micro-item-text">
-                <span class="dd-interaction-label">Item rain</span>
-                <p class="dd-interaction-desc">When the donation confirmation page loads, icons of the user's confirmed items fall from the top of the screen — <strong>one icon per unit donated, sized inversely to total quantity.</strong> Particles use real gravity acceleration and air resistance.</p>
-              </div>
-              <div class="demo-panel" style="min-height:340px; padding:24px; border-radius:12px; margin-top:0.5rem;">
-                <svg class="bp-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                  <line x1="0" y1="300" x2="400" y2="0" stroke="rgba(90,140,210,0.08)" stroke-width="0.6" stroke-dasharray="3,3"/>
-                  <line x1="0" y1="0" x2="400" y2="300" stroke="rgba(90,140,210,0.08)" stroke-width="0.6" stroke-dasharray="3,3"/>
-                  <circle cx="0" cy="300" r="3" fill="rgba(130,185,255,0.15)"/>
-                  <circle cx="400" cy="0" r="3" fill="rgba(130,185,255,0.15)"/>
-                  <path d="M 0 300 C 64 0 120 0 400 0" fill="none" stroke="rgba(130,185,255,0.12)" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                <div class="rain-demo-container" id="rain-demo-container">
-                  <div class="rain-demo-label-inner">Confirmed ✓</div>
-                </div>
-                <button class="rain-trigger-btn" id="rain-trigger-btn">Rain items</button>
-                <p class="demo-panel-label">Tap to replay</p>
-              </div>
-              <div class="dd-code-panel">
-                <div class="dd-code-panel-tabs">
-                  <button class="dd-code-tab active" data-ddtab="cp-rain-js" data-ddgroup="cp-rain">JS</button>
-                </div>
-                <div class="dd-code-content">
-                  <div class="dd-code-pane active" id="cp-rain-js"><pre><span class="t-fn">function</span> <span class="t-fn">drop</span>(emoji) {
-  <span class="t-key">var</span> el    = document.<span class="t-fn">createElement</span>(<span class="t-str">'div'</span>);
-  <span class="t-key">var</span> size  = <span class="t-num">18</span> + Math.<span class="t-fn">random</span>() * <span class="t-num">18</span>;
-  <span class="t-key">var</span> x     = <span class="t-num">5</span>  + Math.<span class="t-fn">random</span>() * <span class="t-num">85</span>; <span class="t-cmt">// %</span>
-  <span class="t-key">var</span> vy    = <span class="t-num">1.2</span> + Math.<span class="t-fn">random</span>() * <span class="t-num">0.8</span>;
-  <span class="t-key">var</span> drift = (Math.<span class="t-fn">random</span>() - <span class="t-num">0.5</span>) * <span class="t-num">0.8</span>;
-  <span class="t-key">var</span> t = <span class="t-num">0</span>, opacity = <span class="t-num">1</span>;
-
-  el.style.cssText = <span class="t-str">'position:absolute;font-size:'</span>
-    + size + <span class="t-str">'px;left:'</span> + x + <span class="t-str">'%;'</span>
-    + <span class="t-str">'top:-'</span> + (size + <span class="t-num">8</span>) + <span class="t-str">'px;pointer-events:none'</span>;
-  container.<span class="t-fn">appendChild</span>(el);
-
-  (<span class="t-fn">function</span> <span class="t-fn">tick</span>() {
-    vy *= <span class="t-num">0.992</span>;        <span class="t-cmt">// air resistance</span>
-    vy += <span class="t-num">0.18</span>;         <span class="t-cmt">// gravity</span>
-    t  += <span class="t-num">0.05</span>;
-    <span class="t-key">var</span> y = <span class="t-fn">parseFloat</span>(el.style.top) + vy;
-    el.style.top  = y + <span class="t-str">'px'</span>;
-    el.style.left = (x + Math.<span class="t-fn">sin</span>(t) * <span class="t-num">2</span> * drift) + <span class="t-str">'%'</span>;
-    <span class="t-key">if</span> (y > container.clientHeight) {
-      opacity -= <span class="t-num">0.06</span>;
-      el.style.opacity = opacity;
-      <span class="t-key">if</span> (opacity &lt;= <span class="t-num">0</span>) { el.<span class="t-fn">remove</span>(); <span class="t-key">return</span>; }
-    }
-    <span class="t-fn">requestAnimationFrame</span>(tick);
-  })();
-}</pre></div>
                 </div>
               </div>
             </div>
@@ -2525,76 +2468,6 @@ nav.<span class="t-fn">querySelectorAll</span>(<span class="t-str">'.nav-item'</
             activate(this.closest('.nav-item'));
           });
         }
-      })();
-
-      /* ──────────────────────────────────────────────────────────────────
-         04 · ITEM RAIN
-      ────────────────────────────────────────────────────────────────── */
-      (function () {
-        var container  = document.getElementById('rain-demo-container');
-        var triggerBtn = document.getElementById('rain-trigger-btn');
-        if (!container || !triggerBtn) return;
-
-        var emojis    = ['🧥','👟','🧢','👜','🧤','🧣','👕','👖','🥾','🎒'];
-        var animating = false;
-
-        function drop(emoji) {
-          var el = document.createElement('div');
-          var size = 18 + Math.random() * 18;
-          el.style.cssText = [
-            'position:absolute',
-            'font-size:' + size + 'px',
-            'line-height:1',
-            'left:' + (5 + Math.random() * 85) + '%',
-            'top:-' + (size + 8) + 'px',
-            'pointer-events:none',
-            'user-select:none',
-            'z-index:4'
-          ].join(';');
-          el.textContent = emoji;
-          container.appendChild(el);
-
-          var vy = 1.8 + Math.random() * 2.2;
-          var vx = (Math.random() - 0.5) * 1.6;
-          var y  = -(size + 8);
-          var x  = parseFloat(el.style.left);
-          var t  = 0;
-          var h  = container.offsetHeight;
-
-          (function tick() {
-            vy += 0.22;
-            vy *= 0.995;
-            vx += Math.sin(t * 0.06) * 0.04;
-            y  += vy;
-            x  += vx;
-            t++;
-            el.style.top  = y + 'px';
-            el.style.left = x + '%';
-            if (y < h + size + 20) requestAnimationFrame(tick);
-            else el.remove();
-          })();
-        }
-
-        function rain() {
-          if (animating) return;
-          animating = true;
-          // clear leftover particles
-          Array.prototype.forEach.call(
-            container.querySelectorAll('div:not(.rain-demo-label-inner)'),
-            function (el) { el.remove(); }
-          );
-          var total = 22 + Math.floor(Math.random() * 8);
-          for (var i = 0; i < total; i++) {
-            (function (idx) {
-              setTimeout(function () {
-                drop(emojis[Math.floor(Math.random() * emojis.length)]);
-                if (idx === total - 1) setTimeout(function () { animating = false; }, 3500);
-              }, idx * 70);
-            })(i);
-          }
-        }
-
-        triggerBtn.addEventListener('click', rain);
       })();
 
       // ── Interaction demo code tabs ──────────────────────────────────────
