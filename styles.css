@@ -1563,6 +1563,31 @@ ol.cs-strategy-list { list-style-type: decimal; }
   align-items: center;
 }
 
+/* Case-study footer nav buttons: same pill/glass style, just white */
+.cs-footer-nav .cs-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  padding: .75rem 1.5rem;
+  font-size: var(--text-sm, .8125rem);
+  text-transform: lowercase;
+  color: #ffffff !important;
+  background: rgba(21,21,21,0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255,255,255,0.6);
+  border-radius: 50px;
+  text-decoration: none;
+  transition: border-color .25s ease, background .25s ease, color .25s ease, transform .2s ease, opacity .3s ease;
+}
+
+.cs-footer-nav .cs-btn-secondary:hover {
+  color: #ffffff !important;
+  background: rgba(254,220,151,0.2);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
 /* Reveal system */
 .cs-reveal {
   opacity: 0;
