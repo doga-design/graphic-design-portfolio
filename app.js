@@ -38,49 +38,12 @@ function observeReveals(root){
   }
 }
 
-/* ── Lightbox ── */
-var lightbox=d.getElementById("lightbox"),
-    lbImg=lightbox.querySelector(".lightbox-img"),
-    lbClose=lightbox.querySelector(".lightbox-close"),
-    lbPrev=lightbox.querySelector(".lightbox-prev"),
-    lbNext=lightbox.querySelector(".lightbox-next"),
-    curImgs=[],curIdx=0;
-
-function lbShow(idx){if(curImgs[idx]){lbImg.src=curImgs[idx].src;lbImg.alt=curImgs[idx].alt;curIdx=idx;lbPrev.style.display=curIdx>0?"block":"none";lbNext.style.display=curIdx<curImgs.length-1?"block":"none"}}
-
-function lbOpen(img){
-  var sec=img.closest(".project-page");
-  curImgs=sec?Array.from(sec.querySelectorAll(".project-hero-frame img:not(.hero-gif-link img),.gallery-thumb")):[ img];
-  curIdx=curImgs.indexOf(img);
-  lbShow(curIdx);lightbox.classList.add("active");b.style.overflow="hidden";
-}
-function lbCloseFn(){lightbox.classList.remove("active");b.style.overflow=""}
-
-lbClose.addEventListener("click",lbCloseFn);
-lightbox.addEventListener("click",function(e){if(e.target===lightbox)lbCloseFn()});
-lbPrev.addEventListener("click",function(e){e.stopPropagation();if(curIdx>0)lbShow(curIdx-1)});
-lbNext.addEventListener("click",function(e){e.stopPropagation();if(curIdx<curImgs.length-1)lbShow(curIdx+1)});
-d.addEventListener("keydown",function(e){
-  if(!lightbox.classList.contains("active"))return;
-  if(e.key==="Escape")lbCloseFn();
-  else if(e.key==="ArrowLeft"&&curIdx>0)lbShow(curIdx-1);
-  else if(e.key==="ArrowRight"&&curIdx<curImgs.length-1)lbShow(curIdx+1);
-});
-
 /* ── DOM Ready ── */
 d.addEventListener("DOMContentLoaded",function(){
   var homeSection=d.getElementById("home"),
       projectSections=d.querySelectorAll(".project-page"),
       projectLinks=d.querySelectorAll(".project-link"),
       homeLinks=d.querySelectorAll("[data-go-home]");
-
-  /* Setup lightbox click handlers */
-  var lbTargets=d.querySelectorAll(".project-hero-frame img:not(.hero-gif-link img),.gallery-thumb");
-  for(var i=0;i<lbTargets.length;i++){
-    if(lbTargets[i].closest(".hero-gif-link"))continue;
-    lbTargets[i].style.cursor="pointer";
-    lbTargets[i].addEventListener("click",function(){lbOpen(this)});
-  }
 
   /* dd-inline-image-row expand overlay */
   var ddExpand=d.getElementById("dd-inline-expand"),
@@ -293,6 +256,60 @@ d.addEventListener("DOMContentLoaded",function(){
   function copyEmail(e){e.preventDefault();var email=this.dataset.email;if(!email)return;navigator.clipboard.writeText(email).then(function(){showToastAt(e)}).catch(function(){var t=d.createElement("textarea");t.value=email;t.style.position="fixed";t.style.opacity="0";b.appendChild(t);t.select();d.execCommand("copy");b.removeChild(t);showToastAt(e)})}
   d.querySelectorAll("[data-email]").forEach(function(el){el.addEventListener("click",copyEmail)});
 });
+})();
+
+/* ── Pitchbook Carousel ── */
+(function(){
+  var carousel=document.getElementById("pbCarousel");
+  if(!carousel)return;
+  var slides=Array.from(carousel.querySelectorAll(".pb-slide"));
+  var dots=Array.from(carousel.querySelectorAll(".pb-dot"));
+  var thumbPrevImg=carousel.querySelector(".pb-thumb--prev .pb-thumb-img");
+  var thumbNextImg=carousel.querySelector(".pb-thumb--next .pb-thumb-img");
+  var counter=carousel.querySelector(".pb-counter");
+  var total=slides.length;
+  var current=0;
+
+  function goTo(idx){
+    slides[current].classList.remove("pb-active");
+    dots[current].classList.remove("pb-active");
+    dots[current].setAttribute("aria-selected","false");
+    current=(idx+total)%total;
+    slides[current].classList.add("pb-active");
+    dots[current].classList.add("pb-active");
+    dots[current].setAttribute("aria-selected","true");
+    var n=current+1;
+    counter.textContent=(n<10?"0"+n:""+n)+" / "+(total<10?"0"+total:""+total);
+    var prevIdx=(current-1+total)%total;
+    var nextIdx=(current+1)%total;
+    thumbPrevImg.src=slides[prevIdx].querySelector("img").src;
+    thumbNextImg.src=slides[nextIdx].querySelector("img").src;
+  }
+
+  carousel.querySelector(".pb-arrow--prev").addEventListener("click",function(){goTo(current-1)});
+  carousel.querySelector(".pb-arrow--next").addEventListener("click",function(){goTo(current+1)});
+
+  var thumbPrevEl=carousel.querySelector(".pb-thumb--prev");
+  var thumbNextEl=carousel.querySelector(".pb-thumb--next");
+  if(thumbPrevEl)thumbPrevEl.addEventListener("click",function(){goTo(current-1)});
+  if(thumbNextEl)thumbNextEl.addEventListener("click",function(){goTo(current+1)});
+
+  dots.forEach(function(dot,i){dot.addEventListener("click",function(){goTo(i)})});
+
+  var touchStartX=0;
+  carousel.addEventListener("touchstart",function(e){touchStartX=e.touches[0].clientX},{passive:true});
+  carousel.addEventListener("touchend",function(e){
+    var delta=e.changedTouches[0].clientX-touchStartX;
+    if(Math.abs(delta)>40)goTo(current+(delta<0?1:-1));
+  });
+
+  carousel.setAttribute("tabindex","0");
+  carousel.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();goTo(current+1);}
+    else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();goTo(current-1);}
+  });
+
+  goTo(0);
 })();
 
 /* ── Bountt: count-up on scroll ── */
