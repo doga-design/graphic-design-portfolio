@@ -1,6 +1,6 @@
 /* ============================================================
-   DOGA CIMEN — PORTFOLIO STYLESHEET
-   Cleaned & deduplicated — structure preserved, no style changes
+  DOGA CIMEN , PORTFOLIO STYLESHEET
+  Cleaned & deduplicated , structure preserved, no style changes
    ============================================================ */
 
 /* ─── CUSTOM PROPERTIES ─────────────────────────────────────── */
@@ -762,7 +762,7 @@ button.footer-social-link { cursor: pointer; }
 .pdf-mobile-btn:hover i { color: var(--bg); }
 .pdf-mobile-btn i { margin-right: .5rem; color: var(--accent); }
 
-/* ─── PROJECT PAGE — PROGRESS + NAV ─────────────────────────── */
+/* ─── PROJECT PAGE , PROGRESS + NAV ─────────────────────────── */
 .cs-progress-line {
   position: fixed;
   top: 0; left: 0;
@@ -860,7 +860,7 @@ body.is-project-view .cs-page-marker { display: block; }
   color: currentColor;
 }
 
-/* ─── PROJECT PAGE — HERO ────────────────────────────────────── */
+/* ─── PROJECT PAGE , HERO ────────────────────────────────────── */
 .project-page {
   --text-xs: var(--text-min);
   --text-sm: 0.8125rem;
@@ -1099,7 +1099,7 @@ body.is-project-view .cs-page-marker { display: block; }
 @keyframes a-up   { to { opacity: 1; transform: translateY(0); } }
 @keyframes a-fade { to { opacity: 1; } }
 
-/* ─── PROJECT PAGE — CASE STUDY SECTIONS ─────────────────────── */
+/* ─── PROJECT PAGE , CASE STUDY SECTIONS ─────────────────────── */
 .cs-section {
   padding: var(--space-section) 0;
   position: relative;
@@ -1203,7 +1203,7 @@ body.is-project-view .cs-page-marker { display: block; }
   gap: 0.5rem;
 }
 .cs-issue-list li:last-child { border-bottom: none; }
-.cs-issue-list li::before { content: "—"; color: #ffffff; font-weight: 400; flex-shrink: 0; }
+.cs-issue-list li::before { content: ","; color: #ffffff; font-weight: 400; flex-shrink: 0; }
 
 /* Strategy list */
 .cs-strategy-list {
@@ -1351,7 +1351,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 .cs-direction-item { display: flex; align-items: baseline; flex-wrap: wrap; gap: .35rem; padding: 0; }
 .cs-direction-name { font-size: var(--text-base, .9375rem); font-weight: 400; color: var(--text-muted); }
 .cs-direction-verdict { font-size: var(--text-sm, .8125rem); color: rgba(255,255,255,0.35); font-style: italic; }
-.cs-direction-verdict::before { content: '— '; font-style: normal; }
+.cs-direction-verdict::before { content: ', '; font-style: normal; }
 .cs-direction-verdict--chosen { color: #fff; font-style: normal; font-weight: 500; }
 .cs-direction-verdict--chosen::before { color: rgba(255,255,255,0.35); }
 
@@ -1667,7 +1667,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 }
 #project-visugenie .cs-container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
 
-/* ─── VISUGENIE — RESULTS SECTION ───────────────────────────── */
+/* ─── VISUGENIE , RESULTS SECTION ───────────────────────────── */
 #project-visugenie .results-section { max-width: 1400px; margin: 0 auto; position: relative; }
 #project-visugenie .chapter-mark {
   font-size: var(--text-small);
@@ -1807,7 +1807,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 @keyframes visuFadeInUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes visuFadeIn   { to { opacity: 1; } }
 
-/* ─── CTRLBREAK — OVERLAP IMAGE ──────────────────────────────── */
+/* ─── CTRLBREAK , OVERLAP IMAGE ──────────────────────────────── */
 #project-visual-platform { position: relative; }
 #project-visual-platform .cs-ctrlbreak-overlap-img {
   position: absolute;
@@ -1838,7 +1838,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   }
 }
 
-/* ─── FERN & SONS — TAPE + TILT ──────────────────────────────── */
+/* ─── FERN & SONS , TAPE + TILT ──────────────────────────────── */
 #project-ferns-sons .cs-quirk-tape { margin-top: 0; display: block; width: 100%; line-height: 0; }
 #project-ferns-sons .cs-quirk-tape img {
   width: 100%; height: auto; display: block;
@@ -1887,7 +1887,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   transition: transform .6s cubic-bezier(0.22,1,0.36,1), filter .6s ease;
 }
 
-/* ─── ACCESSIBILITY — MIN TEXT SIZE ─────────────────────────── */
+/* ─── ACCESSIBILITY , MIN TEXT SIZE ─────────────────────────── */
 .cs-page-marker,
 .cs-cover-meta,
 .cs-chapter-number,
@@ -1905,7 +1905,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────────── */
 
-/* Intro grid — tablet + mobile: straight to single column, no awkward middle state */
+/* Intro grid , tablet + mobile: straight to single column, no awkward middle state */
 @media (max-width: 900px) {
   .intro-v2-grid { grid-template-columns: 1fr; }
   .intro-v2-identity,
@@ -1923,7 +1923,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .intro-v2-name { font-size: clamp(1.8rem, 5vw, 2.8rem); }
 }
 
-/* Hero — 2-col to 1-col */
+/* Hero , 2-col to 1-col */
 @media (max-width: 960px) {
   .project-page .hero { grid-template-columns: 1fr; min-height: unset; }
   .project-page .v-divider { display: none; }
@@ -1946,7 +1946,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .about-inner { gap: 3rem; }
 }
 
-/* About + footer — tablet */
+/* About + footer , tablet */
 @media (max-width: 768px) {
   .about-section { margin-top: 4rem; padding-top: 3rem; }
   .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -1983,7 +1983,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .cs-image-frame--small { max-width: 100%; }
 }
 
-/* Intro grid — small mobile */
+/* Intro grid , small mobile */
 @media (max-width: 600px) {
   .intro-v2-identity, .intro-v2-bio, .intro-v2-live { padding: 1.25rem 1rem; }
 }
@@ -1993,7 +1993,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .project-page .hero-right { padding: 2.5rem 1.5rem 4rem; }
 }
 
-/* Mobile — ≤ 400px */
+/* Mobile , ≤ 400px */
 @media (max-width: 400px) {
   *:not(.cs-reveal), *::before, *::after { transition: none !important; }
   .cs-reveal { transition: opacity .6s ease, transform .6s ease !important; }
@@ -2038,7 +2038,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .work-section .d-flex { align-items: flex-start; text-align: left; }
 }
 
-/* Mobile — portrait (≤ 767px) */
+/* Mobile , portrait (≤ 767px) */
 @media (max-width: 767px) {
   body { padding: 60px 20px 0; }
   #topTextParticles { margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; }
@@ -2101,7 +2101,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 /* ─── SPECIAL LAYOUT: home main top padding ──────────────────── */
 #home main.container.py-5 { padding-top: 0 !important; }
 
-/* ─── BOUNTT PROJECT — CUSTOM COMPONENTS ─────────────────────── */
+/* ─── BOUNTT PROJECT , CUSTOM COMPONENTS ─────────────────────── */
 
 /* Grey placeholder images */
 .bountt-placeholder-img {
@@ -2146,7 +2146,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .bountt-scroll-track { animation: none; }
 }
 
-/* Research paragraph — no container on section; splits get individual boxes */
+/* Research paragraph , no container on section; splits get individual boxes */
 .bountt-research-callout {
   margin: 1.75rem 0;
 }
@@ -2249,7 +2249,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   margin: 0;
 }
 
-/* Competitive map placeholder — smaller, no hover (interactive elements added later) */
+/* Competitive map placeholder , smaller, no hover (interactive elements added later) */
 .bountt-map-placeholder {
   margin: 2.5rem auto;
   max-width: 78%;
@@ -2548,7 +2548,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   50%       { box-shadow: 0 0 28px 6px rgba(254,220,151,0.22); }
 }
 /* ═══════════════════════════════════════════════════════
-   RGD × DISTRO DISCO — brand tokens & components
+   RGD × DISTRO DISCO , brand tokens & components
    ═══════════════════════════════════════════════════════ */
 
 :root {
@@ -2700,7 +2700,7 @@ a:hover .dd-card-thumb {
 .dd-asset-placeholder--tall  { aspect-ratio: 9 / 16; max-width: 320px; }
 .dd-asset-placeholder--short { aspect-ratio: 21 / 9; }
 
-/* ── About the project — image strip ── */
+/* ── About the project , image strip ── */
 .dd-about-assets-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3154,10 +3154,10 @@ a:hover .dd-card-thumb {
     0 6px 18px rgba(0,0,0,0.35);
 }
 
-/* ── Mobile prototype CTA — hidden on desktop ── */
+/* ── Mobile prototype CTA , hidden on desktop ── */
 .dd-mobile-proto-wrap { display: none; }
 
-/* ── Desktop prototype CTA — hidden on mobile ── */
+/* ── Desktop prototype CTA , hidden on mobile ── */
 .dd-desktop-proto-wrap {
   display: flex;
   justify-content: center;
@@ -3165,7 +3165,7 @@ a:hover .dd-card-thumb {
   padding-bottom: 0.5rem;
 }
 
-/* Mobile — hide iPhone frame, show CTA */
+/* Mobile , hide iPhone frame, show CTA */
 @media (max-width: 768px) {
   .dd-proto-frame-wrap { display: none; }
   .dd-desktop-proto-wrap { display: none; }

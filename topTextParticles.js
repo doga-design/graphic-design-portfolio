@@ -282,7 +282,7 @@
           this.pos.x += this.vel.x;
           this.pos.y += this.vel.y;
 
-          // Keep particles inside canvas (walls) — desktop + mobile
+          // Keep particles inside canvas (walls) , desktop + mobile
           if (this.pos.x < 0) { this.pos.x = 0; this.vel.x = 0; }
           if (this.pos.x > p.width) { this.pos.x = p.width; this.vel.x = 0; }
           if (this.pos.y < 0) { this.pos.y = 0; this.vel.y = 0; }
