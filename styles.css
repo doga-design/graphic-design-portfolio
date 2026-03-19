@@ -1618,7 +1618,13 @@ ol.cs-strategy-list { list-style-type: decimal; }
 }
 
 @media (max-width: 768px) {
-  #project-rgd-distro-disco .cs-hero-visit-wrap { display: none; }
+  /* Keep the "Try prototype" CTA visible on small screens too */
+  #project-rgd-distro-disco .cs-hero-visit-wrap {
+    display: inline-block;
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
 }
 #project-visugenie .cs-btn-visit-hero,
 #project-rgd-distro-disco .cs-btn-visit-hero,
@@ -3166,8 +3172,8 @@ a:hover .dd-card-thumb {
   .dd-mobile-proto-wrap {
     display: flex;
     justify-content: center;
-    padding-top: 3rem;
-    padding-bottom: 1rem;
+    padding-top: 0rem;
+    padding-bottom: 3rem;
   }
 }
 
@@ -3237,10 +3243,10 @@ a:hover .dd-card-thumb {
   align-items: center;
   gap: .55rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #F5FFAB 0%, #FF7534 100%);
+  background: linear-gradient(135deg, #F5FFAB 0%, #ff702d 100%);
   color: var(--dd-navy);
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: .85rem;
   text-decoration: none;
   border-radius: 10px;
   box-shadow: rgba(0,0,0,0.4) 0px 2px 4px, rgba(0,0,0,0.3) 0px 7px 13px -3px, rgba(0,0,0,0.2) 0px -3px 0px inset;
