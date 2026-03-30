@@ -110,6 +110,7 @@
 
         let fontSize = Math.min(p.width * 0.22, p.height * 0.75);
         let targetWidth = Math.min(TEXT_WIDTH_PX, p.width * 0.92);
+        if (!isMobile) targetWidth = Math.min(TEXT_WIDTH_PX * 1.12, p.width * 0.97);
         if (isMobile) targetWidth = p.width * 0.9;
 
         pg.textSize(fontSize);

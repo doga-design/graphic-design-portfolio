@@ -224,16 +224,53 @@ d.addEventListener("DOMContentLoaded",function(){
   d.querySelectorAll(".project-page").forEach(function(p){observeReveals(p)});
 
   /* About Me photo card swap */
-  var aboutFront=d.getElementById("aboutCardFront"),aboutBack=d.getElementById("aboutCardBack"),aboutBtn=d.getElementById("aboutSwapBtn");
-  if(aboutFront&&aboutBack&&aboutBtn){
+  var aboutFront=d.getElementById("aboutCardFront"),aboutBack=d.getElementById("aboutCardBack"),aboutBtn=d.getElementById("aboutSwapBtn"),aboutStack=d.querySelector(".about-card-stack"),aboutPhotos=d.getElementById("aboutPhotos"),aboutSwapCursor=d.getElementById("aboutSwapCursor"),desktopAboutCursor=w.matchMedia("(min-width: 769px)");
+  if(aboutFront&&aboutBack&&aboutBtn&&aboutStack){
+    function setAboutCursorPressed(pressed){
+      if(!aboutSwapCursor||!desktopAboutCursor.matches)return;
+      aboutSwapCursor.classList.toggle("about-swap-cursor--press",pressed);
+      aboutSwapCursor.classList.toggle("about-swap-cursor--active",pressed);
+    }
     function aboutSwap(){
       aboutFront.classList.toggle("about-card--swapped");
       aboutBack.classList.toggle("about-card--swapped");
       aboutBtn.classList.toggle("about-card-swap--rotated");
+      if(aboutSwapCursor&&desktopAboutCursor.matches){
+        aboutSwapCursor.classList.remove("about-swap-cursor--rotate");
+        void aboutSwapCursor.offsetWidth;
+        aboutSwapCursor.classList.add("about-swap-cursor--rotate");
+        setTimeout(function(){aboutSwapCursor&&aboutSwapCursor.classList.remove("about-swap-cursor--rotate")},320);
+      }
     }
+    if(aboutSwapCursor){
+      function moveAboutCursor(e){
+        aboutSwapCursor.style.left=e.clientX+"px";
+        aboutSwapCursor.style.top=e.clientY+"px";
+      }
+      aboutStack.addEventListener("mouseenter",function(e){
+        if(!desktopAboutCursor.matches)return;
+        if(aboutPhotos)aboutPhotos.classList.add("about-photos--stack-hover");
+        aboutSwapCursor.classList.add("about-swap-cursor--visible");
+        moveAboutCursor(e);
+      });
+      aboutStack.addEventListener("mousemove",function(e){
+        if(!desktopAboutCursor.matches)return;
+        moveAboutCursor(e);
+      });
+      aboutStack.addEventListener("mouseleave",function(){
+        if(aboutPhotos)aboutPhotos.classList.remove("about-photos--stack-hover");
+        setAboutCursorPressed(false);
+        aboutSwapCursor.classList.remove("about-swap-cursor--visible","about-swap-cursor--rotate");
+      });
+    }
+    aboutStack.addEventListener("pointerdown",function(){ setAboutCursorPressed(true); });
+    aboutStack.addEventListener("pointerup",function(){ setAboutCursorPressed(false); });
+    aboutStack.addEventListener("pointercancel",function(){ setAboutCursorPressed(false); });
     aboutBtn.addEventListener("click",aboutSwap);
-    aboutFront.addEventListener("click",aboutSwap);
-    aboutBack.addEventListener("click",aboutSwap);
+    aboutBtn.addEventListener("pointerdown",function(){ setAboutCursorPressed(true); });
+    aboutBtn.addEventListener("pointerup",function(){ setAboutCursorPressed(false); });
+    aboutBtn.addEventListener("pointercancel",function(){ setAboutCursorPressed(false); });
+    aboutStack.addEventListener("click",aboutSwap);
   }
 
   /* Email copy-to-clipboard with toast (follows cursor until it disappears) */

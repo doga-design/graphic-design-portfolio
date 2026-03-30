@@ -423,17 +423,17 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   content: '';
   position: absolute;
   top: 0;
-  left: 5%;
-  right: 5%;
+  left: 0;
+  right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
 }
 .about-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 4rem;
   align-items: center;
-  max-width: 900px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -503,7 +503,8 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
 }
 .about-mascot {
   position: absolute;
-  left: 20%;
+  left: -14px;
+  rotate: -3deg;
   top: 80%;
   width: 160px;
   height: auto;
@@ -518,8 +519,8 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
 }
 .about-card-stack {
   position: relative;
-  width: 340px;
-  height: 442px;
+  width: 390px;
+  height: 507px;
   cursor: pointer;
 }
 .about-card {
@@ -531,6 +532,56 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   will-change: transform;
 }
 .about-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+@media (min-width: 769px) {
+  .about-card-stack,
+  .about-card,
+  .about-card img {
+    cursor: none;
+  }
+}
+.about-swap-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2.45rem;
+  height: 2.45rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  --about-cursor-scale: .92;
+  --about-cursor-rot: 0deg;
+  transform: translate(-50%,-50%) scale(var(--about-cursor-scale)) rotate(var(--about-cursor-rot));
+  transition: opacity .2s ease, transform .28s cubic-bezier(0.16,1,0.3,1);
+  z-index: 10000;
+}
+.about-swap-cursor svg {
+  width: 16px;
+  height: 16px;
+}
+.about-swap-cursor--visible {
+  opacity: 1;
+  --about-cursor-scale: 1;
+}
+.about-swap-cursor--rotate {
+  --about-cursor-rot: 360deg;
+}
+.about-swap-cursor--press {
+  --about-cursor-scale: .84;
+}
+.about-swap-cursor--active {
+  color: var(--accent);
+  border-color: rgba(254,220,151,0.55);
+  background: rgba(254,220,151,0.18);
+}
 .about-card--front {
   z-index: 2;
   transform: rotate(-2deg) translate(0,0);
@@ -573,7 +624,9 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   background: rgba(255,255,255,0.03);
   color: rgba(255,255,255,0.4);
   cursor: pointer;
-  transition: all .4s cubic-bezier(0.16,1,0.3,1);
+  opacity: 1;
+  visibility: visible;
+  transition: all .4s cubic-bezier(0.16,1,0.3,1), opacity .22s ease, visibility .22s ease;
 }
 .about-card-swap:hover {
   border-color: rgba(255,255,255,0.2);
@@ -581,6 +634,13 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   background: rgba(255,255,255,0.06);
 }
 .about-card-swap--rotated { transform: rotate(180deg); }
+@media (min-width: 769px) {
+  .about-photos.about-photos--stack-hover .about-card-swap {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
 
 /* ─── EMAIL TOAST ────────────────────────────────────────────── */
 .email-toast {
@@ -633,7 +693,19 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   padding: 0;
   border-top: none;
 }
-.footer-inner { border-top: 1px solid rgba(255,255,255,0.06); }
+.footer-inner {
+  position: relative;
+  border-top: none;
+}
+.footer-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
+}
 .footer-top {
   display: flex;
   justify-content: space-between;
@@ -1948,9 +2020,11 @@ ol.cs-strategy-list { list-style-type: decimal; }
 
 /* About + footer , tablet */
 @media (max-width: 768px) {
+  .about-swap-cursor { display: none; }
   .about-section { margin-top: 4rem; padding-top: 3rem; }
   .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .about-photos { order: -1; }
+  .about-mascot { left: 20%; }
   .about-card-stack { width: 280px; height: 370px; }
   .about-heading { font-size: 1.5rem; }
   .footer-top { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2.5rem 0 2rem; }
