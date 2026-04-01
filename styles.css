@@ -382,6 +382,9 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   filter: grayscale(0) brightness(1.1);
   transform: scale(1.03);
 }
+.work-cards-group > .work-card:first-child .gallery-img {
+  object-position: left center;
+}
 .gallery-thumb {
   width: 100%;
   height: 220px;
