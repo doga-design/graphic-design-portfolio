@@ -139,24 +139,17 @@ span.subtitle {
 .intro-v2-role-tag {
   display: inline-flex;
   align-items: center;
-  gap: .5rem;
+  gap: .75rem;
   font-size: .7em;
   letter-spacing: .14em;
   text-transform: uppercase;
   font-weight: 400;
   color: var(--accent);
   background: rgba(0,0,0,0.06);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: none;
   border-radius: 100px;
   padding: .3rem .8rem .3rem .6rem;
   width: fit-content;
-}
-.intro-v2-role-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
 }
 .intro-v2-name {
   font-family: 'AwesomeSerif', serif;
@@ -221,27 +214,31 @@ span.subtitle {
 .intro-v2-live-label {
   display: flex;
   align-items: center;
-  gap: .55rem;
-  font-size: var(--text-small);
-  letter-spacing: .12em;
+  gap: .9rem;
+  font-size: .7em;
+  font-weight: 400;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--accent);
   margin-bottom: .25rem;
 }
+/* Shared accent pulse dot (role tag + live label) */
+.intro-v2-role-dot,
 .intro-v2-live-pulse {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #4ade80;
+  background: var(--accent);
   flex-shrink: 0;
   position: relative;
 }
+.intro-v2-role-dot::after,
 .intro-v2-live-pulse::after {
   content: '';
   position: absolute;
   inset: -3px;
   border-radius: 50%;
-  background: rgba(74,222,128,0.25);
+  background: rgba(254, 220, 151, 0.28);
   animation: pulse-ring 2s ease-out infinite;
 }
 @keyframes pulse-ring {
@@ -310,6 +307,43 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   gap: 1.5rem;
 }
 .work-cards-group > .work-card { width: auto !important; padding: 0 !important; }
+.work-card-thumb--bountt {
+  position: relative;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+.work-card-thumb--bountt:hover {
+  transform: scale(1.03);
+}
+.work-card--bountt .gallery-img {
+  transition: filter 0.4s ease;
+}
+.work-card--bountt .gallery-img:hover {
+  transform: none;
+}
+.work-card-thumb--bountt:hover .gallery-img {
+  filter: grayscale(0) brightness(1.1);
+}
+.work-card-badge {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  transform: translate(-12%, -22%);
+  font-size: clamp(0.5rem, 0.42rem + 0.35vw, 0.62rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  padding: clamp(0.2rem, 0.14rem + 0.22vw, 0.3rem) clamp(0.32rem, 0.22rem + 0.35vw, 0.48rem);
+  border-radius: clamp(0.25rem, 0.2rem + 0.15vw, 0.35rem);
+  pointer-events: none;
+}
+.work-card-badge--accent {
+  color: var(--bg);
+  background: var(--accent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
 .work-title {
   font-size: 0.9rem;
   letter-spacing: 0.15em;
