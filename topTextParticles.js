@@ -13,10 +13,10 @@
   const MAX_SPEED = 20;
 
   // Size / density knobs
-  const TEXT_WIDTH_PX = 980;
-  const POINT_SIZE = 2.5;
+  const TEXT_WIDTH_PX = 1040;
+  const POINT_SIZE = 2.4;
   const SIZE_MIN = 1.5;
-  const SIZE_MAX = 5.5;
+  const SIZE_MAX = 6;
   const SIZE_HEAT_UP = 0.08;
   const SIZE_HEAT_DECAY = 0.285;
   const SIZE_LERP = 0.12;
@@ -110,7 +110,7 @@
 
         let fontSize = Math.min(p.width * 0.22, p.height * 0.75);
         let targetWidth = Math.min(TEXT_WIDTH_PX, p.width * 0.92);
-        if (!isMobile) targetWidth = Math.min(TEXT_WIDTH_PX * 1.12, p.width * 0.97);
+        if (!isMobile) targetWidth = Math.min(TEXT_WIDTH_PX * 1.18, p.width * 0.98);
         if (isMobile) targetWidth = p.width * 0.9;
 
         pg.textSize(fontSize);

@@ -44,7 +44,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "IBM Plex Sans", sans-serif;
-  padding: 0px 50px 50px 0;
+  /* Symmetric horizontal padding so home + p5 canvas sit centered (same total inset as 0 + 50px before) */
+  padding: 0 25px 50px 25px;
   user-select: none;
   -webkit-user-drag: none;
   overflow-x: hidden;
@@ -71,12 +72,19 @@ span.subtitle {
 
 #topTextParticles {
   position: relative;
-  width: 100%;
+  display: grid;
+  justify-items: stretch;
+  align-items: stretch;
+  width: 100vw;
+  max-width: 100vw;
   height: clamp(340px, 58vh, 560px);
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-top: 0;
+  margin-bottom: 0;
   z-index: 0;
   pointer-events: none;
   overflow: visible;
-  margin: 0 0.5rem 0;
   box-sizing: border-box;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -86,8 +94,11 @@ span.subtitle {
   display: block;
   position: relative !important;
   width: 100% !important;
+  max-width: 100%;
   height: 100% !important;
-  margin: 0 auto;
+  margin: 0 !important;
+  justify-self: stretch;
+  align-self: stretch;
   inset: auto !important;
   pointer-events: auto;
   -webkit-touch-callout: none;
@@ -329,6 +340,19 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Don’t stretch the row to fill a tall parent (was leaving a huge gap above the reveal btn) */
+  align-content: start;
+  align-items: start;
+  /* Row + g-4 would apply negative margins / gutter; grid uses gap only */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
 }
 .work-cards-group > .work-card { width: auto !important; padding: 0 !important; }
 .work-card-thumb--bountt {
@@ -493,7 +517,7 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
 .work-reveal-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 2.5rem;
+  margin-top: 1.25rem;
 }
 .work-reveal-btn {
   display: inline-flex;
@@ -526,7 +550,7 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
 /* ─── ABOUT SECTION ──────────────────────────────────────────── */
 .about-section {
   margin-top: 6rem;
-  padding: 4rem 0 0;
+  padding: 6rem 0 0;
   position: relative;
 }
 .about-section::before {
@@ -883,6 +907,11 @@ button.footer-social-link { cursor: pointer; }
   transform: none;
 }
 .footer-social-link i { color: inherit; }
+.footer-social-link svg {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
 .footer-social-link--text {
   font-size: 0.8rem;
   letter-spacing: 0.06em;
@@ -892,19 +921,6 @@ button.footer-social-link { cursor: pointer; }
   width: auto;
   min-width: auto;
   height: auto;
-}
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 0 2rem;
-  border-top: 1px solid rgba(255,255,255,0.04);
-}
-.footer-copy,
-.footer-craft {
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  color: rgba(255,255,255,0.2);
 }
 
 /* ─── PDF VIEWER ─────────────────────────────────────────────── */
@@ -1150,15 +1166,15 @@ body.is-project-view .cs-page-marker { display: block; }
 .project-page .title-word + .title-word { margin-top: .03em; }
 .project-page .title-glyph {
   display: block;
-  font-size: clamp(4rem, 9.5vw, 8rem);
-  font-weight: 300;
+  font-size: clamp(5.25rem, 12.5vw, 10.75rem);
+  font-weight: 400;
   letter-spacing: -.01em;
   line-height: .88;
   transform: translateY(108%);
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: 'AwesomeSerif', serif;
 }
 .project-page .title-word:nth-child(1) .title-glyph { animation: a-rise .95s cubic-bezier(0.16,1,0.3,1) .75s both; }
-.project-page .title-word:nth-child(2) .title-glyph { font-style: italic; font-weight: 700; animation: a-rise .95s cubic-bezier(0.16,1,0.3,1) .9s both; }
+.project-page .title-word:nth-child(2) .title-glyph { font-weight: 700; animation: a-rise .95s cubic-bezier(0.16,1,0.3,1) .9s both; }
 .project-page .hero-subtitle {
   font-size: 0.875rem;
   font-weight: 400;
@@ -2116,7 +2132,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .project-page .hero-left { min-height: 75vh; }
   .project-page .hero-left-content { padding: 0 2.5rem 3.5rem; }
   .project-page .hero-right { padding: 3.5rem 2.5rem 5rem; gap: 2.5rem; }
-  .project-page .title-glyph { font-size: clamp(4rem,16vw,7rem); }
+  .project-page .title-glyph { font-size: clamp(5rem, 20vw, 9.25rem); }
 }
 
 @media (max-width: 991px) {
@@ -2135,14 +2151,13 @@ ol.cs-strategy-list { list-style-type: decimal; }
 /* About + footer , tablet */
 @media (max-width: 768px) {
   .about-swap-cursor { display: none; }
-  .about-section { margin-top: 4rem; padding-top: 3rem; }
+  .about-section { margin-top: 4rem; padding-top: 4.5rem; }
   .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .about-photos { order: -1; }
   .about-mascot { left: auto; right: 0; rotate: 3deg; animation: aboutMascotFloatRight 4s ease-in-out infinite; }
   .about-card-stack { width: 280px; height: 370px; }
   .about-heading { font-size: 1.5rem; }
   .footer-top { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 2.5rem 0 2rem; }
-  .footer-bottom { flex-direction: column; gap: .5rem; align-items: flex-start; padding: 1rem 0 2.5rem; }
 
   .cs-container, .cs-container-narrow { padding: 0 1.5rem; }
   .cs-fixed-right { top: 1.25rem; right: 1.5rem; }
@@ -2181,6 +2196,18 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .project-page .hero-right { padding: 2.5rem 1.5rem 4rem; }
 }
 
+/* Bountt mobile: tighten space under tags / before hero-right (default 3.5rem / 3rem is too tall) */
+@media (max-width: 960px) {
+  #project-bountt .hero-left-content {
+    padding-bottom: 0.85rem;
+  }
+}
+@media (max-width: 480px) {
+  #project-bountt .hero-left-content {
+    padding: 0 1.5rem 0.65rem;
+  }
+}
+
 /* Mobile , ≤ 400px */
 @media (max-width: 400px) {
   *:not(.cs-reveal), *::before, *::after { transition: none !important; }
@@ -2205,7 +2232,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .project-meta { margin-top: .5rem; }
   .project-main .row.align-items-start { text-align: left; }
 
-  .about-section { margin-top: 3rem; padding-top: 2rem; }
+  .about-section { margin-top: 3rem; padding-top: 3rem; }
   .about-card-stack { width: 250px; height: 325px; }
   .about-status { flex-direction: column; align-items: flex-start; gap: .3rem; padding: .5rem .75rem; }
   .footer-cta-email { font-size: 1rem; }
@@ -2214,7 +2241,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
   .pdf-mobile-btn { display: inline-flex; align-items: center; justify-content: center; text-align: center; margin: .5rem auto 10px !important; }
   .pdf-viewer-container { background: transparent; padding: 0; text-align: center; margin-bottom: 0; margin-top: 0; }
 
-  .work-cards-group { padding: 0 .8rem; grid-template-columns: repeat(2, 1fr) !important; }
+  .work-cards-group { padding-left: 0 !important; padding-right: 0 !important; grid-template-columns: repeat(2, 1fr) !important; }
 
   #project-ferns-sons .cs-quirk-tape { overflow: visible; }
   #project-ferns-sons .cs-quirk-tape img { width: 250%; max-width: none; margin-left: -20%; margin-top: -150px; margin-bottom: 200px; transform: rotate(-8.5deg); }
@@ -2229,7 +2256,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 /* Mobile , portrait (≤ 767px) */
 @media (max-width: 767px) {
   body { padding: 60px 20px 0; }
-  #topTextParticles { margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; }
+  #topTextParticles { width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: -60px; margin-bottom: 0; }
   .cs-fixed-right { top: 1.25rem; right: 1.5rem; }
   .cs-next-project-btn { font-size: .75rem; padding: .4rem 1rem; }
   .gallery-img { filter: none; }
@@ -3225,7 +3252,7 @@ a:hover .dd-card-thumb {
   .dd-inline-image-row img      { max-width: 100%; }
 }
 
-/* ── iPhone prototype frame ── */
+/* ── Distro Disco live prototype embed (no device chrome) ── */
 .dd-proto-frame-wrap {
   display: flex;
   justify-content: center;
@@ -3233,12 +3260,16 @@ a:hover .dd-card-thumb {
   padding-bottom: 1rem;
 }
 
-.dd-iphone-frame {
+.dd-proto-embed {
   position: relative;
-  width: 428px;
-  background: radial-gradient(circle at 30% 0%, #3a3a40 0, #121216 38%, #0b0b0e 100%);
-  border-radius: 52px;
-  padding: 16px 14px 10px;
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  aspect-ratio: 390 / 844;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #050507;
+  line-height: 0;
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,0.04),
     inset 0 0 0 2px rgba(0,0,0,0.92),
@@ -3247,108 +3278,13 @@ a:hover .dd-card-thumb {
     inset 0 -26px 80px rgba(0,0,0,0.8);
 }
 
-/* Left side volume buttons */
-.dd-iphone-frame::before {
-  content: '';
-  position: absolute;
-  left: -3px;
-  top: 120px;
-  width: 3px;
-  height: 36px;
-  background: linear-gradient(to bottom, #3a3a3f, #18181c);
-  border-radius: 2px 0 0 2px;
-  box-shadow: 0 52px 0 #18181c, 0 -54px 0 #18181c;
-}
-
-/* Right side power button */
-.dd-iphone-frame::after {
-  content: '';
-  position: absolute;
-  right: -3px;
-  top: 155px;
-  width: 3px;
-  height: 68px;
-  background: linear-gradient(to bottom, #3a3a3f, #18181c);
-  border-radius: 0 2px 2px 0;
-}
-
-/* Dynamic island / notch */
-.dd-iphone-notch {
-  width: 126px;
-  height: 36px;
-  background: radial-gradient(circle at 20% 20%, #2e2e32 0, #050507 60%);
-  border-radius: 0 0 24px 24px;
-  margin: 0 auto 6px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 18px;
-}
-.dd-iphone-camera {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #3c8df5 0, #1b2534 45%, #05060a 100%);
-  border: 1px solid rgba(255,255,255,0.16);
-}
-
-/* Screen area */
-.dd-iphone-screen {
-  overflow: hidden;
-  position: relative;
-  border-radius: 38px;
-  background: #050507;
-  line-height: 0;
-  width: 390px;
-  height: 844px;
-  margin: 0 auto;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.06),
-    inset 0 -70px 160px rgba(0,0,0,0.85);
-}
-
-/* Subtle “glass” highlights for a more realistic frame */
-.dd-iphone-screen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 22%, rgba(0,0,0,0.45) 100%),
-    radial-gradient(circle at 20% 8%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 35%, transparent 60%);
-  opacity: 0.65;
-  pointer-events: none;
-}
-
-.dd-iphone-screen::after {
-  content: '';
-  position: absolute;
-  left: -20%;
-  top: -18%;
-  width: 140%;
-  height: 42%;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.10) 30%, transparent 65%);
-  opacity: 0.18;
-  pointer-events: none;
-}
-.dd-iphone-iframe {
+.dd-proto-iframe {
   display: block;
   width: 100%;
   height: 100%;
   border: none;
   background: #000;
   filter: brightness(0.9) contrast(1.06);
-}
-
-/* Home indicator bar */
-.dd-iphone-home-bar {
-  width: 140px;
-  height: 5px;
-  background: linear-gradient(to right, rgba(255,255,255,0.08), rgba(255,255,255,0.20), rgba(255,255,255,0.08));
-  border-radius: 3px;
-  margin: 8px auto 0;
-  box-shadow:
-    inset 0 0 0 1px rgba(0,0,0,0.55),
-    0 6px 18px rgba(0,0,0,0.35);
 }
 
 /* ── Mobile prototype CTA , hidden on desktop ── */
@@ -3362,7 +3298,7 @@ a:hover .dd-card-thumb {
   padding-bottom: 0.5rem;
 }
 
-/* Mobile , hide iPhone frame, show CTA */
+/* Mobile , hide desktop embed, show CTA */
 @media (max-width: 768px) {
   .dd-proto-frame-wrap { display: none; }
   .dd-desktop-proto-wrap { display: none; }
