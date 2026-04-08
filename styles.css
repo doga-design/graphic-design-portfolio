@@ -1180,7 +1180,7 @@ body.is-project-view .cs-page-marker { display: block; }
   font-weight: 400;
   color: rgba(255,255,255,0.6);
   line-height: 1.7;
-  max-width: 380px;
+  max-width: 340px;
   margin-top: 1.4rem;
   opacity: 0;
   transform: translateY(8px);
