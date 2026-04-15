@@ -2298,7 +2298,7 @@ ol.cs-strategy-list { list-style-type: decimal; }
 /* Mobile , portrait (≤ 767px) */
 @media (max-width: 767px) {
   body { padding: 60px 20px 0; }
-  #topTextParticles { width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: -60px; margin-bottom: 0; }
+  #topTextParticles { width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: -88px; margin-bottom: 0; }
   .cs-fixed-right { top: 1.25rem; right: 1.5rem; }
   .cs-next-project-btn { font-size: .75rem; padding: .4rem 1rem; }
   .gallery-img { filter: none; }

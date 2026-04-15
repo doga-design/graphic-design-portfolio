@@ -123,7 +123,8 @@
         pg.textSize(fontSize);
         if (isMobile) pg.textLeading(fontSize * 0.82);
         pg.textAlign(p.CENTER, p.CENTER);
-        const textY = isMobile ? p.height * 0.5 : p.height * 0.45;
+        // Mobile: sit the word higher in the canvas (desktop keeps slightly above center)
+        const textY = isMobile ? p.height * 0.38 : p.height * 0.45;
         pg.text(textStr, p.width * 0.5, textY);
 
         pg.loadPixels();
