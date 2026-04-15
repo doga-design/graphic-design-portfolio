@@ -435,7 +435,7 @@ d.addEventListener("DOMContentLoaded",function(){
       }
     }
     function flowerGardenPlaySound(){
-      if(flowerGardenMuted)return;
+      if(flowerGardenMuted||b.classList.contains("is-project-view")||(homeSection&&homeSection.classList.contains("d-none")))return;
       var template=flowerGardenRandomItem(flowerGardenSoundPool),
           a=template?template.cloneNode():new Audio(flowerGardenRandomItem(flowerGardenSounds));
       a.volume=0.35;
