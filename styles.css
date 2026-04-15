@@ -131,6 +131,52 @@ span.subtitle {
 .intro-v2 {
   margin-bottom: 4rem;
   padding-top: 0;
+  position: relative;
+  isolation: isolate;
+}
+#flower-garden-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+.flower-garden-flower,
+.flower-garden-particle {
+  position: absolute;
+  pointer-events: none;
+}
+.flower-garden-flower {
+  bottom: 100%;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: bottom center;
+  will-change: transform;
+  pointer-events: auto;
+}
+.flower-garden-flower.is-grown {
+  transform: translateX(-50%) scaleY(1);
+  transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.flower-garden-flower svg,
+.flower-garden-flower img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.flower-garden-flower img {
+  image-rendering: pixelated;
+}
+.flower-garden-particle {
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+.flower-garden-firefly {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity, box-shadow;
 }
 .intro-v2-grid {
   display: grid;
@@ -140,6 +186,8 @@ span.subtitle {
   border-radius: 16px;
   overflow: hidden;
   background: rgba(255,255,255,0.01);
+  position: relative;
+  z-index: 2;
 }
 .intro-v2-identity,
 .intro-v2-bio,
@@ -665,6 +713,10 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
   .about-card-stack,
   .about-card,
   .about-card img {
+    cursor: none;
+  }
+  .flower-garden-flower,
+  .flower-garden-flower svg {
     cursor: none;
   }
 }

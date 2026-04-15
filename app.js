@@ -273,6 +273,459 @@ d.addEventListener("DOMContentLoaded",function(){
     aboutStack.addEventListener("click",aboutSwap);
   }
 
+  /* Pixel flower garden */
+  var introGardenRoot=d.getElementById("intro-v2"),
+      flowerGardenLayer=d.getElementById("flower-garden-layer"),
+      flowerGardenCursor=d.getElementById("flowerGardenCursor");
+  if(introGardenRoot&&flowerGardenLayer){
+    var liveItems=introGardenRoot.querySelectorAll(".intro-v2-live-item"),
+        flowerGardenCount=0,
+        flowerGardenMax=40,
+        flowerGardenDelay=3500,
+        flowerGardenInterval=null,
+        flowerGardenTriggered=false,
+        flowerGardenIsTouchDevice=w.matchMedia("(hover: none)").matches||w.matchMedia("(pointer: coarse)").matches,
+        flowerGardenUid=0,
+        flowerGardenParticles=[],
+        flowerGardenParticleRaf=0,
+        flowerGardenPositions=[],
+        flowerGardenSounds=["img/audio/Crop_place1.ogg.mp3","img/audio/Crop_place2.ogg.mp3","img/audio/Crop_place3.ogg.mp3","img/audio/Crop_place4.ogg.mp3","img/audio/Crop_place5.ogg.mp3","img/audio/Crop_place6.ogg.mp3"],
+        flowerGardenSoundPool=[],
+        flowerGardenAudioPrimed=false,
+        flowerGardenMuted=false,
+        flowerGardenDesktopCursor=w.matchMedia("(min-width: 769px)"),
+        flowerGardenBodyGreens=["#075805","#63A000"],
+        flowerGardenPetalPalette=["#FFDAB9","#B5EAD7","#C7CEEA","#FF4540","#A8DADC","#FFDFD3","#D4F1C0","#F9E4B7"],
+        flowerGardenRareSpawnChance=0.2,
+        flowerGardenRareSource={type:"image",width:32,height:32,headOffsetX:16,headOffsetY:12,src:"img/firefly-bush.png"},
+        flowerGardenFireflyColors=["#FFE566","#FFF0A0","#FFFACD"],
+        flowerGardenFireflies=[],
+        flowerGardenFireflyRaf=0,
+        flowerGardenCursorIcons={
+          sound:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 6H5.2L8.2 3.5V12.5L5.2 10H2.5V6Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 6.1C10.9 6.45 11.15 6.97 11.15 7.5C11.15 8.03 10.9 8.55 10.5 8.9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M12.35 4.85C13.08 5.55 13.5 6.5 13.5 7.5C13.5 8.5 13.08 9.45 12.35 10.15" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>',
+          mute:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 6H5.2L8.2 3.5V12.5L5.2 10H2.5V6Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.3 5.2L13.4 10.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M13.4 5.2L10.3 10.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'
+        },
+        flowerGardenSources=[
+          {
+            width:20,
+            height:41,
+            headOffsetX:10,
+            headOffsetY:31,
+            svg:`<svg width="20" height="41" viewBox="0 0 20 41" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_995_620)"><path d="M7 7H5V12H7V7Z" fill="#FF4540"/><path d="M15 7H13V12H15V7Z" fill="#FF4540"/><path d="M11 16H9V18H11V16Z" fill="#FF4540"/><path d="M11 18H9V25H11V18Z" fill="#63A000"/><path d="M9 8H11V10H9V8Z" fill="#FF4540"/><path d="M9 10H7V12H9V10Z" fill="#FF4540"/><path d="M5 12H7V14H5V12Z" fill="#FF4540"/><path d="M7 14H9V16H7V14Z" fill="#FF4540"/><path d="M5 14H7V16H5V14Z" fill="#FF4540"/><path d="M11 10H13V12H11V10Z" fill="#FF4540"/><path d="M13 12H15V14H13V12Z" fill="#FF4540"/><path d="M16 21H20V25H16V21Z" fill="#63A000"/><path d="M0 21H4V25H0V21Z" fill="#63A000"/><path d="M11 14H13V16H11V14Z" fill="#FF4540"/><path d="M14 23H16V25H14V23Z" fill="#63A000"/><path d="M6 25H8V27H6V25Z" fill="#63A000"/><path d="M13 25H15V27H13V25Z" fill="#63A000"/><path d="M16 21H18V23H16V21Z" fill="#63A000"/><path d="M6 29H14V31H6V29Z" fill="#63A000"/><path d="M4 27H16V29H4V27Z" fill="#63A000"/><path d="M4 23H6V25H4V23Z" fill="#63A000"/><path d="M2 21H4V23H2V21Z" fill="#63A000"/><path d="M2 25H18V27H2V25Z" fill="#63A000"/><path d="M9 31H11V41H9V31Z" fill="#63A000"/><path d="M13 14H15V16H13V14Z" fill="#FF4540"/></g><defs><clipPath id="clip0_995_620"><rect width="20" height="41" fill="white"/></clipPath></defs></svg>`
+          },
+          {
+            width:20,
+            height:41,
+            headOffsetX:10,
+            headOffsetY:31,
+            svg:`<svg width="20" height="41" viewBox="0 0 20 41" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_995_647)"><path d="M6 6H4V11H6V6Z" fill="#FEDC97"/><path d="M16 6H14V11H16V6Z" fill="#FEDC97"/><path d="M11 6H9V11H11V6Z" fill="#FEDC97"/><path d="M11 17H9V25H11V17Z" fill="#075805"/><path d="M0 9H2V11H0V9Z" fill="#FEDC97"/><path d="M2 11H4V13H2V11Z" fill="#FEDC97"/><path d="M6 15H14V17H6V15Z" fill="#FEDC97"/><path d="M4 13H6V15H4V13Z" fill="#FEDC97"/><path d="M18 9H20V11H18V9Z" fill="#FEDC97"/><path d="M16 11H18V13H16V11Z" fill="#FEDC97"/><path d="M16 22H20V26H16V22Z" fill="#075805"/><path d="M0 22H4V26H0V22Z" fill="#075805"/><path d="M14 13H16V15H14V13Z" fill="#FEDC97"/><path d="M14 24H16V26H14V24Z" fill="#075805"/><path d="M6 29H14V31H6V29Z" fill="#075805"/><path d="M4 27H16V29H4V27Z" fill="#075805"/><path d="M4 24H6V26H4V24Z" fill="#075805"/><path d="M2 25H18V27H2V25Z" fill="#075805"/><path d="M9 31H11V41H9V31Z" fill="#075805"/><path d="M6 11H14V13H6V11Z" fill="#FEDC97"/></g><defs><clipPath id="clip0_995_647"><rect width="20" height="41" fill="white"/></clipPath></defs></svg>`
+          },
+          {
+            width:28,
+            height:41,
+            headOffsetX:14,
+            headOffsetY:28,
+            svg:`<svg width="28" height="41" viewBox="0 0 28 41" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_995_669)"><path d="M16 29H18V41H16V29Z" fill="#63A000"/><path d="M22 21H26V25H22V21Z" fill="#63A000"/><path d="M12 11H16V25H12V11Z" fill="#FEDC97"/><path d="M0 21H2V23H0V21Z" fill="#63A000"/><path d="M26 21H28V23H26V21Z" fill="#63A000"/><path d="M20 13H22V15H20V13Z" fill="#FEDC97"/><path d="M6 13H8V15H6V13Z" fill="#FEDC97"/><path d="M18 13H20V17H18V13Z" fill="#FEDC97"/><path d="M8 13H10V17H8V13Z" fill="#FEDC97"/><path d="M2 21H6V25H2V21Z" fill="#63A000"/><path d="M18 25H20V31H18V25Z" fill="#63A000"/><path d="M6 23H8V29H6V23Z" fill="#63A000"/><path d="M8 25H10V31H8V25Z" fill="#63A000"/><path d="M16 15H18V23H16V15Z" fill="#FEDC97"/><path d="M10 15H12V23H10V15Z" fill="#FEDC97"/><path d="M20 23H22V29H20V23Z" fill="#63A000"/><path d="M8 37H10V41H8V37Z" fill="#63A000"/><path d="M18 37H20V41H18V37Z" fill="#63A000"/><path d="M20 35H22V39H20V35Z" fill="#63A000"/><path d="M22 33H24H26V37H22V33Z" fill="#63A000"/><path d="M26 35H28V39H26V35Z" fill="#63A000"/><path d="M0 35H2V39H0V35Z" fill="#63A000"/><path d="M2 33H6V37H2V33Z" fill="#63A000"/><path d="M6 35H8V39H6V35Z" fill="#63A000"/><path d="M10 29H12V41H10V29Z" fill="#63A000"/></g><defs><clipPath id="clip0_995_669"><rect width="28" height="41" fill="white"/></clipPath></defs></svg>`
+          }
+        ];
+
+    function flowerGardenRandomItem(list){
+      return list[Math.floor(Math.random()*list.length)];
+    }
+    function flowerGardenClamp(value,min,max){
+      return Math.min(max,Math.max(min,value));
+    }
+    function flowerGardenAccentColor(){
+      var accent=getComputedStyle(d.documentElement).getPropertyValue("--accent").trim();
+      return accent||"#B8A9FF";
+    }
+    function flowerGardenHexToRgba(hex,alpha){
+      var safe=(hex||"").replace("#","");
+      if(safe.length===3)safe=safe.replace(/(.)/g,"$1$1");
+      var r=parseInt(safe.slice(0,2),16),
+          g=parseInt(safe.slice(2,4),16),
+          bl=parseInt(safe.slice(4,6),16);
+      return "rgba("+r+","+g+","+bl+","+alpha+")";
+    }
+    function flowerGardenRecolorSvg(source,petalColor,bodyColor){
+      var uid="flower-garden-clip-"+(++flowerGardenUid),
+          greens={"#075805":true,"#63A000":true},
+          svg=source.replace(/clip0_[^")]+/g,uid);
+      return svg.replace(/fill="(#[0-9A-Fa-f]{6})"/g,function(match,color){
+        var normalized=color.toUpperCase();
+        return 'fill="'+(greens[normalized]?bodyColor:petalColor)+'"';
+      });
+    }
+    function flowerGardenUpdateCursorIcon(){
+      if(!flowerGardenCursor)return;
+      flowerGardenCursor.innerHTML=flowerGardenMuted?flowerGardenCursorIcons.mute:flowerGardenCursorIcons.sound;
+      flowerGardenCursor.classList.toggle("about-swap-cursor--active",flowerGardenMuted);
+    }
+    function flowerGardenMoveCursor(e){
+      if(!flowerGardenCursor||!flowerGardenDesktopCursor.matches)return;
+      flowerGardenCursor.style.left=e.clientX+"px";
+      flowerGardenCursor.style.top=e.clientY+"px";
+    }
+    function flowerGardenSetCursorPressed(pressed){
+      if(!flowerGardenCursor||!flowerGardenDesktopCursor.matches)return;
+      flowerGardenCursor.classList.toggle("about-swap-cursor--press",pressed);
+    }
+    function flowerGardenShowCursor(e){
+      if(!flowerGardenCursor||!flowerGardenDesktopCursor.matches)return;
+      flowerGardenUpdateCursorIcon();
+      flowerGardenCursor.classList.add("about-swap-cursor--visible");
+      flowerGardenMoveCursor(e);
+    }
+    function flowerGardenHideCursor(){
+      if(!flowerGardenCursor)return;
+      flowerGardenSetCursorPressed(false);
+      flowerGardenCursor.classList.remove("about-swap-cursor--visible","about-swap-cursor--rotate");
+    }
+    function flowerGardenToggleMuted(){
+      if(!flowerGardenCursor)return;
+      flowerGardenMuted=!flowerGardenMuted;
+      flowerGardenUpdateCursorIcon();
+      flowerGardenCursor.classList.remove("about-swap-cursor--rotate");
+      void flowerGardenCursor.offsetWidth;
+      flowerGardenCursor.classList.add("about-swap-cursor--rotate");
+      setTimeout(function(){
+        if(flowerGardenCursor)flowerGardenCursor.classList.remove("about-swap-cursor--rotate");
+      },320);
+    }
+    function flowerGardenAngleDiff(target,current){
+      var diff=target-current;
+      while(diff>Math.PI)diff-=Math.PI*2;
+      while(diff<-Math.PI)diff+=Math.PI*2;
+      return diff;
+    }
+    function flowerGardenPickPointNear(anchorX,anchorY,radius){
+      var angle=Math.random()*Math.PI*2,
+          distance=Math.random()*radius;
+      return {
+        x:anchorX+Math.cos(angle)*distance,
+        y:anchorY+Math.sin(angle)*distance
+      };
+    }
+    function flowerGardenInitSounds(){
+      flowerGardenSoundPool=flowerGardenSounds.map(function(src){
+        var a=new Audio(src);
+        a.preload="auto";
+        return a;
+      });
+    }
+    function flowerGardenPrimeAudio(){
+      if(flowerGardenAudioPrimed||!flowerGardenSoundPool.length)return;
+      var probe=flowerGardenSoundPool[0];
+      flowerGardenAudioPrimed=true;
+      probe.muted=true;
+      var playPromise=probe.play();
+      if(playPromise&&typeof playPromise.then==="function"){
+        playPromise.then(function(){
+          probe.pause();
+          probe.currentTime=0;
+          probe.muted=false;
+        }).catch(function(){
+          probe.muted=false;
+          flowerGardenAudioPrimed=false;
+        });
+      }else{
+        probe.pause();
+        probe.currentTime=0;
+        probe.muted=false;
+      }
+    }
+    function flowerGardenPlaySound(){
+      if(flowerGardenMuted)return;
+      var template=flowerGardenRandomItem(flowerGardenSoundPool),
+          a=template?template.cloneNode():new Audio(flowerGardenRandomItem(flowerGardenSounds));
+      a.volume=0.35;
+      a.play().catch(function(){});
+    }
+    function flowerGardenStartFireflyLoop(){
+      if(flowerGardenFireflyRaf)return;
+      flowerGardenFireflyRaf=requestAnimationFrame(flowerGardenStepFireflies);
+    }
+    function flowerGardenStepFireflies(now){
+      flowerGardenFireflyRaf=0;
+      for(var i=flowerGardenFireflies.length-1;i>=0;i--){
+        var firefly=flowerGardenFireflies[i];
+        if(!firefly.plantEl||!firefly.plantEl.parentNode){
+          if(firefly.el.parentNode)firefly.el.parentNode.removeChild(firefly.el);
+          flowerGardenFireflies.splice(i,1);
+          continue;
+        }
+        if(firefly.framesUntilTarget<=0){
+          var nextTarget=flowerGardenPickPointNear(firefly.anchorX,firefly.anchorY,40);
+          firefly.targetX=nextTarget.x;
+          firefly.targetY=nextTarget.y;
+          firefly.framesUntilTarget=60+Math.floor(Math.random()*61);
+        }
+        firefly.framesUntilTarget--;
+        var desiredAngle=Math.atan2(firefly.targetY-firefly.y,firefly.targetX-firefly.x),
+            currentAngle=Math.atan2(firefly.vy,firefly.vx),
+            jitter=(Math.random()*16-8)*(Math.PI/180),
+            steer=flowerGardenClamp(flowerGardenAngleDiff(desiredAngle,currentAngle),-0.06,0.06),
+            tetherDistance=Math.hypot(firefly.x-firefly.anchorX,firefly.y-firefly.anchorY);
+        currentAngle+=steer+jitter*0.45;
+        if(tetherDistance>55){
+          var homeAngle=Math.atan2(firefly.anchorY-firefly.y,firefly.anchorX-firefly.x);
+          currentAngle+=flowerGardenClamp(flowerGardenAngleDiff(homeAngle,currentAngle),-0.12,0.12);
+        }
+        firefly.speed=flowerGardenClamp(firefly.speed+(Math.random()*0.04-0.02),0.3,0.8);
+        firefly.vx=Math.cos(currentAngle)*firefly.speed;
+        firefly.vy=Math.sin(currentAngle)*firefly.speed;
+        firefly.x+=firefly.vx;
+        firefly.y+=firefly.vy;
+        var pulse=0.5+0.5*Math.sin(((now-firefly.bornAt)/firefly.pulseDuration)*Math.PI*2+firefly.pulseOffset),
+            glowRadius=firefly.size*1.5+pulse*6,
+            glowAlpha=0.45+pulse*0.25;
+        firefly.el.style.transform="translate("+(firefly.x-firefly.size/2).toFixed(2)+"px,"+(firefly.y-firefly.size/2).toFixed(2)+"px)";
+        firefly.el.style.opacity=(0.35+pulse*0.65).toFixed(3);
+        firefly.el.style.boxShadow="0 0 "+glowRadius.toFixed(2)+"px "+flowerGardenHexToRgba(firefly.color,glowAlpha)+", 0 0 "+(glowRadius*2).toFixed(2)+"px "+flowerGardenHexToRgba(firefly.color,glowAlpha*0.65);
+      }
+      if(flowerGardenFireflies.length)flowerGardenStartFireflyLoop();
+    }
+    function flowerGardenSpawnFireflies(meta,flowerX,plantEl){
+      var anchorX=flowerX-meta.width/2+meta.headOffsetX,
+          anchorY=-(meta.height-meta.headOffsetY),
+          fireflyCount=2+Math.floor(Math.random()*3);
+      for(var i=0;i<fireflyCount;i++){
+        var fireflyEl=d.createElement("div"),
+            size=1+Math.floor(Math.random()*3),
+            color=flowerGardenRandomItem(flowerGardenFireflyColors),
+            startPoint=flowerGardenPickPointNear(anchorX,anchorY,18),
+            targetPoint=flowerGardenPickPointNear(anchorX,anchorY,40),
+            angle=Math.random()*Math.PI*2,
+            speed=0.3+Math.random()*0.5;
+        fireflyEl.className="flower-garden-firefly";
+        fireflyEl.style.width=size+"px";
+        fireflyEl.style.height=size+"px";
+        fireflyEl.style.background=color;
+        fireflyEl.style.transform="translate("+(startPoint.x-size/2).toFixed(2)+"px,"+(startPoint.y-size/2).toFixed(2)+"px)";
+        flowerGardenLayer.appendChild(fireflyEl);
+        flowerGardenFireflies.push({
+          el:fireflyEl,
+          plantEl:plantEl,
+          anchorX:anchorX,
+          anchorY:anchorY,
+          x:startPoint.x,
+          y:startPoint.y,
+          vx:Math.cos(angle)*speed,
+          vy:Math.sin(angle)*speed,
+          speed:speed,
+          size:size,
+          color:color,
+          targetX:targetPoint.x,
+          targetY:targetPoint.y,
+          framesUntilTarget:60+Math.floor(Math.random()*61),
+          bornAt:performance.now(),
+          pulseDuration:1800+Math.random()*1400,
+          pulseOffset:Math.random()*Math.PI*2
+        });
+      }
+      flowerGardenStartFireflyLoop();
+    }
+    function flowerGardenPickSource(isFirstFlower){
+      if(!isFirstFlower&&Math.random()<flowerGardenRareSpawnChance)return flowerGardenRareSource;
+      return flowerGardenRandomItem(flowerGardenSources);
+    }
+    function flowerGardenBindFlowerEvents(flowerEl){
+      flowerEl.addEventListener("pointerenter",function(e){
+        flowerGardenShowCursor(e);
+      });
+      flowerEl.addEventListener("pointermove",function(e){
+        flowerGardenMoveCursor(e);
+      });
+      flowerEl.addEventListener("pointerleave",function(){
+        flowerGardenHideCursor();
+      });
+      flowerEl.addEventListener("pointerdown",function(e){
+        flowerGardenPrimeAudio();
+        flowerGardenSetCursorPressed(true);
+        flowerGardenMoveCursor(e);
+      });
+      flowerEl.addEventListener("pointerup",function(){
+        flowerGardenSetCursorPressed(false);
+      });
+      flowerEl.addEventListener("pointercancel",function(){
+        flowerGardenSetCursorPressed(false);
+      });
+      flowerEl.addEventListener("click",function(e){
+        flowerGardenPrimeAudio();
+        flowerGardenToggleMuted();
+        flowerGardenShowCursor(e);
+      });
+    }
+    function flowerGardenStartParticleLoop(){
+      if(flowerGardenParticleRaf)return;
+      flowerGardenParticleRaf=requestAnimationFrame(flowerGardenStepParticles);
+    }
+    function flowerGardenStepParticles(){
+      flowerGardenParticleRaf=0;
+      for(var i=flowerGardenParticles.length-1;i>=0;i--){
+        var particle=flowerGardenParticles[i];
+        particle.vy+=0.15;
+        particle.x+=particle.vx;
+        particle.y+=particle.vy;
+        particle.life--;
+        particle.el.style.transform="translate("+particle.x+"px,"+particle.y+"px)";
+        particle.el.style.opacity=Math.max(0,(particle.life/particle.maxLife)*0.8).toFixed(3);
+        if(particle.life<=0){
+          if(particle.el.parentNode)particle.el.parentNode.removeChild(particle.el);
+          flowerGardenParticles.splice(i,1);
+        }
+      }
+      if(flowerGardenParticles.length)flowerGardenStartParticleLoop();
+    }
+    function flowerGardenBurst(meta,centerX,petalColor){
+      var particleCount=2+Math.floor(Math.random()*2),
+          originX=centerX,
+          originY=-(meta.height-meta.headOffsetY),
+          fill=flowerGardenHexToRgba(petalColor,0.8);
+      for(var i=0;i<particleCount;i++){
+        var particleEl=d.createElement("span"),
+            angle=Math.random()*Math.PI*2,
+            speed=1.5+Math.random()*1.5,
+            size=2+Math.random();
+        particleEl.className="flower-garden-particle";
+        particleEl.style.width=size+"px";
+        particleEl.style.height=size+"px";
+        particleEl.style.background=fill;
+        particleEl.style.transform="translate("+originX+"px,"+originY+"px)";
+        flowerGardenLayer.appendChild(particleEl);
+        var life=40+Math.floor(Math.random()*16);
+        flowerGardenParticles.push({
+          el:particleEl,
+          x:originX,
+          y:originY,
+          vx:Math.cos(angle)*speed,
+          vy:Math.sin(angle)*speed,
+          life:life,
+          maxLife:life
+        });
+      }
+      flowerGardenStartParticleLoop();
+    }
+    function flowerGardenRestartInterval(){
+      if(flowerGardenInterval){
+        clearInterval(flowerGardenInterval);
+        flowerGardenInterval=null;
+      }
+      if(flowerGardenCount>=flowerGardenMax)return;
+      flowerGardenInterval=setInterval(function(){
+        flowerGardenSpawn(false);
+      },flowerGardenDelay);
+    }
+    function flowerGardenMaybeAdjustInterval(){
+      if(!flowerGardenTriggered||flowerGardenCount===0||flowerGardenCount%5!==0)return;
+      var nextDelay=Math.max(800,3500-Math.floor(flowerGardenCount/5)*200);
+      if(nextDelay!==flowerGardenDelay){
+        flowerGardenDelay=nextDelay;
+        flowerGardenRestartInterval();
+      }
+    }
+    function flowerGardenPickX(meta){
+      var bounds=introGardenRoot.getBoundingClientRect(),
+          width=Math.max(1,bounds.width),
+          minX=meta.width/2,
+          maxX=width-meta.width/2,
+          fallbackX=width/2,
+          tries=0,
+          x=fallbackX;
+      if(maxX<=minX)return fallbackX;
+      while(tries<5){
+        x=minX+Math.random()*(maxX-minX);
+        if(!flowerGardenPositions.some(function(pos){return Math.abs(pos-x)<22;}))return x;
+        tries++;
+      }
+      return x;
+    }
+    function flowerGardenGetElementCenterX(el){
+      if(!el)return null;
+      var anchorEl=el.querySelector(".intro-v2-live-item-name")||el,
+          containerRect=introGardenRoot.getBoundingClientRect(),
+          elRect=anchorEl.getBoundingClientRect(),
+          centerX=elRect.left-containerRect.left+elRect.width/2;
+      return centerX;
+    }
+    function flowerGardenSpawn(options){
+      options=options||{};
+      if(flowerGardenCount>=flowerGardenMax){
+        if(flowerGardenInterval){clearInterval(flowerGardenInterval);flowerGardenInterval=null;}
+        return;
+      }
+      var isFirstFlower=!!options.isFirstFlower,
+          meta=flowerGardenPickSource(isFirstFlower),
+          isRareFlower=meta.type==="image",
+          petalColor=isRareFlower?null:(isFirstFlower?flowerGardenAccentColor():flowerGardenRandomItem(flowerGardenPetalPalette)),
+          bodyColor=isRareFlower?null:flowerGardenRandomItem(flowerGardenBodyGreens),
+          flowerX=typeof options.x==="number"
+            ? flowerGardenClamp(options.x,meta.width/2,Math.max(meta.width/2,introGardenRoot.clientWidth-meta.width/2))
+            : flowerGardenClamp(flowerGardenPickX(meta),meta.width/2,Math.max(meta.width/2,introGardenRoot.clientWidth-meta.width/2)),
+          flowerEl=d.createElement("div");
+      flowerEl.className="flower-garden-flower"+(isRareFlower?" flower-garden-flower--rare":"");
+      flowerEl.style.left=flowerX+"px";
+      flowerEl.style.width=meta.width+"px";
+      flowerEl.style.height=meta.height+"px";
+      if(isRareFlower){
+        var rarePlantImg=d.createElement("img");
+        rarePlantImg.src=meta.src;
+        rarePlantImg.alt="";
+        rarePlantImg.decoding="async";
+        flowerEl.appendChild(rarePlantImg);
+      }else{
+        flowerEl.innerHTML=flowerGardenRecolorSvg(meta.svg,petalColor,bodyColor);
+      }
+      flowerGardenBindFlowerEvents(flowerEl);
+      flowerGardenLayer.appendChild(flowerEl);
+      flowerGardenPositions.push(flowerX);
+      flowerGardenCount++;
+      void flowerEl.offsetHeight;
+      flowerEl.classList.add("is-grown");
+      flowerGardenPlaySound();
+      if(isRareFlower)flowerGardenSpawnFireflies(meta,flowerX,flowerEl);
+      else flowerGardenBurst(meta,flowerX-meta.width/2+meta.headOffsetX,petalColor);
+      if(flowerGardenCount>=flowerGardenMax){
+        if(flowerGardenInterval){clearInterval(flowerGardenInterval);flowerGardenInterval=null;}
+        return;
+      }
+      flowerGardenMaybeAdjustInterval();
+    }
+    function flowerGardenHandleMouseEnter(e){
+      flowerGardenTrigger(e.currentTarget);
+    }
+    function flowerGardenTrigger(targetEl){
+      if(flowerGardenTriggered)return;
+      flowerGardenPrimeAudio();
+      flowerGardenTriggered=true;
+      liveItems.forEach(function(el){
+        el.removeEventListener("pointerenter",flowerGardenHandleMouseEnter);
+      });
+      flowerGardenSpawn({
+        isFirstFlower:true,
+        x:flowerGardenGetElementCenterX(targetEl)
+      });
+      flowerGardenRestartInterval();
+    }
+    if(flowerGardenIsTouchDevice){
+      flowerGardenTriggered=true;
+      setTimeout(function(){
+        flowerGardenSpawn({isFirstFlower:true});
+        flowerGardenRestartInterval();
+      },1200);
+    }else{
+      liveItems.forEach(function(el){
+        el.addEventListener("pointerenter",flowerGardenHandleMouseEnter);
+      });
+    }
+    flowerGardenInitSounds();
+    flowerGardenUpdateCursorIcon();
+    introGardenRoot.addEventListener("pointerdown",flowerGardenPrimeAudio,{once:true,passive:true});
+    introGardenRoot.addEventListener("touchstart",flowerGardenPrimeAudio,{once:true,passive:true});
+    introGardenRoot.addEventListener("click",flowerGardenPrimeAudio,{once:true,passive:true});
+    introGardenRoot.addEventListener("mouseleave",flowerGardenHideCursor);
+  }
+
   /* Email copy-to-clipboard with toast (follows cursor until it disappears) */
   var toast=d.getElementById("emailToast"),toastTimer=null,toastFollowHandler=null;
   function positionToastAt(clientX,clientY){
