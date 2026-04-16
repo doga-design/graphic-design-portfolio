@@ -343,8 +343,7 @@ span.subtitle {
   color: rgba(255, 255, 255, 0.72);
   padding: 0.28rem 0.55rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.03);
+  background-color: #000;
   line-height: 1.3;
 }
 .intro-v2-tools-chip-sub {
@@ -352,6 +351,11 @@ span.subtitle {
   font-size: 0.68rem;
   color: rgba(255, 255, 255, 0.48);
   letter-spacing: 0.01em;
+}
+.intro-v2-chip-muted {
+  font-size: 0.64rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.06em;
 }
 .intro-v2-skills {
   display: flex;
