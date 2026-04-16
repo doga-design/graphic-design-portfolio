@@ -181,7 +181,7 @@ d.addEventListener("DOMContentLoaded",function(){
       if(expanded){
         hiddenCards.forEach(function(card){card.classList.remove("work-card--revealed")});
         workRevealBtn.setAttribute("aria-expanded","false");
-        workRevealText.textContent="View all 6 projects";
+        workRevealText.textContent="View all 7 projects";
         w.requestAnimationFrame(function(){
           w.scrollBy({top:-280,behavior:"smooth"});
         });
