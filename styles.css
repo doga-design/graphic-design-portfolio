@@ -194,9 +194,9 @@ span.subtitle {
 @keyframes intro-v2-cell-reveal {
   from {
     opacity: 0;
-    filter: blur(14px);
-    -webkit-filter: blur(14px);
-    transform: translate3d(0, 20px, 0) scale(0.985);
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    transform: translate3d(0, 12px, 0) scale(0.99);
   }
   to {
     opacity: 1;
