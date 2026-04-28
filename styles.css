@@ -357,6 +357,7 @@ span.subtitle {
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.06em;
 }
+
 .intro-v2-skills {
   display: flex;
   flex-wrap: wrap;
@@ -364,6 +365,7 @@ span.subtitle {
   gap: .35rem;
   margin-top: auto;
 }
+
 .intro-v2-skill {
   font-size: var(--text-small);
   letter-spacing: .06em;
