@@ -273,11 +273,12 @@ d.addEventListener("DOMContentLoaded",function(){
     aboutStack.addEventListener("click",aboutSwap);
   }
 
-  /* Pixel flower garden */
+  /* Pixel flower garden (desktop / tablet wide only — disabled ≤767px) */
   var introGardenRoot=d.getElementById("intro-v2"),
       flowerGardenLayer=d.getElementById("flower-garden-layer"),
-      flowerGardenCursor=d.getElementById("flowerGardenCursor");
-  if(introGardenRoot&&flowerGardenLayer){
+      flowerGardenCursor=d.getElementById("flowerGardenCursor"),
+      flowerGardenMqMobile=w.matchMedia("(max-width: 767px)");
+  if(introGardenRoot&&flowerGardenLayer&&!flowerGardenMqMobile.matches){
     var liveItems=introGardenRoot.querySelectorAll(".intro-v2-live-item"),
         flowerGardenCount=0,
         flowerGardenMax=40,
@@ -725,6 +726,20 @@ d.addEventListener("DOMContentLoaded",function(){
     introGardenRoot.addEventListener("touchstart",flowerGardenPrimeAudio,{once:true,passive:true});
     introGardenRoot.addEventListener("click",flowerGardenPrimeAudio,{once:true,passive:true});
     introGardenRoot.addEventListener("mouseleave",flowerGardenHideCursor);
+    flowerGardenMqMobile.addEventListener("change",function flowerGardenMq(e){
+      if(!e.matches)return;
+      if(flowerGardenInterval){clearInterval(flowerGardenInterval);flowerGardenInterval=null;}
+      if(flowerGardenParticleRaf){cancelAnimationFrame(flowerGardenParticleRaf);flowerGardenParticleRaf=0;}
+      if(flowerGardenFireflyRaf){cancelAnimationFrame(flowerGardenFireflyRaf);flowerGardenFireflyRaf=0;}
+      flowerGardenLayer.innerHTML="";
+      flowerGardenParticles.length=0;
+      flowerGardenFireflies.length=0;
+      flowerGardenPositions.length=0;
+      flowerGardenCount=flowerGardenMax;
+      liveItems.forEach(function(el){el.removeEventListener("pointerenter",flowerGardenHandleMouseEnter);});
+      introGardenRoot.removeEventListener("mouseleave",flowerGardenHideCursor);
+      flowerGardenHideCursor();
+    });
   }
 
   /* Email copy-to-clipboard with toast (follows cursor until it disappears) */
