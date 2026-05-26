@@ -243,16 +243,16 @@ span.subtitle {
 .intro-v2-role-tag {
   display: inline-flex;
   align-items: center;
-  gap: .75rem;
-  font-size: .7em;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  font-weight: 400;
-  color: var(--accent);
-  background: rgba(0,0,0,0.06);
+  gap: 0;
+  font-size: var(--text-small);
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 500;
+  color: #ffffff;
+  background: none;
   border: none;
-  border-radius: 100px;
-  padding: .3rem .8rem .3rem .6rem;
+  border-radius: 0;
+  padding: 0;
   width: fit-content;
 }
 .intro-v2-name {
@@ -283,9 +283,27 @@ span.subtitle {
   flex-direction: column;
   gap: .15rem;
 }
+.intro-v2-location-scratched-line {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  position: relative;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.5);
+}
+.intro-v2-location-scratched-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid currentColor;
+  pointer-events: none;
+}
+.intro-v2-location-scratched-line svg { flex-shrink: 0; }
 .intro-v2-location-scratched {
-  text-decoration: line-through;
-  opacity: 1;
+  text-decoration: none;
+  color: inherit;
 }
 .intro-v2-location-current-line {
   display: flex;
@@ -309,11 +327,12 @@ span.subtitle {
   max-width: 30rem;
 }
 .intro-v2-tools-label {
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.38);
+  font-size: var(--text-small);
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color:#ffffff;
 }
 .intro-v2-tools-chips {
   list-style: none;
@@ -376,10 +395,10 @@ span.subtitle {
 .intro-v2-live-label {
   display: flex;
   align-items: center;
-  gap: .9rem;
-  font-size: .7em;
+  gap: 0;
+  font-size: var(--text-small);
   font-weight: 400;
-  letter-spacing: .14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: .25rem;
@@ -979,10 +998,11 @@ a.intro-v2-live-item:hover .intro-v2-live-arrow {
 }
 .footer-cta { display: flex; flex-direction: column; gap: 0.6rem; }
 .footer-cta-label {
-  font-size: 0.65rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-weight: 400;
+  color: #ffffffb5;
 }
 .footer-cta-email {
   font-family: 'AwesomeSerif', serif;

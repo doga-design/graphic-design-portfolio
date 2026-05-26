@@ -281,8 +281,8 @@ d.addEventListener("DOMContentLoaded",function(){
   if(introGardenRoot&&flowerGardenLayer&&!flowerGardenMqMobile.matches){
     var liveItems=introGardenRoot.querySelectorAll(".intro-v2-live-item"),
         flowerGardenCount=0,
-        flowerGardenMax=40,
-        flowerGardenDelay=3500,
+        flowerGardenMax=24,
+        flowerGardenDelay=4200,
         flowerGardenInterval=null,
         flowerGardenTriggered=false,
         flowerGardenIsTouchDevice=w.matchMedia("(hover: none)").matches||w.matchMedia("(pointer: coarse)").matches,
@@ -619,8 +619,8 @@ d.addEventListener("DOMContentLoaded",function(){
       },flowerGardenDelay);
     }
     function flowerGardenMaybeAdjustInterval(){
-      if(!flowerGardenTriggered||flowerGardenCount===0||flowerGardenCount%5!==0)return;
-      var nextDelay=Math.max(800,3500-Math.floor(flowerGardenCount/5)*200);
+      if(!flowerGardenTriggered||flowerGardenCount===0||flowerGardenCount%6!==0)return;
+      var nextDelay=Math.max(1400,4200-Math.floor(flowerGardenCount/6)*180);
       if(nextDelay!==flowerGardenDelay){
         flowerGardenDelay=nextDelay;
         flowerGardenRestartInterval();
@@ -637,7 +637,7 @@ d.addEventListener("DOMContentLoaded",function(){
       if(maxX<=minX)return fallbackX;
       while(tries<5){
         x=minX+Math.random()*(maxX-minX);
-        if(!flowerGardenPositions.some(function(pos){return Math.abs(pos-x)<22;}))return x;
+        if(!flowerGardenPositions.some(function(pos){return Math.abs(pos-x)<38;}))return x;
         tries++;
       }
       return x;
