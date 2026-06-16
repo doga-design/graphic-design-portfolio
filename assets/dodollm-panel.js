@@ -149,6 +149,7 @@
   const form = document.querySelector("[data-dodollm-form]");
   const input = document.querySelector("[data-dodollm-input]");
   const sendButton = form?.querySelector(".dodollm-panel__send");
+  const MAX_INPUT_CHARS = 1200;
 
   if (
     !panel ||
@@ -236,7 +237,6 @@
 
   const API_ENDPOINT = "/api/chat";
   const MAX_HISTORY_MESSAGES = 10;
-  const MAX_INPUT_CHARS = 1200;
   const DEFAULT_INPUT_PLACEHOLDER = input.getAttribute("placeholder") || "Ask dodo...";
   const THINKING_TEXT = "Thinking";
   const ERROR_RESPONSE =
