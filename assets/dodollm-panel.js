@@ -94,6 +94,7 @@
   const initialSuggestions = document.querySelector("[data-dodollm-initial-suggestions]");
   const form = document.querySelector("[data-dodollm-form]");
   const input = document.querySelector("[data-dodollm-input]");
+  const sendButton = form?.querySelector(".dodollm-panel__send");
 
   if (
     !panel ||
@@ -123,20 +124,18 @@
     "What tools do you use?",
   ];
 
-  const fallbackResponse =
-    "I'm still learning to answer that one. But feel free to reach out at hello@dogacimen.com — I'm better in real conversation.";
-
-  const responses = {
-    "What kind of work do you do?":
-      "I design and build digital products — everything from brand identity to full product UI and frontend code. I work under my studio name Unbar Agency, and most of my projects sit at the intersection of product design and engineering. Right now I'm deep in Bountt, an expense-splitting app I'm building end to end.",
-    "Tell me about Bountt":
-      "Bountt is a React-based expense app I designed and built myself. The idea is removing financial tension from shared living — no awkward conversations, no mental math. I own the whole thing: product thinking, UI design, and frontend code.",
-    "What's your design process?":
-      "I start in Figma to get structure and hierarchy right, then move to the browser fast. I care a lot about how things feel in motion, not just how they look static. I also build my prototypes to be functional — so stakeholders see real interactions, not just a click-through.",
-  };
+  const API_ENDPOINT = "/api/chat";
+  const MAX_HISTORY_MESSAGES = 10;
+  const DEFAULT_INPUT_PLACEHOLDER = input.getAttribute("placeholder") || "Ask dodo...";
+  const THINKING_TEXT = "Thinking";
+  const ERROR_RESPONSE =
+    "I had trouble reaching dodoLLM just now. Try again in a moment.";
 
   let hasOpened = false;
   let typingTimer = null;
+  let conversationMessages = [];
+  let isWaitingForResponse = false;
+  let activeRequestId = 0;
   let scrollLockListenersActive = false;
   let scrollLockCount = 0;
 
@@ -294,6 +293,9 @@
       typingTimer = null;
     }
 
+    activeRequestId += 1;
+    conversationMessages = [];
+    setWaitingState(false);
     messages.replaceChildren();
     initialSuggestions.replaceChildren(
       ...initialPrompts.map((prompt) => makeSuggestion(prompt))
@@ -317,7 +319,51 @@
     chat.scrollTop = chat.scrollHeight;
   }
 
-  function streamBotResponse(text) {
+  function setWaitingState(isWaiting) {
+    isWaitingForResponse = isWaiting;
+    input.disabled = isWaiting;
+    input.setAttribute(
+      "placeholder",
+      isWaiting ? "dodo is thinking..." : DEFAULT_INPUT_PLACEHOLDER
+    );
+
+    if (sendButton) {
+      sendButton.disabled = isWaiting;
+    }
+  }
+
+  function renderUserMessage(text) {
+    const user = document.createElement("div");
+    user.className = "dodollm-message-user";
+    user.textContent = text;
+    messages.append(user);
+  }
+
+  function renderBotMessage(text) {
+    const bot = document.createElement("div");
+    bot.className = "dodollm-message-bot";
+    bot.textContent = text;
+    messages.append(bot);
+    scrollChatToBottom();
+    return bot;
+  }
+
+  function renderLoadingBubble() {
+    const bot = document.createElement("div");
+    bot.className = "dodollm-message-bot";
+    bot.textContent = THINKING_TEXT;
+
+    const cursor = document.createElement("span");
+    cursor.className = "dodollm-cursor";
+    cursor.textContent = "|";
+    bot.append(cursor);
+
+    messages.append(bot);
+    scrollChatToBottom();
+    return bot;
+  }
+
+  function streamBotResponse(text, onDone) {
     const bot = document.createElement("div");
     bot.className = "dodollm-message-bot";
     messages.append(bot);
@@ -340,15 +386,15 @@
         typingTimer = null;
         cursor.remove();
         bot.textContent = text;
-        renderFollowUps();
+        onDone?.();
         scrollChatToBottom();
       }
     }, 18);
   }
 
-  function submitPrompt(rawPrompt) {
+  async function submitPrompt(rawPrompt) {
     const prompt = rawPrompt.trim();
-    if (!prompt) return;
+    if (!prompt || isWaitingForResponse) return;
 
     if (typingTimer) {
       window.clearInterval(typingTimer);
@@ -360,14 +406,55 @@
       .querySelectorAll(".dodollm-divider, .dodollm-suggestions")
       .forEach((el) => el.remove());
 
-    const user = document.createElement("div");
-    user.className = "dodollm-message-user";
-    user.textContent = prompt;
-    messages.append(user);
-
+    renderUserMessage(prompt);
     input.value = "";
     scrollChatToBottom();
-    streamBotResponse(responses[prompt] || fallbackResponse);
+
+    conversationMessages.push({ role: "user", content: prompt });
+
+    const requestId = activeRequestId + 1;
+    activeRequestId = requestId;
+    const loadingBubble = renderLoadingBubble();
+    setWaitingState(true);
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: conversationMessages.slice(-MAX_HISTORY_MESSAGES),
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || typeof data.content !== "string" || !data.content.trim()) {
+        throw new Error(data.error || "Unable to reach dodoLLM.");
+      }
+
+      if (requestId !== activeRequestId) return;
+
+      const content = data.content.trim();
+      conversationMessages.push({ role: "assistant", content });
+      loadingBubble.remove();
+      streamBotResponse(content, renderFollowUps);
+    } catch {
+      if (requestId !== activeRequestId) return;
+
+      const lastMessage = conversationMessages[conversationMessages.length - 1];
+      if (lastMessage?.role === "user" && lastMessage.content === prompt) {
+        conversationMessages.pop();
+      }
+
+      loadingBubble.remove();
+      renderBotMessage(ERROR_RESPONSE);
+    } finally {
+      if (requestId === activeRequestId) {
+        setWaitingState(false);
+        input.focus();
+      }
+    }
   }
 
   dockButton?.addEventListener("click", (event) => {
