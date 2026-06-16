@@ -241,6 +241,7 @@
   const THINKING_TEXT = "Thinking";
   const ERROR_RESPONSE =
     "I had trouble reaching dodoLLM just now. Try again in a moment.";
+  const MAX_ERROR_MESSAGE_CHARS = 180;
 
   let hasOpened = false;
   let typingTimer = null;
@@ -602,6 +603,13 @@
     }
   }
 
+  function getErrorMessage(error) {
+    const message = error instanceof Error ? error.message.trim() : "";
+    if (!message) return ERROR_RESPONSE;
+
+    return message.slice(0, MAX_ERROR_MESSAGE_CHARS);
+  }
+
   function renderUserMessage(text) {
     const user = document.createElement("div");
     user.className = "dodollm-message-user";
@@ -734,7 +742,12 @@
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok || typeof data.content !== "string" || !data.content.trim()) {
-        throw new Error(data.error || "Unable to reach dodoLLM.");
+        const serverError =
+          typeof data.error === "string" && data.error.trim()
+            ? data.error.trim()
+            : `dodoLLM couldn't respond right now (HTTP ${response.status}). Try again soon.`;
+
+        throw new Error(serverError);
       }
 
       if (requestId !== activeRequestId) return;
@@ -746,7 +759,7 @@
         renderWorkCards(mentionedWorks);
         renderFollowUps();
       });
-    } catch {
+    } catch (error) {
       if (requestId !== activeRequestId) return;
 
       const lastMessage = conversationMessages[conversationMessages.length - 1];
@@ -755,7 +768,7 @@
       }
 
       loadingBubble.remove();
-      renderBotMessage(ERROR_RESPONSE);
+      renderBotMessage(getErrorMessage(error));
     } finally {
       if (requestId === activeRequestId) {
         currentRequestController = null;

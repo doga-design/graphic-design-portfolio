@@ -8,6 +8,10 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const MIN_REQUEST_DELAY_MS = 2000;
 const OPENAI_TIMEOUT_MS = 15000;
 const ipRequestState = new Map();
+const TOO_FAST_MESSAGE =
+  "Please wait a couple seconds before sending another message.";
+const HOURLY_LIMIT_MESSAGE =
+  "I've had a lot of messages from this connection recently. Please try again in a few minutes.";
 
 const systemPrompt = `
 You are dodoLLM, the AI version of Doga Cimen inside my portfolio website.
@@ -76,20 +80,28 @@ function enforceIpLimits(ip) {
       ? { count: 0, windowStart: now, lastRequestAt: 0 }
       : current;
 
-  state.count += 1;
   ipRequestState.set(ip, state);
 
-  if (state.count > RATE_LIMIT_MAX_REQUESTS) {
+  if (state.count >= RATE_LIMIT_MAX_REQUESTS) {
     return {
       allowed: false,
-      message: "You've been chatting a lot — give it a few minutes and come back.",
+      message: HOURLY_LIMIT_MESSAGE,
+      retryAfter: Math.max(
+        1,
+        Math.ceil((state.windowStart + RATE_LIMIT_WINDOW_MS - now) / 1000)
+      ),
     };
   }
 
   if (state.lastRequestAt && now - state.lastRequestAt < MIN_REQUEST_DELAY_MS) {
-    return { allowed: false, message: "Slow down a little." };
+    return {
+      allowed: false,
+      message: TOO_FAST_MESSAGE,
+      retryAfter: Math.ceil((MIN_REQUEST_DELAY_MS - (now - state.lastRequestAt)) / 1000),
+    };
   }
 
+  state.count += 1;
   state.lastRequestAt = now;
   return { allowed: true };
 }
@@ -153,6 +165,10 @@ export default async function handler(req, res) {
   const ip = getClientIp(req);
   const limit = enforceIpLimits(ip);
   if (!limit.allowed) {
+    if (limit.retryAfter) {
+      res.setHeader("Retry-After", String(limit.retryAfter));
+    }
+
     return sendJson(res, 429, { error: limit.message });
   }
 
