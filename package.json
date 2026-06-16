@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build:icons": "node scripts/build-icons.mjs"
+  },
+  "dependencies": {
+    "@untitledui/icons": "^0.0.22",
+    "geist": "^1.7.1"
+  },
+  "devDependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}

@@ -1,0 +1,4884 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/dc-favicon-pack/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/dc-favicon-pack/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/dc-favicon-pack/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/dc-favicon-pack/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/dc-favicon-pack/site.webmanifest" />
+    <title>Distro Disco — Case Study</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/dd-assets/component-bottom-nav/bottom-nav.css"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist Sans";
+        src: url("https://cdn.jsdelivr.net/npm/geist@1.7.1/dist/fonts/geist-sans/Geist-Variable.woff2")
+          format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --paper: #f2f1ef;
+        --ink: #1a1a1a;
+        --muted: rgba(0, 0, 0, 0.35);
+        --section-gap: clamp(72px, 10vw, 120px);
+        --content-max: 1100px;
+        --sidebar-width: 260px;
+        --dd-accent: #e8a84a;
+        --dd-navy: #1a2744;
+        --font-body: "Geist Sans", system-ui, -apple-system, sans-serif;
+        --placeholder-bg: linear-gradient(145deg, #c4c4c4 0%, #a3a3a3 48%, #8f8f8f 100%);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        overflow-x: clip;
+        cursor: crosshair;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-weight: 400;
+        line-height: 1.6;
+        overflow-x: clip;
+        cursor: crosshair;
+      }
+
+      ::selection {
+        background: #b03a39;
+        color: #f8f3eb;
+      }
+
+      a,
+      button,
+      select,
+      summary,
+      [role="button"],
+      [role="link"],
+      [role="tab"],
+      input[type="button"],
+      input[type="submit"],
+      input[type="reset"],
+      input[type="checkbox"],
+      input[type="radio"],
+      input[type="file"],
+      label[for] {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .layout {
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: var(--sidebar-width);
+        height: 100vh;
+        padding: 2rem 1.5rem 2rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+        background: var(--paper);
+      }
+
+      .sidebar__back {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 1.25rem;
+      }
+
+      .sidebar__back:hover {
+        opacity: 0.7;
+      }
+
+      .sidebar__label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        margin-bottom: 0.35rem;
+      }
+
+      .sidebar__title {
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--ink);
+        margin-bottom: 2.5rem;
+      }
+
+      .sidebar-nav {
+        --sidebar-nav-pad-y: 0.55rem;
+        --sidebar-nav-node: 8px;
+        --sidebar-nav-node-ring: 2px;
+        --sidebar-nav-node-idle: #cbcbc9;
+        --sidebar-nav-rail: #d8d6d4;
+        --sidebar-nav-font: 0.7rem;
+        --sidebar-nav-lh: 1.35;
+        position: relative;
+        list-style: none;
+        padding: 0;
+        flex: 0 0 auto;
+        width: 100%;
+      }
+
+      .sidebar-nav::before {
+        content: "";
+        position: absolute;
+        left: calc(var(--sidebar-nav-node) / 2 - 0.5px);
+        top: calc(
+          var(--sidebar-nav-pad-y) +
+            max(var(--sidebar-nav-node), var(--sidebar-nav-font) * var(--sidebar-nav-lh)) / 2
+        );
+        bottom: calc(
+          var(--sidebar-nav-pad-y) +
+            max(var(--sidebar-nav-node), var(--sidebar-nav-font) * var(--sidebar-nav-lh)) / 2
+        );
+        width: 1px;
+        background: var(--sidebar-nav-rail);
+        z-index: 0;
+      }
+
+      .sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: var(--sidebar-nav-pad-y) 0;
+        font-size: var(--sidebar-nav-font);
+        line-height: var(--sidebar-nav-lh);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        transition: color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+      }
+
+      .sidebar-nav a::before {
+        content: "";
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+        width: var(--sidebar-nav-node);
+        height: var(--sidebar-nav-node);
+        border-radius: 50%;
+        background: var(--sidebar-nav-node-idle);
+        box-shadow: 0 0 0 var(--sidebar-nav-node-ring) var(--paper);
+        transition: color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+      }
+
+      .sidebar-nav a.active {
+        color: var(--ink);
+      }
+
+      .sidebar-nav a.active::before {
+        background: var(--ink);
+      }
+
+      .cs-nav,
+      .cs-nav__drawer {
+        display: none;
+      }
+
+      .cs-nav {
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.85rem clamp(1.25rem, 5vw, 2rem);
+        background: var(--paper);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .cs-nav__logo {
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+
+      .cs-nav__burger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .icon {
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+        color: currentColor;
+      }
+
+      .cs-nav__burger .icon {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .cs-nav__burger .icon--close {
+        display: none;
+      }
+
+      .cs-nav__burger[aria-expanded="true"] .icon--menu {
+        display: none;
+      }
+
+      .cs-nav__burger[aria-expanded="true"] .icon--close {
+        display: block;
+      }
+
+      .icon-roll {
+        --icon-roll-size: 1rem;
+        display: inline-block;
+        width: var(--icon-roll-size);
+        height: var(--icon-roll-size);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .icon-roll--sm {
+        --icon-roll-size: 0.95rem;
+      }
+
+      .icon-roll--lg {
+        --icon-roll-size: clamp(52px, 9vw, 80px);
+      }
+
+      .icon-roll__track {
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .icon-roll svg {
+        display: block;
+        width: var(--icon-roll-size);
+        height: var(--icon-roll-size);
+        flex-shrink: 0;
+      }
+
+      @media (hover: hover) {
+        :is(a, button):hover .icon-roll__track,
+        :is(a, button):focus-visible .icon-roll__track {
+          transform: translateY(-50%);
+        }
+      }
+
+      .sidebar__back,
+      .cs-nav__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .cs-nav__drawer nav {
+        display: flex;
+        flex-direction: column;
+        padding: 0.35rem clamp(1.25rem, 5vw, 2rem) 1.25rem;
+      }
+
+      .cs-nav__drawer a {
+        padding: 0.75rem 0;
+        font-size: 0.9rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .cs-nav__drawer a:last-child {
+        border-bottom: none;
+      }
+
+      .cs-nav__drawer a.cs-nav__back {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+
+      .cs-nav__drawer a.active {
+        font-weight: 500;
+      }
+
+      .main {
+        margin-left: var(--sidebar-width);
+        padding: clamp(48px, 6vw, 80px) clamp(1.5rem, 5vw, 3rem) 120px;
+      }
+
+      .main__inner {
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        max-width: var(--content-max);
+        width: 100%;
+        min-width: 0;
+      }
+
+      .main__inner > .section > :last-child,
+      .main__inner > .hero > :last-child {
+        margin-bottom: 0;
+      }
+
+      .hero__title {
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+
+      .hero__title-strong {
+        font-weight: 600;
+      }
+
+      .hero__title-row {
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .hero__back {
+        display: none;
+      }
+
+      .hero__meta {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: clamp(1.25rem, 3vw, 2rem);
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .meta__label {
+        margin-bottom: 0.35rem;
+        color: var(--muted);
+        font-size: 0.65rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .meta__value {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--ink);
+      }
+
+      @media (max-width: 1100px) {
+        .hero__meta {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      .hero__ctas {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        margin-bottom: clamp(1.25rem, 4vw, 1.75rem);
+      }
+
+      .hero__ctas .hero__cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: auto;
+        flex-shrink: 0;
+        white-space: nowrap;
+        box-sizing: border-box;
+        padding: 1rem 1.5rem;
+        border-radius: 16px;
+        background: #0d1b2a;
+        color: #f5f0e8;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        transition: background 200ms ease, border-color 200ms ease;
+      }
+
+      .hero__ctas .hero__cta:hover {
+        background: #162d47;
+      }
+
+      .hero__ctas .hero__cta--secondary {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid rgba(26, 26, 26, 0.18);
+      }
+
+      .hero__ctas .hero__cta--secondary:hover {
+        background: rgba(13, 27, 42, 0.06);
+        border-color: rgba(26, 26, 26, 0.28);
+      }
+
+      .hero__ctas .hero__cta span {
+        color: inherit;
+      }
+
+      @media (min-width: 961px) {
+        .hero {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          column-gap: clamp(1.5rem, 3vw, 2.5rem);
+          row-gap: clamp(2rem, 4vw, 3rem);
+          grid-template-areas:
+            "title ctas"
+            "meta meta"
+            "image image"
+            "team team";
+          align-items: center;
+        }
+
+        .hero .team-grid--hero {
+          grid-area: team;
+          margin-top: calc(-1 * clamp(2rem, 4vw, 3rem));
+        }
+
+        .hero__title-row {
+          grid-area: title;
+          margin-bottom: 0;
+          align-self: center;
+        }
+
+        .hero__title-row .hero__title {
+          margin-bottom: 0;
+        }
+
+        .hero__ctas {
+          grid-area: ctas;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          align-self: center;
+          width: auto;
+          margin-bottom: 0;
+        }
+
+        .hero__meta {
+          grid-area: meta;
+          margin-bottom: 0;
+        }
+
+        .hero-visual {
+          grid-area: image;
+        }
+      }
+
+      .hero-visual {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .hero-visual__img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+      }
+
+      .placeholder {
+        background: var(--placeholder-bg);
+        border-radius: 12px;
+      }
+
+      .placeholder-wide {
+        width: 100%;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .placeholder-wide--21x9 {
+        aspect-ratio: 21 / 9;
+      }
+
+      .placeholder-wide--16x9 {
+        aspect-ratio: 16 / 9;
+      }
+
+      /* Collection surfer — product screens gallery
+         Edit layout, scale & 3D tuning via the variables below (--surfer-*). */
+      .collection-surfer {
+        /* —— Container —— */
+        --surfer-stage-h: min(76vh, 720px);
+        --surfer-card-w: min(300px, 38vw);
+        --surfer-card-max-inset: 4rem;
+        --surfer-scroll-range-min: 800;
+        --surfer-scroll-range-per-item: 150;
+
+        /* —— Scene position —— */
+        --surfer-offset-x: 0;
+        --surfer-offset-y: 40;
+        --surfer-scene-padding-top: 0;
+        --surfer-scene-padding-bottom: 1rem;
+        --surfer-scene-padding-left: clamp(4%, 8vw, 10%);
+
+        /* —— 3D camera —— */
+        --surfer-perspective: 2000;
+        --surfer-perspective-origin-x: 14%;
+        --surfer-perspective-origin-y: 42%;
+        --surfer-rotate-y: -50;
+
+        /* —— Track spacing (at --surfer-card-ref-w; scales with card width) —— */
+        --surfer-card-ref-w: 300;
+        --surfer-step-x: 240;
+        --surfer-step-y: -84;
+        --surfer-step-z: -288;
+
+        --surfer-scroll-mass: 0.48;
+        --surfer-scroll-stiffness: 72;
+        --surfer-scroll-damping: 17;
+        --surfer-scroll-velocity-gain: 0.38;
+        --surfer-auto-speed: 0.0045;
+
+        --surfer-scroll-range: 720px;
+        position: relative;
+        width: 100%;
+        height: var(--surfer-stage-h);
+        min-height: 420px;
+        margin-bottom: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        isolation: isolate;
+        overscroll-behavior: none;
+      }
+
+      .collection-surfer__scroller {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: none;
+        scroll-behavior: auto;
+        -webkit-overflow-scrolling: auto;
+        overflow-anchor: none;
+        border-radius: 12px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .collection-surfer__scroller::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+
+      .collection-surfer__scroller-inner {
+        min-height: 100%;
+      }
+
+      .collection-surfer__stage {
+        position: sticky;
+        top: 0;
+        height: var(--surfer-stage-h);
+        min-height: 420px;
+      }
+
+      .collection-surfer__viewport {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: transparent;
+        border-radius: 12px;
+      }
+
+      .collection-surfer__scene {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: var(--surfer-scene-padding-top);
+        padding-bottom: var(--surfer-scene-padding-bottom);
+        padding-left: var(--surfer-scene-padding-left);
+        perspective: calc(var(--surfer-perspective) * 1px);
+        perspective-origin: var(--surfer-perspective-origin-x)
+          var(--surfer-perspective-origin-y);
+        overflow: hidden;
+      }
+
+      .collection-surfer__track {
+        position: relative;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+
+      .collection-surfer__card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: auto;
+        max-width: var(--surfer-card-w);
+        height: auto;
+        transform-origin: center center;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        border-radius: 0;
+        overflow: visible;
+        background: transparent;
+      }
+
+      .collection-surfer__card-media {
+        position: relative;
+        display: block;
+        width: auto;
+        max-width: var(--surfer-card-w);
+        height: auto;
+        background: transparent;
+      }
+
+      .collection-surfer__card-media img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: var(--surfer-card-w);
+        max-height: calc(var(--surfer-stage-h) - var(--surfer-card-max-inset));
+        object-fit: contain;
+        object-position: center;
+      }
+
+      .collection-surfer.is-mobile {
+        --surfer-stage-h: min(66vh, 540px);
+        --surfer-scroll-range-min: 0;
+        --surfer-scroll-range-per-item: 0;
+      }
+
+      .collection-surfer.is-mobile .collection-surfer__scroller {
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .collection-surfer.is-mobile .collection-surfer__scroller-inner {
+        height: 100% !important;
+      }
+
+      @media (max-width: 960px) {
+        .collection-surfer {
+          --surfer-card-w: min(248px, 52vw);
+          --surfer-stage-h: min(64vh, 520px);
+          --surfer-offset-y: 32;
+          --surfer-perspective: 1600;
+          --surfer-perspective-origin-y: 44%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .collection-surfer {
+          height: auto;
+          min-height: 0;
+        }
+
+        .collection-surfer__scroller {
+          overflow: visible;
+          height: auto;
+        }
+
+        .collection-surfer__scroller-inner {
+          height: auto !important;
+        }
+
+        .collection-surfer__stage {
+          position: relative;
+          height: auto;
+          min-height: 0;
+        }
+
+        .collection-surfer__viewport {
+          min-height: 420px;
+        }
+
+        .collection-surfer__scene {
+          position: relative;
+          min-height: 380px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          justify-content: flex-start;
+          padding: 2rem 1rem;
+          perspective: none;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .collection-surfer__scene::-webkit-scrollbar {
+          display: none;
+        }
+
+        .collection-surfer__track {
+          display: flex;
+          gap: 1rem;
+          width: max-content;
+          height: auto;
+          transform: none !important;
+        }
+
+        .collection-surfer__card {
+          position: relative;
+          flex-shrink: 0;
+          margin: 0;
+          transform: none !important;
+        }
+
+      }
+
+      .img-compare {
+        --pos: 50%;
+        position: relative;
+        width: 100%;
+        aspect-ratio: 3 / 2;
+        min-height: clamp(320px, 48vw, 640px);
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+        border-radius: 12px;
+        overflow: hidden;
+        container-type: inline-size;
+        user-select: none;
+        touch-action: pan-y;
+      }
+
+      .img-compare__base-wrap {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+
+      .img-compare__base {
+        display: block;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+      }
+
+      .img-compare__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: var(--pos);
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .img-compare__top {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100cqw;
+        max-width: none;
+        object-fit: cover;
+        pointer-events: none;
+      }
+
+      .img-compare__divider {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--pos);
+        width: 4px;
+        transform: translateX(-50%);
+        background: #2e2b66;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .img-compare__handle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: clamp(52px, 7vw, 72px);
+        height: auto;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        cursor: ew-resize;
+        touch-action: none;
+        pointer-events: auto;
+        z-index: 3;
+        line-height: 0;
+      }
+
+      .img-compare__handle svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .img-compare__handle:focus-visible {
+        outline: 2px solid var(--dd-accent);
+        outline-offset: 3px;
+      }
+
+      .img-compare__label {
+        position: absolute;
+        bottom: clamp(0.75rem, 2vw, 1.25rem);
+        margin: 0;
+        padding: 0.7em 1.15em;
+        border-radius: 6px;
+        background: #1a1a1a;
+        color: #f5f0e8;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      .img-compare__label--left {
+        left: clamp(0.75rem, 2vw, 1.25rem);
+      }
+
+      .img-compare__label--right {
+        right: clamp(0.75rem, 2vw, 1.25rem);
+      }
+
+      .placeholder-tall {
+        aspect-ratio: 3 / 4;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .placeholder-phone {
+        aspect-ratio: 9 / 19.5;
+        width: min(100%, 220px);
+        border-radius: 24px;
+      }
+
+      .section {
+        padding: 0;
+        scroll-margin-top: 40px;
+      }
+
+      .section__label {
+        font-family: var(--font-body);
+        font-size: clamp(1.35rem, 2.8vw, 1.875rem);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+        color: var(--ink);
+        margin-bottom: 1rem;
+      }
+
+      .section__lead {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        max-width: 720px;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .section__body {
+        max-width: 720px;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .section__body--tight {
+        margin-bottom: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      .section__body--flow-intro {
+        margin-top: clamp(2rem, 4vw, 3rem);
+        margin-bottom: 1rem;
+      }
+
+      .flow-intro-card {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+        padding-top:50px;
+        max-width: 100%;
+      }
+
+      .flow-intro-card__summary {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .flow-intro-card__icon {
+        flex-shrink: 0;
+        width: 49px;
+        height: 46px;
+        line-height: 0;
+      }
+
+      .flow-intro-card__icon svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .flow-intro-card__copy {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        max-width: 391px;
+      }
+
+      .flow-intro-card__copy p {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.35;
+        letter-spacing: -0.01em;
+      }
+
+      .flow-intro-card__headline {
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .flow-intro-card__subline {
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .flow-intro-card__accent {
+        color: #eb5600;
+      }
+
+      .flow-intro-card__subline .flow-intro-card__accent {
+        font-weight: 700;
+      }
+
+      .flow-route {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-padding-inline: 0.25rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+      }
+
+      .flow-route::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .flow-route::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .flow-route__chip {
+        flex-shrink: 0;
+        padding: 5px 10px;
+        border-radius: 10px;
+        background: white;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: normal;
+        color: var(--ink);
+        white-space: nowrap;
+        margin: 15px 0;
+      }
+
+      .flow-route__arrow {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+      }
+
+      .flow-route__arrow svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+
+      .marquee {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+        padding-block: 12px;
+        overflow: hidden;
+        border-radius: 16px;
+      }
+
+      .marquee::before,
+      .marquee::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: clamp(48px, 12vw, 120px);
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .marquee::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--paper) 0%, transparent 100%);
+      }
+
+      .marquee::after {
+        right: 0;
+        background: linear-gradient(270deg, var(--paper) 0%, transparent 100%);
+      }
+
+      .marquee__track {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: max-content;
+        will-change: transform;
+        position: relative;
+        z-index: 1;
+        --marquee-duration: 40s;
+        animation: marqueeScroll var(--marquee-duration) linear infinite;
+      }
+
+      .marquee__group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .marquee__group img {
+        display: block;
+        width: clamp(148px, 22vw, 280px);
+        height: clamp(112px, 13vw, 160px);
+        object-fit: cover;
+        object-position: center;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
+      }
+
+      @keyframes marqueeScroll {
+        from {
+          transform: translateX(-50%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      .problem-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: clamp(2rem, 4vw, 3rem);
+        align-items: start;
+      }
+
+      .problem-row__media {
+        width: 100%;
+      }
+
+      .problem-row__video {
+        width: 100%;
+        max-width: none;
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+      }
+
+      .interview-video {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        background: #111;
+      }
+
+      .interview-video__player {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .interview-video .img-compare__label {
+        z-index: 2;
+      }
+
+      .interview-video.is-user-paused::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.18);
+        pointer-events: none;
+      }
+
+      .problem-row__text h3 {
+        font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+        font-weight: 500;
+        margin-bottom: 1rem;
+        max-width: 420px;
+      }
+
+      .problem-row__text p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--muted);
+        max-width: 420px;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+
+      .insight__label,
+      .interaction-grid__item h3 {
+        font-family: var(--font-body);
+        font-size: clamp(1.05rem, 2vw, 1.25rem);
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        color: var(--ink);
+        margin-bottom: 0.65rem;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: clamp(1.5rem, 3vw, 2rem);
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .hero .team-grid--hero {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .team-card {
+        padding: 0;
+        background: transparent;
+      }
+
+      .team-card__head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: fit-content;
+      }
+
+      .team-card__avatar {
+        display: block;
+        position: relative;
+        width: clamp(72px, 16vw, 108px);
+        aspect-ratio: 1;
+        margin-bottom: 0.65rem;
+        perspective: 1000px;
+      }
+
+      .team-card__flip {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+        transition: transform 0.55s cubic-bezier(0.42, 0, 0.58, 1);
+      }
+
+      @media (hover: hover) {
+        .team-card__avatar:hover .team-card__flip {
+          transform: rotateY(180deg);
+        }
+      }
+
+      @media (hover: none) {
+        .team-card__avatar:active .team-card__flip {
+          transform: rotateY(180deg);
+        }
+      }
+
+      .team-card__flip-face {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid white;
+        filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3))
+          drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .team-card__flip-face--back {
+        transform: rotateY(180deg);
+      }
+
+      .team-card__flip-face img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .team-card__flip-face--front {
+        background: #f8f5f1;
+      }
+
+      .team-card__flip-face--front img {
+        object-fit: contain;
+      }
+
+      .team-card__role {
+        display: inline-block;
+        width: fit-content;
+        margin: -20px 0 0.65rem;
+        padding: 0.28em 0.65em;
+        border-radius: 6px;
+        background: #e4e2de;
+        color: #4a4a4a;
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.25;
+        position: relative;
+        z-index: 1;
+      }
+
+      .team-card__role.leader{
+        background-color:#ff5100;
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+      .team-card__name {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        font-weight: 500;
+        margin-bottom: 0.35rem;
+        max-width: 22ch;
+      }
+
+      .team-card__pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35em 0.75em;
+        border-radius: 999px;
+        background: #e0e2ff;
+        color: var(--ink);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        line-height: 1.2;
+      }
+
+      .team-card__copy p:last-child {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        max-width: 22ch;
+      }
+
+      .flow-steps {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+      }
+
+      .flow-step {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        flex: 0 0 auto;
+        width: min(100%, 220px);
+      }
+
+      .flow-step__label {
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+        font-weight: 500;
+        color: var(--ink);
+        line-height: 1.3;
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .flow-media {
+        border: 3px solid transparent;
+        position: relative;
+        aspect-ratio: 9 / 19.5;
+        width: min(100%, 220px);
+        border-radius: 28px;
+        overflow: visible;
+        background:
+          var(--placeholder-bg) padding-box,
+          linear-gradient(180deg, #4f4d8f 0%, #292966 42%, #1d1d4d 100%) border-box;
+        background-clip: padding-box, border-box;
+        box-shadow: 0 16px 32px -8px rgba(12, 12, 13, 0.4);
+        isolation: isolate;
+      }
+
+      .flow-media__img,
+      .flow-media__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 24px;
+        overflow: hidden;
+      }
+
+      .flow-media__img {
+        z-index: 1;
+      }
+
+      .flow-media__video {
+        z-index: 2;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .flow-media.is-playing .flow-media__video {
+        opacity: 1;
+      }
+
+      .flow-media__play {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .flow-media__play-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 999px;
+        background: rgba(26, 39, 68, 0.42);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        color: #f5f0e8;
+        transition: background 160ms ease, transform 160ms ease;
+      }
+
+      .flow-media__play-icon svg {
+        display: block;
+        width: 0.9rem;
+        height: 0.9rem;
+        margin-left: 2px;
+      }
+
+      .flow-media__play:focus-visible .flow-media__play-icon {
+        outline: 2px solid var(--dd-accent);
+        outline-offset: 2px;
+      }
+
+      @media (hover: none), (pointer: coarse) {
+        .flow-media__play {
+          display: flex;
+        }
+
+        .flow-media.is-playing .flow-media__play {
+          display: none;
+        }
+      }
+
+      .bottom-nav-showcase {
+        --dd-nav-navy: #23214a;
+        --z-bottom-nav: 2;
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 0;
+        overflow: hidden;
+        isolation: isolate;
+        background: transparent;
+        border-radius: 12px;
+      }
+
+      .bottom-nav-showcase .bottom-nav-host {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .bottom-nav-showcase .bottom-nav {
+        bottom: clamp(6px, 3.5%, 14px);
+        width: calc(100% - clamp(12px, 6%, 32px));
+        max-width: min(356px, 92%);
+      }
+
+      /* center nav in grid column like slide + spring demos */
+      .interaction-grid .bottom-nav-showcase .bottom-nav-host {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .interaction-grid .bottom-nav-showcase .bottom-nav {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        margin: 0;
+        width: calc(100% - clamp(12px, 6%, 32px));
+        max-width: min(356px, 92%);
+      }
+
+      .interaction-grid__item .bottom-nav-showcase.placeholder-wide {
+        margin-bottom: 0;
+      }
+
+      .spring-bounce-showcase {
+        --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --spring-dur: 500ms;
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border-radius: 12px;
+      }
+
+      .interaction-grid__item .spring-bounce-showcase.placeholder-wide {
+        margin-bottom: 0;
+      }
+
+      .slide-confirm-showcase {
+        --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --spring-dur: 500ms;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        justify-content: center;
+        padding: clamp(0.75rem, 2vw, 1.25rem);
+        background: transparent;
+        margin-bottom: 0;
+        box-sizing: border-box;
+      }
+
+      .slide-confirm-btn {
+        width: 100%;
+        max-width: 602px;
+        padding: 17px 28px;
+        border-radius: 15px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: var(--font-body);
+        border: none;
+        cursor: pointer;
+        background: #1d1d4d;
+        color: #fff;
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s,
+          background 0.15s ease;
+        box-shadow:
+          rgba(0, 0, 0, 0.4) 0 2px 4px,
+          rgba(0, 0, 0, 0.3) 0 7px 13px -3px,
+          rgba(0, 0, 0, 0.2) 0 -3px 0 inset;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .slide-confirm-btn:active {
+        transform: scale(0.98);
+        box-shadow: none;
+        background: #ef6242;
+      }
+
+      .slide-confirm-btn.spring-bounce {
+        animation: spring-press var(--spring-dur) var(--spring-ease) forwards;
+      }
+
+      .slide-confirm-btn:focus-visible {
+        outline: 2px solid var(--dd-accent);
+        outline-offset: 3px;
+      }
+
+      .interaction-grid__item .slide-confirm-showcase.placeholder-wide {
+        margin-bottom: 0;
+      }
+
+      .slide-confirm-control {
+        --slide-progress: 0;
+        --slide-success: #2db86a;
+        --slide-success-mid: #3ecf7a;
+        --slide-success-deep: #1a9a55;
+        --slide-pad: 8px;
+        --slide-inner-h: 60px;
+        --slide-handle-w: 100px;
+        position: relative;
+        width: 100%;
+        max-width: 602px;
+        height: calc(var(--slide-pad) * 2 + var(--slide-inner-h));
+        background: #fff;
+        border-radius: 999px;
+        box-sizing: border-box;
+        touch-action: none;
+        cursor: grab;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        isolation: isolate;
+      }
+
+      .slide-confirm-control.is-complete {
+        cursor: default;
+      }
+
+      .slide-confirm-control.is-dragging {
+        cursor: grabbing;
+      }
+
+      .slide-confirm-particles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 4;
+      }
+
+      .slide-confirm-particle {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        margin: -2.5px 0 0 -2.5px;
+        border-radius: 50%;
+        background: var(--slide-success-mid);
+        box-shadow: 0 0 6px rgba(61, 207, 122, 0.45);
+      }
+
+      .slide-confirm-control__label {
+        position: absolute;
+        inset: var(--slide-pad);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: clamp(0.8125rem, 2vw, 0.9375rem);
+        letter-spacing: 0.04em;
+        color: #fff;
+        opacity: 0;
+        transform: scale(0.94);
+        pointer-events: none;
+        z-index: 3;
+        transition:
+          opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+          transform 0.55s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s;
+      }
+
+      .slide-confirm-control.is-complete .slide-confirm-control__label {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .slide-confirm-control:focus-visible {
+        outline: 2px solid var(--dd-accent);
+        outline-offset: 3px;
+      }
+
+      /* inner track */
+      .slide-confirm-control__lane {
+        position: absolute;
+        inset: var(--slide-pad);
+        border-radius: calc(var(--slide-inner-h) / 2);
+        overflow: hidden;
+        background: #fff;
+        pointer-events: none;
+        container-type: inline-size;
+      }
+
+      /* pill clip — right cap aligns with handle's right edge (trail runs behind handle) */
+      .slide-confirm-control__reveal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: calc(
+          (100% - var(--slide-handle-w)) * var(--slide-progress) + var(--slide-handle-w)
+        );
+        overflow: hidden;
+        border-radius: calc(var(--slide-inner-h) / 2);
+      }
+
+      .slide-confirm-control.is-complete .slide-confirm-control__reveal {
+        width: 100%;
+      }
+
+      /* static gradient — full lane width, clipped by reveal */
+      .slide-confirm-control__gradient {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100cqi;
+        background: linear-gradient(90deg, #ff7534 0%, #1d1d4d 66.83%);
+        transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .slide-confirm-control.is-complete .slide-confirm-control__gradient {
+        background: linear-gradient(
+          90deg,
+          var(--slide-success-mid) 0%,
+          var(--slide-success-deep) 66.83%
+        );
+      }
+
+      .slide-confirm-control.is-complete .slide-confirm-control__lane {
+        background: #fff;
+      }
+
+      .slide-confirm-control__handle {
+        position: absolute;
+        left: calc(
+          var(--slide-pad) +
+            (100% - (var(--slide-pad) * 2) - var(--slide-handle-w)) * var(--slide-progress)
+        );
+        top: var(--slide-pad);
+        width: var(--slide-handle-w);
+        height: var(--slide-inner-h);
+        border-radius: calc(var(--slide-inner-h) / 2);
+        background: #1d1d4d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        box-shadow: 0 2px 10px rgba(29, 29, 77, 0.18);
+        will-change: left, transform;
+        transition:
+          background 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.4s ease,
+          opacity 0.25s ease;
+      }
+
+      .slide-confirm-control.is-dragging .slide-confirm-control__handle {
+        transform: scale(1.03);
+        box-shadow: 0 4px 16px rgba(29, 29, 77, 0.22);
+      }
+
+      .slide-confirm-control.is-complete .slide-confirm-control__handle {
+        background: transparent;
+        box-shadow: none;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .slide-confirm-control__chevrons {
+        display: block;
+        width: clamp(26px, 5.5vw, 32px);
+        height: clamp(26px, 5.5vw, 32px);
+        flex-shrink: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      .slide-confirm-control.is-complete .slide-confirm-control__chevrons {
+        opacity: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .slide-confirm-control,
+        .slide-confirm-control__gradient,
+        .slide-confirm-control__handle,
+        .slide-confirm-control__label {
+          transition: none;
+        }
+
+        .slide-confirm-control.is-dragging .slide-confirm-control__handle {
+          transform: none;
+        }
+      }
+
+      .spring-bounce-demo {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: clamp(1rem, 3vw, 1.5rem);
+        
+      }
+
+      @keyframes spring-press {
+        0% {
+          transform: scale(1);
+        }
+        15% {
+          transform: scale(0.93);
+        }
+        45% {
+          transform: scale(1.06);
+        }
+        65% {
+          transform: scale(0.97);
+        }
+        80% {
+          transform: scale(1.03);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .spring-bounce-showcase .spring-bounce-btn {
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: var(--font-body);
+        border: none;
+        cursor: pointer;
+        background: #ef6242;
+        color: #fff;
+        transition: transform 0.1s, box-shadow 0.1s;
+        box-shadow:
+          rgba(0, 0, 0, 0.4) 0 2px 4px,
+          rgba(0, 0, 0, 0.3) 0 7px 13px -3px,
+          rgba(0, 0, 0, 0.2) 0 -3px 0 inset;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .spring-bounce-showcase .spring-bounce-btn:active {
+        transform: scale(0.98);
+        box-shadow: none;
+      }
+
+      .spring-bounce-showcase .spring-bounce-btn.spring-bounce {
+        animation: spring-press var(--spring-dur) var(--spring-ease) forwards;
+      }
+
+      .spring-bounce-showcase .spring-bounce-card {
+        background: #fff;
+        border: 1px solid #e8e6e0;
+        border-radius: 14px;
+        padding: 20px;
+        width: min(200px, 42vw);
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s;
+        box-shadow: 0 2px 8px rgba(35, 33, 74, 0.06);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .spring-bounce-showcase .spring-bounce-card:active {
+        transform: scale(0.97);
+        box-shadow: none;
+      }
+
+      .spring-bounce-showcase .spring-bounce-card.spring-bounce {
+        animation: spring-press var(--spring-dur) var(--spring-ease) forwards;
+      }
+
+      .spring-bounce-showcase .spring-bounce-card:focus-visible {
+        outline: 2px solid var(--dd-accent);
+        outline-offset: 2px;
+      }
+
+      .spring-bounce-showcase .spring-bounce-card__title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #23214a;
+      }
+
+      .spring-bounce-showcase .spring-bounce-card__sub {
+        font-size: 11px;
+        color: #9896a8;
+        font-weight: 400;
+        margin-top: 0px;
+      }
+
+      .interaction-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: clamp(1rem, 2vw, 1.5rem);
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+        align-items: start;
+      }
+
+      .interaction-grid__item {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        min-width: 0;
+      }
+
+      .interaction-grid .slide-confirm-showcase,
+      .interaction-grid .spring-bounce-showcase,
+      .interaction-grid .bottom-nav-showcase {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .interaction-grid .slide-confirm-showcase {
+        flex-direction: column;
+        gap: 12px;
+        padding: clamp(0.75rem, 2vw, 1.25rem);
+      }
+
+      .interaction-grid .slide-confirm-control,
+      .interaction-grid .slide-confirm-btn {
+        width: 100%;
+        max-width: 602px;
+        margin-inline: auto;
+      }
+
+      .cta-block {
+        border-radius: 16px;
+        padding: clamp(48px, 8vw, 80px) 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: background 200ms ease;
+      }
+
+      .cta-block--try {
+        position: relative;
+        display: grid;
+        place-items: center;
+        margin-top: clamp(1.5rem, 3vw, 2rem);
+        text-decoration: none;
+        background: var(--dd-navy);
+        overflow: hidden;
+      }
+
+      .cta-block--try:hover,
+      .cta-block--try:focus-visible {
+        background: #243556;
+      }
+
+      .cta-block__deco {
+        position: absolute;
+        right: clamp(8px, 2vw, 24px);
+        top: 50%;
+        z-index: 0;
+        height: min(118%, 300px);
+        width: auto;
+        aspect-ratio: 252 / 281;
+        pointer-events: none;
+        transform: translateY(-30%) scale(1.12);
+        transform-origin: 100% 50%;
+      }
+
+      .cta-block__deco-stage {
+        position: relative;
+        display: block;
+        height: 100%;
+        width: auto;
+        aspect-ratio: 252 / 281;
+        overflow: visible;
+      }
+
+      .cta-block__prop {
+        display: block;
+        height: 100%;
+        width: auto;
+      }
+
+      .cta-block__prop [data-cta-prop-path] {
+        fill: #eb5600;
+        fill-rule: evenodd;
+      }
+
+      /* CTA burst layout — edit positions in this block only */
+      .cta-block__burst {
+        --burst-icon: #fffaf0;
+        --burst-glow-opacity: 0.68;
+        --burst-left: 12%;
+        --burst-top: 14%;
+        --burst-width: 62%;
+        --burst-height: 58%;
+        --heart-x: 14%;
+        --heart-y: 35%;
+        --heart-size: 38%;
+        --heart-rot: -14deg;
+        --sparkle-lg-x: 40%;
+        --sparkle-lg-y: 0%;
+        --sparkle-lg-size: 30%;
+        --sparkle-lg-rot: 130deg;
+        --sparkle-sm-x: 62%;
+        --sparkle-sm-y: 38%;
+        --sparkle-sm-size: 28%;
+        --sparkle-sm-rot: 10deg;
+        /* motion-line particles */
+        --lines-left-x: -10%;
+        --lines-left-y: 18%;
+        --lines-left-size: 26%;
+        --lines-left-rot: 250deg;
+        --lines-right-x: 76%;
+        --lines-right-y: 10%;
+        --lines-right-size: 26%;
+        --lines-right-rot: 152deg;
+
+        position: absolute;
+        left: var(--burst-left);
+        top: var(--burst-top);
+        z-index: 1;
+        width: var(--burst-width);
+        height: var(--burst-height);
+        pointer-events: none;
+        overflow: visible;
+      }
+
+      .cta-block__burst-item {
+        position: absolute;
+        left: var(--burst-item-x);
+        top: var(--burst-item-y);
+        width: var(--burst-item-size);
+        display: block;
+        scale: 0;
+        transform-origin: center center;
+        transition: scale 320ms cubic-bezier(0.175, 0.885, 0.32, 1.08);
+      }
+
+      .cta-block__burst-item::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 0;
+        width: 135%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        pointer-events: none;
+        translate: -50% -50%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          color-mix(in srgb, var(--burst-icon) 55%, transparent) 0%,
+          color-mix(in srgb, var(--burst-icon) 22%, transparent) 45%,
+          transparent 72%
+        );
+        opacity: var(--burst-glow-opacity);
+        filter: blur(11px);
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item {
+        scale: 1;
+      }
+
+      .cta-block__burst-item svg {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .cta-block__burst-item path {
+        fill: var(--burst-icon);
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item::before {
+        animation:
+          cta-burst-glow-float 4.4s ease-in-out var(--float-delay, 0ms) infinite,
+          cta-burst-glow-shimmer 3.1s ease-in-out calc(var(--float-delay, 0ms) + 180ms) infinite;
+      }
+
+      .cta-block__burst-item--heart {
+        --burst-item-x: var(--heart-x);
+        --burst-item-y: var(--heart-y);
+        --burst-item-size: var(--heart-size);
+        --burst-item-rot: var(--heart-rot);
+        --glow-float-x: 2px;
+        --glow-float-y: -3px;
+        --float-dur: 3.2s;
+        --float-delay: 0ms;
+        --float-x: 3px;
+        --float-y: 4px;
+        --float-rot: 3deg;
+        transition-delay: 140ms;
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item--heart {
+        transition-delay: 0ms;
+      }
+
+      .cta-block__burst-item--sparkle-lg {
+        --burst-item-x: var(--sparkle-lg-x);
+        --burst-item-y: var(--sparkle-lg-y);
+        --burst-item-size: var(--sparkle-lg-size);
+        --burst-item-rot: var(--sparkle-lg-rot);
+        --glow-float-x: -2px;
+        --glow-float-y: 2px;
+        --float-dur: 4.1s;
+        --float-delay: 60ms;
+        --float-x: 4px;
+        --float-y: 3px;
+        --float-rot: 4deg;
+        transition-delay: 105ms;
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item--sparkle-lg {
+        transition-delay: 35ms;
+      }
+
+      .cta-block__burst-item--sparkle-sm {
+        --burst-item-x: var(--sparkle-sm-x);
+        --burst-item-y: var(--sparkle-sm-y);
+        --burst-item-size: var(--sparkle-sm-size);
+        --burst-item-rot: var(--sparkle-sm-rot);
+        --glow-float-x: 3px;
+        --glow-float-y: 2px;
+        --float-dur: 3.7s;
+        --float-delay: 120ms;
+        --float-x: 3px;
+        --float-y: 5px;
+        --float-rot: 3deg;
+        transition-delay: 70ms;
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item--sparkle-sm {
+        transition-delay: 70ms;
+      }
+
+      .cta-block__burst-item--lines-left {
+        --burst-item-x: var(--lines-left-x);
+        --burst-item-y: var(--lines-left-y);
+        --burst-item-size: var(--lines-left-size);
+        --burst-item-rot: var(--lines-left-rot);
+        --glow-float-x: 1px;
+        --glow-float-y: -2px;
+        --float-dur: 4.5s;
+        --float-delay: 180ms;
+        --float-x: 2px;
+        --float-y: 3px;
+        --float-rot: 5deg;
+        transition-delay: 35ms;
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item--lines-left {
+        transition-delay: 105ms;
+      }
+
+      .cta-block__burst-item--lines-right {
+        --burst-item-x: var(--lines-right-x);
+        --burst-item-y: var(--lines-right-y);
+        --burst-item-size: var(--lines-right-size);
+        --burst-item-rot: var(--lines-right-rot);
+        --glow-float-x: -2px;
+        --glow-float-y: -1px;
+        --float-dur: 3.9s;
+        --float-delay: 240ms;
+        --float-x: 3px;
+        --float-y: 2px;
+        --float-rot: 4deg;
+        transition-delay: 0ms;
+      }
+
+      .cta-block__burst-item--lines-right svg {
+        scale: -1 1;
+        transform-origin: center;
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item--lines-right {
+        transition-delay: 140ms;
+      }
+
+      .cta-block__deco-stage.is-cta-open .cta-block__burst-item > svg {
+        animation: cta-burst-float var(--float-dur) ease-in-out var(--float-delay) infinite;
+      }
+
+      @keyframes cta-burst-float {
+        0%,
+        100% {
+          translate: 0 0;
+          rotate: var(--burst-item-rot, 0deg);
+        }
+        50% {
+          translate: var(--float-x) var(--float-y);
+          rotate: calc(var(--burst-item-rot, 0deg) + var(--float-rot, 0deg));
+        }
+      }
+
+      @keyframes cta-burst-glow-float {
+        0%,
+        100% {
+          translate: -50% -50%;
+        }
+        50% {
+          translate: calc(-50% + var(--glow-float-x, 2px)) calc(-50% + var(--glow-float-y, -3px));
+        }
+      }
+
+      @keyframes cta-burst-glow-shimmer {
+        0%,
+        100% {
+          opacity: calc(var(--burst-glow-opacity) * 0.75);
+          filter: blur(10px);
+        }
+        45% {
+          opacity: calc(var(--burst-glow-opacity) * 1.35);
+          filter: blur(13px);
+        }
+        70% {
+          opacity: var(--burst-glow-opacity);
+          filter: blur(11px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cta-block__burst-item,
+        .cta-block__burst-item--heart,
+        .cta-block__burst-item--sparkle-lg,
+        .cta-block__burst-item--sparkle-sm,
+        .cta-block__burst-item--lines-left,
+        .cta-block__burst-item--lines-right {
+          transition: scale 80ms ease;
+          transition-delay: 0ms;
+        }
+
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item {
+          scale: 1;
+        }
+
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item > svg {
+          animation: none;
+        }
+
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item--heart,
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item--sparkle-lg,
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item--sparkle-sm,
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item--lines-left,
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item--lines-right {
+          transition-delay: 0ms;
+        }
+
+        .cta-block__deco-stage.is-cta-open .cta-block__burst-item::before {
+          animation: none;
+          opacity: calc(var(--burst-glow-opacity) * 0.9);
+        }
+      }
+
+      .cta-block--try .cta-block__row {
+        position: relative;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        color: #f5f0e8;
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        font-weight: 500;
+      }
+
+      .cta-block--try .icon-roll {
+        --icon-roll-size: clamp(1.35rem, 2.4vw, 2rem);
+      }
+
+      .cs-nav-cards {
+        --cs-nav-card-greyout: grayscale(1) brightness(0.68);
+        --cs-nav-card-ease-heavy: cubic-bezier(0.16, 1, 0.3, 1);
+        --cs-nav-card-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+        --cs-nav-card-duration-heavy: 640ms;
+        --cs-nav-card-duration-soft: 480ms;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        width: 100%;
+      }
+
+      .cs-nav-card {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        min-height: clamp(200px, 28vw, 280px);
+        padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.75rem, 4vw, 2.75rem)
+          clamp(1rem, 2vw, 1.35rem);
+        border-radius: 20px;
+        background: var(--ink);
+        color: var(--paper);
+        text-align: left;
+        box-shadow: none;
+        transition: filter var(--cs-nav-card-duration-soft) var(--cs-nav-card-ease-soft);
+      }
+
+      .cs-nav-card--since67 {
+        --cs-nav-card-bg: url("assets/since67-nav-card-bg.webp");
+      }
+
+      .cs-nav-card--bountt {
+        --cs-nav-card-bg: url("assets/bountt-nav-card-bg.webp");
+      }
+
+      .cs-nav-card--distro-disco {
+        --cs-nav-card-bg: url("assets/dd-nav-card-bg.webp");
+      }
+
+      .cs-nav-card__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background-image: var(--cs-nav-card-bg);
+        background-size: 110% auto;
+        background-position: center center;
+        background-repeat: no-repeat;
+        border-radius: inherit;
+        pointer-events: none;
+        transition:
+          filter var(--cs-nav-card-duration-soft) var(--cs-nav-card-ease-soft),
+          transform var(--cs-nav-card-duration-heavy) var(--cs-nav-card-ease-heavy),
+          inset var(--cs-nav-card-duration-heavy) var(--cs-nav-card-ease-heavy);
+      }
+
+      .cs-nav-card__scrim {
+        display: none;
+      }
+
+      .cs-nav-card__body {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: stretch;
+        justify-content: flex-end;
+        gap: 1rem;
+        flex: 1;
+        width: 100%;
+        text-align: left;
+      }
+
+      .cs-nav-card__title {
+        display: block;
+        align-self: flex-start;
+        text-align: left;
+        font-size: clamp(1.75rem, 4vw, 3rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+
+      .cs-nav-card__body > .icon-roll {
+        display: block;
+        align-self: flex-start;
+        margin: 0;
+      }
+
+      .cs-nav-card .icon-roll__track {
+        transition: transform var(--cs-nav-card-duration-heavy) var(--cs-nav-card-ease-heavy);
+      }
+
+      .cs-nav-card__btn {
+        position: relative;
+        z-index: 2;
+        display: none;
+        padding: 0.65em 1.6em;
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--ink);
+        font-size: 0.9375rem;
+        font-weight: 600;
+      }
+
+      @media (hover: hover) {
+        .cs-nav-cards:has(.cs-nav-card:hover) .cs-nav-card:not(:hover),
+        .cs-nav-cards:has(.cs-nav-card:focus-visible) .cs-nav-card:not(:focus-visible) {
+          filter: var(--cs-nav-card-greyout);
+        }
+
+        .cs-nav-cards:has(.cs-nav-card:hover) .cs-nav-card:hover,
+        .cs-nav-cards:has(.cs-nav-card:focus-visible) .cs-nav-card:focus-visible {
+          filter: none;
+          box-shadow: none;
+        }
+
+        .cs-nav-card:hover .cs-nav-card__bg,
+        .cs-nav-card:focus-visible .cs-nav-card__bg {
+          inset: -4%;
+          filter: blur(6px);
+          transform: scale(1.01);
+        }
+      }
+
+      @media (max-width: 960px) {
+        .hero .team-grid--hero {
+          display: none;
+        }
+
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 4vw, 2rem) 120px;
+        }
+
+        .section {
+          scroll-margin-top: calc(
+            var(--mobile-nav-height, 3.25rem) + env(safe-area-inset-top, 0px)
+          );
+        }
+
+        .hero {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .hero-visual {
+          order: 1;
+        }
+
+        .hero__title-row {
+          order: 2;
+          margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+        }
+
+        .hero__ctas {
+          order: 3;
+          justify-content: flex-start;
+          width: 100%;
+          margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+        }
+
+        .hero__meta {
+          order: 4;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .problem-row,
+        .two-col,
+        .team-grid,
+        .interaction-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .placeholder-tall {
+          max-width: 100%;
+        }
+
+        .cs-nav-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .main {
+          padding-inline: clamp(1rem, 4vw, 1.25rem);
+        }
+
+        .main__inner > .hero > .hero__ctas {
+          margin-bottom: clamp(2rem, 6vw, 3rem);
+        }
+
+        .hero__title {
+          font-size: clamp(2rem, 9vw, 2.85rem);
+          text-wrap: balance;
+        }
+
+        .hero__title br {
+          display: none;
+        }
+
+        .hero__title-row {
+          order: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-bottom: clamp(1.25rem, 4vw, 1.75rem);
+        }
+
+        .hero__back {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          margin-top: clamp(0.75rem, 3vw, 1.25rem);
+          margin-bottom: clamp(1.25rem, 4vw, 1.75rem);
+          font-size: 0.95rem;
+          font-weight: 500;
+          line-height: 1;
+          text-transform: uppercase;
+          color: var(--muted);
+          text-decoration: none;
+        }
+
+        .hero__back .icon {
+          width: 1em;
+          height: 1em;
+          flex-shrink: 0;
+        }
+
+        .hero-visual {
+          order: 2;
+          margin-bottom: clamp(1rem, 3vw, 1.5rem);
+        }
+
+        .hero__ctas {
+          order: 3;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          width: 100%;
+        }
+
+        .hero__ctas .hero__cta {
+          display: flex;
+          width: 100%;
+          flex-shrink: 0;
+          white-space: normal;
+        }
+
+        .hero__meta {
+          order: 4;
+          grid-template-columns: 1fr;
+        }
+
+        .marquee__group img {
+          width: clamp(128px, 40vw, 200px);
+          height: clamp(96px, 26vw, 124px);
+        }
+
+        .problem-row__text h3,
+        .problem-row__text p {
+          max-width: 100%;
+        }
+
+        .team-grid {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.5rem;
+        }
+
+        .team-card {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 1rem;
+          width: min(100%, 22rem);
+        }
+
+        .team-card__head {
+          flex-shrink: 0;
+        }
+
+        .team-card__avatar {
+          flex-shrink: 0;
+          margin-bottom: 0.65rem;
+          width: clamp(64px, 18vw, 80px);
+        }
+
+        .team-card__copy {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .team-card__name,
+        .team-card__copy p:last-child {
+          max-width: none;
+        }
+      }
+
+      .img-modal__btn .icon-roll {
+        --icon-roll-size: 24px;
+      }
+
+      /* Problem evidence lightbox */
+      #img-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(1rem, 3vw, 2rem);
+        background: rgba(0, 0, 0, 0.84);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 280ms ease;
+      }
+
+      #img-modal.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .img-modal__dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(0.65rem, 2vw, 1.25rem);
+        max-width: 100%;
+      }
+
+      .img-modal__frame {
+        position: relative;
+        line-height: 0;
+        flex-shrink: 1;
+        min-width: 0;
+      }
+
+      #img-modal-img {
+        display: block;
+        max-width: min(72vw, 680px);
+        max-height: 72vh;
+        width: auto;
+        height: auto;
+        border-radius: 12px;
+        object-fit: contain;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      .img-modal__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        color: #f5f0e8;
+        transition: background 180ms ease, opacity 180ms ease;
+      }
+
+      .img-modal__btn:hover {
+        opacity: 0.92;
+      }
+
+      .img-modal__btn svg {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .img-modal__nav,
+      .img-modal__close {
+        width: 52px;
+        height: 52px;
+        padding: 0;
+        border-radius: 50%;
+      }
+
+      .img-modal__nav {
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .img-modal__nav:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .img-modal__close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.48);
+        backdrop-filter: blur(6px);
+      }
+
+      .img-modal__close:hover {
+        background: rgba(0, 0, 0, 0.62);
+      }
+
+      .img-modal__nav svg,
+      .img-modal__close svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      @media (max-width: 640px) {
+        #img-modal {
+          padding: 3.5rem 0.5rem 1rem;
+        }
+
+        .img-modal__dialog {
+          gap: 0.35rem;
+        }
+
+        #img-modal-img {
+          max-width: 82vw;
+          max-height: 68vh;
+        }
+
+        .img-modal__nav,
+        .img-modal__close {
+          width: 48px;
+          height: 48px;
+        }
+
+        .img-modal__nav svg,
+        .img-modal__close svg {
+          width: 22px;
+          height: 22px;
+        }
+
+        .img-modal__close {
+          top: 10px;
+          right: 10px;
+        }
+      }
+
+      @media (hover: none) {
+        #img-modal {
+          display: none !important;
+        }
+
+        .marquee img {
+          cursor: default !important;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .icon-roll__track {
+          transition: none;
+        }
+
+        #img-modal {
+          transition: none;
+        }
+
+        .marquee__track {
+          animation: none;
+        }
+
+        .marquee__group + .marquee__group {
+          display: none;
+        }
+
+        .team-card__flip {
+          transition: none;
+        }
+
+        .team-card__avatar:hover .team-card__flip,
+        .team-card__avatar:active .team-card__flip {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="assets/mobile-nav.css" />
+    <link rel="stylesheet" href="assets/dodollm-panel.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar" aria-label="Case study navigation">
+        <a class="sidebar__back" href="index.html">
+          <span class="icon-roll icon-roll--sm" aria-hidden="true">
+            <span class="icon-roll__track">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="assets/icons.svg#icon-arrow-left" />
+              </svg>
+            </span>
+          </span>
+          Back to Projects
+        </a>
+        <p class="sidebar__label">Case Study</p>
+        <p class="sidebar__title">Distro Disco</p>
+        <ul class="sidebar-nav">
+          <li><a href="#the-problem"><span>The Problem</span></a></li>
+          <li><a href="#the-research"><span>The Research</span></a></li>
+          <li><a href="#the-solution"><span>The Solution</span></a></li>
+          <li><a href="#the-interaction"><span>Interaction</span></a></li>
+          <li><a href="#the-result"><span>The Result</span></a></li>
+          <li><a href="#reflection"><span>Reflection</span></a></li>
+        </ul>
+      </aside>
+
+      <header class="cs-nav" aria-label="Site navigation">
+        <a class="cs-nav__logo" href="index.html">dogacimen.com</a>
+        <button
+          class="cs-nav__burger"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="cs-nav-drawer"
+        >
+          <svg class="icon icon--menu" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="assets/icons.svg#icon-menu" />
+          </svg>
+          <svg class="icon icon--close" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="assets/icons.svg#icon-close" />
+          </svg>
+        </button>
+      </header>
+      <div class="cs-nav__drawer" id="cs-nav-drawer" aria-hidden="true">
+        <nav aria-label="Case study sections">
+          <a class="cs-nav__back" href="index.html">
+            <span class="icon-roll icon-roll--sm" aria-hidden="true">
+              <span class="icon-roll__track">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="assets/icons.svg#icon-arrow-left" />
+                </svg>
+              </span>
+            </span>
+            Back to Projects
+          </a>
+          <a href="#the-problem">The Problem</a>
+          <a href="#the-research">The Research</a>
+          <a href="#the-solution">The Solution</a>
+          <a href="#the-interaction">Interaction</a>
+          <a href="#the-result">The Result</a>
+          <a href="#reflection">Reflection</a>
+        </nav>
+      </div>
+
+      <main class="main">
+        <div class="main__inner">
+          <header class="hero">
+            <div class="hero__title-row">
+              <a class="hero__back" href="index.html">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="assets/icons.svg#icon-arrow-left" />
+                </svg>
+                back
+              </a>
+              <h1 class="hero__title">
+                One platform for a community <br /> running on
+                <span class="hero__title-strong"
+                  > Excel sheets and good intentions.</span
+                >
+              </h1>
+            </div>
+            <div class="hero__ctas">
+              <a
+                href="https://doga-design.github.io/Distro-Disco-App-Prototype/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hero__cta"
+              >
+                <span>See the prototype</span>
+                <span class="icon-roll icon-roll--sm" aria-hidden="true">
+                  <span class="icon-roll__track">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <use href="assets/icons.svg#icon-arrow-up-right" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+              <a
+                href="https://rgd.ca/articles/2026-emerging-designers-and-students-design-mock-projects-with-help-of-rgd-mentors-fall-2025"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hero__cta hero__cta--secondary"
+              >
+                <span>Read RGD article</span>
+                <span class="icon-roll icon-roll--sm" aria-hidden="true">
+                  <span class="icon-roll__track">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <use href="assets/icons.svg#icon-arrow-up-right" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+            </div>
+            <div class="hero__meta">
+              <div>
+                <p class="meta__label">Role</p>
+                <p class="meta__value">
+                  Product Designer<br />Research Lead
+                </p>
+              </div>
+              <div>
+                <p class="meta__label">Type</p>
+                <p class="meta__value">Team Project</p>
+              </div>
+              <div>
+                <p class="meta__label">Stack</p>
+                <p class="meta__value">Figma (Design)<br />Cursor (Prototyping)</p>
+              </div>
+              <div>
+                <p class="meta__label">Team</p>
+                <p class="meta__value">
+                  Gracelle — Industry Mentor<br />Ji Woo — Art Direction<br />Caitlin — Brand / Illustration / Copywriting
+                </p>
+              </div>
+              <div>
+                <p class="meta__label">Timeline</p>
+                <p class="meta__value">12-week program, 1hr/week<br />Fall 2025 Cohort</p>
+              </div>
+            </div>
+            <div class="hero-visual">
+              <img
+                class="hero-visual__img"
+                src="assets/dd-assets/dd-casestudy-thumb.webp"
+                alt="Distro Disco mobile app prototype showing events, donations, and community features"
+                loading="eager"
+              />
+            </div>
+            <div class="team-grid team-grid--hero">
+              <div class="team-card">
+                <div class="team-card__head">
+                  <div class="team-card__avatar team-card__avatar--gracelle">
+                    <div class="team-card__flip">
+                      <div class="team-card__flip-face team-card__flip-face--front">
+                        <img
+                          src="assets/dd-assets/avatar-profile-gracelle.svg"
+                          alt=""
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="team-card__flip-face team-card__flip-face--back">
+                        <img
+                          src="assets/dd-assets/gracelle.webp"
+                          alt="Gracelle"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <span class="team-card__role leader">Team lead</span>
+                </div>
+                <div class="team-card__copy">
+                  <p class="team-card__name">Gracelle</p>
+                  <p>Our team lead and industry mentor, providing guidance throughout the project.</p>
+                </div>
+              </div>
+              <div class="team-card">
+                <div class="team-card__head">
+                  <div class="team-card__avatar team-card__avatar--jiwoo">
+                    <div class="team-card__flip">
+                      <div class="team-card__flip-face team-card__flip-face--front">
+                        <img
+                          src="assets/dd-assets/avatar-profile-jiwoo.svg"
+                          alt=""
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="team-card__flip-face team-card__flip-face--back">
+                        <img
+                          src="assets/dd-assets/jiwoo.webp"
+                          alt="Ji Woo"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <span class="team-card__role">Design lead</span>
+                </div>
+                <div class="team-card__copy">
+                  <p class="team-card__name">Ji Woo</p>
+                  <p>Owned the art direction across the app. Collaborated on the UI decisions.</p>
+                </div>
+              </div>
+              <div class="team-card">
+                <div class="team-card__head">
+                  <div class="team-card__avatar team-card__avatar--doga">
+                    <div class="team-card__flip">
+                      <div class="team-card__flip-face team-card__flip-face--front">
+                        <img
+                          src="assets/dd-assets/avatar-profile-doga.svg"
+                          alt=""
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="team-card__flip-face team-card__flip-face--back">
+                        <img
+                          src="assets/dd-assets/doga.webp"
+                          alt="Doğa"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <span class="team-card__role">Designer</span>
+                </div>
+                <div class="team-card__copy">
+                  <p class="team-card__name">
+                    Doğa
+                    <span class="team-card__pill">That's me!</span>
+                  </p>
+                  <p>Led UX research, UI design, Testing and built the HTML prototype.</p>
+                </div>
+              </div>
+              <div class="team-card">
+                <div class="team-card__head">
+                  <div class="team-card__avatar team-card__avatar--caitlin">
+                    <div class="team-card__flip">
+                      <div class="team-card__flip-face team-card__flip-face--front">
+                        <img
+                          src="assets/dd-assets/avatar-profile-caitlin.svg"
+                          alt=""
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="team-card__flip-face team-card__flip-face--back">
+                        <img
+                          src="assets/dd-assets/caitlin.webp"
+                          alt="Caitlin"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <span class="team-card__role">Designer</span>
+                </div>
+                <div class="team-card__copy">
+                  <p class="team-card__name">Caitlin</p>
+                  <p>Led branding, illustration, hand-drawn iconography, and copywriting.</p>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <section id="the-problem" class="section">
+            <h2 class="section__label">The Problem</h2>
+            <p class="section__lead">
+              Distro Disco runs a mobile free store out of a converted bus, distributing essentials to unhoused neighbours across Vancouver every week. Volunteer-run, community-funded, and explicitly anti-capitalist. The work is real. The logistics, before this project, were not built for scale.
+            </p>
+            <div class="marquee" aria-label="Tools used to run Distro Disco">
+              <div class="marquee__track">
+                <div class="marquee__group">
+                  <img
+                    src="assets/dd-assets/dd-1.webp"
+                    alt="WhatsApp thread used for Distro Disco coordination"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src="assets/dd-assets/dd-2.webp"
+                    alt="Discord server used for volunteer communication"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src="assets/dd-assets/dd-3.webp"
+                    alt="Google Sheet tracking donation needs and drop-offs"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <img
+                    src="assets/dd-assets/dd-4.webp"
+                    alt="Instagram post announcing an upcoming distro event"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+                <div class="marquee__group" aria-hidden="true">
+                  <img src="assets/dd-assets/dd-1.webp" alt="" loading="eager" decoding="async" />
+                  <img src="assets/dd-assets/dd-2.webp" alt="" loading="eager" decoding="async" />
+                  <img src="assets/dd-assets/dd-3.webp" alt="" loading="eager" decoding="async" />
+                  <img src="assets/dd-assets/dd-4.webp" alt="" loading="eager" decoding="async" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="the-research" class="section">
+            <h2 class="section__label">The Research</h2>
+            <p class="section__body">
+              Before opening Figma I spoke with Ren, an active volunteer and organizer at Distro Disco. We talked about what the organization actually is, what it wants to become, and how it runs.
+            </p>
+
+            <div class="problem-row">
+              <div class="problem-row__text">
+                <h3>Everything ran across WhatsApp threads, Discord servers, Google Sheets, and Instagram posts.</h3>
+                <p>
+                  The organization ran on goodwill and group chats. We wanted to see what it could look like with a proper digital home. We just thought they deserved something better. <br/><br/> Through the RGD Project-Based Mentorship Program, our team built a brand system and an interactive prototype to consolidate all of that into one place.
+                </p>
+              </div>
+              <div class="problem-row__media">
+                <div
+                  class="interview-video problem-row__video"
+                  data-interview-video
+                  tabindex="0"
+                  aria-label="User interview call with Ren video"
+                >
+                  <span class="img-compare__label img-compare__label--left">User Interview Call With Ren</span>
+                  <video
+                    class="interview-video__player"
+                    src="assets/dd-assets/dd-ren-interview.mp4"
+                    muted
+                    playsinline
+                    loop
+                    preload="metadata"
+                    aria-label="User interview with Ren"
+                  ></video>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <section id="the-solution" class="section">
+            <h2 class="section__label">The Solution</h2>
+            <p class="section__body section__body--tight">
+              Early explorations leaned into a clean, premium aesthetic. It looked good. It did not look like Distro Disco. The team landed on modern DIY craft — warmer materials, more human layouts, and hand-drawn iconography — still trustworthy and usable, but with the texture of an organization that makes things by hand and means it.
+            </p>
+            <div
+              class="img-compare"
+              data-img-compare
+              style="--pos: 50%"
+              aria-label="Compare sleek and DIY visual explorations"
+            >
+              <div class="img-compare__base-wrap">
+                <img
+                  class="img-compare__base"
+                  src="assets/dd-assets/dd-exploration-DIY.webp"
+                  alt="DIY craft visual exploration"
+                  decoding="async"
+                  loading="eager"
+                />
+                <p class="img-compare__label img-compare__label--right">Warm and Human</p>
+              </div>
+              <div class="img-compare__overlay">
+                <img
+                  class="img-compare__top"
+                  src="assets/dd-assets/dd-exploration-sleek.webp"
+                  alt=""
+                  decoding="async"
+                  loading="eager"
+                />
+                <p class="img-compare__label img-compare__label--left">Clean and Modern</p>
+              </div>
+              <div class="img-compare__divider">
+                <button
+                  type="button"
+                  class="img-compare__handle"
+                  role="slider"
+                  aria-label="Drag to compare explorations"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="50"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="146" height="143" viewBox="0 0 146 143" fill="none" aria-hidden="true">
+                    <path d="M141.721 94.8504C143.051 91.1904 144.441 87.3704 145.141 83.5004C145.771 80.0004 145.851 76.3203 145.861 72.7903C145.861 71.0603 145.711 69.3304 145.421 67.6304C143.581 56.8204 139.551 46.4304 132.381 37.9804C128.701 33.6504 124.961 29.4804 120.591 25.8504C116.031 22.0704 111.061 18.4304 105.741 15.8404C94.641 10.4604 81.2409 9.90035 69.7509 14.4504C64.9809 16.3304 60.141 18.7604 56.181 22.0904C53.351 24.4704 50.651 26.8603 48.201 29.5103C46.461 30.6603 44.781 31.9004 43.171 33.2304C38.911 36.7604 34.561 40.4704 31.271 44.9604C28.221 49.1304 25.1609 53.6304 23.3509 58.5304C22.1309 61.8304 20.9409 65.2304 20.1909 68.6904C19.4509 72.1604 19.4109 75.8103 19.2909 79.3203C19.1209 84.4803 20.2009 89.9104 22.0009 94.7104C23.8809 99.7104 26.551 104.63 29.861 108.84C33.371 113.3 37.221 117.62 41.421 121.44C45.931 125.54 51.001 128.91 56.141 132.16C59.551 134.32 63.121 136.21 66.841 137.77C73.651 140.62 80.801 142.77 88.281 141.9C93.831 141.25 99.341 139.63 104.391 137.24C107.631 135.71 110.981 134.14 114.031 132.2C117.191 130.19 119.981 127.59 122.721 125.06C126.951 121.14 130.001 116.05 133.051 111.24C135.271 107.74 137.391 104.14 139.271 100.45C140.191 98.6303 141.031 96.7804 141.731 94.8704L141.721 94.8504Z" fill="#FF7534"/>
+                    <path d="M69.09 0C30.99 0 0 30.99 0 69.09C0 107.19 30.99 138.18 69.09 138.18C107.19 138.18 138.18 107.19 138.18 69.09C138.18 30.99 107.19 0 69.09 0ZM48.4 64.58C54.32 65.59 60.2 66.16 66.03 66.16C68.88 66.16 71.72 66.03 74.55 65.79C74.84 72.78 74.85 79.38 74.59 85.64C65.77 86.03 57.09 85.24 48.55 83.31C47.8 77.43 47.75 71.2 48.4 64.58ZM40.19 81.04C29.35 77.58 18.7 72.2 8.21002 64.93C8.52002 60.32 9.35 55.84 10.63 51.56C20.67 56.73 30.62 60.52 40.46 62.93C39.79 69.26 39.69 75.29 40.18 81.04H40.19ZM82.56 64.78C89.04 63.7 95.45 61.97 101.8 59.61C103.28 66.72 103.69 73.69 102.98 80.55C96.12 82.67 89.35 84.14 82.67 84.96C82.9 78.58 82.87 71.86 82.56 64.78ZM109.46 56.44C115.06 53.89 120.6 50.84 126.09 47.28C128.68 54.04 130.12 61.37 130.13 69.03C123.79 72.41 117.54 75.29 111.37 77.65C111.74 70.68 111.11 63.62 109.46 56.44ZM69.09 8.04999C92.16 8.04999 112.27 20.91 122.65 39.84C117.53 43.23 112.39 46.15 107.22 48.6C104.57 40.53 100.72 32.3 95.57 23.88C94.41 21.98 91.93 21.38 90.03 22.54C88.13 23.7 87.53 26.18 88.69 28.08C93.65 36.19 97.31 44.09 99.75 51.81C93.91 54.06 88.03 55.71 82.1 56.77C81.43 47.05 80.29 36.64 78.67 25.4C78.35 23.2 76.32 21.68 74.11 21.99C71.91 22.31 70.38 24.35 70.7 26.55C72.32 37.79 73.45 48.16 74.1 57.82C65.98 58.54 57.77 58.18 49.44 56.71C51 47.63 53.76 37.88 57.74 27.4C58.53 25.32 57.48 22.99 55.4 22.21C53.32 21.42 51 22.47 50.21 24.55C46.1 35.37 43.22 45.51 41.55 55.02C32.35 52.66 23 48.95 13.47 43.96C23.07 22.81 44.37 8.04999 69.07 8.04999H69.09ZM69.09 130.13C37.31 130.13 11.14 105.72 8.32001 74.66C19.1 81.53 30.14 86.53 41.42 89.66C42.85 96.82 45.25 103.53 48.68 109.79C49.41 111.12 50.79 111.88 52.21 111.88C52.87 111.88 53.53 111.72 54.15 111.38C56.1 110.31 56.81 107.86 55.74 105.91C53.29 101.46 51.45 96.71 50.15 91.7C56.76 92.96 63.46 93.61 70.22 93.61C71.51 93.61 72.81 93.51 74.1 93.47C73.64 99.12 72.94 104.5 71.99 109.65C71.59 111.84 73.03 113.94 75.22 114.34C75.47 114.39 75.71 114.41 75.95 114.41C77.85 114.41 79.55 113.05 79.91 111.11C80.98 105.32 81.75 99.27 82.23 92.89C88.58 92.2 94.99 91.02 101.46 89.25C100.25 94.24 98.48 99.17 96.09 104.06C95.11 106.06 95.94 108.47 97.94 109.45C98.51 109.73 99.11 109.86 99.71 109.86C101.2 109.86 102.63 109.03 103.33 107.6C106.74 100.64 109.05 93.63 110.32 86.52C116.63 84.34 122.99 81.62 129.41 78.42C124.9 107.66 99.57 130.11 69.09 130.11V130.13Z" fill="#2E2B66"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="section__body section__body--flow-intro flow-intro-card">
+              <div class="flow-intro-card__summary">
+                <span class="flow-intro-card__icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="49" height="46" viewBox="0 0 49 46" fill="none">
+                    <path d="M16.1017 9.61466C16.9376 9.07545 17.8351 8.82938 18.7729 8.82938C21.6484 8.82938 24.8301 11.1274 27.3123 14.2493L30.0218 12.576C25.2174 6.26791 18.9943 3.94647 14.3854 6.957C9.10036 10.4041 8.34301 19.4466 12.7627 26.3107C15.8976 31.1679 21.3488 34.8844 26.2953 34.8844C27.9563 34.8844 29.5642 34.465 31.0061 33.5299C33.6455 31.8096 35.0088 28.7199 34.8429 24.8215C34.7493 22.6026 34.1496 20.1783 33.1415 17.8397L30.4085 19.4808C31.172 21.3424 31.6208 23.2296 31.6931 24.9564C31.7803 26.8906 31.4252 29.4819 29.2984 30.8684C25.6679 33.2307 19.3957 30.1623 15.7571 24.505C12.3074 19.1557 12.2904 12.103 16.1037 9.6145L16.1017 9.61466Z" fill="#EB5600"/>
+                    <path d="M34.6521 16.9372C36.3152 20.4164 37.134 23.9831 37.0149 27.2314C36.8958 30.1714 35.9515 34.1985 32.0765 36.693C28.9969 38.6893 25.0262 38.944 20.915 37.4291C16.6465 35.8436 12.7628 32.5634 9.96643 28.1877C4.29423 19.2887 4.97905 8.62857 11.502 4.41953C13.1396 3.35823 14.9835 2.85751 16.9211 2.85751C21.7978 2.85751 27.249 6.05855 31.4707 11.6859L34.1717 10.0147C27.2789 0.715304 17.4404 -2.27989 9.80053 1.75332C0.623629 6.60408 -3.48161 23.0308 3.55175 33.113C5.86783 36.4338 8.47532 38.732 11.1699 40.2701L9.27061 42.9726C8.62406 43.8927 9.00263 45.1765 10.0341 45.5959L10.7126 45.8741C11.2804 46.103 11.9334 46.0174 12.4225 45.6366L16.6123 42.3949C21.606 43.5525 26.4126 42.7201 29.7665 41.4919L33.4289 44.3207C33.918 44.693 34.5624 44.7893 35.1388 44.5496L35.8173 44.28C36.8488 43.8521 37.2273 42.5768 36.5808 41.6567L34.5177 38.7082C37.6697 35.7832 39.9771 32.2012 40.1578 27.3508C40.3067 23.5078 39.3305 19.3375 37.3781 15.3043L34.6521 16.9372Z" fill="#EB5600"/>
+                    <path d="M48.8397 10.4988L45.0986 8.14078L45.8579 7.16937C46.079 6.88693 46.0918 6.49107 45.8919 6.19369L45.5303 5.65662C45.3091 5.32924 44.888 5.203 44.5264 5.3592L43.5332 5.78714V0.78022C43.5332 0.478521 43.1781 0.320183 42.9569 0.521312L36.6466 6.23453C36.453 6.40998 36.3403 6.66033 36.3403 6.92351V10.5418L25.9808 16.9375C25.6278 16.4946 25.2577 16.0944 24.877 15.7564C23.1607 14.2351 21.2211 13.8221 19.7174 14.8064C17.5587 16.2164 17.2524 19.9181 19.056 22.715C20.3406 24.705 22.5694 26.2263 24.5855 26.2263C25.2704 26.2263 25.9254 26.053 26.5146 25.6722C27.5929 24.966 28.1458 23.7058 28.082 22.1138C28.0671 21.7415 28.0182 21.3521 27.9331 20.9648C27.8247 20.4491 27.6609 19.9249 27.4482 19.4113L37.5463 13.3623L41.1342 14.6291C41.3682 14.7125 41.6277 14.6954 41.8489 14.5841L48.8076 11.1071C49.0501 10.9872 49.0671 10.6449 48.8374 10.5015L48.8397 10.4988Z" fill="#EB5600"/>
+                  </svg>
+                </span>
+                <div class="flow-intro-card__copy">
+                  <p class="flow-intro-card__headline">
+                    Our main goal was to get people to
+                    <span class="flow-intro-card__accent">donate more</span>.
+                  </p>
+                  <p class="flow-intro-card__subline">
+                    So, the centerpiece became the
+                    <span class="flow-intro-card__accent">item donation flow</span>.
+                  </p>
+                </div>
+              </div>
+              <div class="flow-route" aria-label="Item donation flow">
+                <span class="flow-route__chip">Item donation page</span>
+                <span class="flow-route__arrow" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 6L12 9L9 12M12 9L6 9M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#131121" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="flow-route__chip">Item management &amp; drop-off modal</span>
+                <span class="flow-route__arrow" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 6L12 9L9 12M12 9L6 9M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#131121" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="flow-route__chip">Confirm donation + visual feedback</span>
+                <span class="flow-route__arrow" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 6L12 9L9 12M12 9L6 9M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#131121" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="flow-route__chip">Updated home</span>
+              </div>
+            </div>
+            <div class="flow-steps" aria-label="Donation flow steps">
+              <div class="flow-step">
+                <div class="flow-media" data-flow-media tabindex="0">
+                  <img
+                    class="flow-media__img"
+                    src="assets/dd-assets/coreflow-wires/donation-page-preview.webp"
+                    alt="Donation page and item selection screens"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <video
+                    class="flow-media__video"
+                    src="assets/dd-assets/coreflow-wires/select-items.mp4"
+                    muted
+                    playsinline
+                    loop
+                    preload="auto"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  ></video>
+                  <button type="button" class="flow-media__play" aria-label="Play flow preview">
+                    <span class="flow-media__play-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <span class="flow-step__label">Donation page + Select items</span>
+              </div>
+              <div class="flow-step">
+                <div class="flow-media" data-flow-media tabindex="0">
+                  <img
+                    class="flow-media__img"
+                    src="assets/dd-assets/coreflow-wires/donation-modal-preview.webp"
+                    alt="Drop-off modal screen"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <video
+                    class="flow-media__video"
+                    src="assets/dd-assets/coreflow-wires/dropoff-modal.mp4"
+                    muted
+                    playsinline
+                    loop
+                    preload="auto"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  ></video>
+                  <button type="button" class="flow-media__play" aria-label="Play flow preview">
+                    <span class="flow-media__play-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <span class="flow-step__label">Drop-off &amp; Donation management modal</span>
+              </div>
+              <div class="flow-step">
+                <div class="flow-media" data-flow-media tabindex="0">
+                  <img
+                    class="flow-media__img"
+                    src="assets/dd-assets/coreflow-wires/confirmation-preview.webp"
+                    alt="Donation confirmation screen"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <video
+                    class="flow-media__video"
+                    src="assets/dd-assets/coreflow-wires/confirmation.mp4"
+                    muted
+                    playsinline
+                    loop
+                    preload="auto"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  ></video>
+                  <button type="button" class="flow-media__play" aria-label="Play flow preview">
+                    <span class="flow-media__play-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <span class="flow-step__label">Confirmation + Visual Feedback</span>
+              </div>
+              <div class="flow-step">
+                <div class="flow-media" data-flow-media tabindex="0">
+                  <img
+                    class="flow-media__img"
+                    src="assets/dd-assets/coreflow-wires/updated-home-preview.webp"
+                    alt="Updated home screen with ongoing donation"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <video
+                    class="flow-media__video"
+                    src="assets/dd-assets/coreflow-wires/updated-home.mp4"
+                    muted
+                    playsinline
+                    loop
+                    preload="auto"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  ></video>
+                  <button type="button" class="flow-media__play" aria-label="Play flow preview">
+                    <span class="flow-media__play-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <span class="flow-step__label">Updated home</span>
+              </div>
+            </div>
+          </section>
+
+          <section id="the-interaction" class="section">
+            <h2 class="section__label">The Interaction System</h2>
+            <p class="section__body">
+              Every interactive element across the app uses one spring system — one stiffness value, one damping constant, one timing token. Buttons, cards, nav items, and role cards all compress slightly on tap and spring back with a small overshoot before settling.
+            </p>
+            <div class="interaction-grid">
+              <div class="interaction-grid__item">
+                <div
+                  class="slide-confirm-showcase placeholder-wide placeholder-wide--16x9"
+                  aria-label="Slide to confirm demo"
+                >
+                  <div
+                    class="slide-confirm-control"
+                    data-slide-confirm
+                    role="slider"
+                    tabindex="0"
+                    aria-label="Slide to confirm"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    style="--slide-progress: 0"
+                  >
+                    <div class="slide-confirm-particles" aria-hidden="true"></div>
+                    <div class="slide-confirm-control__lane" aria-hidden="true">
+                      <div class="slide-confirm-control__reveal">
+                        <div class="slide-confirm-control__gradient"></div>
+                      </div>
+                    </div>
+                    <span class="slide-confirm-control__label">Contribution confirmed</span>
+                    <div class="slide-confirm-control__handle">
+                      <svg
+                        class="slide-confirm-control__chevrons"
+                        viewBox="0 0 44 44"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M24.5 14L30.5 22L24.5 30"
+                          stroke="#F8F5F1"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M16.5 14L22.5 22L16.5 30"
+                          stroke="#F8F5F1"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <button type="button" class="slide-confirm-btn" data-spring-bounce>
+                    Confirm Contribution (2 items)
+                  </button>
+                </div>
+                <h3>Slide-to-confirm, then a button</h3>
+                <p>
+                  The prototype originally used slide-to-confirm. Testing showed the gesture added friction without adding meaning. We replaced it with a button. Knowing when to remove something you built is a skill.
+                </p>
+              </div>
+              <div class="interaction-grid__item">
+                <div
+                  class="spring-bounce-showcase placeholder-wide placeholder-wide--16x9"
+                  aria-label="Spring bounce interaction demo"
+                >
+                  <div class="spring-bounce-demo">
+                    <button type="button" class="spring-bounce-btn" data-spring-bounce>
+                      Press me
+                    </button>
+                    <div
+                      class="spring-bounce-card"
+                      data-spring-bounce
+                      role="button"
+                      tabindex="0"
+                      aria-label="Rain jackets, 5 available"
+                    >
+                      <div class="spring-bounce-card__title">Rain jackets</div>
+                      <div class="spring-bounce-card__sub">5 available</div>
+                    </div>
+                  </div>
+                </div>
+                <h3>Spring-bounce interaction system</h3>
+              
+                <p>
+                  <strong>A product that feels physically real is one people trust to do real things.</strong><br/>
+                  On tap, every interactive element across the app—buttons, cards, nav items, role
+                  cards—compresses to <strong>0.93</strong> scale and springs back past resting with a
+                  slight overshoot before settling.
+                </p>
+              </div>
+              <div class="interaction-grid__item">
+                <div class="bottom-nav-showcase placeholder-wide placeholder-wide--16x9" aria-label="Bottom navigation interaction demo">
+                  <div class="bottom-nav-host">
+                    <nav class="bottom-nav">
+                        <img src="assets/dd-assets/component-bottom-nav/assets/navbar-back.svg" class="nav-bg-img" alt="">
+                        <div class="nav-content">
+
+                          <div class="nav-item active">
+                            <span class="icon-wrap">
+                              <svg class="icon-home nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <g class="home-accent">
+                                  <path class="home-accent-body" d="M26.6994 23.4261L25.455 12.7261C25.3425 11.7605 24.5219 11.0592 23.595 11.1367L10.7213 12.2148C9.68379 12.3017 8.95192 13.3186 9.16067 14.3855C9.76129 17.4605 10.8825 22.928 11.4432 25.6492C11.6332 26.5723 12.4682 27.1886 13.3638 27.0661L25.2032 25.4436C26.1463 25.3142 26.8144 24.4142 26.6994 23.4261ZM21.2988 18.7911L19.3482 18.9511C18.7275 19.0017 18.1782 18.5517 18.1057 17.9336L17.9288 16.4161C17.8588 15.8186 18.2594 15.2673 18.8494 15.1492L20.8369 14.7505C21.5157 14.6142 22.1613 15.1017 22.2163 15.7917L22.3563 17.5473C22.4069 18.183 21.9338 18.7392 21.2988 18.7911Z"/>
+                                </g>
+                                <path class="home-stroke home-stroke-base" d="M28.7656 25.6313C22.255 25.6313 16.0769 26.0963 9.79625 27.3495C7.90875 27.7263 6.00375 28.1345 4.17188 28.7338"/>
+                                <path class="home-stroke home-stroke-wall-r" d="M24.7832 12.7832L25.1738 25.4295"/>
+                                <path class="home-stroke home-stroke-wall-l" d="M9.6882 27.2279L7.7207 15.0186"/>
+                                <path class="home-stroke home-stroke-roof" d="M4.14751 15.0123L28.0681 12.1873C28.8481 12.0954 29.0281 11.1061 28.3256 10.7736L12.4225 3.84232C12.0694 3.67544 11.64 3.77794 11.4144 4.08357L3.39688 13.8392C3.00313 14.3717 3.46438 15.0929 4.14751 15.0123Z"/>
+                                <path class="home-stroke home-stroke-door" d="M15.4847 26.3794L14.9885 22.1919C14.9585 21.7181 15.2435 21.305 15.6235 21.27L18.9297 20.9681C19.3072 20.9338 19.636 21.2869 19.6654 21.7569L19.9816 25.8644"/>
+                                <path class="home-stroke home-stroke-chimney" d="M20.8867 7.53124L22.128 4.12249C22.2311 3.83936 22.5442 3.69311 22.8273 3.79624L25.1473 4.64061C25.4305 4.74374 25.5767 5.05686 25.4736 5.33999L24.1573 8.95686"/>
+                              </svg>
+                            </span>
+                            <span>Home</span>
+                          </div>
+
+                          <div class="nav-item">
+                            <span class="icon-wrap">
+                              <svg class="icon-calendar nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <g class="cal-header">
+                                  <path d="M8.2609 6.89693L23.4709 6.12068C23.854 6.11193 25.5978 6.90505 25.7284 7.26568L26.7715 9.6413C26.9746 10.2026 27.5728 11.8076 26.9765 11.8426L4.41965 13.5301C3.7534 13.5688 4.32715 11.2744 4.5959 10.6638L5.41777 8.16005C5.55715 7.84318 7.91465 6.90443 8.2609 6.8963V6.89693Z" fill="#FF7534"/>
+                                </g>
+                                <path d="M24.2177 28.4191H7.66585C5.41022 28.4191 3.62272 26.4554 3.76585 24.1335L4.59522 10.6635C4.72022 8.63414 6.2921 7.01852 8.26022 6.89664L22.6458 6.00352C24.7465 5.87289 26.5696 7.48102 26.7708 9.64102L28.1077 24.0041C28.3277 26.371 26.5233 28.4191 24.2177 28.4191Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M26.9045 10.6724L4.54883 12.1599" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M11.1438 18.7482H8.8238C8.41442 18.7482 8.08442 18.412 8.09192 18.0026L8.25942 15.7251C8.26692 15.3314 8.5838 15.0145 8.97755 15.007L11.13 14.9645C11.5394 14.957 11.8757 15.287 11.8757 15.6964V18.0164C11.8757 18.4207 11.5482 18.7482 11.1438 18.7482Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                <path d="M11.1295 25.3474H8.48383C8.05321 25.3474 7.71571 24.9774 7.75508 24.5492L7.96696 22.2286C8.00196 21.8461 8.32633 21.5561 8.71008 21.5636L11.1013 21.6061C11.4945 21.6136 11.812 21.9311 11.8188 22.3242L11.8613 24.6024C11.8688 25.0117 11.5388 25.348 11.1295 25.348V25.3474Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                <path d="M17.1213 18.748H14.8569C14.4525 18.748 14.125 18.4206 14.125 18.0162V15.5862C14.125 15.1924 14.4362 14.8693 14.83 14.8549L17.0944 14.7705C17.5087 14.7549 17.8538 15.0868 17.8538 15.5018V18.0155C17.8538 18.4199 17.5262 18.7474 17.1219 18.7474L17.1213 18.748Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                <path d="M17.1213 25.3474H14.8569C14.4525 25.3474 14.125 25.0199 14.125 24.6155V22.3374C14.125 21.9386 14.4444 21.613 14.8431 21.6055L17.1075 21.5636C17.5169 21.5561 17.8531 21.8861 17.8531 22.2955V24.6155C17.8531 25.0199 17.5256 25.3474 17.1213 25.3474Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                <path d="M23.3166 18.7482H20.8354C20.431 18.7482 20.1035 18.4207 20.1035 18.0163V15.4657C20.1035 15.0932 20.3829 14.7807 20.7529 14.7382L23.0104 14.4813C23.4216 14.4345 23.7898 14.7376 23.8229 15.1507L24.0466 17.9582C24.0804 18.3838 23.7441 18.7482 23.3173 18.7482H23.3166Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                <path d="M23.5204 25.3473H20.8354C20.431 25.3473 20.1035 25.0198 20.1035 24.6154V22.2311C20.1035 21.8473 20.4004 21.5286 20.7829 21.5011L23.2498 21.3242C23.6491 21.2954 23.9973 21.5929 24.0316 21.9923L24.2498 24.5536C24.286 24.9804 23.9491 25.3473 23.5204 25.3473Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                <path d="M20.4443 4.63477L20.2979 7.60547H20.2207L20.0732 4.63477H20.4443Z" fill="#292966" stroke="#292966" stroke-width="1.5"/>
+                                <path d="M11.4658 8.02979L11.2314 8.04053L11.502 5.23193H11.5459L11.4658 8.02979Z" fill="#292966" stroke="#292966" stroke-width="1.5"/>
+                              </svg>
+                            </span>
+                            <span>Events</span>
+                          </div>
+
+                          <div class="nav-item center-item">
+                            <div class="nav-center-circle">
+                              <button type="button" class="donate-icon-btn" id="dd-bottom-nav-donate" aria-label="Contribute">
+                                <svg class="donate-svg icon-donate" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <g id="globe-body">
+                                    <g class="globe-accent">
+                                    <path d="M24.4398 37.2135C32.1946 37.2135 38.4811 30.927 38.4811 23.1722C38.4811 15.4174 32.1946 9.13086 24.4398 9.13086C16.685 9.13086 10.3984 15.4174 10.3984 23.1722C10.3984 30.927 16.685 37.2135 24.4398 37.2135Z" fill="#FF7534"/>
+                                    </g>
+                                    <path d="M22.0059 39.1221C31.4508 39.1221 39.1074 31.4654 39.1074 22.0205C39.1074 12.5756 31.4508 4.91895 22.0059 4.91895C12.5609 4.91895 4.9043 12.5756 4.9043 22.0205C4.9043 31.4654 12.5609 39.1221 22.0059 39.1221Z" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
+                                    <path d="M39.0541 21.0581C35.913 25.1599 29.4591 27.9726 22.0075 27.9726C14.5559 27.9726 8.10195 25.1599 4.96094 21.0581" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
+                                    <path d="M6.13281 16.0688C9.55398 19.441 15.3866 21.6599 22.0055 21.6599C28.6244 21.6599 34.457 19.4402 37.8781 16.0688" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10"/>
+                                    <path d="M17.4798 31.4647C17.4798 31.4647 13.0867 23.8722 17.4798 12.7476" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                    <path d="M29.2737 30.9004C29.2737 30.9004 33.1134 23.8724 28.5449 12.4883" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                    <path d="M23.0371 13.0625C23.0371 13.0625 24.8573 22.0206 23.0371 32.0959" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                  </g>
+                                  <path id="p1" class="donate-spark-1" d="M36.7401 2.51367L34.9414 5.43125" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                  <path id="p2" class="donate-spark-2" d="M41.5353 7.104L37.6191 8.28736" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                  <path id="p3" class="donate-spark-3" d="M8.09375 41.0845L9.36563 38.6104" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                  <path id="p4" class="donate-spark-4" d="M2.32812 39.4881L5.98648 36.5293" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                  <path id="p5" class="donate-spark-5" d="M2.32812 34.4724L4.40352 33.9653" stroke="#292966" stroke-width="1.65" stroke-miterlimit="10" stroke-linecap="round"/>
+                                </svg>
+                              </button>
+                              <span class="nav-center-label">Support</span>
+                            </div>
+                          </div>
+
+                          <div class="nav-item">
+                            <span class="icon-wrap">
+                              <svg class="icon-items nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <g class="items-bag-main">
+                                  <path d="M14.5911 9.84992L13.8149 16.7774C13.6867 17.9205 14.338 18.993 15.3411 19.2912L24.5367 22.0237C25.5174 22.3149 26.5442 21.7793 26.9667 20.7555L29.683 14.1768C30.2255 12.8637 29.5586 11.3268 28.2949 10.9768L17.1592 7.89554C15.948 7.56054 14.7449 8.47554 14.5911 9.84992Z" fill="#FF7534"/>
+                                </g>
+                                <g class="items-bag-secondary">
+                                  <path d="M5.94828 24.4275L2.97266 23.6863L4.59391 18.2231L7.22828 19.0444L5.94828 24.4275Z" fill="#FF7534"/>
+                                </g>
+                                <path d="M21.3935 4.4182C21.996 5.51695 22.126 7.3382 21.3028 7.78945C20.4791 8.24133 19.0141 7.15195 18.4116 6.0532C17.8091 4.95445 18.0572 3.8232 18.881 3.37133C19.7047 2.91945 20.7916 3.31883 21.3941 4.41758L21.3935 4.4182Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M25.312 7.92569C24.2132 8.52819 22.392 8.65819 21.9407 7.83507C21.4889 7.01132 22.5782 5.54632 23.677 4.94382C24.7757 4.34132 25.907 4.58944 26.3589 5.41319C26.8107 6.23694 26.4114 7.32382 25.3126 7.92632L25.312 7.92569Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M24.8846 20.5612L13.3752 17.6312C12.7571 17.4999 12.3627 16.8924 12.494 16.2743L13.8677 7.38057C13.999 6.76245 14.6065 6.36807 15.2246 6.49932L27.9021 9.60495C28.5202 9.7362 28.9146 10.3437 28.7833 10.9618L26.2421 19.6799C26.1108 20.2981 25.5033 20.6924 24.8852 20.5612H24.8846Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M13.1445 12.1729L27.8614 15.301" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M21.6627 8.27881L18.9277 19.0444" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <path d="M5.40885 24.412L3.65323 24.0388C3.25823 23.9551 3.01885 23.5482 3.13135 23.1532L4.38948 18.7476C4.50323 18.3482 4.92885 18.1313 5.3101 18.2788L6.70885 18.8188C7.02823 18.9426 7.21073 19.2845 7.13823 19.6251L6.2376 23.8632C6.15635 24.2457 5.78573 24.4913 5.40948 24.4113L5.40885 24.412Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                <g class="items-accent">
+                                  <path d="M7.11492 19.7285C7.11492 19.7285 9.02117 19.7841 11.2112 19.8535C13.6443 19.931 15.043 21.2323 15.6205 21.7029C15.8837 21.9173 16.0724 22.1935 16.1437 22.4948C16.2399 22.9004 15.8705 23.2979 14.9618 23.0798C13.9299 22.8316 12.788 22.321 11.803 22.3673C10.733 22.4173 13.0605 25.3173 14.9149 25.4879C14.9149 25.4879 18.1868 26.2866 19.9299 26.0854C20.2593 26.0473 21.8212 25.7723 22.1449 25.8666C22.618 26.0054 23.0812 26.3004 22.6424 26.9191C22.4155 27.2391 20.9049 28.2916 20.5005 28.4304C19.283 28.8479 13.6468 28.8779 11.1687 28.5798C10.8493 28.541 10.5462 28.4191 10.298 28.2298C9.7018 27.7748 8.3593 26.8116 6.13867 24.3173L7.1143 19.7285H7.11492Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                </g>
+                              </svg>
+                            </span>
+                            <span>Volunteer</span>
+                          </div>
+
+                          <div class="nav-item">
+                            <span class="icon-wrap">
+                              <svg class="icon-forum nav-icon" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <g class="forum-bubble-left">
+                                  <path d="M12.3422 20.5863C11.1097 20.2082 9.89218 19.7538 8.6953 19.2257C7.6778 18.777 6.61093 18.2107 6.0278 17.0863C5.18155 15.4551 5.65405 13.317 6.15155 11.4795C6.68343 9.51508 7.31905 7.38633 8.76218 6.33258C9.32905 5.91883 9.97655 5.71008 10.6159 5.51445C12.5953 4.90758 14.6409 4.3707 16.6609 4.71883C18.6809 5.06695 20.6947 6.46883 21.5003 8.78508C22.4328 11.4663 21.4922 14.7201 19.7741 16.722C18.0559 18.7238 15.7184 19.692 13.4122 20.3151L12.3416 20.5857L12.3422 20.5863Z" fill="#FF7534"/>
+                                  <path d="M12.3745 3.19385C7.30195 3.19385 3.18945 7.06822 3.18945 11.8482C3.18945 14.1282 4.1257 16.202 5.65508 17.7476L5.4982 20.6476C5.4607 21.3451 6.10758 21.7107 6.64508 21.2957L8.63883 19.7557C9.78008 20.2351 11.0445 20.502 12.3751 20.502C17.4476 20.502 21.5601 16.6276 21.5601 11.8476C21.5601 7.0676 17.4476 3.19385 12.3745 3.19385Z" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10"/>
+                                </g>
+                                <path class="forum-dot-1" d="M9.57227 11.8428C9.57227 12.3603 9.15227 12.7803 8.63477 12.7803C8.11727 12.7803 7.63477 12.3603 7.63477 11.8428C7.63477 11.3253 8.05477 10.9053 8.57227 10.9053C9.08977 10.9053 9.57227 11.3253 9.57227 11.8428Z" fill="#292966"/>
+                                <path class="forum-dot-2" d="M13.3125 11.8428C13.3125 12.3603 12.8925 12.7803 12.375 12.7803C11.8575 12.7803 11.4375 12.3603 11.4375 11.8428C11.4375 11.3253 11.9819 10.9053 12.375 10.9053C12.8925 10.9053 13.3125 11.3253 13.3125 11.8428Z" fill="#292966"/>
+                                <path class="forum-dot-3" d="M17.0527 11.7246C17.0527 12.1771 16.6327 12.8409 16.1152 12.8409C15.5977 12.8409 15.1777 12.1771 15.1777 11.7246C15.1777 11.2721 15.5977 10.9053 16.1152 10.9053C16.6327 10.9053 17.0527 11.2721 17.0527 11.7246Z" fill="#292966"/>
+                                <g class="forum-bubble-right">
+                                  <path d="M23.5975 11.3975C26.26 12.5912 28.77 15.5993 28.77 19.1843C28.77 21.4643 27.8337 23.5381 26.3044 25.0837L26.4612 27.9837C26.4987 28.6812 25.8519 29.0468 25.3144 28.6318L23.3206 27.0918C22.1794 27.5712 20.91 27.9531 19.5844 27.8381C15.705 27.5018 12.375 25.3481 11.4375 22.6231" stroke="#292966" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                                </g>
+                                <path class="forum-dot-4" d="M23.6641 21.4067C24.1818 21.4067 24.6016 20.987 24.6016 20.4692C24.6016 19.9515 24.1818 19.5317 23.6641 19.5317C23.1463 19.5317 22.7266 19.9515 22.7266 20.4692C22.7266 20.987 23.1463 21.4067 23.6641 21.4067Z" fill="#292966"/>
+                                <path class="forum-dot-5" d="M19.0005 20.625C19.0818 21.1363 19.4105 21.4694 19.928 21.4694C20.4455 21.4694 20.8624 20.9869 20.8624 20.4694C20.8624 19.9519 20.5362 19.3544 20.0499 19.5319C19.6768 19.6682 18.978 20.4807 19.0005 20.625Z" fill="#292966"/>
+                              </svg>
+                            </span>
+                            <span>Forums</span>
+                          </div>
+
+                        </div>
+                      </nav>
+                  </div>
+                </div>
+                <h3>Shared motion language</h3>
+                <p>
+                  Nav icons each have their own spring animation on activation — home bounces, forum bubbles expand with staggered dots, volunteer bags toss and settle — all on one shared timing system.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section id="the-result" class="section">
+            <h2 class="section__label">The Result</h2>
+            <p class="section__body section__body--tight">
+              The final prototype was presented to RGD stakeholders in a formal team pitch. We walked through the problem, the reasoning behind the solution, and ran a live interactive demo. The prototype made the difference — stakeholders could feel how a donor would move through the app. The project was published in the RGD's May 2026 mentorship article alongside ten other teams from the Fall 2025 cohort.
+            </p>
+            <div
+              class="collection-surfer"
+              data-collection-surfer
+              aria-label="Product screens gallery"
+            >
+              <div class="collection-surfer__scroller" data-collection-scroller tabindex="0">
+                <div class="collection-surfer__scroller-inner" data-collection-scroller-inner>
+                  <div class="collection-surfer__stage">
+                    <div class="collection-surfer__viewport">
+                      <div class="collection-surfer__scene">
+                        <div class="collection-surfer__track" data-collection-track></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a
+              id="try-it"
+              href="https://doga-design.github.io/Distro-Disco-App-Prototype/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cta-block cta-block--try"
+            >
+              <span class="cta-block__deco" aria-hidden="true">
+                <span class="cta-block__deco-stage">
+                  <svg
+                    class="cta-block__prop"
+                    data-cta-prop-svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 252 281"
+                    preserveAspectRatio="xMaxYMid meet"
+                    fill="none"
+                  >
+                    <path data-cta-prop-path d="M138.76 234.311C135.736 234.596 130.918 234.401 122.839 232.977C114.408 231.492 103.484 228.85 91.2486 225.332C66.871 218.325 40.791 208.955 23.1848 200.878C16.9299 198.008 11.9211 195.378 8.29744 193.057C3.5951 190.051 1.17423 187.572 0.448047 185.025C-0.714345 180.945 -0.619231 171.809 13.5604 139.698C20.9428 122.977 29.4306 106.317 31.8209 101.799C32.6093 100.31 34.3068 99.5517 35.9424 99.9519L165.506 131.898C167.277 132.336 168.458 134.005 168.278 135.82C168.257 136.041 166.05 158.159 162.074 180.819C159.726 194.203 157.225 205.185 154.636 213.456C151.04 224.953 147.297 231.261 142.859 233.315C142 233.711 140.779 234.115 138.757 234.306L138.76 234.311ZM7.49154 182.962C7.65275 183.265 9.35653 185.956 21.2268 191.822C29.2692 195.797 40.1818 200.354 52.7864 205.001C71.1694 211.779 91.163 218.034 107.642 222.158C134.046 228.767 139.274 226.895 139.785 226.659C141.02 226.088 147.555 221.133 154.845 179.595C157.896 162.208 159.894 145.13 160.645 138.264L36.9885 107.775C33.6307 114.291 26.5555 128.451 20.2759 142.669C15.846 152.703 12.4927 161.208 10.3087 167.947C6.96234 178.28 7.20554 181.866 7.49181 182.965L7.49154 182.962Z" />
+                    <path data-cta-prop-path d="M60.4372 215.496C59.9141 215.545 59.3715 215.481 58.8466 215.292C56.9419 214.602 55.9567 212.498 56.6471 210.593L90.6476 116.822C91.338 114.917 93.4416 113.932 95.3463 114.623C97.2509 115.313 98.2361 117.417 97.5457 119.321L63.5453 213.093C63.0469 214.469 61.8077 215.367 60.4372 215.496Z" />
+                    <path data-cta-prop-path d="M78.3322 219.908C77.8704 219.952 77.3917 219.908 76.9212 219.764C74.9817 219.174 73.8896 217.125 74.4795 215.185L103.409 120.164C103.999 118.224 106.049 117.132 107.988 117.722C109.927 118.312 111.019 120.361 110.43 122.301L81.4997 217.322C81.054 218.788 79.7699 219.773 78.3322 219.908Z" />
+                    <path data-cta-prop-path d="M177.19 119.903C176.941 120.009 176.682 120.088 176.412 120.137C175.444 120.316 174.444 120.099 173.636 119.533C173.32 119.31 141.734 97.1641 110.325 74.9611C46.2405 29.6604 45.3853 28.3888 44.6982 27.3676C43.7764 26.0001 43.8815 24.1824 44.9568 22.9292L63.5219 1.28156C64.7922 -0.202219 67.004 -0.429048 68.5514 0.766074L190.52 95.0004C192.048 96.1813 192.4 98.3491 191.321 99.9519L178.786 118.576C178.387 119.165 177.833 119.623 177.188 119.9L177.19 119.903ZM52.9711 24.8606C66.6625 35.2479 130.04 79.9892 174.788 111.377L183.317 98.7061L66.8269 8.70442L52.9711 24.8606Z" />
+                    <path data-cta-prop-path d="M127.474 52.5665C127.099 52.7273 126.692 52.8284 126.27 52.8563C124.938 52.9453 123.662 52.3012 122.941 51.1795C122.749 50.8816 118.207 43.7821 114.474 35.2586C109.007 22.7717 108.148 14.0285 111.852 8.52428C115.562 3.01117 120.715 0.117674 126.358 0.377079C131.851 0.630357 137.18 4.04557 139.934 9.08251C142.826 14.3641 139.51 25.1599 136.297 33.9763C133.112 42.7166 129.499 50.43 129.347 50.7538C128.961 51.5806 128.286 52.2183 127.474 52.5665ZM122.746 8.31014C120.982 9.06679 119.356 10.5179 117.94 12.623C116.965 14.0728 115.329 18.8816 121.164 32.2394C122.6 35.5293 124.194 38.6337 125.574 41.1524C126.747 38.3848 128.128 34.9759 129.416 31.4406C135.092 15.8508 133.567 12.7333 133.501 12.6084C131.948 9.77068 129.013 7.84866 126.024 7.70918C124.894 7.65745 123.8 7.86162 122.75 8.31168L122.746 8.31014Z" />
+                    <path data-cta-prop-path d="M172.12 62.7243C171.354 63.0529 170.538 63.3036 169.678 63.4715C157.657 65.8195 131.784 56.4796 128.874 55.4058C127.69 54.9683 126.81 53.953 126.551 52.7163C126.292 51.4796 126.687 50.1957 127.596 49.3206C127.887 49.0391 134.82 42.3801 142.985 36.3521C155.41 27.1744 163.643 24.5441 168.889 28.0781C176.059 32.9042 180.78 44.8714 178.996 53.6912C178.12 58.0238 175.664 61.2041 172.12 62.7243ZM137.187 50.5054C146.608 53.558 161.468 57.5997 168.269 56.2701C169.483 56.0335 171.173 55.3567 171.802 52.2351C172.979 46.4159 169.44 37.295 164.792 34.1628C164.162 33.7368 162.249 33.7523 158.931 35.1754C158.901 35.1881 158.874 35.1996 158.845 35.2124C155.696 36.5756 151.842 38.9311 147.393 42.2156C143.519 45.0749 139.876 48.1383 137.186 50.5027L137.187 50.5054Z" />
+                  </svg>
+                  <span class="cta-block__burst" data-cta-burst>
+                    <span class="cta-block__burst-item cta-block__burst-item--heart">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" fill="none" aria-hidden="true">
+                        <path d="M25.4795 35.8433C25.3562 35.8433 25.233 35.8374 25.1097 35.8256C9.03956 34.1937 1.75442 25.758 0.292701 18.4053C-0.802123 12.8931 1.22903 7.85627 5.47037 5.57563C7.5749 4.44265 12.8289 2.7373 20.0729 8.10869C23.9327 2.27942 27.9216 -0.426823 31.9751 0.0545477C35.4122 0.462538 38.0245 3.13649 39.1428 7.39251C40.1995 11.4137 39.815 16.4622 38.0891 21.2437C36.0873 26.7941 32.4741 31.599 27.6428 35.1329C27.0117 35.5967 26.2515 35.8403 25.4766 35.8403L25.4795 35.8433ZM10.3252 11.7336C9.76748 11.7336 9.30666 11.8452 8.94857 12.0389C7.63067 12.7463 7.04656 14.7305 7.49271 16.9759C8.40261 21.5607 13.3396 26.8499 24.417 28.3556C30.44 23.357 32.7588 16.2127 32.3508 11.1114C32.1571 8.68693 31.3822 7.53047 31.0916 7.34262C30.5192 7.35142 27.8658 8.70454 24.2262 15.4819C23.6773 16.5004 22.6823 17.2019 21.5376 17.3751C20.3929 17.5453 19.2364 17.1696 18.4116 16.3566C14.9363 12.9195 12.1332 11.7336 10.3252 11.7336Z" />
+                      </svg>
+                    </span>
+                    <span class="cta-block__burst-item cta-block__burst-item--sparkle-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 41" fill="none" aria-hidden="true">
+                        <path d="M6.92795 40.1186C5.62472 40.1186 4.38021 39.42 3.71686 38.2254C2.84804 36.658 3.24136 34.6944 4.64145 33.579C5.02009 33.2767 5.40165 32.989 5.78616 32.719C6.2147 32.0233 6.83403 30.4824 7.10406 28.1049C7.42693 25.2666 7.1158 22.3372 6.29101 20.4617C5.73626 19.1937 5.19912 18.8414 4.74711 18.7651C4.44478 18.7827 4.13659 18.8003 3.83133 18.8121C1.87649 18.8913 0.194638 17.4325 0.015592 15.4836C-0.163454 13.5346 1.21901 11.7852 3.15917 11.5152C3.66696 11.4448 4.16301 11.4066 4.65612 11.4183C16.8606 10.5936 24.0665 5.4159 29.0094 0.948546C30.4241 -0.331195 32.5815 -0.313586 33.9727 0.986701C35.367 2.28699 35.5313 4.43848 34.3543 5.93542C30.4916 10.8489 28.4517 15.4043 28.2844 19.4754C28.1171 23.5729 29.8136 27.3682 33.4738 31.0812C34.642 32.267 34.865 34.0897 34.0197 35.5221C33.1714 36.9545 31.4661 37.6384 29.8664 37.1863C21.4777 34.8206 15.6337 35.1053 10.773 38.2019C10.0011 38.9915 9.12053 39.5638 8.14898 39.9073C7.74686 40.0482 7.33594 40.1157 6.93088 40.1157L6.92795 40.1186ZM13.0507 17.6204C13.4059 18.4334 13.6994 19.3199 13.9313 20.2738C14.5741 22.9096 14.7326 25.9358 14.4039 28.8651C17.2187 28.2399 20.0189 28.143 22.7222 28.3632C21.416 25.428 20.8231 22.3578 20.9523 19.179C21.011 17.7173 21.2282 16.2321 21.6009 14.7292C18.8742 15.9884 16.0417 16.9453 13.0507 17.6233V17.6204Z" />
+                      </svg>
+                    </span>
+                    <span class="cta-block__burst-item cta-block__burst-item--sparkle-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 31" fill="none" aria-hidden="true">
+                        <path d="M6.16934 30.5006C5.00701 30.5006 3.86816 29.9458 3.16078 28.9332C2.08944 27.401 2.34189 25.3112 3.7449 24.0784C5.81421 22.2586 6.84444 20.5474 6.81215 19.0005C6.76519 16.9107 4.88373 14.313 1.37032 11.4865C-0.0767295 10.3241 -0.426022 8.26362 0.55433 6.68742C1.53468 5.11123 3.53649 4.51833 5.21835 5.29909C11.5173 8.23427 15.8026 7.13357 19.5509 1.60956C20.5518 0.133158 22.4743 -0.409852 24.1004 0.32688C25.7265 1.06361 26.5865 2.86288 26.1404 4.5917C24.5994 10.5296 26.5249 16.3589 32.0254 22.4171C33.2435 23.7585 33.2993 25.7867 32.1604 27.1926C31.0216 28.5986 29.0227 28.9655 27.4583 28.0497C22.3099 25.0441 15.923 25.6986 7.92461 30.0515C7.36986 30.3538 6.76813 30.4976 6.17229 30.4976L6.16934 30.5006ZM13.0465 14.1311C13.7451 15.6838 14.109 17.2482 14.1443 18.8361C14.1501 19.1238 14.1442 19.4115 14.1296 19.6962C16.4102 19.1297 18.6116 18.8567 20.7249 18.8714C19.6976 16.7316 18.9902 14.5713 18.6087 12.3964C16.8652 13.3415 15.0072 13.9197 13.0465 14.1311Z" />
+                      </svg>
+                    </span>
+                    <span class="cta-block__burst-item cta-block__burst-item--lines-left">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 31" fill="none" aria-hidden="true">
+                        <path d="M3.12276 19.5451C2.35081 19.46 1.59939 19.1195 1.00942 18.5207C-0.349574 17.1412 -0.334888 14.9193 1.04465 13.5603L13.7746 1.00942C15.1541 -0.34957 17.3731 -0.334891 18.735 1.04465C20.094 2.42418 20.0793 4.64611 18.6998 6.0051L5.96988 18.556C5.18619 19.3279 4.13539 19.6566 3.11981 19.5451H3.12276Z" />
+                        <path d="M8.72014 30.0413C7.05589 29.8594 5.71452 28.5004 5.60591 26.7715C5.48557 24.8373 6.95611 23.173 8.8904 23.0527L24.4527 22.0899C26.3958 21.9696 28.0513 23.443 28.1716 25.3744C28.292 27.3087 26.8214 28.9729 24.8871 29.0933L9.3248 30.056C9.11934 30.0678 8.9168 30.0648 8.72014 30.0413Z" />
+                      </svg>
+                    </span>
+                    <span class="cta-block__burst-item cta-block__burst-item--lines-right">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 31" fill="none" aria-hidden="true">
+                        <path d="M3.12276 19.5451C2.35081 19.46 1.59939 19.1195 1.00942 18.5207C-0.349574 17.1412 -0.334888 14.9193 1.04465 13.5603L13.7746 1.00942C15.1541 -0.34957 17.3731 -0.334891 18.735 1.04465C20.094 2.42418 20.0793 4.64611 18.6998 6.0051L5.96988 18.556C5.18619 19.3279 4.13539 19.6566 3.11981 19.5451H3.12276Z" />
+                        <path d="M8.72014 30.0413C7.05589 29.8594 5.71452 28.5004 5.60591 26.7715C5.48557 24.8373 6.95611 23.173 8.8904 23.0527L24.4527 22.0899C26.3958 21.9696 28.0513 23.443 28.1716 25.3744C28.292 27.3087 26.8214 28.9729 24.8871 29.0933L9.3248 30.056C9.11934 30.0678 8.9168 30.0648 8.72014 30.0413Z" />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <span class="cta-block__row">
+                <span>Try prototype</span>
+                <span class="icon-roll" aria-hidden="true">
+                  <span class="icon-roll__track">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <use href="assets/icons.svg#icon-arrow-up-right" />
+                    </svg>
+                  </span>
+                </span>
+              </span>
+            </a>
+          </section>
+
+          <section id="reflection" class="section">
+            <h2 class="section__label">Reflection</h2>
+            <div class="two-col">
+              <div>
+                <h3 class="insight__label">What I'd change</h3>
+                <p>
+                  I would spend more time in research before moving into design. We started discovering things about how Distro Disco actually operates well into the project and had to go back and rethink decisions we thought were settled. Understanding the organization deeply before the first wireframe would have saved weeks.
+                </p>
+              </div>
+              <div>
+                <h3 class="insight__label">What I learned</h3>
+                <p>
+                  We had one hour a week together and relied heavily on async communication in between. It worked, up to a point. Partway through we realized what we needed was not more messages but more time in the same room thinking together. A team that communicates well does not just share updates. It thinks out loud together.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <div class="cs-nav-cards">
+            <a
+              href="case-study-bountt.html"
+              class="cs-nav-card cs-nav-card--prev cs-nav-card--bountt"
+              aria-label="Previous case study: Bountt"
+            >
+              <span class="cs-nav-card__bg" aria-hidden="true"></span>
+              <span class="cs-nav-card__scrim" aria-hidden="true"></span>
+              <div class="cs-nav-card__body">
+                <span class="cs-nav-card__title">Bountt</span>
+                <span class="icon-roll icon-roll--lg" aria-hidden="true">
+                  <span class="icon-roll__track">
+                    <svg class="icon-roll__glyph" viewBox="0 0 24 24" fill="none">
+                      <use href="assets/icons.svg#icon-arrow-up-right" />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+              <span class="cs-nav-card__btn">View</span>
+            </a>
+            <a
+              href="case-study-since67.html"
+              class="cs-nav-card cs-nav-card--next cs-nav-card--since67"
+              aria-label="Next case study: Since '67"
+            >
+              <span class="cs-nav-card__bg" aria-hidden="true"></span>
+              <span class="cs-nav-card__scrim" aria-hidden="true"></span>
+              <div class="cs-nav-card__body">
+                <span class="cs-nav-card__title">Since '67</span>
+                <span class="icon-roll icon-roll--lg" aria-hidden="true">
+                  <span class="icon-roll__track">
+                    <svg class="icon-roll__glyph" viewBox="0 0 24 24" fill="none">
+                      <use href="assets/icons.svg#icon-arrow-up-right" />
+                    </svg>
+                  </span>
+                </span>
+              </div>
+              <span class="cs-nav-card__btn">View</span>
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="img-modal" role="dialog" aria-modal="true" aria-label="Image preview">
+      <div class="img-modal__dialog">
+        <button type="button" class="img-modal__btn img-modal__nav" id="img-modal-prev" aria-label="Previous image">
+          <span class="icon-roll icon-roll--sm" aria-hidden="true">
+            <span class="icon-roll__track">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M15.5 6.5c0 0-6 5.2-6 5.5s6 5.5 6 5.5"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <div class="img-modal__frame">
+          <img id="img-modal-img" src="" alt="" />
+          <button type="button" class="img-modal__btn img-modal__close" id="img-modal-close" aria-label="Close">
+            <span class="icon-roll icon-roll--sm" aria-hidden="true">
+              <span class="icon-roll__track">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M7.8 7.8c0 0 8.4 8.4 8.4 8.4M16.2 7.8c0 0-8.4 8.4-8.4 8.4"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </div>
+        <button type="button" class="img-modal__btn img-modal__nav" id="img-modal-next" aria-label="Next image">
+          <span class="icon-roll icon-roll--sm" aria-hidden="true">
+            <span class="icon-roll__track">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M8.5 6.5c0 0 6 5.2 6 5.5s-6 5.5-6 5.5"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <script src="assets/dodollm-panel.js"></script>
+    <script src="assets/mobile-nav.js"></script>
+    <script>
+      (function initScrollspy() {
+        const navLinks = document.querySelectorAll(
+          ".sidebar-nav a, .cs-nav__drawer nav a[href^='#']"
+        );
+        if (!navLinks.length) return;
+
+        const sections = [...navLinks]
+          .map((link) => {
+            const id = link.getAttribute("href")?.slice(1);
+            return id ? document.getElementById(id) : null;
+          })
+          .filter((section, index, list) => section && list.indexOf(section) === index);
+
+        if (!sections.length) return;
+
+        const CLICK_LOCK_MS = 900;
+        const VIEWPORT_FOCUS_RATIO = 0.12;
+        let clickLockUntil = 0;
+        let ticking = false;
+
+        const getFocusY = () => {
+          const csNav = document.querySelector(".cs-nav");
+          const navHeight =
+            csNav && getComputedStyle(csNav).display !== "none" ? csNav.offsetHeight : 0;
+          return navHeight + window.innerHeight * VIEWPORT_FOCUS_RATIO;
+        };
+
+        const setActive = (id) => {
+          navLinks.forEach((link) => {
+            link.classList.toggle("active", Boolean(id) && link.getAttribute("href") === `#${id}`);
+          });
+        };
+
+        const isAtPageBottom = () =>
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+
+        const getActiveId = () => {
+          if (isAtPageBottom()) {
+            return sections[sections.length - 1].id;
+          }
+
+          const focusY = getFocusY();
+          let activeId = null;
+
+          for (const section of sections) {
+            if (section.getBoundingClientRect().top <= focusY) {
+              activeId = section.id;
+            }
+          }
+
+          return activeId;
+        };
+
+        const update = () => {
+          ticking = false;
+          if (performance.now() < clickLockUntil) return;
+          setActive(getActiveId());
+        };
+
+        const scheduleUpdate = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(update);
+        };
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            const id = link.getAttribute("href")?.slice(1);
+            if (!id) return;
+            setActive(id);
+            clickLockUntil = performance.now() + CLICK_LOCK_MS;
+          });
+        });
+
+        window.addEventListener("scroll", scheduleUpdate, { passive: true });
+        window.addEventListener("resize", scheduleUpdate);
+        window.addEventListener("hashchange", scheduleUpdate);
+
+        const hashId = window.location.hash.slice(1);
+        if (hashId && sections.some((section) => section.id === hashId)) {
+          setActive(hashId);
+        } else {
+          scheduleUpdate();
+        }
+      })();
+
+      (function initMarquee() {
+        const root = document.querySelector(".marquee");
+        const track = root?.querySelector(".marquee__track");
+        if (!track) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+        let hoverBound = false;
+
+        function bindHover() {
+          if (hoverBound) return true;
+          const anim = track.getAnimations()[0];
+          if (!anim) return false;
+
+          const TWEEN_MS = 400;
+          let currentRate = 1;
+          let rafId = null;
+
+          function tweenPlaybackRate(from, to, ms) {
+            if (rafId) cancelAnimationFrame(rafId);
+            const start = performance.now();
+            function step(now) {
+              const t = Math.min((now - start) / ms, 1);
+              const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+              currentRate = from + (to - from) * ease;
+              anim.playbackRate = currentRate;
+              if (t < 1) rafId = requestAnimationFrame(step);
+              else {
+                rafId = null;
+                currentRate = to;
+                anim.playbackRate = to;
+              }
+            }
+            rafId = requestAnimationFrame(step);
+          }
+
+          root.addEventListener("mouseenter", () => tweenPlaybackRate(currentRate, 0, TWEEN_MS));
+          root.addEventListener("mouseleave", () => tweenPlaybackRate(currentRate, 1, TWEEN_MS));
+          hoverBound = true;
+          return true;
+        }
+
+        function tryBindHover() {
+          if (bindHover()) return;
+          requestAnimationFrame(tryBindHover);
+        }
+
+        tryBindHover();
+      })();
+
+      (function initImgModal() {
+        if (window.matchMedia("(hover: none)").matches) return;
+
+        const images = [
+          ...document.querySelector(".marquee__group")?.querySelectorAll("img") ?? [],
+        ];
+        const modal = document.getElementById("img-modal");
+        const mImg = document.getElementById("img-modal-img");
+        if (!images.length || !modal || !mImg) return;
+
+        let current = 0;
+
+        function open(i) {
+          current = i;
+          mImg.src = images[i].src;
+          mImg.alt = images[i].alt;
+          modal.classList.add("open");
+          document.body.style.overflow = "hidden";
+        }
+
+        function close() {
+          modal.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+
+        document.querySelectorAll(".marquee img").forEach((img) => {
+          img.style.cursor = "zoom-in";
+          img.addEventListener("click", () => {
+            const i = images.findIndex((el) => el.src === img.src);
+            open(i >= 0 ? i : 0);
+          });
+        });
+
+        document.getElementById("img-modal-prev")?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          open((current - 1 + images.length) % images.length);
+        });
+        document.getElementById("img-modal-next")?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          open((current + 1) % images.length);
+        });
+        document.getElementById("img-modal-close")?.addEventListener("click", close);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) close();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (!modal.classList.contains("open")) return;
+          if (e.key === "Escape") close();
+          if (e.key === "ArrowLeft") open((current - 1 + images.length) % images.length);
+          if (e.key === "ArrowRight") open((current + 1) % images.length);
+        });
+      })();
+
+      (function initImgCompare() {
+        const root = document.querySelector("[data-img-compare]");
+        const handle = root?.querySelector(".img-compare__handle");
+        if (!root || !handle) return;
+
+        const prefersReduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        const fineHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+        let pos = 50;
+        let dragging = false;
+        let tweenRaf = null;
+
+        function clamp(n, min, max) {
+          return Math.min(max, Math.max(min, n));
+        }
+
+        function setPos(pct, syncAria = true) {
+          pos = clamp(pct, 0, 100);
+          root.style.setProperty("--pos", `${pos}%`);
+          if (syncAria) handle.setAttribute("aria-valuenow", String(Math.round(pos)));
+        }
+
+        function posFromClientX(clientX) {
+          const rect = root.getBoundingClientRect();
+          if (!rect.width) return pos;
+          return ((clientX - rect.left) / rect.width) * 100;
+        }
+
+        function cancelTween() {
+          if (tweenRaf) {
+            cancelAnimationFrame(tweenRaf);
+            tweenRaf = null;
+          }
+        }
+
+        function tweenTo(target, ms) {
+          cancelTween();
+          const from = pos;
+          const start = performance.now();
+          function step(now) {
+            const t = Math.min((now - start) / ms, 1);
+            const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            setPos(from + (target - from) * ease);
+            if (t < 1) tweenRaf = requestAnimationFrame(step);
+            else tweenRaf = null;
+          }
+          tweenRaf = requestAnimationFrame(step);
+        }
+
+        function onPointerMove(clientX) {
+          setPos(posFromClientX(clientX));
+        }
+
+        handle.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          dragging = true;
+          root.classList.add("is-dragging");
+          handle.setPointerCapture(e.pointerId);
+          onPointerMove(e.clientX);
+        });
+
+        handle.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          onPointerMove(e.clientX);
+        });
+
+        function endDrag(e) {
+          if (!dragging) return;
+          dragging = false;
+          root.classList.remove("is-dragging");
+          if (handle.hasPointerCapture(e.pointerId)) {
+            handle.releasePointerCapture(e.pointerId);
+          }
+        }
+
+        handle.addEventListener("pointerup", endDrag);
+        handle.addEventListener("pointercancel", endDrag);
+
+        root.addEventListener("pointerdown", (e) => {
+          if (e.target === handle) return;
+          if (!window.matchMedia("(hover: none)").matches) return;
+          dragging = true;
+          root.classList.add("is-dragging");
+          root.setPointerCapture(e.pointerId);
+          onPointerMove(e.clientX);
+        });
+
+        root.addEventListener("pointermove", (e) => {
+          if (!dragging || e.target === handle) return;
+          if (!root.hasPointerCapture(e.pointerId)) return;
+          onPointerMove(e.clientX);
+        });
+
+        root.addEventListener("pointerup", (e) => {
+          if (!root.hasPointerCapture(e.pointerId)) return;
+          dragging = false;
+          root.classList.remove("is-dragging");
+          root.releasePointerCapture(e.pointerId);
+        });
+
+        root.addEventListener("pointercancel", (e) => {
+          if (!root.hasPointerCapture(e.pointerId)) return;
+          dragging = false;
+          root.classList.remove("is-dragging");
+          root.releasePointerCapture(e.pointerId);
+        });
+
+        if (fineHover.matches && !prefersReduced) {
+          root.addEventListener("mousemove", (e) => {
+            if (dragging) return;
+            cancelTween();
+            root.classList.add("is-hovering");
+            onPointerMove(e.clientX);
+          });
+
+          root.addEventListener("mouseleave", () => {
+            if (dragging) return;
+            root.classList.remove("is-hovering");
+            tweenTo(50, 400);
+          });
+        }
+
+        handle.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            cancelTween();
+            setPos(pos - 5);
+          }
+          if (e.key === "ArrowRight") {
+            e.preventDefault();
+            cancelTween();
+            setPos(pos + 5);
+          }
+        });
+      })();
+
+      (function initIconRoll() {
+        document.querySelectorAll(".icon-roll__track").forEach((track) => {
+          if (track.children.length !== 1) return;
+          const icon = track.firstElementChild;
+          if (!icon?.matches("svg, .icon")) return;
+          track.appendChild(icon.cloneNode(true));
+        });
+      })();
+
+      (function initFlowMedia() {
+        const items = document.querySelectorAll("[data-flow-media]");
+        if (!items.length) return;
+
+        const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        const touchUi = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const videos = [];
+
+        items.forEach((root) => {
+          const video = root.querySelector(".flow-media__video");
+          if (!video) return;
+
+          videos.push(video);
+          video.preload = "auto";
+          video.load();
+
+          const playVideo = () => {
+            video.currentTime = 0;
+            root.classList.add("is-playing");
+            return video.play().catch(() => {});
+          };
+
+          const pauseVideo = () => {
+            video.pause();
+            video.currentTime = 0;
+            root.classList.remove("is-playing");
+          };
+
+          if (canHover && !reducedMotion) {
+            root.addEventListener("pointerenter", playVideo);
+            root.addEventListener("pointerleave", pauseVideo);
+            root.addEventListener("focusin", playVideo);
+            root.addEventListener("focusout", (e) => {
+              if (!root.contains(e.relatedTarget)) pauseVideo();
+            });
+          }
+
+          if (touchUi) {
+            root.addEventListener("click", () => {
+              if (video.paused) playVideo();
+              else pauseVideo();
+            });
+          }
+        });
+
+        videos.forEach((video) => video.load());
+      })();
+
+      (function initInterviewVideo() {
+        const root = document.querySelector("[data-interview-video]");
+        const video = root?.querySelector(".interview-video__player");
+        if (!root || !video) return;
+
+        const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let inView = false;
+        let userPaused = false;
+
+        const setPausedState = (paused) => {
+          root.classList.toggle("is-user-paused", paused);
+        };
+
+        const playInView = ({ withAudio = false } = {}) => {
+          if (!inView || userPaused) return;
+          video.muted = !withAudio;
+          video.play().catch(() => {
+            video.muted = true;
+            video.play().catch(() => {});
+          });
+        };
+
+        const pauseVideo = () => {
+          video.pause();
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              inView = entry.isIntersecting;
+              if (!inView) {
+                pauseVideo();
+                video.muted = true;
+                return;
+              }
+              if (!userPaused && !reducedMotion) {
+                playInView({ withAudio: false });
+              }
+            });
+          },
+          { threshold: 0.35 }
+        );
+
+        observer.observe(root);
+
+        if (canHover) {
+          root.addEventListener("pointerenter", () => {
+            if (userPaused || video.paused) return;
+            video.muted = false;
+            video.play().catch(() => {
+              video.muted = true;
+              video.play().catch(() => {});
+            });
+          });
+
+          root.addEventListener("pointerleave", () => {
+            if (userPaused) return;
+            video.muted = true;
+          });
+        }
+
+        root.addEventListener("click", () => {
+          if (!userPaused && !video.paused) {
+            userPaused = true;
+            pauseVideo();
+            setPausedState(true);
+            return;
+          }
+
+          userPaused = false;
+          setPausedState(false);
+          if (!inView) return;
+
+          const withAudio = canHover ? root.matches(":hover") : true;
+          playInView({ withAudio });
+        });
+
+        root.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          root.click();
+        });
+      })();
+
+    </script>
+    <script>
+      (function initCollectionSurfer() {
+        const root = document.querySelector("[data-collection-surfer]");
+        const track = document.querySelector("[data-collection-track]");
+        const scroller = document.querySelector("[data-collection-scroller]");
+        const scrollerInner = document.querySelector("[data-collection-scroller-inner]");
+        const viewport = root?.querySelector(".collection-surfer__viewport");
+        if (!root || !track || !scroller || !scrollerInner || !viewport) return;
+
+        const ITEMS = [
+          {
+            id: 1,
+            image: "assets/dd-assets/dd-final-mockups/1.webp",
+            alt: "Distro Disco product screen 1",
+          },
+          {
+            id: 2,
+            image: "assets/dd-assets/dd-final-mockups/2.webp",
+            alt: "Distro Disco product screen 2",
+          },
+          {
+            id: 3,
+            image: "assets/dd-assets/dd-final-mockups/3.webp",
+            alt: "Distro Disco product screen 3",
+          },
+          {
+            id: 4,
+            image: "assets/dd-assets/dd-final-mockups/3.2.webp",
+            alt: "Distro Disco product screen 3.2",
+          },
+          {
+            id: 5,
+            image: "assets/dd-assets/dd-final-mockups/4.webp",
+            alt: "Distro Disco product screen 4",
+          },
+          {
+            id: 6,
+            image: "assets/dd-assets/dd-final-mockups/5.webp",
+            alt: "Distro Disco product screen 5",
+          },
+          {
+            id: 7,
+            image: "assets/dd-assets/dd-final-mockups/6.webp",
+            alt: "Distro Disco product screen 6",
+          },
+          {
+            id: 8,
+            image: "assets/dd-assets/dd-final-mockups/7.webp",
+            alt: "Distro Disco product screen 7",
+          },
+          {
+            id: 9,
+            image: "assets/dd-assets/dd-final-mockups/8.webp",
+            alt: "Distro Disco product screen 8",
+          },
+          {
+            id: 10,
+            image: "assets/dd-assets/dd-final-mockups/9.webp",
+            alt: "Distro Disco product screen 9",
+          },
+          {
+            id: 11,
+            image: "assets/dd-assets/dd-final-mockups/10.webp",
+            alt: "Distro Disco product screen 10",
+          },
+          {
+            id: 12,
+            image: "assets/dd-assets/dd-final-mockups/11.webp",
+            alt: "Distro Disco product screen 11",
+          },
+          {
+            id: 13,
+            image: "assets/dd-assets/dd-final-mockups/12.webp",
+            alt: "Distro Disco product screen 12",
+          },
+          {
+            id: 14,
+            image: "assets/dd-assets/dd-final-mockups/13.webp",
+            alt: "Distro Disco product screen 13",
+          },
+          {
+            id: 15,
+            image: "assets/dd-assets/dd-final-mockups/14.webp",
+            alt: "Distro Disco product screen 14",
+          },
+        ];
+
+        const itemCount = ITEMS.length;
+        const loopDistance = itemCount;
+
+        const mobileMq = window.matchMedia("(max-width: 960px)");
+        const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        const duplicated = [...ITEMS, ...ITEMS];
+        const cards = [];
+
+        duplicated.forEach((item, i) => {
+          const card = document.createElement("article");
+          card.className = "collection-surfer__card";
+          card.innerHTML = `
+            <div class="collection-surfer__card-media">
+              <img src="${item.image}" alt="${item.alt}" loading="lazy" decoding="async" />
+            </div>
+          `;
+          track.appendChild(card);
+          cards.push(card);
+        });
+
+        const readVar = (el, name, fallback = 0) => {
+          const raw = getComputedStyle(el).getPropertyValue(name).trim();
+          const n = parseFloat(raw);
+          return Number.isFinite(n) ? n : fallback;
+        };
+
+        const readSurferConfig = () => {
+          const cardW = cards[0]?.offsetWidth || 0;
+          const refW = readVar(root, "--surfer-card-ref-w", 300);
+          const sizeScale = cardW > 0 ? cardW / refW : 0.8;
+
+          return {
+            offsetX: readVar(root, "--surfer-offset-x", 0),
+            offsetY: readVar(root, "--surfer-offset-y", 40),
+            stepX: readVar(root, "--surfer-step-x", 240) * sizeScale,
+            stepY: readVar(root, "--surfer-step-y", -84) * sizeScale,
+            stepZ: readVar(root, "--surfer-step-z", -288) * sizeScale,
+            rotateY: readVar(root, "--surfer-rotate-y", -50),
+            scrollMass: readVar(root, "--surfer-scroll-mass", 0.48),
+            scrollStiffness: readVar(root, "--surfer-scroll-stiffness", 72),
+            scrollDamping: readVar(root, "--surfer-scroll-damping", 17),
+            scrollVelocityGain: readVar(root, "--surfer-scroll-velocity-gain", 0.38),
+            autoSpeed: readVar(root, "--surfer-auto-speed", 0.0045),
+            scrollRangeMin: readVar(root, "--surfer-scroll-range-min", 800),
+            scrollRangePerItem: readVar(root, "--surfer-scroll-range-per-item", 150),
+          };
+        };
+
+        let isMobile = mobileMq.matches;
+        let isReduced = reducedMq.matches;
+        let rafId = 0;
+        let autoProgress = 0;
+        let lastFrameTime = 0;
+        const scrollSpring = { value: 0, velocity: 0, target: 0 };
+        let lastScrollTop = 0;
+        let lastScrollTime = 0;
+
+        const springStep = (state, target, dt, opts, min, max) => {
+          const mass = Math.max(opts.mass, 0.001);
+          const accel =
+            (-opts.stiffness * (state.value - target) - opts.damping * state.velocity) /
+            mass;
+          state.velocity += accel * dt;
+          state.value += state.velocity * dt;
+
+          if (state.value < min) {
+            state.value = min;
+            if (state.velocity < 0) state.velocity = 0;
+          } else if (state.value > max) {
+            state.value = max;
+            if (state.velocity > 0) state.velocity = 0;
+          }
+        };
+
+        const applyScene = (index) => {
+          const cfg = readSurferConfig();
+          const px = -index * cfg.stepX + cfg.offsetX;
+          const py = -index * cfg.stepY + cfg.offsetY;
+          const pz = -index * cfg.stepZ;
+          track.style.transform = `translate3d(${px}px, ${py}px, ${pz}px)`;
+
+          cards.forEach((card, i) => {
+            const baseX = i * cfg.stepX;
+            const baseY = i * cfg.stepY;
+            const baseZ = i * cfg.stepZ;
+            card.style.transform =
+              `translate3d(${baseX}px, ${baseY}px, ${baseZ}px) ` +
+              `translate(-50%, -50%) rotateY(${cfg.rotateY}deg)`;
+          });
+        };
+
+        const updateScrollRange = () => {
+          const cfg = readSurferConfig();
+          if (isReduced || isMobile) {
+            scrollerInner.style.height = "";
+            root.style.setProperty("--surfer-scroll-range", "0px");
+            return;
+          }
+          const range = Math.max(
+            cfg.scrollRangeMin,
+            itemCount * cfg.scrollRangePerItem
+          );
+          root.style.setProperty("--surfer-scroll-range", `${range}px`);
+          const stageH = root.offsetHeight;
+          scrollerInner.style.height = `${stageH + range}px`;
+        };
+
+        const getScrollIndex = () => {
+          const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+          if (maxScroll <= 1) return 0;
+          const t = Math.min(Math.max(scroller.scrollTop / maxScroll, 0), 1);
+          return t * loopDistance;
+        };
+
+        const syncScrollSpring = () => {
+          const index = getScrollIndex();
+          scrollSpring.value = index;
+          scrollSpring.target = index;
+          scrollSpring.velocity = 0;
+        };
+
+        const onGalleryImagesReady = () => {
+          if (isMobile || isReduced) return;
+          updateScrollRange();
+          syncScrollSpring();
+          lastScrollTop = scroller.scrollTop;
+          lastScrollTime = performance.now();
+        };
+
+        const waitForGalleryImages = () => {
+          const uniqueImages = [
+            ...new Set(
+              cards.map((card) => card.querySelector("img")).filter(Boolean)
+            ),
+          ];
+          if (!uniqueImages.length) return;
+          Promise.all(
+            uniqueImages.map(
+              (img) =>
+                new Promise((resolve) => {
+                  if (img.complete && img.naturalWidth > 0) resolve();
+                  else {
+                    img.addEventListener("load", resolve, { once: true });
+                    img.addEventListener("error", resolve, { once: true });
+                  }
+                })
+            )
+          ).then(onGalleryImagesReady);
+        };
+
+        const onScrollerScroll = () => {
+          if (isMobile || isReduced) return;
+
+          const now = performance.now();
+          const target = getScrollIndex();
+          scrollSpring.target = target;
+
+          if (lastScrollTime > 0) {
+            const dt = (now - lastScrollTime) / 1000;
+            if (dt > 0 && dt < 0.2) {
+              const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+              const scrollDelta = scroller.scrollTop - lastScrollTop;
+              const indexVel =
+                maxScroll > 0 ? (scrollDelta / maxScroll) * loopDistance / dt : 0;
+              const cfg = readSurferConfig();
+              scrollSpring.velocity += indexVel * cfg.scrollVelocityGain;
+              scrollSpring.velocity = Math.max(
+                -14,
+                Math.min(14, scrollSpring.velocity)
+              );
+            }
+          }
+
+          lastScrollTop = scroller.scrollTop;
+          lastScrollTime = now;
+        };
+
+        const tickDesktop = (now) => {
+          if (!lastFrameTime) lastFrameTime = now;
+          let dt = (now - lastFrameTime) / 1000;
+          lastFrameTime = now;
+          dt = Math.min(Math.max(dt, 0.001), 0.05);
+
+          if (isReduced) {
+            scrollSpring.value = scrollSpring.target;
+            scrollSpring.velocity = 0;
+          } else {
+            const cfg = readSurferConfig();
+            springStep(
+              scrollSpring,
+              scrollSpring.target,
+              dt,
+              {
+                mass: cfg.scrollMass,
+                stiffness: cfg.scrollStiffness,
+                damping: cfg.scrollDamping,
+              },
+              0,
+              loopDistance
+            );
+          }
+
+          applyScene(scrollSpring.value);
+          rafId = requestAnimationFrame(tickDesktop);
+        };
+
+        const tickMobile = () => {
+          const cfg = readSurferConfig();
+          autoProgress += cfg.autoSpeed;
+          const index = autoProgress % loopDistance;
+          applyScene(index);
+          rafId = requestAnimationFrame(tickMobile);
+        };
+
+        const stopLoop = () => {
+          if (rafId) cancelAnimationFrame(rafId);
+          rafId = 0;
+        };
+
+        const clearScene = () => {
+          track.style.transform = "";
+          cards.forEach((card) => {
+            card.style.transform = "";
+          });
+        };
+
+        const startLoop = () => {
+          stopLoop();
+          if (isReduced) {
+            clearScene();
+            return;
+          }
+          if (isMobile) {
+            rafId = requestAnimationFrame(tickMobile);
+          } else {
+            lastFrameTime = 0;
+            syncScrollSpring();
+            rafId = requestAnimationFrame(tickDesktop);
+          }
+        };
+
+        const setMode = () => {
+          isMobile = mobileMq.matches;
+          isReduced = reducedMq.matches;
+          root.classList.toggle("is-mobile", isMobile && !isReduced);
+          updateScrollRange();
+          if (!isMobile && !isReduced) {
+            scroller.scrollTop = 0;
+            lastScrollTop = 0;
+            lastScrollTime = 0;
+            updateScrollRange();
+            syncScrollSpring();
+          }
+          startLoop();
+        };
+
+        scroller.addEventListener("scroll", onScrollerScroll, { passive: true });
+
+        mobileMq.addEventListener("change", setMode);
+        reducedMq.addEventListener("change", setMode);
+        window.addEventListener("resize", () => {
+          updateScrollRange();
+          if (!isMobile && !isReduced) {
+            scrollSpring.target = getScrollIndex();
+            applyScene(scrollSpring.value);
+          }
+        });
+
+        setMode();
+        waitForGalleryImages();
+        applyScene(0);
+      })();
+
+      (function initSlideConfirm() {
+        const controls = document.querySelectorAll("[data-slide-confirm]");
+        if (!controls.length) return;
+
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const SNAP_THRESHOLD = 0.72;
+        const VELOCITY_THRESHOLD = 1.35;
+        const SPRING_STIFFNESS = 280;
+        const SPRING_DAMPING = 26;
+        const PARTICLE_COLORS = ["#3ecf7a", "#2db86a", "#7ee8a8", "#1a9a55", "#a8f0c8"];
+
+        controls.forEach((control) => {
+          const handle = control.querySelector(".slide-confirm-control__handle");
+          const particlesLayer = control.querySelector(".slide-confirm-particles");
+          if (!handle) return;
+
+          let dragging = false;
+          let didDrag = false;
+          let pointerId = null;
+          let progress = 0;
+          let velocity = 0;
+          let lastProgress = 0;
+          let lastPointerT = 0;
+          let springRaf = null;
+          let celebrated = false;
+
+          const stopSpring = () => {
+            if (springRaf) {
+              cancelAnimationFrame(springRaf);
+              springRaf = null;
+            }
+          };
+
+          const applyProgress = (value, { celebrate = false } = {}) => {
+            progress = Math.max(0, Math.min(1, value));
+            control.style.setProperty("--slide-progress", String(progress));
+            control.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+
+            const isComplete = progress >= 0.999;
+            control.classList.toggle("is-complete", isComplete);
+
+            if (isComplete && celebrate && !celebrated) {
+              celebrated = true;
+              burstParticles();
+            }
+            if (!isComplete) {
+              celebrated = false;
+              if (particlesLayer) particlesLayer.replaceChildren();
+            }
+          };
+
+          const progressFromClientX = (clientX, { rubber = false } = {}) => {
+            const rect = control.getBoundingClientRect();
+            const pad = parseFloat(getComputedStyle(control).getPropertyValue("--slide-pad")) || 10;
+            const handleW =
+              parseFloat(getComputedStyle(control).getPropertyValue("--slide-handle-w")) ||
+              handle.offsetWidth;
+            const maxTravel = Math.max(0, rect.width - pad * 2 - handleW);
+            const x = clientX - rect.left - pad - handleW * 0.5;
+            let p = maxTravel <= 0 ? 0 : x / maxTravel;
+            if (rubber) {
+              if (p < 0) p *= 0.28;
+              if (p > 1) p = 1 + (p - 1) * 0.22;
+            } else {
+              p = Math.max(0, Math.min(1, p));
+            }
+            return p;
+          };
+
+          const resolveTarget = (releaseProgress, releaseVelocity) => {
+            if (releaseProgress >= SNAP_THRESHOLD || releaseVelocity > VELOCITY_THRESHOLD) return 1;
+            if (releaseProgress <= 1 - SNAP_THRESHOLD || releaseVelocity < -VELOCITY_THRESHOLD) return 0;
+            return releaseProgress >= 0.5 ? 1 : 0;
+          };
+
+          const springTo = (target, { initialVelocity = 0, celebrate = false } = {}) => {
+            stopSpring();
+            let pos = progress;
+            let vel = initialVelocity;
+            let last = performance.now();
+
+            const step = (now) => {
+              const dt = Math.min((now - last) / 1000, 0.028);
+              last = now;
+              const accel = (target - pos) * SPRING_STIFFNESS - vel * SPRING_DAMPING;
+              vel += accel * dt;
+              pos += vel * dt;
+
+              if (Math.abs(target - pos) < 0.002 && Math.abs(vel) < 0.02) {
+                applyProgress(target, { celebrate: celebrate && target >= 1 });
+                springRaf = null;
+                return;
+              }
+
+              applyProgress(pos);
+              springRaf = requestAnimationFrame(step);
+            };
+
+            vel = initialVelocity;
+            if (reducedMotion) {
+              applyProgress(target, { celebrate: celebrate && target >= 1 });
+              return;
+            }
+            springRaf = requestAnimationFrame(step);
+          };
+
+          const burstParticles = () => {
+            if (!particlesLayer || reducedMotion) return;
+            particlesLayer.replaceChildren();
+
+            const pad = parseFloat(getComputedStyle(control).getPropertyValue("--slide-pad")) || 10;
+            const handleW =
+              parseFloat(getComputedStyle(control).getPropertyValue("--slide-handle-w")) ||
+              handle.offsetWidth;
+            const laneW = control.clientWidth - pad * 2;
+            const originX = pad + (laneW - handleW) * progress + handleW * 0.5;
+            const originY = control.clientHeight * 0.5;
+            const count = 14;
+
+            for (let i = 0; i < count; i++) {
+              const el = document.createElement("span");
+              el.className = "slide-confirm-particle";
+              const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.35;
+              const dist = 28 + Math.random() * 36;
+              const size = 3 + Math.random() * 4;
+              el.style.left = `${originX}px`;
+              el.style.top = `${originY}px`;
+              el.style.width = `${size}px`;
+              el.style.height = `${size}px`;
+              el.style.margin = `${-size / 2}px 0 0 ${-size / 2}px`;
+              el.style.background =
+                PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
+              particlesLayer.appendChild(el);
+
+              el.animate(
+                [
+                  { transform: "translate(0, 0) scale(1)", opacity: 1 },
+                  {
+                    transform: `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) scale(0)`,
+                    opacity: 0,
+                  },
+                ],
+                {
+                  duration: 420 + Math.random() * 280,
+                  easing: "cubic-bezier(0.2, 0.85, 0.25, 1)",
+                  fill: "forwards",
+                }
+              );
+            }
+
+            window.setTimeout(() => particlesLayer.replaceChildren(), 750);
+          };
+
+          const toggleComplete = () => {
+            const target = progress >= 0.5 ? 0 : 1;
+            springTo(target, { celebrate: target >= 1 });
+          };
+
+          control.addEventListener("pointerdown", (e) => {
+            if (e.button !== 0) return;
+            stopSpring();
+            dragging = true;
+            didDrag = false;
+            pointerId = e.pointerId;
+            velocity = 0;
+            lastProgress = progress;
+            lastPointerT = performance.now();
+            control.classList.add("is-dragging");
+            control.setPointerCapture(e.pointerId);
+            applyProgress(progressFromClientX(e.clientX, { rubber: true }));
+          });
+
+          control.addEventListener("pointermove", (e) => {
+            if (!dragging || e.pointerId !== pointerId) return;
+            didDrag = true;
+            const now = performance.now();
+            const dt = now - lastPointerT;
+            const next = progressFromClientX(e.clientX, { rubber: true });
+            if (dt > 4) {
+              const v = ((next - lastProgress) / dt) * 1000;
+              velocity = velocity * 0.5 + v * 0.5;
+            }
+            lastProgress = next;
+            lastPointerT = now;
+            applyProgress(next);
+          });
+
+          const endDrag = (e) => {
+            if (!dragging || (e.pointerId !== pointerId && e.type !== "pointercancel")) return;
+            dragging = false;
+            control.classList.remove("is-dragging");
+            if (control.hasPointerCapture(pointerId)) {
+              control.releasePointerCapture(pointerId);
+            }
+            pointerId = null;
+
+            const releaseProgress = Math.max(0, Math.min(1, progress));
+            const target = resolveTarget(releaseProgress, velocity);
+            springTo(target, {
+              initialVelocity: velocity * 0.35,
+              celebrate: target >= 1,
+            });
+          };
+
+          control.addEventListener("pointerup", endDrag);
+          control.addEventListener("pointercancel", endDrag);
+
+          control.addEventListener("click", () => {
+            if (didDrag) {
+              didDrag = false;
+              return;
+            }
+            toggleComplete();
+          });
+
+          control.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggleComplete();
+            }
+            if (e.key === "Home") {
+              e.preventDefault();
+              springTo(0);
+            }
+            if (e.key === "End") {
+              e.preventDefault();
+              springTo(1, { celebrate: true });
+            }
+          });
+        });
+      })();
+
+      (function initSpringBounce() {
+        const targets = document.querySelectorAll("[data-spring-bounce]");
+        if (!targets.length) return;
+
+        function springBounce(el) {
+          el.classList.remove("spring-bounce");
+          void el.offsetWidth;
+          el.classList.add("spring-bounce");
+          el.addEventListener(
+            "animationend",
+            () => {
+              el.classList.remove("spring-bounce");
+            },
+            { once: true }
+          );
+        }
+
+        targets.forEach((el) => {
+          el.addEventListener("click", () => springBounce(el));
+          if (el.matches('[role="button"]')) {
+            el.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                springBounce(el);
+              }
+            });
+          }
+        });
+      })();
+    </script>
+    <script src="assets/dd-assets/flubber.min.js"></script>
+    <script>
+      (function initCtaPropMorph() {
+        const flub = window.flubber;
+        const cta = document.querySelector(".cta-block--try");
+        const decoStage = cta?.querySelector(".cta-block__deco-stage");
+        const pathEls = cta
+          ? [...cta.querySelectorAll(".cta-block__prop [data-cta-prop-path]")]
+          : [];
+        if (!cta || !decoStage || !flub || pathEls.length === 0) return;
+
+        const HOVER_PATHS = [
+          "M133.269 280.133C130.231 280.133 125.452 279.487 117.542 277.312C109.288 275.043 98.6598 271.389 86.8075 266.74C63.194 257.479 38.1069 245.706 21.3353 236.014C15.3769 232.571 10.6365 229.483 7.24639 226.833C2.84655 223.399 0.66864 220.704 0.184335 218.101C-0.590554 213.93 0.360449 204.843 17.4873 174.202C26.4043 158.247 36.4163 142.455 39.2194 138.182C40.1439 136.773 41.9051 136.177 43.4959 136.729L169.495 180.677C171.218 181.279 172.236 183.052 171.887 184.842C171.846 185.059 167.575 206.874 161.493 229.061C157.901 242.166 154.381 252.865 151.029 260.858C146.371 271.967 142.054 277.896 137.442 279.525C136.55 279.84 135.297 280.127 133.266 280.127L133.269 280.133ZM7.39021 216.707C7.5223 217.024 8.96641 219.862 20.2346 226.815C27.869 231.526 38.3065 237.086 50.42 242.894C68.0869 251.365 87.4063 259.466 103.427 265.117C129.095 274.172 134.475 272.798 135.006 272.61C136.289 272.158 143.26 267.838 154.411 227.165C159.078 210.141 162.667 193.325 164.059 186.559L43.8041 144.616C39.8504 150.788 31.4793 164.223 23.8948 177.789C18.5439 187.364 14.4082 195.518 11.6022 202.022C7.30216 211.996 7.20823 215.588 7.39021 216.71V216.707Z",
+          "M57.0535 254.06C56.5281 254.06 55.9939 253.945 55.4891 253.708C53.6575 252.842 52.8738 250.655 53.7397 248.823L96.3792 158.652C97.245 156.82 99.4318 156.036 101.263 156.902C103.095 157.768 103.879 159.955 103.013 161.786L60.3732 251.958C59.748 253.282 58.4301 254.06 57.0535 254.06Z",
+          "M74.4563 260.13C73.9925 260.13 73.5199 260.042 73.065 259.854C71.1894 259.085 70.2942 256.942 71.0632 255.067L108.771 163.175C109.541 161.299 111.683 160.404 113.559 161.173C115.434 161.942 116.33 164.085 115.561 165.96L77.8523 257.852C77.2711 259.27 75.9004 260.13 74.4563 260.13Z",
+          "M219.716 154.199C219.446 154.199 219.176 154.17 218.908 154.108C217.949 153.891 217.115 153.298 216.596 152.458C216.393 152.13 196.093 119.326 175.978 86.54C134.939 19.6471 134.654 18.1413 134.425 16.932C134.117 15.3118 134.93 13.6828 136.412 12.9549L162.007 0.377596C163.759 -0.485348 165.881 0.178002 166.832 1.88628L241.782 136.567C242.722 138.255 242.19 140.386 240.567 141.434L221.706 153.609C221.107 153.993 220.417 154.196 219.716 154.196V154.199ZM143.016 17.8889C151.505 32.8319 192.116 98.9323 220.869 145.417L233.702 137.134L162.118 8.50219L143.016 17.8889Z",
+          "M200.566 72.7182C200.159 72.7182 199.745 72.6507 199.345 72.5098C198.086 72.0666 197.168 70.9717 196.947 69.6568C196.889 69.3075 195.512 60.9921 195.442 51.6876C195.339 38.0566 197.995 29.6825 203.569 26.084C209.152 22.4795 215.028 21.8514 220.112 24.314C225.061 26.7121 228.612 31.9514 229.158 37.6662C229.733 43.6598 222.431 52.2746 216.003 59.1106C209.63 65.888 203.27 71.5529 203.003 71.7907C202.322 72.3982 201.45 72.7182 200.566 72.7182ZM213.666 30.1815C211.747 30.1815 209.68 30.8742 207.549 32.2508C206.082 33.1988 202.683 36.9735 202.78 51.5496C202.803 55.1393 203.044 58.6205 203.32 61.4793C205.489 59.3983 208.101 56.8095 210.678 54.068C222.04 41.978 221.867 38.5115 221.855 38.3706C221.547 35.1507 219.607 32.2273 216.915 30.9211C215.897 30.428 214.811 30.1844 213.669 30.1844L213.666 30.1815Z",
+          "M237.594 99.6514C236.76 99.6514 235.912 99.5604 235.055 99.3755C223.082 96.7955 202.985 78.0132 200.734 75.8794C199.818 75.0105 199.41 73.7308 199.66 72.4922C199.909 71.2535 200.778 70.2291 201.958 69.783C202.336 69.6392 211.333 66.252 221.213 63.9302C236.25 60.3933 244.853 61.2211 248.281 66.5367C252.968 73.7983 252.59 86.6574 247.474 94.0599C244.961 97.6966 241.451 99.6514 237.594 99.6514ZM210.305 74.6525C217.761 81.1715 229.824 90.7431 236.599 92.2019C237.808 92.4632 239.628 92.5072 241.436 89.8861C244.811 85.0019 245.155 75.2248 242.117 70.5138C241.706 69.874 239.942 69.1343 236.332 69.1343C236.299 69.1343 236.27 69.1343 236.238 69.1343C232.807 69.146 228.336 69.7918 222.953 71.0569C218.266 72.1576 213.71 73.5371 210.305 74.6495V74.6525Z",
+        ];
+
+        if (pathEls.length !== HOVER_PATHS.length) return;
+
+        const DEFAULT_PATHS = pathEls.map((el) => el.getAttribute("d"));
+        const MORPH_OPTS = { maxSegmentLength: 2, string: true };
+
+        const buildInterpolator = (fromD, toD) => {
+          const fromRings = flub.splitPathString(fromD);
+          const toRings = flub.splitPathString(toD);
+          if (fromRings.length !== toRings.length || fromRings.length === 0) {
+            return flub.interpolate(fromD, toD, MORPH_OPTS);
+          }
+          const ringInterps = fromRings.map((fromRing, j) =>
+            flub.interpolate(fromRing, toRings[j], MORPH_OPTS)
+          );
+          return (t) => ringInterps.map((interp) => interp(t)).join(" ");
+        };
+
+        const interpolators = pathEls.map((_, i) =>
+          buildInterpolator(DEFAULT_PATHS[i], HOVER_PATHS[i])
+        );
+
+        const DURATION = 550;
+        const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let progress = 0;
+        let target = 0;
+        let rafId = 0;
+        let animStart = 0;
+        let animFrom = 0;
+
+        const easeInOut = (t) =>
+          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        const BURST_ENTER_AT = 0.85;
+        let burstOpen = false;
+
+        const setBurstOpen = (open) => {
+          if (burstOpen === open) return;
+          burstOpen = open;
+          decoStage.classList.toggle("is-cta-open", open);
+        };
+
+        const applyProgress = (p) => {
+          pathEls.forEach((el, i) => {
+            el.setAttribute("d", interpolators[i](p));
+          });
+          if (target === 1 && p >= BURST_ENTER_AT) {
+            setBurstOpen(true);
+          }
+        };
+
+        const tick = (now) => {
+          const t = Math.min(1, (now - animStart) / DURATION);
+          progress = animFrom + (target - animFrom) * easeInOut(t);
+          applyProgress(progress);
+          if (t < 1) rafId = requestAnimationFrame(tick);
+        };
+
+        const setTarget = (next) => {
+          target = next;
+          if (next === 0) {
+            setBurstOpen(false);
+          }
+          if (reducedMq.matches) {
+            cancelAnimationFrame(rafId);
+            progress = target;
+            applyProgress(progress);
+            setBurstOpen(target === 1);
+            return;
+          }
+          cancelAnimationFrame(rafId);
+          animFrom = progress;
+          animStart = performance.now();
+          rafId = requestAnimationFrame(tick);
+        };
+
+        cta.addEventListener("mouseenter", () => setTarget(1));
+        cta.addEventListener("mouseleave", () => setTarget(0));
+        cta.addEventListener("focusin", () => setTarget(1));
+        cta.addEventListener("focusout", (e) => {
+          if (cta.contains(e.relatedTarget)) return;
+          setTarget(0);
+        });
+      })();
+    </script>
+    <script src="assets/dd-assets/component-bottom-nav/bottom-nav.js"></script>
+    <script>
+      (function initEmbeddedBottomNav() {
+        const showcase = document.querySelector(".bottom-nav-showcase");
+        if (!showcase || typeof initBottomNav !== "function") return;
+        initBottomNav(showcase, { initialTab: "home" });
+      })();
+    </script>
+  </body>
+</html>
