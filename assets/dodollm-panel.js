@@ -12,12 +12,25 @@
       <header class="dodollm-panel__topbar">
         <div class="dodollm-panel__brand">
           <span class="dodollm-panel__label">DODOLLM</span>
-          <button
-            type="button"
-            class="dodollm-panel__icon-btn"
-            data-dodollm-info
-            aria-label="About dodoLLM"
-          >ⓘ</button>
+          <div class="dodollm-info-wrap">
+            <button
+              type="button"
+              class="dodollm-panel__icon-btn"
+              data-dodollm-info
+              aria-label="About dodoLLM"
+              aria-expanded="false"
+              aria-describedby="dodollm-info-disclaimer"
+            >ⓘ</button>
+            <div
+              class="dodollm-info-disclaimer"
+              id="dodollm-info-disclaimer"
+              data-dodollm-info-disclaimer
+              role="tooltip"
+              aria-hidden="true"
+            >
+              dodoLLM is an AI chatbot powered by OpenAI's GPT-4o. May contain hallucinations. Responses are logged for research and development purposes.
+            </div>
+          </div>
         </div>
         <div class="dodollm-panel__actions" aria-label="dodoLLM controls">
           <span class="dodollm-panel__divider" aria-hidden="true"></span>
@@ -82,12 +95,52 @@
 
   injectDodollmShell();
 
+  const INFO_DISCLAIMER_TEXT =
+    "dodoLLM is an AI chatbot powered by OpenAI's GPT-4o. May contain hallucinations. Responses are logged for research and development purposes.";
+
+  function ensureInfoDisclaimerMarkup() {
+    const button = document.querySelector("[data-dodollm-info]");
+    if (!button) return null;
+
+    let wrap = button.closest(".dodollm-info-wrap");
+    if (!wrap) {
+      const brand = button.closest(".dodollm-panel__brand");
+      if (!brand) return null;
+
+      wrap = document.createElement("div");
+      wrap.className = "dodollm-info-wrap";
+      brand.insertBefore(wrap, button);
+      wrap.append(button);
+    }
+
+    let disclaimer = wrap.querySelector("[data-dodollm-info-disclaimer]");
+    if (!disclaimer) {
+      disclaimer = document.createElement("div");
+      disclaimer.className = "dodollm-info-disclaimer";
+      disclaimer.id = "dodollm-info-disclaimer";
+      disclaimer.dataset.dodollmInfoDisclaimer = "1";
+      disclaimer.setAttribute("role", "tooltip");
+      disclaimer.setAttribute("aria-hidden", "true");
+      disclaimer.textContent = INFO_DISCLAIMER_TEXT;
+      wrap.append(disclaimer);
+    }
+
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-describedby", "dodollm-info-disclaimer");
+
+    return { button, wrap, disclaimer };
+  }
+
+  const infoMarkup = ensureInfoDisclaimerMarkup();
+
   const dockButton = document.querySelector('[data-dock-id="dodollm"]');
   const panel = document.querySelector("[data-dodollm-panel]");
   const backdrop = document.querySelector("[data-dodollm-backdrop]");
   const closeButton = document.querySelector("[data-dodollm-close]");
   const resetButton = document.querySelector("[data-dodollm-reset]");
-  const infoButton = document.querySelector("[data-dodollm-info]");
+  const infoButton = infoMarkup?.button ?? null;
+  const infoDisclaimer = infoMarkup?.disclaimer ?? null;
+  const infoWrap = infoMarkup?.wrap ?? null;
   const chat = document.querySelector("[data-dodollm-chat]");
   const messages = document.querySelector("[data-dodollm-messages]");
   const emptyState = document.querySelector("[data-dodollm-empty]");
@@ -102,6 +155,8 @@
     !closeButton ||
     !resetButton ||
     !infoButton ||
+    !infoDisclaimer ||
+    !infoWrap ||
     !chat ||
     !messages ||
     !emptyState ||
@@ -124,6 +179,58 @@
     "What tools do you use?",
   ];
 
+  const works = [
+    {
+      key: "visugenie",
+      aliases: ["visugenie", "visu genie", "amsterdam ai", "download friction", "churn"],
+      title:
+        "Reduced churn, cut download friction by 60%, and rebuilt landing page for an Amsterdam AI startup.",
+      image: "assets/visugenie-assets/visugenie-thumb.webp",
+      alt: "VisuGenie landing page thumbnail",
+      href: "case-study-visugenie.html",
+    },
+    {
+      key: "bountt",
+      aliases: ["bountt", "expense", "expense app", "shared expenses"],
+      title: "Built React-Based Expense App That Removes Financial Tension",
+      image: "assets/bount-thumb-2.webp",
+      alt: "Bountt app thumbnail with dark blue gradient background",
+      href: "case-study-bountt.html",
+    },
+    {
+      key: "distro-disco",
+      aliases: ["distro disco", "mutual aid", "mobile free store", "free store"],
+      title: "Designed a mutual aid platform for Distro Disco's mobile free store.",
+      image: "assets/dd-assets/ddthumb.webp",
+      alt: "Distro Disco mobile app prototype thumbnail",
+      href: "case-study-distro-disco.html",
+    },
+    {
+      key: "ctrlbreak",
+      aliases: ["ctrlbreak", "ctrl break", "neville brody", "exhibition", "pitchbook"],
+      title: "Exhibition identity for a Neville Brody retrospective & physical pitchbook print",
+      image: "assets/ctrlbreak-assets/ctrl-break-thumb.webp",
+      alt: "CTRLBREAK exhibition identity thumbnail",
+      href: "case-study-ctrlbreak.html",
+    },
+    {
+      key: "since67",
+      aliases: ["since 67", "since '67", "since67", "leafs", "poster tool"],
+      title: "Campaign system for Leafs fans that owns the wait since 1967.",
+      image: "assets/since67-thumb.webp",
+      alt: "Since '67 campaign thumbnail",
+      href: "case-study-since67.html",
+    },
+    {
+      key: "macos-app",
+      aliases: ["macos", "native app", "vibe coders", "coming soon", "under the hood"],
+      title:
+        "A macOS native app that helps vibe coders and designers understand what's actually happening under the hood, in real time.",
+      image: "assets/work3-thumb.webp",
+      alt: "Coming soon macOS native app thumbnail",
+    },
+  ];
+
   const API_ENDPOINT = "/api/chat";
   const MAX_HISTORY_MESSAGES = 10;
   const DEFAULT_INPUT_PLACEHOLDER = input.getAttribute("placeholder") || "Ask dodo...";
@@ -136,6 +243,8 @@
   let conversationMessages = [];
   let isWaitingForResponse = false;
   let activeRequestId = 0;
+  let infoDisclaimerOpen = false;
+  let infoDisclaimerCloseTimer = null;
   let scrollLockListenersActive = false;
   let scrollLockCount = 0;
 
@@ -205,11 +314,124 @@
     document.body.classList.contains("dodollm-standalone");
   const overlayMq = window.matchMedia("(max-width: 1287px)");
 
+  const hoverFineMq = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+  function positionInfoDisclaimer() {
+    const rect = infoButton.getBoundingClientRect();
+    const width = Math.min(248, window.innerWidth - 48);
+    let left = rect.left + rect.width / 2;
+    const top = rect.bottom + 10;
+    const half = width / 2;
+
+    left = Math.max(half + 12, Math.min(left, window.innerWidth - half - 12));
+
+    infoDisclaimer.style.width = `${width}px`;
+    infoDisclaimer.style.left = `${left}px`;
+    infoDisclaimer.style.top = `${top}px`;
+  }
+
+  function mountInfoDisclaimer() {
+    if (infoDisclaimer.parentElement !== document.body) {
+      document.body.append(infoDisclaimer);
+    }
+    positionInfoDisclaimer();
+  }
+
+  function unmountInfoDisclaimer() {
+    if (infoDisclaimer.parentElement !== infoWrap) {
+      infoWrap.append(infoDisclaimer);
+    }
+
+    infoDisclaimer.style.removeProperty("width");
+    infoDisclaimer.style.removeProperty("left");
+    infoDisclaimer.style.removeProperty("top");
+  }
+
+  function setInfoDisclaimerOpen(isOpen) {
+    infoDisclaimerOpen = isOpen;
+
+    if (isOpen) {
+      mountInfoDisclaimer();
+    } else {
+      unmountInfoDisclaimer();
+    }
+
+    infoDisclaimer.classList.toggle("is-open", isOpen);
+    infoDisclaimer.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    infoButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  }
+
+  function closeInfoDisclaimer() {
+    if (infoDisclaimerCloseTimer) {
+      window.clearTimeout(infoDisclaimerCloseTimer);
+      infoDisclaimerCloseTimer = null;
+    }
+    setInfoDisclaimerOpen(false);
+  }
+
+  function scheduleInfoDisclaimerClose() {
+    if (infoDisclaimerCloseTimer) window.clearTimeout(infoDisclaimerCloseTimer);
+    infoDisclaimerCloseTimer = window.setTimeout(() => {
+      infoDisclaimerCloseTimer = null;
+      closeInfoDisclaimer();
+    }, 120);
+  }
+
+  function cancelInfoDisclaimerClose() {
+    if (infoDisclaimerCloseTimer) {
+      window.clearTimeout(infoDisclaimerCloseTimer);
+      infoDisclaimerCloseTimer = null;
+    }
+  }
+
+  function openInfoDisclaimer() {
+    cancelInfoDisclaimerClose();
+    if (infoDisclaimerOpen) {
+      positionInfoDisclaimer();
+      return;
+    }
+    setInfoDisclaimerOpen(true);
+  }
+
+  function initInfoDisclaimer() {
+    if (hoverFineMq.matches) {
+      infoWrap.addEventListener("mouseenter", openInfoDisclaimer);
+      infoWrap.addEventListener("mouseleave", scheduleInfoDisclaimerClose);
+      infoDisclaimer.addEventListener("mouseenter", openInfoDisclaimer);
+      infoDisclaimer.addEventListener("mouseleave", scheduleInfoDisclaimerClose);
+      infoWrap.addEventListener("focusin", openInfoDisclaimer);
+      infoWrap.addEventListener("focusout", (event) => {
+        if (!infoWrap.contains(event.relatedTarget) && event.relatedTarget !== infoDisclaimer) {
+          closeInfoDisclaimer();
+        }
+      });
+    } else {
+      infoButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setInfoDisclaimerOpen(!infoDisclaimerOpen);
+      });
+    }
+
+    window.addEventListener("resize", () => {
+      if (infoDisclaimerOpen) positionInfoDisclaimer();
+    });
+    chat.addEventListener(
+      "scroll",
+      () => {
+        if (infoDisclaimerOpen) positionInfoDisclaimer();
+      },
+      { passive: true }
+    );
+  }
+
   function syncPanelLayout() {
     const isOpen = panel.classList.contains("is-open");
     const overlay = isOverlayPanel();
     document.body.classList.toggle("dodollm-panel-open", isOpen);
     panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+
+    if (!isOpen) closeInfoDisclaimer();
 
     if (overlay) {
       backdrop.classList.toggle("is-open", isOpen);
@@ -256,12 +478,27 @@
   }
 
   function handleClickOutside(event) {
+    if (infoDisclaimerOpen && !hoverFineMq.matches) {
+      const target = event.target;
+      if (
+        !(target instanceof Node) ||
+        (!infoWrap.contains(target) && !infoDisclaimer.contains(target))
+      ) {
+        closeInfoDisclaimer();
+      }
+    }
+
     if (!isPanelOpen()) return;
     const target = event.target;
+    const path = event.composedPath?.();
+    if (path?.includes(panel)) return;
+    if (dockButton && path?.includes(dockButton)) return;
+    const mobileAiFab = document.querySelector("[data-mobile-ai-fab]");
+    if (mobileAiFab && path?.includes(mobileAiFab)) return;
     if (!(target instanceof Node)) return;
     if (panel.contains(target)) return;
     if (dockButton?.contains(target)) return;
-    if (document.querySelector("[data-mobile-ai-fab]")?.contains(target)) return;
+    if (mobileAiFab?.contains(target)) return;
     closePanel();
   }
 
@@ -283,7 +520,11 @@
     button.type = "button";
     button.className = "dodollm-chip";
     button.textContent = prompt;
-    button.addEventListener("click", () => submitPrompt(prompt));
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      submitPrompt(prompt);
+    });
     return button;
   }
 
@@ -319,6 +560,25 @@
     chat.scrollTop = chat.scrollHeight;
   }
 
+  function normalizePrompt(text) {
+    return text.toLowerCase().replace(/[’]/g, "'").replace(/\s+/g, " ").trim();
+  }
+
+  function getMentionedWorks(prompt) {
+    const normalized = normalizePrompt(prompt);
+    const matches = works.filter((work) =>
+      work.aliases.some((alias) => normalized.includes(alias))
+    );
+
+    if (matches.length) return matches.slice(0, 3);
+
+    const asksForWork =
+      /\b(work|works|project|projects|portfolio|case stud(?:y|ies))\b/.test(normalized);
+    if (!asksForWork) return [];
+
+    return works.slice(0, 3);
+  }
+
   function setWaitingState(isWaiting) {
     isWaitingForResponse = isWaiting;
     input.disabled = isWaiting;
@@ -346,6 +606,37 @@
     messages.append(bot);
     scrollChatToBottom();
     return bot;
+  }
+
+  function renderWorkCards(workItems) {
+    if (!workItems.length) return;
+
+    const cards = document.createElement("div");
+    cards.className = "dodollm-work-cards";
+
+    workItems.forEach((work) => {
+      const card = work.href ? document.createElement("a") : document.createElement("div");
+      card.className = "dodollm-work-card";
+      if (work.href) {
+        card.href = work.href;
+      }
+
+      const image = document.createElement("img");
+      image.className = "dodollm-work-card__image";
+      image.src = work.image;
+      image.alt = work.alt;
+      image.loading = "lazy";
+
+      const title = document.createElement("div");
+      title.className = "dodollm-work-card__title";
+      title.textContent = work.title;
+
+      card.append(image, title);
+      cards.append(card);
+    });
+
+    messages.append(cards);
+    scrollChatToBottom();
   }
 
   function renderLoadingBubble() {
@@ -410,6 +701,7 @@
     input.value = "";
     scrollChatToBottom();
 
+    const mentionedWorks = getMentionedWorks(prompt);
     conversationMessages.push({ role: "user", content: prompt });
 
     const requestId = activeRequestId + 1;
@@ -438,7 +730,10 @@
       const content = data.content.trim();
       conversationMessages.push({ role: "assistant", content });
       loadingBubble.remove();
-      streamBotResponse(content, renderFollowUps);
+      streamBotResponse(content, () => {
+        renderWorkCards(mentionedWorks);
+        renderFollowUps();
+      });
     } catch {
       if (requestId !== activeRequestId) return;
 
@@ -466,7 +761,7 @@
   backdrop.addEventListener("click", closePanel);
   closeButton.addEventListener("click", closePanel);
   resetButton.addEventListener("click", renderInitialState);
-  infoButton.addEventListener("click", () => console.log("dodoLLM v0.1"));
+  initInfoDisclaimer();
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();

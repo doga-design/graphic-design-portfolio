@@ -118,9 +118,12 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
   min-height: 54px;
   padding: 12px 14px 12px 18px;
   border-bottom: 1px solid var(--ink-border, rgba(0, 0, 0, 0.1));
+  overflow: visible;
 }
 
 .dodollm-panel__label {
@@ -137,6 +140,54 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.dodollm-info-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.dodollm-info-disclaimer {
+  position: fixed;
+  z-index: 500;
+  width: min(248px, calc(100vw - 48px));
+  padding: 12px 14px;
+  border: 1px solid rgba(19, 17, 33, 0.12);
+  border-radius: 6px;
+  background: #f7f5f1;
+  color: rgba(19, 17, 33, 0.72);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  box-shadow: 0 8px 20px rgba(19, 17, 33, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    visibility 180ms ease;
+}
+
+.dodollm-info-disclaimer::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #f7f5f1;
+  border-left: 1px solid rgba(19, 17, 33, 0.12);
+  border-top: 1px solid rgba(19, 17, 33, 0.12);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.dodollm-info-disclaimer.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
 }
 
 .dodollm-panel__actions {
@@ -317,6 +368,38 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   font-size: 0.9rem;
   line-height: 1.6;
   white-space: pre-wrap;
+}
+
+.dodollm-work-cards {
+  display: grid;
+  gap: 10px;
+}
+
+.dodollm-work-card {
+  display: block;
+  overflow: hidden;
+  border: 3px solid #fff;
+  border-radius: 5px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+}
+
+.dodollm-work-card__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.dodollm-work-card__title {
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--ink-strong, var(--ink));
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
 .dodollm-cursor {
