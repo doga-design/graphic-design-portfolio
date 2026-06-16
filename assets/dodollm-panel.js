@@ -28,7 +28,7 @@
               role="tooltip"
               aria-hidden="true"
             >
-              dodoLLM is an AI chatbot powered by OpenAI's GPT-4o. May contain hallucinations. Responses are logged for research and development purposes.
+              dodoLLM is an AI chatbot powered by OpenAI's GPT-4o. May contain hallucinations.
             </div>
           </div>
         </div>
@@ -72,6 +72,7 @@
           type="text"
           placeholder="Ask dodo..."
           autocomplete="off"
+          maxlength="1200"
         />
         <button class="dodollm-panel__send" type="submit" aria-label="Send message">↑</button>
       </form>
@@ -96,7 +97,7 @@
   injectDodollmShell();
 
   const INFO_DISCLAIMER_TEXT =
-    "dodoLLM is an AI chatbot powered by OpenAI's GPT-4o. May contain hallucinations. Responses are logged for research and development purposes.";
+    "dodoLLM is an AI chatbot powered by OpenAI's GPT-4o. May contain hallucinations.";
 
   function ensureInfoDisclaimerMarkup() {
     const button = document.querySelector("[data-dodollm-info]");
@@ -167,6 +168,8 @@
     return;
   }
 
+  input.maxLength = MAX_INPUT_CHARS;
+
   const initialPrompts = [
     "What kind of work do you do?",
     "Tell me about Bountt",
@@ -233,6 +236,7 @@
 
   const API_ENDPOINT = "/api/chat";
   const MAX_HISTORY_MESSAGES = 10;
+  const MAX_INPUT_CHARS = 1200;
   const DEFAULT_INPUT_PLACEHOLDER = input.getAttribute("placeholder") || "Ask dodo...";
   const THINKING_TEXT = "Thinking";
   const ERROR_RESPONSE =
@@ -243,6 +247,7 @@
   let conversationMessages = [];
   let isWaitingForResponse = false;
   let activeRequestId = 0;
+  let currentRequestController = null;
   let infoDisclaimerOpen = false;
   let infoDisclaimerCloseTimer = null;
   let scrollLockListenersActive = false;
@@ -534,6 +539,11 @@
       typingTimer = null;
     }
 
+    if (currentRequestController) {
+      currentRequestController.abort();
+      currentRequestController = null;
+    }
+
     activeRequestId += 1;
     conversationMessages = [];
     setWaitingState(false);
@@ -706,12 +716,14 @@
 
     const requestId = activeRequestId + 1;
     activeRequestId = requestId;
+    currentRequestController = new AbortController();
     const loadingBubble = renderLoadingBubble();
     setWaitingState(true);
 
     try {
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
+        signal: currentRequestController.signal,
         headers: {
           "Content-Type": "application/json",
         },
@@ -746,6 +758,7 @@
       renderBotMessage(ERROR_RESPONSE);
     } finally {
       if (requestId === activeRequestId) {
+        currentRequestController = null;
         setWaitingState(false);
         input.focus();
       }
