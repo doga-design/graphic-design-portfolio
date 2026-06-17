@@ -231,8 +231,9 @@
 
       .cs-nav__logo {
         font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 700;
         letter-spacing: -0.01em;
+        text-decoration: none;
         color: var(--ink);
       }
 
@@ -1171,6 +1172,50 @@
         max-width: 420px;
       }
 
+      .problem-stat-highlight {
+        position: relative;
+        display: inline;
+        z-index: 0;
+        padding: 0.08em 0.24em;
+        margin: 0 -0.06em;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        color: var(--ink);
+        transition: color 520ms cubic-bezier(0.65, 0, 0.35, 1);
+        transition-delay: calc(var(--stat-delay, 0) * 140ms);
+      }
+
+      .problem-stat-highlight::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: 4px;
+        background: #b03a39;
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1);
+        transition-delay: calc(var(--stat-delay, 0) * 140ms);
+      }
+
+      .problem-stat-highlight.is-visible {
+        color: var(--bountt-accent, #faf0ca);
+      }
+
+      .problem-stat-highlight.is-visible::before {
+        transform: scaleX(1);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .problem-stat-highlight::before {
+          transition: none;
+        }
+
+        .problem-stat-highlight.is-visible::before {
+          transform: scaleX(1);
+        }
+      }
+
       /* Review marquee */
       .marquee {
         position: relative;
@@ -1303,7 +1348,8 @@
         border-radius: 12px;
         overflow: hidden;
         isolation: isolate;
-        overscroll-behavior: none;
+        overscroll-behavior-x: none;
+        overscroll-behavior-y: auto;
       }
 
       #the-result {
@@ -1316,9 +1362,9 @@
 
       .collection-surfer__scroller {
         height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
-        overscroll-behavior: none;
+        overflow: visible;
+        overscroll-behavior-x: none;
+        overscroll-behavior-y: auto;
         scroll-behavior: auto;
         -webkit-overflow-scrolling: auto;
         overflow-anchor: none;
@@ -1718,7 +1764,7 @@
         inset: 0;
         z-index: 0;
         background-image: var(--cs-nav-card-bg);
-        background-size: 110% auto;
+        background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
         border-radius: inherit;
@@ -1937,19 +1983,15 @@
         }
 
         #solution-lottie.solution-card-left {
-          order: 2;
-          position: relative;
-          z-index: 2;
-          width: 100%;
-          max-width: 100%;
-          margin-inline: 0;
-          margin-top: clamp(-5.5rem, -18vw, -3.5rem);
-          aspect-ratio: 3 / 4;
-          min-height: clamp(300px, 68vw, 440px);
+          display: none;
         }
 
         .feature-card--sage {
           padding-bottom: clamp(3rem, 10vw, 4.5rem);
+        }
+
+        #the-result {
+          margin-top: calc(-1 * var(--section-gap) + clamp(0.5rem, 2vw, 1rem));
         }
 
         .two-col {
@@ -2206,17 +2248,8 @@
           margin-bottom: clamp(1.25rem, 5vw, 2rem);
         }
 
-        #solution-lottie.solution-card-left {
-          order: 2;
-          position: relative;
-          z-index: 2;
-          width: 100%;
-          max-width: 100%;
-          margin-inline: 0;
-          margin-bottom: clamp(-3.5rem, -12vw, -2rem);
-          margin-top: clamp(-7.5rem, -26vw, -4.5rem);
-          aspect-ratio: 3 / 4;
-          min-height: clamp(260px, 72vw, 420px);
+        #the-result {
+          margin-top: calc(-1 * var(--section-gap) + clamp(0.5rem, 2vw, 1rem));
         }
 
         .feature-card {
@@ -2513,9 +2546,33 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
     <link rel="stylesheet" href="assets/mobile-nav.css" />
+    <link rel="stylesheet" href="assets/desktop-nav.css" />
     <link rel="stylesheet" href="assets/dodollm-panel.css" />
+    <link rel="stylesheet" href="assets/dodollm-selection.css" />
   </head>
   <body>
+    <header class="desktop-nav" aria-label="Site navigation">
+      <div class="desktop-nav__inner">
+        <div class="desktop-nav__brand">
+          <a class="desktop-nav__logo" href="index.html">dogacimen.com</a>
+        </div>
+        <nav class="desktop-nav__links" aria-label="Primary">
+          <a href="index.html#work">Work</a>
+          <a href="index.html#home">About</a>
+          <button
+            type="button"
+            class="desktop-nav__llm"
+            data-dodollm-trigger
+            aria-label="Ask AI"
+          >
+            <svg class="desktop-nav__llm-icon" viewBox="0 0 66 81" aria-hidden="true">
+              <use href="assets/icons.svg#icon-dodollm-sparkle" />
+            </svg>
+            <span>ask AI</span>
+          </button>
+        </nav>
+      </div>
+    </header>
     <div class="layout">
       <aside class="sidebar" aria-label="Case study navigation">
         <a class="sidebar__back" href="index.html">
@@ -2750,7 +2807,7 @@
                 </p>
                 <h3>Splitwise has 10 million users and hasn't touched the emotional side of the problem in 8 years.</h3>
                 <p>
-                  I went through 200+ App Store and Reddit reviews. The same words kept showing up: nagging, petty, transactional, awkward. More than 20% of people complained about too many notifications. Nearly 40% felt like the app was making them cheap by being so precise about every cent. The app is good at math. It's not good at friendships.
+                  I went through <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">200+</span> App Store and Reddit reviews. The same words kept showing up: nagging, petty, transactional, awkward. More than <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 1">20%</span> of people complained about too many notifications. Nearly <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 2">40%</span> felt like the app was making them cheap by being so precise about every cent. The app is good at math. It's not good at friendships.
                 </p>
               </div>
             </div>
@@ -2843,7 +2900,7 @@
                 </div>
                 <div class="feature-card feature-card--sage">
                   <span class="feature-card__num">3</span>
-                  <p><strong>Gentle nudges</strong> instead of reminders. A quiet note inside the app if something has been sitting too long, like "18 days is a long time for a small tab." No push notifications, ever.</p>
+                  <p><strong>Gentle nudges</strong> instead of reminders. A quiet note inside the app if something has been sitting too long or is a small amount. No push notifications, ever.</p>
                 </div>
               </div>
             </div>
@@ -2896,7 +2953,7 @@
               <div>
                 <h3 class="insight__label">What I'd change</h3>
                 <p>
-                  There's no payment layer, and that's a real gap. Bountt keeps the record but doesn't close the loop. <br/><br/> In a future version I'd want a simple "we're square" moment inside the app. Not payment processing, just a way to mark it as done together.
+                  Signup is the biggest point of friction in Bountt right now. I know it. It's the first thing I want to fix, removing the gate entirely while keeping the app secure underneath.
                 </p>
               </div>
               <div>
@@ -3005,6 +3062,7 @@
     </div>
 
     <script src="assets/dodollm-panel.js"></script>
+    <script src="assets/dodollm-selection.js"></script>
     <script src="assets/mobile-nav.js"></script>
     <script>
       (function initHeroScrollToResult() {
@@ -3165,6 +3223,8 @@
       })();
 
       (function initSolutionLottie() {
+        if (!window.matchMedia("(min-width: 961px)").matches) return;
+
         const container = document.getElementById("solution-lottie");
         if (!container || typeof lottie === "undefined") return;
 
@@ -3383,8 +3443,9 @@
         const track = document.querySelector("[data-collection-track]");
         const scroller = document.querySelector("[data-collection-scroller]");
         const scrollerInner = document.querySelector("[data-collection-scroller-inner]");
+        const stage = root?.querySelector(".collection-surfer__stage");
         const viewport = root?.querySelector(".collection-surfer__viewport");
-        if (!root || !track || !scroller || !scrollerInner || !viewport) return;
+        if (!root || !track || !scroller || !scrollerInner || !stage || !viewport) return;
 
         const ITEMS = [
           {
@@ -3500,8 +3561,6 @@
         let autoProgress = 0;
         let lastFrameTime = 0;
         const scrollSpring = { value: 0, velocity: 0, target: 0 };
-        let lastScrollTop = 0;
-        let lastScrollTime = 0;
 
         const springStep = (state, target, dt, opts, min, max) => {
           const mass = Math.max(opts.mass, 0.001);
@@ -3549,14 +3608,24 @@
             itemCount * cfg.scrollRangePerItem
           );
           root.style.setProperty("--surfer-scroll-range", `${range}px`);
-          const stageH = root.offsetHeight;
-          scrollerInner.style.height = `${stageH + range}px`;
+          scrollerInner.style.height = "";
+        };
+
+        const getPageScrollRange = () => {
+          const configuredRange = readVar(root, "--surfer-scroll-range", 1);
+          const viewportH = window.innerHeight || document.documentElement.clientHeight || 1;
+          const stageH = stage.offsetHeight || root.offsetHeight || 1;
+          return Math.max(1, Math.min(configuredRange, viewportH + stageH));
         };
 
         const getScrollIndex = () => {
-          const maxScroll = scroller.scrollHeight - scroller.clientHeight;
-          if (maxScroll <= 1) return 0;
-          const t = Math.min(Math.max(scroller.scrollTop / maxScroll, 0), 1);
+          const maxScroll = getPageScrollRange();
+          const viewportH = window.innerHeight || document.documentElement.clientHeight || 1;
+          const startY = viewportH * 0.52;
+          const t = Math.min(
+            Math.max((startY - root.getBoundingClientRect().top) / maxScroll, 0),
+            1
+          );
           return t * loopDistance;
         };
 
@@ -3571,8 +3640,6 @@
           if (isMobile || isReduced) return;
           updateScrollRange();
           syncScrollSpring();
-          lastScrollTop = scroller.scrollTop;
-          lastScrollTime = performance.now();
         };
 
         const waitForGalleryImages = () => {
@@ -3596,38 +3663,13 @@
           ).then(onGalleryImagesReady);
         };
 
-        const onScrollerScroll = () => {
-          if (isMobile || isReduced) return;
-
-          const now = performance.now();
-          const target = getScrollIndex();
-          scrollSpring.target = target;
-
-          if (lastScrollTime > 0) {
-            const dt = (now - lastScrollTime) / 1000;
-            if (dt > 0 && dt < 0.2) {
-              const maxScroll = scroller.scrollHeight - scroller.clientHeight;
-              const scrollDelta = scroller.scrollTop - lastScrollTop;
-              const indexVel =
-                maxScroll > 0 ? (scrollDelta / maxScroll) * loopDistance / dt : 0;
-              const cfg = readSurferConfig();
-              scrollSpring.velocity += indexVel * cfg.scrollVelocityGain;
-              scrollSpring.velocity = Math.max(
-                -14,
-                Math.min(14, scrollSpring.velocity)
-              );
-            }
-          }
-
-          lastScrollTop = scroller.scrollTop;
-          lastScrollTime = now;
-        };
-
         const tickDesktop = (now) => {
           if (!lastFrameTime) lastFrameTime = now;
           let dt = (now - lastFrameTime) / 1000;
           lastFrameTime = now;
           dt = Math.min(Math.max(dt, 0.001), 0.05);
+
+          scrollSpring.target = getScrollIndex();
 
           if (isReduced) {
             scrollSpring.value = scrollSpring.target;
@@ -3646,6 +3688,10 @@
               0,
               loopDistance
             );
+            if (scrollSpring.target <= 0 && scrollSpring.value < 0.02) {
+              scrollSpring.value = 0;
+              scrollSpring.velocity = 0;
+            }
           }
 
           applyScene(scrollSpring.value);
@@ -3691,19 +3737,15 @@
           isMobile = mobileMq.matches;
           isReduced = reducedMq.matches;
           root.classList.toggle("is-mobile", isMobile && !isReduced);
-          scroller.tabIndex = narrowMobileMq.matches ? -1 : 0;
+          scroller.tabIndex = -1;
           updateScrollRange();
           if (!isMobile && !isReduced) {
             scroller.scrollTop = 0;
-            lastScrollTop = 0;
-            lastScrollTime = 0;
             updateScrollRange();
             syncScrollSpring();
           }
           startLoop();
         };
-
-        scroller.addEventListener("scroll", onScrollerScroll, { passive: true });
 
         mobileMq.addEventListener("change", setMode);
         narrowMobileMq.addEventListener("change", setMode);
@@ -3867,6 +3909,31 @@
           if (!icon.matches("svg, .icon")) return;
           track.appendChild(icon.cloneNode(true));
         });
+      })();
+
+      (function initProblemStatHighlights() {
+        const stats = document.querySelectorAll("[data-stat-highlight]");
+        if (!stats.length) return;
+
+        const reveal = (el) => el.classList.add("is-visible");
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          stats.forEach(reveal);
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              reveal(entry.target);
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.55, rootMargin: "0px 0px -6% 0px" }
+        );
+
+        stats.forEach((stat) => observer.observe(stat));
       })();
     </script>
   </body>

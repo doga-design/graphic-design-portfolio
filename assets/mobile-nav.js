@@ -93,14 +93,11 @@
     btn.type = "button";
     btn.className = "mobile-ai-fab";
     btn.dataset.mobileAiFab = "1";
-    btn.setAttribute("aria-label", "Open dodoLLM");
+    btn.setAttribute("aria-label", "Ask AI");
     btn.innerHTML = `
-      <img
-        class="mobile-ai-fab__icon"
-        src="assets/dodollm-favicon.svg"
-        alt=""
-        decoding="async"
-      />
+      <svg class="mobile-ai-fab__icon" viewBox="0 0 66 81" aria-hidden="true">
+        <use href="assets/icons.svg#icon-dodollm-sparkle" />
+      </svg>
     `;
 
     btn.addEventListener("click", (e) => {
@@ -133,15 +130,10 @@
       footer.className = "cs-nav__drawer-ai";
       footer.innerHTML = `
         <button type="button" class="cs-nav__drawer-ai-link" data-cs-nav-ai-link>
-          <img
-            class="cs-nav__drawer-ai-icon"
-            src="assets/dodollm-favicon.svg"
-            alt=""
-            width="32"
-            height="32"
-            decoding="async"
-          />
-          <span class="cs-nav__drawer-ai-cta">Ask Doga LLM</span>
+          <svg class="cs-nav__drawer-ai-icon" viewBox="0 0 66 81" aria-hidden="true">
+            <use href="assets/icons.svg#icon-dodollm-sparkle" />
+          </svg>
+          <span class="cs-nav__drawer-ai-cta">ask AI</span>
         </button>
       `;
       drawerInner.appendChild(footer);

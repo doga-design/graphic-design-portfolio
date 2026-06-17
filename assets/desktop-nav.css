@@ -1,0 +1,99 @@
+/* Desktop top nav — case study pages only (min-width 961px) */
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 961px) {
+  .desktop-nav {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    height: var(--desktop-nav-height);
+    background: var(--paper, #f0ede6);
+    border-bottom: 1px solid var(--ink-border, rgba(19, 17, 33, 0.1));
+  }
+
+  .desktop-nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 100%;
+    padding-left: 1.75rem;
+    padding-right: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .desktop-nav__brand {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .desktop-nav__logo {
+    font-family: var(--font-copy, "Geist Sans", system-ui, sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--ink, #1a1814);
+  }
+
+  .desktop-nav__links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    flex-shrink: 0;
+  }
+
+  .desktop-nav__links a,
+  .desktop-nav__llm {
+    font-family: var(--font-copy, "Geist Sans", system-ui, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted, rgba(0, 0, 0, 0.35));
+    transition: color 180ms ease;
+  }
+
+  .desktop-nav__links a:hover,
+  .desktop-nav__links a:focus-visible,
+  .desktop-nav__llm:hover,
+  .desktop-nav__llm:focus-visible {
+    color: var(--ink, #1a1814);
+  }
+
+  .desktop-nav__llm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .desktop-nav__llm-icon {
+    display: block;
+    height: 0.95rem;
+    width: auto;
+    aspect-ratio: 66 / 81;
+    fill: currentColor;
+    color: var(--accent, #b03a39);
+    flex-shrink: 0;
+  }
+
+  .sidebar {
+    top: var(--desktop-nav-height);
+    height: calc(100vh - var(--desktop-nav-height));
+  }
+
+  .main {
+    padding-top: calc(clamp(48px, 6vw, 80px) + var(--desktop-nav-height));
+  }
+}

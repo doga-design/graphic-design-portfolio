@@ -103,7 +103,8 @@
 
       #dock,
       #hero-copy,
-      #work {
+      #work,
+      #about {
         font-family: var(--font-copy);
       }
 
@@ -614,9 +615,10 @@
       }
 
       .cs-nav__logo {
-        font-size: 0.85rem;
-        font-weight: 500;
+        font-size: 0.95rem;
+        font-weight: 700;
         letter-spacing: -0.01em;
+        text-decoration: none;
         color: var(--ink);
       }
 
@@ -854,6 +856,11 @@
 
         #hero-copy {
           margin-top: -3.75rem;
+        }
+
+        .about-section {
+          padding-left: max(0px, calc((100% - var(--hero-width)) / 2));
+          padding-right: max(0px, calc((100% - var(--hero-width)) / 2));
         }
       }
 
@@ -1387,6 +1394,603 @@
         }
       }
 
+      #about {
+        width: 100%;
+      }
+
+      .about-section {
+        width: 100%;
+        padding: clamp(24px, 4vw, 56px) clamp(1.25rem, 5vw, 3rem)
+          clamp(104px, 13vw, 156px);
+        scroll-margin-top: 72px;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 580px);
+        align-items: center;
+        column-gap: clamp(48px, 7vw, 96px);
+        max-width: var(--hero-width);
+        width: 100%;
+        min-width: 0;
+        margin: 0 auto;
+      }
+
+      .about-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: clamp(16px, 2vw, 22px);
+        max-width: 500px;
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+      }
+
+      .about-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: clamp(-2px, -0.2vw, 4px);
+        padding: 14px 22px 14px 16px;
+        border: none;
+        border-radius: 100px;
+        background: #fff;
+        box-shadow: none;
+        font-size: clamp(12px, 1.2vw, 14px);
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+
+      .about-stack-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 0;
+        min-height: clamp(380px, 48vw, 580px);
+        overflow: visible;
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+      }
+
+      @media (min-width: 961px) {
+        .about-copy {
+          gap: clamp(14px, 1.6vw, 20px);
+        }
+
+        .about-chip {
+          margin-top: clamp(-2px, 0.15vw, 6px);
+        }
+      }
+
+      .about-title {
+        color: var(--ink-strong);
+        font-size: clamp(22px, 2.6vw, 28px);
+        font-weight: 600;
+        line-height: 1.107;
+        letter-spacing: -0.02em;
+      }
+
+      .about-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.82em;
+        max-width: 46ch;
+        color: var(--ink-muted);
+        font-size: clamp(14px, 1.25vw, 16px);
+        font-weight: 450;
+        line-height: 1.55;
+        letter-spacing: -0.012em;
+      }
+
+      .about-text p {
+        margin: 0;
+      }
+
+      .about-text__muted {
+        color: rgba(19, 17, 33, 0.42);
+      }
+
+      .about-text__link {
+        color: var(--accent);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .about-text__link:hover,
+      .about-text__link:focus-visible {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+      }
+
+      .about-email-pill {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 230;
+        display: inline-flex;
+        height: 40px;
+        width: 40px;
+        padding: 10px;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #f8f3eb;
+        overflow: hidden;
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transform: translate3d(-50%, -50%, 0) scale(0.86);
+        transform-origin: center;
+        transition:
+          width 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          padding 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          border-radius 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          background 180ms ease,
+          opacity 220ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          visibility 0ms linear 320ms;
+        will-change: width, padding, border-radius, transform, opacity, background;
+      }
+
+      .about-email-pill.is-visible {
+        width: 148px;
+        padding: 10px 18px;
+        border-radius: 100px;
+        opacity: 1;
+        visibility: visible;
+        transform: translate3d(-50%, -50%, 0) scale(1);
+        transition:
+          width 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          padding 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          border-radius 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          background 180ms ease,
+          opacity 220ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          visibility 0ms linear 0ms;
+      }
+
+      .about-email-pill.is-copied {
+        width: 172px;
+      }
+
+      .about-email-pill.is-visible.is-pressed {
+        background: #8e2e2d;
+        transform: translate3d(-50%, -50%, 0) scale(0.92);
+      }
+
+      .about-email-pill.is-bouncing {
+        animation: about-email-pill-bounce 520ms cubic-bezier(0.22, 1.32, 0.36, 1);
+      }
+
+      .about-email-pill__content {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        opacity: 0;
+        transform: scale(0.9);
+        transition:
+          opacity 190ms ease 40ms,
+          transform 260ms cubic-bezier(0.22, 0.78, 0.18, 1) 40ms;
+      }
+
+      .about-email-pill.is-visible .about-email-pill__content {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .about-email-pill.is-visible.is-pressed .about-email-pill__content {
+        transform: scale(0.95);
+      }
+
+      .about-email-pill__icon {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      .about-email-pill__label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      @keyframes about-email-pill-bounce {
+        0% {
+          transform: translate3d(-50%, -50%, 0) scale(0.92);
+        }
+
+        45% {
+          transform: translate3d(-50%, -50%, 0) scale(1.06);
+        }
+
+        100% {
+          transform: translate3d(-50%, -50%, 0) scale(1);
+        }
+      }
+
+      body.about-email-pill-active,
+      body.about-email-pill-active .about-text__link--email {
+        cursor: none !important;
+      }
+
+      .about-chip__label {
+        color: var(--accent);
+      }
+
+      .about-chip__loader {
+        display: inline-block;
+        flex: 0 0 auto;
+        perspective: 64px;
+        transform: translateZ(1px);
+      }
+
+      .about-chip__loader::after {
+        content: "";
+        display: block;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: about-coin-flip 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      }
+
+      @keyframes about-coin-flip {
+        0%,
+        100% {
+          animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+        }
+
+        0% {
+          transform: rotateY(0deg);
+        }
+
+        50% {
+          transform: rotateY(1800deg);
+          animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+        }
+
+        100% {
+          transform: rotateY(3600deg);
+        }
+      }
+
+      .about-card-stack {
+        position: relative;
+        width: min(440px, 78vw);
+        aspect-ratio: 416.114 / 472;
+        flex: 0 1 auto;
+        isolation: isolate;
+        touch-action: pan-y;
+        transform: translateX(clamp(0px, 2.8vw, 34px));
+        outline: none;
+      }
+
+      @media (pointer: fine) {
+        .about-stack-wrap,
+        .about-stack-wrap * {
+          cursor: none !important;
+        }
+      }
+
+      .about-card-stack:focus-visible {
+        outline: 2px solid rgba(176, 58, 57, 0.55);
+        outline-offset: 18px;
+        border-radius: 28px;
+      }
+
+      .about-card {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 22.174px;
+        background: #d9d9d9;
+        transform-origin: center;
+        user-select: none;
+        backface-visibility: hidden;
+        transition:
+          transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 220ms ease,
+          box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .about-card__media {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+      }
+
+      .about-card__media.is-loaded {
+        opacity: 1;
+      }
+
+      .about-card[data-card-id="01"] .about-card__media {
+        object-position: top center;
+      }
+
+      .about-card[data-position="front"] {
+        z-index: 3;
+        box-shadow:
+          0 11.826px 17.739px 8.869px rgba(0, 0, 0, 0.15),
+          0 5.913px 5.913px 0 rgba(0, 0, 0, 0.3);
+        transform: translate3d(0, 0, 0) rotate(3.828deg) scale(1);
+      }
+
+      .about-card[data-position="middle"] {
+        z-index: 2;
+        box-shadow: 0 7px 16px rgba(0, 0, 0, 0.08);
+        transform: translate3d(clamp(16px, 3.8vw, 42px), 8px, 0)
+          rotate(5.601deg) scale(0.982);
+      }
+
+      .about-card[data-position="back"] {
+        z-index: 1;
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.05);
+        transform: translate3d(clamp(30px, 6.5vw, 72px), 18px, 0)
+          rotate(10.8deg) scale(0.955);
+      }
+
+      .about-card-stack.is-dragging .about-card {
+        transition-duration: 120ms;
+      }
+
+      .about-card-stack.is-compressing .about-card[data-position="front"] {
+        transform: translate3d(var(--about-drag-offset, 0px), 3px, 0)
+          rotate(calc(3.828deg + var(--about-drag-rotate, 0deg)))
+          scale(0.985);
+      }
+
+      .about-card-stack.is-compressing .about-card[data-position="middle"] {
+        transform: translate3d(clamp(13px, 3.4vw, 36px), 11px, 0)
+          rotate(4.8deg) scale(0.972);
+      }
+
+      .about-card-stack.is-compressing .about-card[data-position="back"] {
+        transform: translate3d(clamp(26px, 5.8vw, 62px), 24px, 0)
+          rotate(9.4deg) scale(0.945);
+      }
+
+      .about-card-stack.is-shuffling .about-card {
+        will-change: transform;
+        transition:
+          transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 220ms ease,
+          box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .about-card-stack.is-shuffling .about-card.is-exiting {
+        z-index: 4;
+        opacity: 1;
+      }
+
+      .about-card-stack.is-shuffling[data-direction="right"] .about-card.is-exiting {
+        transform: translate3d(68%, -6%, 0) rotate(14deg) scale(0.98);
+      }
+
+      .about-card-stack.is-shuffling[data-direction="left"] .about-card.is-exiting {
+        transform: translate3d(-68%, -6%, 0) rotate(-8deg) scale(0.98);
+      }
+
+      .about-cursor-chevron {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 220;
+        pointer-events: none;
+        visibility: hidden;
+        transform: translate3d(-50%, -50%, 0) scale(0.94);
+        transition:
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          visibility 0ms linear 180ms;
+        will-change: transform;
+      }
+
+      .about-cursor-chevron.is-visible {
+        visibility: visible;
+        transform: translate3d(-50%, -50%, 0) scale(1);
+        transition:
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          visibility 0ms linear 0ms;
+      }
+
+      .about-cursor-chevron.is-visible.is-pressed {
+        transform: translate3d(-50%, -50%, 0) scale(0.92);
+      }
+
+      .about-cursor-chevron.is-visible.is-bouncing {
+        animation: about-email-pill-bounce 520ms cubic-bezier(0.22, 1.32, 0.36, 1);
+      }
+
+      .about-cursor-chevron__side {
+        display: none;
+        position: relative;
+        width: 52px;
+        height: 52px;
+        transform-origin: center center;
+        will-change: transform;
+      }
+
+      .about-cursor-chevron[data-side="left"] .about-cursor-chevron__side--left,
+      .about-cursor-chevron[data-side="right"] .about-cursor-chevron__side--right {
+        display: block;
+      }
+
+      .about-cursor-chevron__glass {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(18px) saturate(1.25);
+        -webkit-backdrop-filter: blur(18px) saturate(1.25);
+        box-shadow:
+          0 10px 28px rgba(0, 0, 0, 0.14),
+          inset 0 1px 0 rgba(255, 255, 255, 0.62),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+        transform: translateZ(0);
+        isolation: isolate;
+      }
+
+      .about-cursor-chevron__glass::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.92) 0%,
+          rgba(255, 255, 255, 0.28) 38%,
+          rgba(255, 255, 255, 0.1) 58%,
+          rgba(255, 255, 255, 0.62) 100%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+
+      .about-cursor-chevron__chevron-slot {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+      }
+
+      .about-cursor-chevron__chevrons {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        width: auto;
+        height: 22px;
+        color: #fff;
+        animation: about-chevron-wobble-left 4.8s ease-in-out infinite;
+      }
+
+      .about-cursor-chevron[data-side="right"] .about-cursor-chevron__chevrons {
+        animation-name: about-chevron-wobble-right;
+      }
+
+      .about-cursor-chevron[data-side="left"] .about-cursor-chevron__chevrons {
+        flex-direction: row-reverse;
+      }
+
+      .about-cursor-chevron__chevron {
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
+        display: block;
+      }
+
+      .about-cursor-chevron__chevron--ghost {
+        width: 0;
+        min-width: 0;
+        height: 22px;
+        opacity: 0;
+        overflow: hidden;
+        margin: 0;
+        flex: 0 0 auto;
+        animation: about-chevron-reveal 4.8s ease-in-out infinite;
+      }
+
+      @keyframes about-chevron-wobble-left {
+        0%,
+        76%,
+        100% {
+          transform: translateX(0);
+        }
+
+        80% {
+          transform: translateX(-4px);
+        }
+
+        84% {
+          transform: translateX(3px);
+        }
+
+        88% {
+          transform: translateX(-2px);
+        }
+
+        92% {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes about-chevron-wobble-right {
+        0%,
+        76%,
+        100% {
+          transform: translateX(0);
+        }
+
+        80% {
+          transform: translateX(4px);
+        }
+
+        84% {
+          transform: translateX(-3px);
+        }
+
+        88% {
+          transform: translateX(2px);
+        }
+
+        92% {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes about-chevron-reveal {
+        0%,
+        76%,
+        100% {
+          opacity: 0;
+          width: 0;
+          min-width: 0;
+          margin-inline-start: 0;
+        }
+
+        81%,
+        91% {
+          opacity: 0.95;
+          width: 22px;
+          min-width: 22px;
+          margin-inline-start: -12px;
+        }
+      }
+
+      @media (hover: none), (pointer: coarse) {
+        .about-cursor-chevron {
+          display: none !important;
+        }
+      }
+
       /* Tablet: max-width 960px */
       @media (max-width: 960px) {
         :root {
@@ -1583,13 +2187,108 @@
           justify-self: center;
           width: 100%;
         }
+
+        .about-section {
+          padding-top: clamp(28px, 4vw, 40px);
+        }
+
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: clamp(28px, 5vw, 48px);
+        }
+
+        .about-copy {
+          display: contents;
+          max-width: none;
+          width: 100%;
+        }
+
+        .about-title {
+          order: 1;
+          grid-column: 1;
+          grid-row: 1;
+        }
+
+        .about-text {
+          order: 2;
+          grid-column: 1;
+          grid-row: 2;
+        }
+
+        .about-stack-wrap {
+          min-height: clamp(300px, 52vw, 420px);
+          grid-column: 1;
+          grid-row: 3;
+          align-self: center;
+          order: 3;
+        }
+
+        .about-chip {
+          order: 4;
+          grid-column: 1;
+          grid-row: 4;
+          justify-self: center;
+          margin-top: 0;
+        }
+
+        .about-card-stack {
+          width: min(360px, 68vw);
+          transform: none;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .work-card {
+        .work-card,
+        .about-card {
           opacity: 1;
           transform: none;
           transition: none;
+        }
+
+        .about-chip__loader::after {
+          animation: none;
+        }
+
+        .about-chip {
+          animation: none;
+          box-shadow: none;
+        }
+
+        .about-email-pill,
+        .about-email-pill__content {
+          animation: none;
+          transition: none;
+        }
+
+        .about-card-stack {
+          transform: none;
+        }
+
+        .about-card[data-position="front"] {
+          transform: rotate(3.828deg);
+        }
+
+        .about-card[data-position="middle"] {
+          transform: translate3d(26px, 8px, 0) rotate(5.601deg) scale(0.982);
+        }
+
+        .about-card[data-position="back"] {
+          transform: translate3d(48px, 18px, 0) rotate(10.8deg) scale(0.955);
+        }
+
+        .about-cursor-chevron__chevrons,
+        .about-cursor-chevron__chevron--ghost {
+          animation: none !important;
+        }
+
+        .about-cursor-chevron__chevron--ghost {
+          opacity: 0;
+        }
+
+        .about-cursor-chevron.is-visible.is-pressed,
+        .about-cursor-chevron.is-visible.is-bouncing {
+          animation: none;
+          transform: translate3d(-50%, -50%, 0) scale(0.92);
         }
       }
 
@@ -1691,9 +2390,107 @@
           grid-column: auto;
           max-width: none;
         }
+
+        .about-section {
+          padding-top: clamp(18px, 4.5vw, 24px);
+          padding-inline: clamp(1rem, 4vw, 1.25rem);
+          padding-bottom: clamp(56px, 12vw, 80px);
+          scroll-margin-top: 64px;
+        }
+
+        .about-grid {
+          gap: clamp(22px, 5.5vw, 30px);
+        }
+
+        .about-copy {
+          display: contents;
+        }
+
+        .about-title {
+          order: 1;
+          grid-row: 1;
+          font-size: clamp(18px, 5.2vw, 21px);
+          line-height: 1.14;
+          letter-spacing: -0.018em;
+        }
+
+        .about-text {
+          order: 2;
+          grid-row: 2;
+          max-width: none;
+          font-size: clamp(13px, 3.5vw, 14px);
+          line-height: 1.5;
+          gap: 0.72em;
+        }
+
+        .about-stack-wrap {
+          min-height: clamp(250px, 62vw, 330px);
+          grid-row: 3;
+          order: 3;
+          margin-top: clamp(12px, 3.5vw, 20px);
+        }
+
+        .about-chip {
+          max-width: 100%;
+          gap: 9px;
+          margin-top: clamp(-6px, -1.5vw, 0);
+          padding: 10px 14px 10px 11px;
+          font-size: 11.5px;
+          grid-row: 4;
+          order: 4;
+          justify-self: center;
+          width: fit-content;
+        }
+
+        .about-chip__loader::after {
+          width: 15px;
+          height: 15px;
+        }
+
+        .about-card-stack {
+          width: min(304px, 84vw);
+        }
+
+        .about-card-stack:focus-visible {
+          outline-offset: 10px;
+          border-radius: 20px;
+        }
+
+        .about-card {
+          border-radius: 18px;
+        }
+
+        .about-card[data-position="front"] {
+          transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+        }
+
+        .about-card[data-position="middle"] {
+          transform: translate3d(clamp(8px, 2.8vw, 14px), 5px, 0)
+            rotate(2.4deg) scale(0.988);
+        }
+
+        .about-card[data-position="back"] {
+          transform: translate3d(clamp(14px, 4.8vw, 22px), 10px, 0)
+            rotate(4.2deg) scale(0.972);
+        }
+
+        .about-card-stack.is-compressing .about-card[data-position="front"] {
+          transform: translate3d(var(--about-drag-offset, 0px), 3px, 0)
+            rotate(var(--about-drag-rotate, 0deg)) scale(0.985);
+        }
+
+        .about-card-stack.is-compressing .about-card[data-position="middle"] {
+          transform: translate3d(clamp(8px, 2.5vw, 12px), 8px, 0)
+            rotate(2deg) scale(0.978);
+        }
+
+        .about-card-stack.is-compressing .about-card[data-position="back"] {
+          transform: translate3d(clamp(14px, 4.2vw, 20px), 14px, 0)
+            rotate(3.6deg) scale(0.96);
+        }
       }
 
-      /* dodoLLM panel — desktop app-shell layout */
+      /* dodoGPT panel — desktop app-shell layout */
       .app-shell {
         display: block;
       }
@@ -1782,125 +2579,9 @@
     </script>
     <link rel="stylesheet" href="assets/mobile-nav.css" />
     <link rel="stylesheet" href="assets/dodollm-panel.css" />
-    <style>
-      .mobile-gate-modal {
-        display: none;
-      }
-
-      @media (max-width: 960px) {
-        html.mobile-gate-locked,
-        body.mobile-gate-locked {
-          overflow: hidden;
-          overscroll-behavior: none;
-          touch-action: none;
-        }
-
-        body.mobile-gate-locked .cs-nav-shell,
-        body.mobile-gate-locked #dock,
-        body.mobile-gate-locked #hero-copy,
-        body.mobile-gate-locked .hero-divider {
-          opacity: 0 !important;
-          pointer-events: none !important;
-        }
-
-        .mobile-gate-modal {
-          position: fixed;
-          inset: 0;
-          z-index: 1200;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 100dvh;
-          padding: max(1rem, env(safe-area-inset-top, 0px))
-            max(1rem, env(safe-area-inset-right, 0px))
-            max(1rem, env(safe-area-inset-bottom, 0px))
-            max(1rem, env(safe-area-inset-left, 0px));
-          background: rgba(19, 17, 33, 0.58);
-          backdrop-filter: blur(5px) saturate(1.05);
-          -webkit-backdrop-filter: blur(5px) saturate(1.05);
-        }
-
-        .mobile-gate-modal__panel {
-          width: min(94vw, 540px);
-          max-height: calc(
-            100dvh - 2rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
-          );
-          margin: auto;
-          border: 1px solid rgba(19, 17, 33, 0.08);
-          border-radius: 1.1rem;
-          overflow: hidden;
-          background: var(--paper);
-          box-shadow: 0 28px 56px rgba(12, 10, 20, 0.28);
-        }
-
-        .mobile-gate-modal__canvas-wrap {
-          width: 100%;
-          aspect-ratio: 16 / 8;
-          background: var(--paper);
-        }
-
-        .mobile-gate-modal__canvas {
-          display: block;
-          width: 100%;
-          height: 100%;
-          touch-action: none;
-        }
-
-        .mobile-gate-modal__content {
-          padding: clamp(1.1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.4rem)
-            clamp(1.25rem, 5vw, 1.6rem);
-        }
-
-        .mobile-gate-modal__title {
-          margin: 0 0 0.65rem;
-          font-size: clamp(1.2rem, 5vw, 1.55rem);
-          line-height: 1.15;
-          letter-spacing: -0.02em;
-          color: var(--ink);
-          font-weight: 500;
-        }
-
-        .mobile-gate-modal__description {
-          margin: 0;
-          color: var(--ink-muted);
-          font-size: clamp(0.95rem, 3.8vw, 1.02rem);
-          line-height: 1.55;
-        }
-      }
-
-      @media (min-width: 961px) {
-        .mobile-gate-modal {
-          display: none !important;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="assets/dodollm-selection.css" />
   </head>
   <body>
-    <section
-      class="mobile-gate-modal"
-      id="mobile-gate-modal"
-      aria-modal="true"
-      role="dialog"
-      aria-label="Mobile site availability"
-    >
-      <div class="mobile-gate-modal__panel">
-        <div class="mobile-gate-modal__canvas-wrap">
-          <canvas
-            id="mobile-gate-canvas"
-            class="mobile-gate-modal__canvas"
-            aria-label="Interactive sorry canvas"
-          ></canvas>
-        </div>
-        <div class="mobile-gate-modal__content">
-          <h1 class="mobile-gate-modal__title">Mobile site is almost ready.</h1>
-          <p class="mobile-gate-modal__description">
-            The mobile viewport of this site is still being built and will be live in upcoming
-            days.
-          </p>
-        </div>
-      </div>
-    </section>
-
     <header class="cs-nav" aria-label="Site navigation">
       <a class="cs-nav__logo" href="#home">dogacimen.com</a>
       <button
@@ -1925,7 +2606,7 @@
         <div class="cs-nav__drawer-social">
           <a
             class="icon-btn"
-            href="mailto:hello@dogacimen.com"
+            href="mailto:dogacimen35@gmail.com"
             aria-label="Email"
           >
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -1979,7 +2660,7 @@
         <span class="dock__divider" data-dock-fixed aria-hidden="true"></span>
         <a
           class="dock__item"
-          href="mailto:hello@dogacimen.com"
+          href="mailto:dogacimen35@gmail.com"
           data-dock-item
           data-dock-id="email"
         >
@@ -2026,9 +2707,9 @@
           class="dock__item"
           data-dock-item
           data-dock-id="dodollm"
-          aria-label="dodoLLM"
+          aria-label="Ask DodoGPT"
         >
-          <span class="dock__tooltip">dodoLLM</span>
+          <span class="dock__tooltip">Ask DodoGPT</span>
           <span class="dock__icon-wrap dock__icon-wrap--app">
             <img
               class="dock__app-icon"
@@ -2249,27 +2930,104 @@
           </div>
         </div>
       </section>
+
+      <section id="about" class="about-section" aria-labelledby="about-title">
+        <div class="about-grid">
+          <div class="about-copy">
+            <h2 id="about-title" class="about-title">I design products, build react-based UI components, draw for fun and teach my friends how to ice skate.
+            </h2>
+            <div class="about-text">
+              <p>
+                I'm a multidisciplinary designer who designs products end to end. Right now I'm deep into AI-native workflows and how
+                they're changing the way designers and developers work together.
+              </p>
+              <p class="about-text__muted">
+                Outside the work I'm spending time with my friends teaching them how to ice skate on frozen ponds, and cafe-hopping & exploring co-working events & hackathons around Toronto.
+              </p>
+              <p>
+                To work together or just connect, reach out on
+                <a
+                  class="about-text__link"
+                  href="https://www.linkedin.com/in/dogacimen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >LinkedIn</a>
+                or shoot me an
+                <a
+                  class="about-text__link about-text__link--email"
+                  href="mailto:dogacimen35@gmail.com"
+                  data-about-email
+                  data-email="dogacimen35@gmail.com"
+                >email</a>.
+              </p>
+            </div>
+            <span class="about-chip">
+              <span class="about-chip__loader" aria-hidden="true"></span>
+              <span class="about-chip__label">Graduating Spring (April) 2027</span>
+            </span>
+          </div>
+
+          <div class="about-stack-wrap">
+            <div
+              class="about-card-stack"
+              role="button"
+              tabindex="0"
+              aria-label="Shuffle about image cards"
+              data-about-card-stack
+            >
+              <div class="about-card" data-card-id="01" data-position="front">
+                <img
+                  class="about-card__media"
+                  src="assets/dodo1.webp"
+                  alt="Portrait photo of Doğa"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </div>
+              <div class="about-card" data-card-id="02" data-position="middle">
+                <img
+                  class="about-card__media"
+                  src="assets/dodo2.webp"
+                  alt="Doğa at a design event"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+              <div class="about-card" data-card-id="03" data-position="back">
+                <img
+                  class="about-card__media"
+                  src="assets/dodo-3.webp"
+                  alt="Doğa working on a project"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <!-- dodoLLM panel -->
+    <!-- dodoGPT panel -->
     <div class="dodollm-backdrop" data-dodollm-backdrop aria-hidden="true"></div>
     <aside
       class="dodollm-panel"
       data-dodollm-panel
-      aria-label="dodoLLM chat"
+      aria-label="dodoGPT chat"
       aria-hidden="true"
     >
       <header class="dodollm-panel__topbar">
         <div class="dodollm-panel__brand">
-          <span class="dodollm-panel__label">DODOLLM</span>
+          <span class="dodollm-panel__label">DODOGPT</span>
           <button
             type="button"
             class="dodollm-panel__icon-btn"
             data-dodollm-info
-            aria-label="About dodoLLM"
+            aria-label="About dodoGPT"
           >ⓘ</button>
         </div>
-        <div class="dodollm-panel__actions" aria-label="dodoLLM controls">
+        <div class="dodollm-panel__actions" aria-label="dodoGPT controls">
           <span class="dodollm-panel__divider" aria-hidden="true"></span>
           <button
             type="button"
@@ -2281,7 +3039,7 @@
             type="button"
             class="dodollm-panel__icon-btn"
             data-dodollm-close
-            aria-label="Close dodoLLM"
+            aria-label="Close dodoGPT"
           >×</button>
         </div>
       </header>
@@ -2297,10 +3055,12 @@
             height="168"
             decoding="async"
           />
-          <p class="dodollm-empty__greeting">Hey there, I'm dodoLLM.</p>
+          <p class="dodollm-empty__greeting">Hey, I'm DodoGPT.</p>
           <div class="dodollm-suggestions" data-dodollm-initial-suggestions></div>
         </section>
       </div>
+
+      <div class="dodollm-thinking-row" data-dodollm-thinking hidden></div>
 
       <form class="dodollm-panel__input-bar" data-dodollm-form>
         <input
@@ -2316,6 +3076,7 @@
     </div>
 
     <script src="assets/dodollm-panel.js"></script>
+    <script src="assets/dodollm-selection.js"></script>
     <script src="assets/mobile-nav.js"></script>
     <script>
       (function initDockReorder() {
@@ -3906,7 +4667,6 @@
       const INTRO_WORK_DELAY_MS = 1000;
       const INTRO_LIQUID_DELAY_MS = 1100;
       const INTRO_SEEN_KEY = "portfolio-intro-seen";
-      const MOBILE_GATE_WORD = "sorry";
 
       function hasSeenIntro() {
         try {
@@ -4135,37 +4895,10 @@
         }, INTRO_CENTER_HOLD_MS);
       }
 
-      function lockMobileGate() {
-        document.documentElement.classList.add("mobile-gate-locked");
-        document.body.classList.add("mobile-gate-locked");
-      }
-
-      function initMobileGateModal() {
-        if (!window.matchMedia("(max-width: 960px)").matches) return false;
-        const modal = document.getElementById("mobile-gate-modal");
-        const gateCanvas = document.getElementById("mobile-gate-canvas");
-        if (!modal || !gateCanvas) return false;
-
-        lockMobileGate();
-        startHero(gateCanvas, {
-          skipIntro: true,
-          wordOverride: MOBILE_GATE_WORD,
-          showCredit: false,
-          allowNavHide: false,
-          backgroundColor: PAPER,
-          textOffset: { x: -5, y: 14 },
-        });
-        return true;
-      }
-
       const boot = () => {
         const skipIntro = hasSeenIntro();
         const canvas = document.getElementById("hero-canvas");
         const isMobile = window.matchMedia("(max-width: 960px)").matches;
-
-        if (isMobile && initMobileGateModal()) {
-          return;
-        }
 
         if (!skipIntro && !isMobile) lockScroll();
         startHero(canvas, { skipIntro });
@@ -4268,6 +5001,341 @@
       })();
     </script>
     <script>
+      (function initAboutCardStack() {
+        const stack = document.querySelector("[data-about-card-stack]");
+        if (!stack) return;
+
+        const cards = [...stack.querySelectorAll(".about-card")];
+        if (cards.length < 2) return;
+
+        const media = cards
+          .map((card) => card.querySelector(".about-card__media"))
+          .filter(Boolean);
+
+        media.forEach((img) => {
+          const markReady = () => {
+            img.classList.add("is-loaded");
+          };
+
+          if (img.complete && img.naturalWidth > 0) {
+            markReady();
+          } else {
+            img.addEventListener("load", markReady, { once: true });
+          }
+
+          if (typeof img.decode === "function") {
+            img.decode().then(markReady).catch(() => {});
+          }
+        });
+
+        const positions = ["front", "middle", "back"];
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const finePointer = window.matchMedia("(pointer: fine)");
+        let order = [...cards];
+        let pointerState = null;
+        let isAnimating = false;
+        let cursorRafId = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+        let cursorTargetX = 0;
+        let cursorTargetY = 0;
+
+        const cursor = finePointer.matches
+          ? (() => {
+              const el = document.createElement("span");
+              el.className = "about-cursor-chevron";
+              el.setAttribute("aria-hidden", "true");
+              el.innerHTML = `
+                <span class="about-cursor-chevron__side about-cursor-chevron__side--left">
+                  <span class="about-cursor-chevron__glass" aria-hidden="true"></span>
+                  <span class="about-cursor-chevron__chevron-slot">
+                    <span class="about-cursor-chevron__chevrons">
+                      <svg class="icon about-cursor-chevron__chevron" viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="assets/icons.svg#icon-chevron-left" />
+                      </svg>
+                      <svg class="icon about-cursor-chevron__chevron about-cursor-chevron__chevron--ghost" viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="assets/icons.svg#icon-chevron-left" />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+                <span class="about-cursor-chevron__side about-cursor-chevron__side--right">
+                  <span class="about-cursor-chevron__glass" aria-hidden="true"></span>
+                  <span class="about-cursor-chevron__chevron-slot">
+                    <span class="about-cursor-chevron__chevrons">
+                      <svg class="icon about-cursor-chevron__chevron" viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="assets/icons.svg#icon-chevron-right" />
+                      </svg>
+                      <svg class="icon about-cursor-chevron__chevron about-cursor-chevron__chevron--ghost" viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="assets/icons.svg#icon-chevron-right" />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+              `;
+              document.body.appendChild(el);
+              return el;
+            })()
+          : null;
+
+        const render = () => {
+          order.forEach((card, index) => {
+            card.dataset.position = positions[index] || "back";
+          });
+        };
+
+        const clearDragVars = () => {
+          stack.style.removeProperty("--about-drag-offset");
+          stack.style.removeProperty("--about-drag-rotate");
+        };
+
+        const setDragVars = (dx) => {
+          const clamped = Math.max(-80, Math.min(80, dx));
+          stack.style.setProperty("--about-drag-offset", `${clamped * 0.14}px`);
+          stack.style.setProperty("--about-drag-rotate", `${clamped * 0.012}deg`);
+        };
+
+        const rotateOrder = (direction) => {
+          if (direction === "left") {
+            order.unshift(order.pop());
+            return;
+          }
+
+          order.push(order.shift());
+        };
+
+        const SHUFFLE_MS = 520;
+        const SHUFFLE_SETTLE_MS = Math.round(SHUFFLE_MS * 0.34);
+
+        const finishShuffle = () => {
+          stack.classList.remove("is-shuffling");
+          cards.forEach((card) => card.classList.remove("is-exiting"));
+          delete stack.dataset.direction;
+          isAnimating = false;
+        };
+
+        const shuffle = (direction = "right") => {
+          if (isAnimating) return;
+
+          isAnimating = true;
+          clearDragVars();
+          stack.classList.remove("is-dragging", "is-compressing");
+          cursor?.classList.remove("is-pressed");
+
+          if (reduceMotion.matches) {
+            rotateOrder(direction);
+            render();
+            isAnimating = false;
+            return;
+          }
+
+          stack.dataset.direction = direction;
+          const exitingCard = order[0];
+          stack.classList.add("is-shuffling");
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              exitingCard?.classList.add("is-exiting");
+              rotateOrder(direction);
+              render();
+
+              const settleId = window.setTimeout(() => {
+                exitingCard?.classList.remove("is-exiting");
+              }, SHUFFLE_SETTLE_MS);
+
+              let finished = false;
+              const complete = () => {
+                if (finished) return;
+                finished = true;
+                stack.removeEventListener("transitionend", onTransitionEnd);
+                window.clearTimeout(settleId);
+                window.clearTimeout(fallbackId);
+                finishShuffle();
+              };
+
+              const onTransitionEnd = (event) => {
+                if (event.target !== exitingCard) return;
+                if (event.propertyName !== "transform") return;
+                if (exitingCard.classList.contains("is-exiting")) return;
+                complete();
+              };
+
+              stack.addEventListener("transitionend", onTransitionEnd);
+              const fallbackId = window.setTimeout(
+                complete,
+                SHUFFLE_SETTLE_MS + SHUFFLE_MS + 80
+              );
+            });
+          });
+        };
+
+        const getHoverSide = (clientX) => {
+          const rect = stack.getBoundingClientRect();
+          const localX = clientX - rect.left;
+          return localX < rect.width / 3 ? "left" : "right";
+        };
+
+        const tickCursor = () => {
+          if (!cursor) return;
+          cursorX += (cursorTargetX - cursorX) * 0.38;
+          cursorY += (cursorTargetY - cursorY) * 0.38;
+          cursor.style.left = `${cursorX}px`;
+          cursor.style.top = `${cursorY}px`;
+
+          if (
+            Math.abs(cursorTargetX - cursorX) < 0.1 &&
+            Math.abs(cursorTargetY - cursorY) < 0.1
+          ) {
+            cursorRafId = 0;
+            return;
+          }
+
+          cursorRafId = requestAnimationFrame(tickCursor);
+        };
+
+        const moveCursor = (clientX, clientY) => {
+          if (!cursor) return;
+          cursorTargetX = clientX;
+          cursorTargetY = clientY;
+          if (!cursorRafId) cursorRafId = requestAnimationFrame(tickCursor);
+        };
+
+        const showCursor = (side, clientX, clientY) => {
+          if (!cursor || stack.classList.contains("is-dragging")) return;
+          cursor.dataset.side = side;
+          moveCursor(clientX, clientY);
+          cursor.classList.add("is-visible");
+        };
+
+        const hideCursor = () => {
+          if (!cursor) return;
+          cursor.classList.remove("is-visible");
+          delete cursor.dataset.side;
+        };
+
+        const updateCursor = (clientX, clientY) => {
+          if (!cursor) return;
+          if (stack.classList.contains("is-dragging")) {
+            hideCursor();
+            return;
+          }
+          showCursor(getHoverSide(clientX), clientX, clientY);
+        };
+
+        const bounceCursor = () => {
+          if (!cursor) return;
+          cursor.classList.remove("is-pressed", "is-bouncing");
+          if (reduceMotion.matches) return;
+          void cursor.offsetWidth;
+          cursor.classList.add("is-bouncing");
+
+          const onBounceEnd = (event) => {
+            if (event.animationName !== "about-email-pill-bounce") return;
+            cursor.classList.remove("is-bouncing");
+            cursor.removeEventListener("animationend", onBounceEnd);
+          };
+
+          cursor.addEventListener("animationend", onBounceEnd);
+        };
+
+        stack.addEventListener("pointerdown", (event) => {
+          if (isAnimating || event.button !== 0) return;
+          cursor?.classList.add("is-pressed");
+
+          pointerState = {
+            id: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            isHorizontal: false,
+          };
+        });
+
+        stack.addEventListener("pointermove", (event) => {
+          if (!pointerState || pointerState.id !== event.pointerId) {
+            updateCursor(event.clientX, event.clientY);
+            return;
+          }
+
+          const dx = event.clientX - pointerState.startX;
+          const dy = event.clientY - pointerState.startY;
+
+          if (!pointerState.isHorizontal && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+            pointerState.isHorizontal = true;
+            hideCursor();
+            stack.setPointerCapture?.(event.pointerId);
+          }
+
+          if (!pointerState.isHorizontal) {
+            updateCursor(event.clientX, event.clientY);
+            return;
+          }
+
+          if (isAnimating) return;
+
+          event.preventDefault();
+          stack.classList.add("is-dragging", "is-compressing");
+          setDragVars(dx);
+
+          if (Math.abs(dx) > 82) {
+            shuffle(dx < 0 ? "left" : "right");
+            bounceCursor();
+            pointerState = null;
+          }
+        });
+
+        stack.addEventListener("pointerenter", (event) => {
+          updateCursor(event.clientX, event.clientY);
+        });
+
+        stack.addEventListener("pointerleave", () => {
+          hideCursor();
+        });
+
+        const endPointer = (event) => {
+          if (!pointerState || pointerState.id !== event.pointerId) return;
+
+          const dx = event.clientX - pointerState.startX;
+          const didSwipe = pointerState.isHorizontal && Math.abs(dx) > 42;
+          const direction = didSwipe ? (dx < 0 ? "left" : "right") : getHoverSide(event.clientX);
+
+          stack.classList.remove("is-dragging", "is-compressing");
+          clearDragVars();
+          pointerState = null;
+          shuffle(direction);
+          bounceCursor();
+        };
+
+        stack.addEventListener("pointerup", endPointer);
+        stack.addEventListener("pointercancel", (event) => {
+          if (pointerState?.id === event.pointerId) {
+            pointerState = null;
+            stack.classList.remove("is-dragging", "is-compressing");
+            clearDragVars();
+            cursor?.classList.remove("is-pressed", "is-bouncing");
+            hideCursor();
+          }
+        });
+
+        window.addEventListener("blur", hideCursor);
+
+        stack.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            shuffle("left");
+            bounceCursor();
+          }
+
+          if (event.key === "ArrowRight" || event.key === " " || event.key === "Enter") {
+            event.preventDefault();
+            shuffle("right");
+            bounceCursor();
+          }
+        });
+
+        render();
+      })();
+    </script>
+    <script>
       (function initThumbVideos() {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -4285,6 +5353,161 @@
             video.currentTime = 0;
           });
         });
+      })();
+    </script>
+    <script>
+      (function initAboutEmailPill() {
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+
+        const link = document.querySelector("[data-about-email]");
+        if (!link) return;
+
+        const email = link.dataset.email || "dogacimen35@gmail.com";
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const pill = document.createElement("span");
+        pill.className = "about-email-pill";
+        pill.setAttribute("aria-hidden", "true");
+        pill.innerHTML = `
+          <span class="about-email-pill__content">
+            <svg class="icon about-email-pill__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="assets/icons.svg#icon-mail" />
+            </svg>
+            <span class="about-email-pill__label">copy email</span>
+          </span>
+        `;
+        document.body.appendChild(pill);
+
+        const label = pill.querySelector(".about-email-pill__label");
+        let rafId = 0;
+        let targetX = window.innerWidth / 2;
+        let targetY = window.innerHeight / 2;
+        let currentX = targetX;
+        let currentY = targetY;
+        let restoreLabelId = 0;
+        let bounceId = 0;
+
+        const setLabel = (text) => {
+          if (label) label.textContent = text;
+        };
+
+        const stopAnimation = () => {
+          if (!rafId) return;
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        };
+
+        const tick = () => {
+          currentX += (targetX - currentX) * 0.28;
+          currentY += (targetY - currentY) * 0.28;
+          pill.style.left = `${currentX}px`;
+          pill.style.top = `${currentY}px`;
+
+          if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
+            rafId = 0;
+            return;
+          }
+
+          rafId = requestAnimationFrame(tick);
+        };
+
+        const updatePosition = (event) => {
+          targetX = event.clientX;
+          targetY = event.clientY;
+          if (!rafId) rafId = requestAnimationFrame(tick);
+        };
+
+        const resetCopiedState = () => {
+          window.clearTimeout(restoreLabelId);
+          restoreLabelId = 0;
+          pill.classList.remove("is-copied");
+          setLabel("copy email");
+        };
+
+        const runBounce = () => {
+          if (reduceMotion) return;
+          pill.classList.remove("is-bouncing");
+          void pill.offsetWidth;
+          pill.classList.add("is-bouncing");
+          window.clearTimeout(bounceId);
+          bounceId = window.setTimeout(() => {
+            pill.classList.remove("is-bouncing");
+            bounceId = 0;
+          }, 540);
+        };
+
+        const copyEmail = async () => {
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(email);
+            return true;
+          }
+
+          const field = document.createElement("textarea");
+          field.value = email;
+          field.setAttribute("readonly", "");
+          field.style.position = "fixed";
+          field.style.opacity = "0";
+          document.body.appendChild(field);
+          field.select();
+          const copied = document.execCommand("copy");
+          field.remove();
+          return copied;
+        };
+
+        const onEnter = (event) => {
+          resetCopiedState();
+          updatePosition(event);
+          pill.classList.add("is-visible");
+          document.body.classList.add("about-email-pill-active");
+        };
+
+        const onLeave = () => {
+          resetCopiedState();
+          pill.classList.remove("is-visible", "is-pressed", "is-bouncing");
+          document.body.classList.remove("about-email-pill-active");
+          stopAnimation();
+        };
+
+        link.addEventListener("pointerenter", onEnter);
+        link.addEventListener("pointermove", updatePosition);
+        link.addEventListener("pointerleave", onLeave);
+        link.addEventListener("pointercancel", onLeave);
+
+        link.addEventListener("pointerdown", (event) => {
+          updatePosition(event);
+          pill.classList.add("is-pressed");
+        });
+
+        link.addEventListener("click", async (event) => {
+          event.preventDefault();
+
+          try {
+            const copied = await copyEmail();
+            if (!copied) throw new Error("Copy failed");
+
+            pill.classList.remove("is-pressed");
+            pill.classList.add("is-copied");
+            setLabel("email copied!");
+            runBounce();
+            window.clearTimeout(restoreLabelId);
+            restoreLabelId = window.setTimeout(resetCopiedState, 1300);
+          } catch {
+            pill.classList.remove("is-pressed");
+            setLabel("copy failed");
+            window.clearTimeout(restoreLabelId);
+            restoreLabelId = window.setTimeout(() => {
+              resetCopiedState();
+              window.location.href = link.href;
+            }, 700);
+          }
+        });
+
+        window.addEventListener("pointerup", () => {
+          pill.classList.remove("is-pressed");
+        });
+        window.addEventListener("pointercancel", () => {
+          pill.classList.remove("is-pressed");
+        });
+        window.addEventListener("blur", onLeave);
       })();
     </script>
     <script>

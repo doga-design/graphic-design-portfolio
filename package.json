@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "build:icons": "node scripts/build-icons.mjs"
+    "build:icons": "node scripts/build-icons.mjs",
+    "local": "npx vercel dev",
+    "env:pull": "npx vercel env pull .env.local --environment=development --yes"
   },
   "dependencies": {
     "@untitledui/icons": "^0.0.22",

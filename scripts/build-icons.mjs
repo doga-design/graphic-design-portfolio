@@ -16,7 +16,6 @@ const assetsDir = join(__dirname, "../assets");
 const UNTITLED_ICON_MAP = [
   ["icon-mail", "Mail01"],
   ["icon-chevron-down", "ChevronDown"],
-  ["icon-menu", "Menu01"],
   ["icon-close", "XClose"],
   ["icon-arrow-left", "ArrowLeft"],
   ["icon-arrow-down", "ArrowDown"],
@@ -32,6 +31,8 @@ const UNTITLED_ICON_MAP = [
 const CUSTOM_ICON_FILES = [
   ["icon-github", "github-svgrepo-com.svg"],
   ["icon-linkedin", "linkedin-svgrepo-com.svg"],
+  ["icon-menu", "menu-2dash.svg"],
+  ["icon-dodollm-sparkle", "dodollm-sparkle.svg"],
 ];
 
 const DUOTONE_FILL = 'fill="var(--icon-duotone-bg, currentColor)"';
@@ -117,22 +118,23 @@ function toSymbolMarkup(symbolId, svgMarkup, source) {
 function parseCustomSvgFile(filename) {
   let raw = readFileSync(join(assetsDir, filename), "utf8");
   raw = raw.replace(/<\?xml[^?]*\?>/gi, "").replace(/<!--[\s\S]*?-->/g, "");
-  const match = raw.match(/<svg[^>]*>([\s\S]*)<\/svg>/i);
+  const match = raw.match(/<svg([^>]*)>([\s\S]*)<\/svg>/i);
   if (!match) {
     throw new Error(`No <svg> root in ${filename}`);
   }
-  return match[1].trim();
+  const viewBox = match[1].match(/\bviewBox="([^"]+)"/)?.[1] ?? "0 0 24 24";
+  return { inner: match[2].trim(), viewBox };
 }
 
 function customFileToSymbol(symbolId, filename) {
-  const inner = parseCustomSvgFile(filename);
+  const { inner, viewBox } = parseCustomSvgFile(filename);
   const pathTags = [...inner.matchAll(/<path\b([^>]*?)\/?>/gi)];
 
-  if (symbolId === "icon-github") {
+  if (symbolId === "icon-github" || symbolId === "icon-menu") {
     const d = inner.match(/\bd="([^"]+)"/)?.[1];
     if (!d) throw new Error(`No path in ${filename}`);
     const path = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />`;
-    return `    <symbol id="${symbolId}" viewBox="0 0 24 24">\n${formatChildren(path)}\n    </symbol>`;
+    return `    <symbol id="${symbolId}" viewBox="${viewBox}">\n${formatChildren(path)}\n    </symbol>`;
   }
 
   const paths = pathTags.map(([, attrs]) => {
@@ -144,7 +146,7 @@ function customFileToSymbol(symbolId, filename) {
       .trim();
   });
 
-  return `    <symbol id="${symbolId}" viewBox="0 0 24 24">\n${formatChildren(paths.join(""))}\n    </symbol>`;
+  return `    <symbol id="${symbolId}" viewBox="${viewBox}">\n${formatChildren(paths.join(""))}\n    </symbol>`;
 }
 
 const { Icons, source } = await loadIcons();
@@ -181,6 +183,7 @@ const SYMBOL_ORDER = [
   "icon-work",
   "icon-play",
   "icon-resume",
+  "icon-dodollm-sparkle",
 ];
 
 const symbols = SYMBOL_ORDER.map((id) => symbolById.get(id));
