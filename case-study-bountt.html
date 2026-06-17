@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" href="assets/dc-favicon-pack/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/dc-favicon-pack/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/dc-favicon-pack/favicon-16x16.png" />
@@ -795,10 +795,10 @@
         align-items: center;
         justify-content: center;
         padding: clamp(1.25rem, 3vw, 2rem) clamp(1.75rem, 4.5vw, 3rem);
-        background: rgba(0, 0, 0, 0.01);
+        background: rgba(13, 27, 42, 0.032);
         border-radius: 12px;
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
       }
 
       .hero-visual-lockup {
@@ -830,6 +830,10 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
+        .hero-character {
+          display: none;
+        }
+
         .placeholder-hero--bountt::before,
         .placeholder-hero--bountt::after,
         .hero-thumb-texture {
@@ -1480,6 +1484,100 @@
           --surfer-perspective: 1600;
           --surfer-perspective-origin-y: 44%;
         }
+
+        .collection-surfer.is-mobile {
+          height: auto;
+          min-height: 0;
+          overflow: visible;
+          pointer-events: auto;
+          touch-action: pan-y;
+          overscroll-behavior-y: auto;
+          --surfer-mobile-auto-speed: 56;
+          --surfer-card-w: 240px;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__scroller,
+        .collection-surfer.is-mobile .collection-surfer__scroller-inner,
+        .collection-surfer.is-mobile .collection-surfer__stage,
+        .collection-surfer.is-mobile .collection-surfer__viewport {
+          height: auto !important;
+          min-height: 0;
+          overflow: visible;
+          touch-action: pan-y;
+          pointer-events: auto;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__stage {
+          position: relative;
+          top: auto;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__scene {
+          position: relative;
+          inset: auto;
+          display: block;
+          overflow: hidden;
+          overscroll-behavior: contain;
+          justify-content: flex-start;
+          padding: clamp(0.75rem, 3vw, 1.25rem) clamp(1rem, 4vw, 1.5rem);
+          perspective: none;
+          min-height: 0;
+          touch-action: pan-y;
+          cursor: grab;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__scene:active {
+          cursor: grabbing;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__track {
+          display: flex;
+          align-items: flex-start;
+          gap: 1.5rem;
+          width: max-content;
+          height: auto;
+          will-change: transform;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__card,
+        .collection-surfer.is-mobile .collection-surfer__card-media,
+        .collection-surfer.is-mobile .collection-surfer__card-media img {
+          width: var(--surfer-card-w);
+          min-width: var(--surfer-card-w);
+          max-width: var(--surfer-card-w);
+          transform: none !important;
+          scale: none;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__card {
+          position: relative;
+          top: auto;
+          left: auto;
+          flex-shrink: 0;
+          backface-visibility: visible;
+        }
+
+        .collection-surfer.is-mobile .collection-surfer__card-media img {
+          height: auto;
+          max-height: 360px;
+          object-fit: contain;
+        }
+      }
+
+      @media (max-width: 640px) {
+        #the-result {
+          margin-top: clamp(-1.5rem, -5vw, -0.5rem);
+        }
+
+        .collection-surfer.is-mobile {
+          --surfer-card-w: 220px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .collection-surfer.is-mobile {
+          --surfer-card-w: 200px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -1603,6 +1701,15 @@
 
       #solution-lottie svg {
         display: block;
+      }
+
+      @media (max-width: 640px) {
+        .solution-card-left,
+        #solution-lottie,
+        #solution-lottie > div,
+        #solution-lottie svg {
+          background: transparent !important;
+        }
       }
 
       .solution-features {
@@ -2088,6 +2195,19 @@
         .placeholder-hero.placeholder-hero--bountt {
           order: 2;
           margin-bottom: clamp(1rem, 3vw, 1.5rem);
+          background: #0d1b2a;
+          transform: translateZ(0);
+        }
+
+        .placeholder-hero--bountt::before,
+        .placeholder-hero--bountt::after,
+        .hero-thumb-texture {
+          transform: translateZ(0);
+        }
+
+        .hero-thumb-texture {
+          mix-blend-mode: normal;
+          opacity: 0.32;
         }
 
         .hero__ctas {
@@ -2121,6 +2241,9 @@
 
         .hero-content-container {
           padding: clamp(1rem, 3vw, 1.25rem) clamp(1.25rem, 4vw, 1.5rem);
+          background: rgba(13, 27, 42, 0.032);
+          -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
         }
 
         .problem-evidence__stack,
@@ -2316,9 +2439,8 @@
         }
 
         .collection-surfer.is-mobile {
-          pointer-events: none;
           touch-action: pan-y;
-          overscroll-behavior: auto;
+          overscroll-behavior-y: auto;
           overflow: visible;
         }
 
@@ -2680,21 +2802,17 @@
               <div class="hero-thumb-texture" aria-hidden="true"></div>
               <div class="hero-content-container">
                 <div class="hero-visual-lockup">
-                  <video
+                  <img
                     class="hero-character"
-                    autoplay
-                    muted
-                    playsinline
-                    loop
-                    preload="auto"
+                    src="assets/bountt-character-pingpong.gif"
+                    alt=""
+                    width="1420"
+                    height="1574"
+                    loading="eager"
+                    decoding="async"
                     tabindex="-1"
                     aria-hidden="true"
-                  >
-                    <source
-                      src="assets/bountt-character-animation-pingpong.webm"
-                      type="video/webm"
-                    />
-                  </video>
+                  />
                   <span class="hero-visual__word">bountt.</span>
                 </div>
               </div>
@@ -3445,7 +3563,8 @@
         const scrollerInner = document.querySelector("[data-collection-scroller-inner]");
         const stage = root?.querySelector(".collection-surfer__stage");
         const viewport = root?.querySelector(".collection-surfer__viewport");
-        if (!root || !track || !scroller || !scrollerInner || !stage || !viewport) return;
+        const scene = root?.querySelector(".collection-surfer__scene");
+        if (!root || !track || !scroller || !scrollerInner || !stage || !viewport || !scene) return;
 
         const ITEMS = [
           {
@@ -3520,7 +3639,7 @@
           card.className = "collection-surfer__card";
           card.innerHTML = `
             <div class="collection-surfer__card-media">
-              <img src="${item.image}" alt="${item.alt}" loading="lazy" decoding="async" />
+              <img src="${item.image}" alt="${item.alt}" loading="eager" decoding="async" />
             </div>
           `;
           track.appendChild(card);
@@ -3560,6 +3679,15 @@
         let rafId = 0;
         let autoProgress = 0;
         let lastFrameTime = 0;
+        let mobileLoopWidth = 0;
+        let mobileOffset = 0;
+        let mobileUserInteracting = false;
+        let mobileResumeTimer = 0;
+        let mobileScrollBound = false;
+        let mobileDragAxis = null;
+        let mobileDragStartX = 0;
+        let mobileDragStartY = 0;
+        let mobileDragStartOffset = 0;
         const scrollSpring = { value: 0, velocity: 0, target: 0 };
 
         const springStep = (state, target, dt, opts, min, max) => {
@@ -3637,7 +3765,12 @@
         };
 
         const onGalleryImagesReady = () => {
-          if (isMobile || isReduced) return;
+          if (isMobile && !isReduced) {
+            measureMobileLoop();
+            applyMobileStrip();
+            return;
+          }
+          if (isReduced) return;
           updateScrollRange();
           syncScrollSpring();
         };
@@ -3698,12 +3831,23 @@
           rafId = requestAnimationFrame(tickDesktop);
         };
 
-        const tickMobile = () => {
-          const cfg = readSurferConfig();
-          autoProgress += cfg.autoSpeed;
-          const index = autoProgress % loopDistance;
-          applyScene(index);
-          rafId = requestAnimationFrame(tickMobile);
+        const tickMobileStrip = (now) => {
+          if (!lastFrameTime) lastFrameTime = now;
+          let dt = (now - lastFrameTime) / 1000;
+          lastFrameTime = now;
+          dt = Math.min(Math.max(dt, 0.001), 0.05);
+
+          if (!mobileUserInteracting && mobileLoopWidth > 0) {
+            const speed = readVar(root, "--surfer-mobile-auto-speed", 56);
+            mobileOffset += speed * dt;
+            normalizeMobileOffset();
+            applyMobileStrip();
+          } else if (mobileLoopWidth <= 0) {
+            measureMobileLoop();
+            applyMobileStrip();
+          }
+
+          rafId = requestAnimationFrame(tickMobileStrip);
         };
 
         const stopLoop = () => {
@@ -3712,25 +3856,142 @@
         };
 
         const clearScene = () => {
+          if (isMobile) {
+            cards.forEach((card) => {
+              card.style.transform = "";
+            });
+            return;
+          }
           track.style.transform = "";
           cards.forEach((card) => {
             card.style.transform = "";
           });
         };
 
+        const applyMobileStrip = () => {
+          track.style.transform = `translate3d(${-mobileOffset}px, 0, 0)`;
+        };
+
+        const ensureMobileDuplicates = () => {
+          for (let i = 0; i < itemCount; i++) {
+            const srcImg = cards[i]?.querySelector("img");
+            const dupImg = cards[i + itemCount]?.querySelector("img");
+            if (srcImg && dupImg) {
+              dupImg.src = srcImg.src;
+              dupImg.alt = srcImg.alt;
+            }
+          }
+        };
+
+        const measureMobileLoop = () => {
+          const first = cards[0];
+          const loopEnd = cards[itemCount - 1];
+          if (first && loopEnd) {
+            const start = first.offsetLeft;
+            const end = loopEnd.offsetLeft + loopEnd.offsetWidth;
+            const styles = getComputedStyle(track);
+            const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+            mobileLoopWidth = Math.max(end - start + gap, track.scrollWidth / 2, 1);
+          } else {
+            mobileLoopWidth = track.scrollWidth > 0 ? track.scrollWidth / 2 : 0;
+          }
+          return mobileLoopWidth;
+        };
+
+        const normalizeMobileOffset = () => {
+          if (mobileLoopWidth <= 0) return;
+          if (mobileOffset >= mobileLoopWidth) {
+            mobileOffset %= mobileLoopWidth;
+          } else if (mobileOffset < 0) {
+            mobileOffset =
+              ((mobileOffset % mobileLoopWidth) + mobileLoopWidth) % mobileLoopWidth;
+          }
+        };
+
+        const pauseMobileAuto = (delay = 2000) => {
+          mobileUserInteracting = true;
+          clearTimeout(mobileResumeTimer);
+          mobileResumeTimer = window.setTimeout(() => {
+            mobileUserInteracting = false;
+            lastFrameTime = 0;
+          }, delay);
+        };
+
+        const bindMobileScroll = () => {
+          if (mobileScrollBound) return;
+          mobileScrollBound = true;
+
+          const onTouchStart = (event) => {
+            if (event.touches.length !== 1) return;
+            mobileDragAxis = null;
+            mobileDragStartX = event.touches[0].clientX;
+            mobileDragStartY = event.touches[0].clientY;
+            mobileDragStartOffset = mobileOffset;
+          };
+
+          const onTouchMove = (event) => {
+            if (event.touches.length !== 1) return;
+            const dx = event.touches[0].clientX - mobileDragStartX;
+            const dy = event.touches[0].clientY - mobileDragStartY;
+
+            if (!mobileDragAxis && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+              mobileDragAxis = Math.abs(dx) > Math.abs(dy) * 1.15 ? "x" : "y";
+            }
+
+            if (mobileDragAxis !== "x") return;
+
+            event.preventDefault();
+            if (!mobileUserInteracting) pauseMobileAuto(2200);
+            mobileOffset = mobileDragStartOffset - dx;
+            normalizeMobileOffset();
+            applyMobileStrip();
+          };
+
+          const onTouchEnd = () => {
+            mobileDragAxis = null;
+          };
+
+          scene.addEventListener("touchstart", onTouchStart, { passive: true });
+          scene.addEventListener("touchmove", onTouchMove, { passive: false });
+          scene.addEventListener("touchend", onTouchEnd, { passive: true });
+          scene.addEventListener("touchcancel", onTouchEnd, { passive: true });
+        };
+
+        const syncMobileCards = () => {
+          cards.forEach((card, i) => {
+            card.hidden = false;
+            const isDuplicate = i >= itemCount;
+            card.classList.toggle("is-surfer-duplicate", isDuplicate);
+            card.setAttribute("aria-hidden", isDuplicate ? "true" : "false");
+          });
+          if (isMobile) ensureMobileDuplicates();
+        };
+
         const startLoop = () => {
           stopLoop();
+          clearTimeout(mobileResumeTimer);
+          mobileUserInteracting = false;
+          syncMobileCards();
+
           if (isReduced) {
             clearScene();
             return;
           }
+
           if (isMobile) {
-            rafId = requestAnimationFrame(tickMobile);
-          } else {
+            clearScene();
+            bindMobileScroll();
+            mobileOffset = 0;
+            measureMobileLoop();
+            applyMobileStrip();
             lastFrameTime = 0;
-            syncScrollSpring();
-            rafId = requestAnimationFrame(tickDesktop);
+            rafId = requestAnimationFrame(tickMobileStrip);
+            return;
           }
+
+          lastFrameTime = 0;
+          syncScrollSpring();
+          rafId = requestAnimationFrame(tickDesktop);
         };
 
         const setMode = () => {
@@ -3752,6 +4013,12 @@
         reducedMq.addEventListener("change", setMode);
         window.addEventListener("resize", () => {
           updateScrollRange();
+          if (isMobile && !isReduced) {
+            measureMobileLoop();
+            normalizeMobileOffset();
+            applyMobileStrip();
+            return;
+          }
           if (!isMobile && !isReduced) {
             scrollSpring.target = getScrollIndex();
             applyScene(scrollSpring.value);
@@ -3760,7 +4027,6 @@
 
         setMode();
         waitForGalleryImages();
-        applyScene(0);
       })();
 
       (function initImgModal() {

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" href="assets/dc-favicon-pack/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/dc-favicon-pack/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/dc-favicon-pack/favicon-16x16.png" />
@@ -1154,6 +1154,11 @@
         padding: clamp(1.35rem, 2.5vw, 1.85rem) clamp(1.5rem, 3vw, 2.25rem);
         border-radius: 8px;
         background: rgba(21, 66, 9, 0.08);
+      }
+
+      #download-flow,
+      #download-flow .section__body--tight {
+        overflow: visible;
       }
 
       .download-impact__confetti {
@@ -3408,6 +3413,35 @@
       }
 
       @media (max-width: 640px) {
+        #intent-onboarding .user-types__icon,
+        #intent-onboarding .user-types__icon svg,
+        .onboarding-demo[data-layout="mobile"] .user-types__icon,
+        .onboarding-demo[data-layout="mobile"] .user-types__icon svg {
+          overflow: visible;
+        }
+
+        #intent-onboarding foreignObject,
+        .onboarding-demo[data-layout="mobile"] foreignObject {
+          display: none;
+        }
+
+        #intent-onboarding [data-figma-bg-blur-radius],
+        .onboarding-demo[data-layout="mobile"] [data-figma-bg-blur-radius] {
+          opacity: 1;
+        }
+
+        #intent-onboarding use[filter],
+        .onboarding-demo[data-layout="mobile"] use[filter] {
+          filter: none !important;
+        }
+
+        #intent-onboarding .user-types__icon-layer--bg,
+        #intent-onboarding .user-types__icon-layer--fg-visual,
+        .onboarding-demo[data-layout="mobile"] .user-types__icon-layer--bg,
+        .onboarding-demo[data-layout="mobile"] .user-types__icon-layer--fg-visual {
+          transform-box: view-box;
+        }
+
         #download-flow .section__body--tight + .download-flow-strip {
           margin-top: clamp(1.75rem, 5vw, 2.25rem);
         }
@@ -3818,7 +3852,7 @@
         .download-impact {
           margin-top: 1.25rem;
           padding: 1.15rem 1rem;
-          overflow-x: clip;
+          overflow: visible;
         }
 
         .download-impact__header {
@@ -3847,7 +3881,7 @@
         }
 
         .download-impact__confetti {
-          inset: -4px;
+          inset: -48px -22px;
         }
 
         .cs-nav-card {

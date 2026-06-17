@@ -130,6 +130,10 @@
     pointer-events: none;
   }
 
+  html:has(.cs-nav-shell.is-in-hero) .layout .main {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem) !important;
+  }
+
   .cs-nav {
     display: flex;
     position: relative;
@@ -200,6 +204,10 @@
     border-bottom-color: rgba(255, 255, 255, 0.14);
   }
 
+  .cs-nav__drawer a:has(+ .cs-nav__drawer-social) {
+    border-bottom: none;
+  }
+
   .cs-nav__drawer a.cs-nav__back {
     color: color-mix(in srgb, var(--mobile-nav-fg) 72%, transparent);
   }
@@ -215,6 +223,7 @@
   .cs-nav__drawer-social {
     flex: 0 0 auto;
     padding: 0.5rem clamp(1.25rem, 5vw, 2rem) 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
 
   .cs-nav__drawer nav .cs-nav__drawer-social {

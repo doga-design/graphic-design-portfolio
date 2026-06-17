@@ -16,6 +16,8 @@
   let selectionButton = null;
   let quoteBlock = null;
   let originalFetch = null;
+  let selectionButtonPressText = "";
+  let lastSelectionButtonActivation = 0;
 
   function getPanel() {
     return document.querySelector(PANEL_SELECTOR);
@@ -75,10 +77,17 @@
 
     selectionButton.addEventListener("mousedown", (event) => {
       event.preventDefault();
+      selectionButtonPressText = selectedText || selectionButton.dataset.selectedText || "";
     });
     selectionButton.addEventListener("touchstart", (event) => {
-      event.preventDefault();
-    }, { passive: false });
+      selectionButtonPressText = selectedText || selectionButton.dataset.selectedText || "";
+      event.stopPropagation();
+    }, { passive: true });
+    selectionButton.addEventListener("touchend", handleSelectionButtonClick);
+    selectionButton.addEventListener("pointerup", (event) => {
+      if (event.pointerType === "mouse") return;
+      handleSelectionButtonClick(event);
+    });
     selectionButton.addEventListener("click", handleSelectionButtonClick);
 
     document.body.append(selectionButton);
@@ -92,6 +101,7 @@
     }
 
     selectedText = "";
+    delete selectionButton.dataset.selectedText;
     selectionButton.classList.remove("is-visible", "is-repositioning");
   }
 
@@ -132,6 +142,7 @@
 
   function showSelectionButton(rect, text) {
     selectedText = text;
+    ensureSelectionButton().dataset.selectedText = text;
     positionSelectionButton(rect);
   }
 
@@ -296,9 +307,14 @@
     event.preventDefault();
     event.stopPropagation();
 
-    const quote = selectedText;
+    const now = Date.now();
+    if (now - lastSelectionButtonActivation < 450) return;
+    lastSelectionButtonActivation = now;
+
+    const quote = selectedText || selectionButtonPressText || selectionButton?.dataset.selectedText || "";
     if (!quote) return;
 
+    selectionButtonPressText = "";
     hideSelectionButton();
     window.openDodollmPanel?.();
     attachedQuote = quote;
@@ -421,6 +437,7 @@
   document.addEventListener("scroll", repositionVisibleButton, true);
   window.addEventListener("resize", repositionVisibleButton);
   document.addEventListener("selectionchange", () => {
+    if (selectionButtonPressText) return;
     if (!normalizeText(window.getSelection()?.toString() ?? "")) {
       hideSelectionButton();
     }

@@ -49,9 +49,13 @@
 
   const isDrawerOpen = () => shell.classList.contains("is-drawer-open");
 
+  let inHero = false;
+
   const applyNavHidden = () => {
-    const hidden = interactionHidden || scrollHidden;
+    const heroHidden = inHero && !isDrawerOpen();
+    const hidden = interactionHidden || scrollHidden || heroHidden;
     shell.classList.toggle("is-scroll-hidden", hidden);
+    shell.classList.toggle("is-in-hero", inHero);
     if (hidden && isDrawerOpen()) close();
   };
 
@@ -174,6 +178,7 @@
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Open menu");
     syncMobileAiFab();
+    applyNavHidden();
   };
 
   const open = () => {
@@ -200,17 +205,67 @@
     else open();
   });
 
-  drawerInner.querySelectorAll("nav a").forEach((link) => {
-    link.addEventListener("click", () => close());
-  });
+  const bindDrawerLinks = () => {
+    drawerInner.querySelectorAll("nav a").forEach((link) => {
+      if (!(link instanceof HTMLAnchorElement) || link.dataset.csNavLinkBound) return;
+      link.dataset.csNavLinkBound = "1";
+
+      const stopBubble = (event) => {
+        event.stopPropagation();
+      };
+
+      link.addEventListener("pointerdown", stopBubble, true);
+      link.addEventListener("touchstart", stopBubble, { capture: true, passive: true });
+
+      link.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        const href = link.getAttribute("href")?.trim();
+        if (!href) return;
+
+        if (href.startsWith("#")) {
+          event.preventDefault();
+          const targetId = href.slice(1);
+          const target = targetId ? document.getElementById(targetId) : null;
+          const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+          close();
+
+          window.requestAnimationFrame(() => {
+            if (target) {
+              target.scrollIntoView({
+                behavior: reduceMotion ? "auto" : "smooth",
+                block: "start",
+              });
+            } else {
+              window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+            }
+            history.pushState(null, "", href);
+          });
+          return;
+        }
+
+        if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+          close();
+          return;
+        }
+
+        event.preventDefault();
+        close();
+        window.location.assign(href);
+      });
+    });
+  };
+
+  bindDrawerLinks();
 
   document.addEventListener(
-    "pointerdown",
-    (e) => {
+    "click",
+    (event) => {
       if (!mobileMq.matches || !isDrawerOpen()) return;
-      const target = e.target;
-      if (!(target instanceof Node)) return;
-      if (shell.contains(target)) return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest(".cs-nav-shell")) return;
       close();
     },
     true
@@ -253,13 +308,20 @@
   const onScroll = () => {
     if (!isNavActive()) return;
 
-    if (reducedMq.matches) {
-      setScrollHidden(false);
-      lastY = Math.max(0, window.scrollY || window.pageYOffset);
+    const y = Math.max(0, window.scrollY || window.pageYOffset);
+
+    if (inHero) {
+      setScrollHidden(true);
+      lastY = y;
       return;
     }
 
-    const y = Math.max(0, window.scrollY || window.pageYOffset);
+    if (reducedMq.matches) {
+      setScrollHidden(false);
+      lastY = y;
+      return;
+    }
+
     const delta = y - lastY;
 
     if (isDrawerOpen()) {
@@ -288,17 +350,35 @@
     lastY = Math.max(0, window.scrollY || window.pageYOffset);
     interactionHidden = false;
     scrollHidden = false;
+    if (!mobileMq.matches) {
+      inHero = false;
+    }
     applyNavHidden();
     if (!mobileMq.matches) close();
     syncNavHeight();
     syncDrawerOpenHeight();
     syncMobileAiFab();
+    syncHeroState();
   };
 
   document.addEventListener("dodollm-panel-change", syncMobileAiFab);
 
-  const homeSection = document.getElementById("home");
   const liquidBg = document.getElementById("liquid-bg");
+
+  const getHeroZoneElement = () => {
+    const home = document.getElementById("home");
+    if (home) return home;
+
+    const hero = document.querySelector(".layout .main__inner > .hero");
+    if (!hero) return null;
+
+    const next = hero.nextElementSibling;
+    if (next instanceof HTMLElement && next.classList.contains("placeholder-hero")) {
+      return next;
+    }
+
+    return hero;
+  };
 
   const setPastHome = (pastHome) => {
     shell.classList.toggle("is-past-home", pastHome);
@@ -307,19 +387,56 @@
     liquidBg?.classList.toggle("is-past-home", pastHome);
   };
 
-  if (homeSection) {
-    const homeObserver = new IntersectionObserver(
+  const setInHero = (nextInHero) => {
+    if (!mobileMq.matches) {
+      if (inHero) {
+        inHero = false;
+        setPastHome(false);
+        applyNavHidden();
+      }
+      return;
+    }
+
+    const pastHero = !nextInHero;
+    if (inHero === nextInHero) {
+      setPastHome(pastHero);
+      return;
+    }
+
+    inHero = nextInHero;
+    setPastHome(pastHero);
+    applyNavHidden();
+    if (!inHero) onScroll();
+  };
+
+  const syncHeroState = () => {
+    const heroZone = getHeroZoneElement();
+    if (!heroZone || !mobileMq.matches) {
+      setInHero(false);
+      return;
+    }
+
+    const rect = heroZone.getBoundingClientRect();
+    const pastHero = rect.bottom <= 0 && rect.top < 0;
+    setInHero(!pastHero);
+  };
+
+  const heroZone = getHeroZoneElement();
+  if (heroZone) {
+    const heroObserver = new IntersectionObserver(
       ([entry]) => {
         if (!mobileMq.matches) {
-          setPastHome(false);
+          setInHero(false);
           return;
         }
-        const pastHome = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-        setPastHome(pastHome);
+
+        const pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        setInHero(!pastHero);
       },
-      { threshold: [0, 0.01] }
+      { threshold: [0, 0.01, 0.1] }
     );
-    homeObserver.observe(homeSection);
+    heroObserver.observe(heroZone);
+    syncHeroState();
   }
 
   window.addEventListener("scroll", onScrollRAF, { passive: true });

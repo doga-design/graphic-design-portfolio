@@ -17,6 +17,8 @@
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   --dodollm-selection-slide: 12px;
   opacity: 0;
   pointer-events: none;
@@ -127,6 +129,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .dodollm-selection-quote__remove {

@@ -127,6 +127,12 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
     height: 100dvh;
     max-height: 100dvh;
   }
+
+  .dodollm-panel__input {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+  }
 }
 
 .dodollm-panel__topbar {

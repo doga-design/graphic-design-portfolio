@@ -283,16 +283,20 @@
     },
   };
 
+  const SUGGESTION_WORK_OVERRIDES = {
+    "Tell me about your internal design tool project.": ["since67"],
+  };
+
   const SUGGESTION_FALLBACK_ANSWER =
     "I can answer that directly if you type it in, but this shortcut is still being wired up.";
 
   const SUGGESTION_ANSWERS = {
     "What kind of work do you do?":
-      "I work across product design, UX, branding, motion, and frontend development — building digital experiences end-to-end. I am in my second year of Graphic Design at George Brown Polytechnic (graduating September 2027), and before Canada I studied New Media in Turkey plus a year of Interaction Design at GBC. I also spent six-plus years in a family business doing logistics, sales, lead gen, and client-facing graphic design.",
+      "I work across product design, UX, branding, motion, and frontend development — building digital experiences end-to-end.",
     "Tell me about Bountt":
       "Bountt is a live React-based expense app I designed and built to reduce the awkwardness around shared costs. I focused on making group expenses feel clearer, calmer, and less transactional.",
     "Tell me about your internal design tool project.":
-      "I built an internal poster-design tool around the Since '67 Leafs campaign concept. It turns a visual system into something interactive, so people can generate campaign posters while the brand rules stay consistent.",
+      "I built an internal poster-design tool around the Since '67 Leafs campaign concept. It turns a visual system into something interactive, so designers can generate campaign posters while the brand rules stay consistent, without needing any tools.",
     "What makes your process different?":
       "I move between design and code instead of treating them as separate handoffs, and I bring years of real business experience from a family operation — logistics, sales, and client work — so I think about outcomes and constraints, not just screens.",
     "How do you approach a new project?":
@@ -415,7 +419,15 @@
     },
     {
       key: "since67",
-      aliases: ["since 67", "since '67", "since67", "leafs", "poster tool"],
+      aliases: [
+        "since 67",
+        "since '67",
+        "since67",
+        "leafs",
+        "poster tool",
+        "internal design tool",
+        "internal tool",
+      ],
       title: "Campaign system for Leafs fans that owns the wait since 1967.",
       image: "assets/since67-thumb.webp",
       alt: "Since '67 campaign thumbnail",
@@ -460,7 +472,6 @@
   let infoDisclaimerCloseTimer = null;
   let signatureTipOpen = false;
   let scrollLockListenersActive = false;
-  let scrollLockCount = 0;
 
   const SCROLL_KEYS = new Set([
     " ",
@@ -489,14 +500,12 @@
     if (SCROLL_KEYS.has(event.key)) event.preventDefault();
   };
 
-  const lockBackgroundScroll = () => {
-    scrollLockCount += 1;
-    if (scrollLockCount > 1) return;
+  const syncBackgroundScrollLock = (shouldLock) => {
+    if (shouldLock) {
+      if (scrollLockListenersActive) return;
 
-    document.documentElement.classList.add("dodollm-lock-scroll");
-    document.body.classList.add("dodollm-lock-scroll");
-
-    if (!scrollLockListenersActive) {
+      document.documentElement.classList.add("dodollm-lock-scroll");
+      document.body.classList.add("dodollm-lock-scroll");
       scrollLockListenersActive = true;
       window.addEventListener("wheel", preventBackgroundScroll, {
         passive: false,
@@ -505,23 +514,17 @@
         passive: false,
       });
       window.addEventListener("keydown", preventScrollKeys);
+      return;
     }
-  };
 
-  const unlockBackgroundScroll = () => {
-    if (scrollLockCount === 0) return;
-    scrollLockCount -= 1;
-    if (scrollLockCount > 0) return;
+    if (!scrollLockListenersActive) return;
 
     document.documentElement.classList.remove("dodollm-lock-scroll");
     document.body.classList.remove("dodollm-lock-scroll");
-
-    if (scrollLockListenersActive) {
-      scrollLockListenersActive = false;
-      window.removeEventListener("wheel", preventBackgroundScroll);
-      window.removeEventListener("touchmove", preventBackgroundScroll);
-      window.removeEventListener("keydown", preventScrollKeys);
-    }
+    scrollLockListenersActive = false;
+    window.removeEventListener("wheel", preventBackgroundScroll);
+    window.removeEventListener("touchmove", preventBackgroundScroll);
+    window.removeEventListener("keydown", preventScrollKeys);
   };
 
   const isOverlayPanel = () =>
@@ -701,12 +704,11 @@
     if (overlay) {
       backdrop.classList.toggle("is-open", isOpen);
       backdrop.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      if (isOpen && shouldLockBackgroundScroll()) lockBackgroundScroll();
-      else unlockBackgroundScroll();
+      syncBackgroundScrollLock(isOpen && shouldLockBackgroundScroll());
     } else {
       backdrop.classList.remove("is-open");
       backdrop.setAttribute("aria-hidden", "true");
-      unlockBackgroundScroll();
+      syncBackgroundScrollLock(false);
     }
 
     document.dispatchEvent(
@@ -732,6 +734,7 @@
 
   function closePanel() {
     if (!isPanelOpen()) return;
+    input.blur();
     document.body.classList.add("dodollm-panel-animating");
     panel.classList.remove("is-open");
     syncPanelLayout();
@@ -844,6 +847,12 @@
   }
 
   function getMentionedWorks(prompt) {
+    if (SUGGESTION_WORK_OVERRIDES[prompt]) {
+      return SUGGESTION_WORK_OVERRIDES[prompt]
+        .map((key) => works.find((work) => work.key === key))
+        .filter(Boolean);
+    }
+
     const normalized = normalizePrompt(prompt);
     const matches = works.filter((work) =>
       work.aliases.some((alias) => normalized.includes(alias))
@@ -1255,6 +1264,9 @@
 
   overlayMq.addEventListener("change", syncPanelLayout);
   window.addEventListener("resize", handleWindowResize);
+  window.addEventListener("pageshow", () => {
+    if (!isPanelOpen()) syncBackgroundScrollLock(false);
+  });
   renderInitialState();
 
   window.openDodollmPanel = openPanel;

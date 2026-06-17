@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" href="assets/dc-favicon-pack/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/dc-favicon-pack/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/dc-favicon-pack/favicon-16x16.png" />
@@ -1355,8 +1355,41 @@
         }
 
         #motion-teaser .video-pair {
-          width: calc(100vw - clamp(1.25rem, 4vw, 2rem));
-          margin-right: calc(-1 * clamp(1.25rem, 4vw, 2rem));
+          width: 100%;
+          max-width: 100%;
+          margin-left: auto;
+          margin-right: auto;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: center;
+        }
+
+        #motion-teaser .video-pair__item--desktop,
+        #motion-teaser .video-pair__item--mobile {
+          width: 100%;
+          max-width: 100%;
+        }
+
+        #motion-teaser .video-pair__controls {
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          pointer-events: auto;
+        }
+
+        .video-cinematic__stage--mobile {
+          width: 100%;
+          max-width: calc(100vw - 2rem);
+        }
+
+        .video-cinematic__video--mobile {
+          width: 100%;
+          max-width: calc(100vw - 2rem);
+        }
+
+        .video-cinematic__close {
+          top: max(0.75rem, env(safe-area-inset-top, 0px));
+          right: 0.75rem;
         }
 
         .section {
@@ -1488,13 +1521,6 @@
 
         .tool-walkthrough .video-pair__video {
           aspect-ratio: 16 / 9;
-        }
-
-        #motion-teaser .video-pair {
-          --video-mobile-width: min(
-            320px,
-            calc((100% - var(--video-gap)) * 81 / 337)
-          );
         }
 
       }
@@ -2199,6 +2225,8 @@
       })();
 
       (function initHoverPlayVideos() {
+        const isTouchUi = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
         const getVideoLabel = (item) => {
           if (item.classList.contains("video-pair__item--walkthrough")) return "poster tool walkthrough";
           if (item.classList.contains("video-pair__item--mobile")) return "mobile video";
@@ -2312,31 +2340,38 @@
 
             item.addEventListener("click", (event) => {
               if (event.target.closest("[data-sound-toggle]")) return;
+              if (event.target.closest("[data-expand-video]")) return;
 
-              if (isWalkthrough) {
+              if (isWalkthrough || isTouchUi) {
                 if (video.paused) {
                   item.dataset.userPaused = "false";
                   hidePauseFeedback();
-                  playVideo(video, item, false);
+                  group.querySelectorAll("video").forEach((other) => {
+                    if (other !== video) resetVideo(other, resetOnLeave);
+                  });
+                  playVideo(video, item, isWalkthrough ? false : resetOnLeave);
                   setPreviewing(true);
-                  showPlayFeedback();
+                  if (isWalkthrough) showPlayFeedback();
                 } else {
                   video.pause();
                   item.dataset.userPaused = "true";
                   setPreviewing(false);
-                  showPauseFeedback();
+                  if (isWalkthrough) showPauseFeedback();
                 }
                 return;
               }
 
               toggleSound();
             });
-            item.addEventListener("pointerenter", activate);
-            item.addEventListener("pointerleave", deactivate);
-            item.addEventListener("focusin", activate);
-            item.addEventListener("focusout", (event) => {
-              if (!item.contains(event.relatedTarget)) deactivate();
-            });
+
+            if (!isTouchUi) {
+              item.addEventListener("pointerenter", activate);
+              item.addEventListener("pointerleave", deactivate);
+              item.addEventListener("focusin", activate);
+              item.addEventListener("focusout", (event) => {
+                if (!item.contains(event.relatedTarget)) deactivate();
+              });
+            }
           });
         });
       })();
