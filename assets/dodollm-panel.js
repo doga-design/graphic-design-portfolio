@@ -764,6 +764,7 @@
     }
 
     if (!isPanelOpen()) return;
+    if (!isOverlayPanel()) return;
     const target = event.target;
     const path = event.composedPath?.();
     if (path?.includes(panel)) return;
