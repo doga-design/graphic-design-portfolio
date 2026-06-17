@@ -5457,10 +5457,9 @@
       (function initAboutEmailPill() {
         if (!window.matchMedia("(pointer: fine)").matches) return;
 
-        const link = document.querySelector("[data-about-email]");
-        if (!link) return;
+        const aboutText = document.querySelector("#about .about-text");
+        if (!aboutText) return;
 
-        const email = link.dataset.email || "dogacimen35@gmail.com";
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const pill = document.createElement("span");
         pill.className = "about-email-pill";
@@ -5476,6 +5475,7 @@
         document.body.appendChild(pill);
 
         const label = pill.querySelector(".about-email-pill__label");
+        let activeLink = null;
         let rafId = 0;
         let targetX = window.innerWidth / 2;
         let targetY = window.innerHeight / 2;
@@ -5483,6 +5483,14 @@
         let currentY = targetY;
         let restoreLabelId = 0;
         let bounceId = 0;
+
+        const getEmailLink = (target) => {
+          if (!(target instanceof Element)) return null;
+          return target.closest("[data-about-email]");
+        };
+
+        const getEmail = (link) =>
+          link?.dataset.email || "dogacimen35@gmail.com";
 
         const setLabel = (text) => {
           if (label) label.textContent = text;
@@ -5533,7 +5541,7 @@
           }, 540);
         };
 
-        const copyEmail = async () => {
+        const copyEmail = async (email) => {
           if (navigator.clipboard?.writeText) {
             await navigator.clipboard.writeText(email);
             return true;
@@ -5565,21 +5573,59 @@
           stopAnimation();
         };
 
-        link.addEventListener("pointerenter", onEnter);
-        link.addEventListener("pointermove", updatePosition);
-        link.addEventListener("pointerleave", onLeave);
-        link.addEventListener("pointercancel", onLeave);
+        aboutText.addEventListener("pointerover", (event) => {
+          const link = getEmailLink(event.target);
+          if (!link) return;
 
-        link.addEventListener("pointerdown", (event) => {
+          if (activeLink && activeLink !== link) {
+            onLeave();
+          }
+
+          if (activeLink !== link) {
+            activeLink = link;
+            onEnter(event);
+            return;
+          }
+
+          updatePosition(event);
+        });
+
+        aboutText.addEventListener("pointermove", (event) => {
+          if (!activeLink) return;
+          const link = getEmailLink(event.target);
+          if (link !== activeLink) return;
+          updatePosition(event);
+        });
+
+        aboutText.addEventListener("pointerout", (event) => {
+          if (!activeLink) return;
+          const link = getEmailLink(event.target);
+          if (link !== activeLink) return;
+
+          const related = event.relatedTarget;
+          if (related instanceof Node && activeLink.contains(related)) return;
+
+          activeLink = null;
+          onLeave();
+        });
+
+        aboutText.addEventListener("pointerdown", (event) => {
+          const link = getEmailLink(event.target);
+          if (!link) return;
+          activeLink = link;
           updatePosition(event);
           pill.classList.add("is-pressed");
         });
 
-        link.addEventListener("click", async (event) => {
+        aboutText.addEventListener("click", async (event) => {
+          const link = getEmailLink(event.target);
+          if (!link) return;
+
           event.preventDefault();
+          const email = getEmail(link);
 
           try {
-            const copied = await copyEmail();
+            const copied = await copyEmail(email);
             if (!copied) throw new Error("Copy failed");
 
             pill.classList.remove("is-pressed");
@@ -5605,7 +5651,10 @@
         window.addEventListener("pointercancel", () => {
           pill.classList.remove("is-pressed");
         });
-        window.addEventListener("blur", onLeave);
+        window.addEventListener("blur", () => {
+          activeLink = null;
+          onLeave();
+        });
       })();
     </script>
     <script>
