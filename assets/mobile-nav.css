@@ -1,7 +1,7 @@
 /* Shared mobile hamburger nav — unified shell (max-width 960px only) */
 @media (max-width: 960px) {
   :root {
-    --mobile-nav-height: 3.25rem;
+    --mobile-nav-height: 2.85rem;
     --mobile-nav-bg: var(--accent, #b03a39);
     --mobile-nav-fg: var(--bountt-accent, #faf0ca);
     --mobile-nav-offset: calc(
@@ -99,6 +99,13 @@
     -webkit-backdrop-filter: blur(20px) saturate(1.1);
   }
 
+  html:has(.layout) .cs-nav-shell:not(.is-drawer-open),
+  html:has(.layout) .cs-nav-shell.is-past-home:not(.is-drawer-open) {
+    background: var(--paper, #faf8f4);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .cs-nav-shell.is-drawer-open {
     color: var(--mobile-nav-fg);
     background: linear-gradient(
@@ -139,6 +146,7 @@
     position: relative;
     align-items: center;
     justify-content: space-between;
+    padding-block: 0.5rem;
     background: transparent;
     border-bottom: none;
     transform: none;
@@ -197,6 +205,19 @@
     flex-direction: column;
     flex: 0 0 auto;
     padding: 0.2rem clamp(1.25rem, 5vw, 2rem) 0;
+  }
+
+  .cs-nav__drawer nav a:not(.cs-nav__back) {
+    text-transform: lowercase;
+  }
+
+  .cs-nav__drawer nav a:not(.cs-nav__back)::first-letter {
+    text-transform: uppercase;
+  }
+
+  .cs-nav__drawer a.cs-nav__back {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
   .cs-nav__drawer a {
@@ -342,6 +363,7 @@
     font-weight: 500;
     line-height: 1.2;
     letter-spacing: -0.02em;
+    text-transform: none;
   }
 
   .mobile-ai-fab {

@@ -137,7 +137,7 @@
           <svg class="cs-nav__drawer-ai-icon" viewBox="0 0 66 81" aria-hidden="true">
             <use href="assets/icons.svg#icon-dodollm-sparkle" />
           </svg>
-          <span class="cs-nav__drawer-ai-cta">ask AI</span>
+          <span class="cs-nav__drawer-ai-cta">Ask AI</span>
         </button>
       `;
       drawerInner.appendChild(footer);
@@ -298,6 +298,9 @@
     if (!hidden) onScroll();
   };
 
+  const isCaseStudyPage = () =>
+    Boolean(document.querySelector(".layout")) && !document.getElementById("home");
+
   const isNavActive = () => {
     if (!mobileMq.matches) return false;
     const home = document.getElementById("home");
@@ -312,6 +315,12 @@
 
     if (inHero) {
       setScrollHidden(true);
+      lastY = y;
+      return;
+    }
+
+    if (isCaseStudyPage()) {
+      setScrollHidden(false);
       lastY = y;
       return;
     }

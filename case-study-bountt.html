@@ -2143,6 +2143,14 @@
         .disc--4 {
           --disc-size: 105px;
         }
+
+        .cta-block--try::before {
+          left: auto;
+          right: -25%;
+          bottom: -44px;
+          width: min(80%, 380px);
+          transform: none;
+        }
       }
 
       /* Mobile: max-width 640px */
@@ -2427,6 +2435,14 @@
 
         .cta-block {
           padding-inline: clamp(1.5rem, 5vw, 2rem);
+        }
+
+        .cta-block--try::before {
+          left: auto;
+          right: -35%;
+          bottom: -35px;
+          width: min(82%, 340px);
+          transform: none;
         }
 
         .cs-nav-cards {
@@ -2781,7 +2797,7 @@
               </div>
               <div>
                 <p class="meta__label">Type</p>
-                <p class="meta__value">Solo Project</p>
+                <p class="meta__value">Mobile Web App</p>
               </div>
               <div>
                 <p class="meta__label">Stack</p>
