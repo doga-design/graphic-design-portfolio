@@ -1403,7 +1403,7 @@
         width: 100%;
         margin-bottom: 0;
         background: var(--paper);
-        overflow: visible;
+        overflow: hidden;
       }
 
       .about-section {
@@ -1427,6 +1427,17 @@
         background: var(--paper);
         opacity: 0.72;
         pointer-events: none;
+      }
+
+      @media (min-width: 961px) {
+        #about-dithering-canvas {
+          top: 22%;
+          right: 0;
+          bottom: -50px;
+          left: 0;
+          width: 100%;
+          height: auto;
+        }
       }
 
       .about-grid {
@@ -1520,23 +1531,29 @@
         background-image: linear-gradient(var(--paper), var(--paper));
       }
 
-      .about-line--accent {
-        background-image: linear-gradient(var(--accent), var(--accent));
-      }
-
       .about-line.is-highlighted {
         background-size: 100% 100%;
-      }
-
-      .about-line--accent.is-highlighted {
-        color: #fff;
       }
 
       .about-line--paper.is-highlighted {
         color: inherit;
       }
 
-      .about-line--accent.is-highlighted .about-text__link {
+      .about-line--contact .about-text__link {
+        display: inline;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        padding: 0.1em 0.14em;
+        color: var(--accent);
+        background-image: linear-gradient(var(--accent), var(--accent));
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: 0% 100%;
+        transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .about-line--contact.is-highlighted .about-text__link {
+        background-size: 100% 100%;
         color: #fff;
         text-decoration-color: rgba(255, 255, 255, 0.65);
       }
@@ -1549,18 +1566,20 @@
 
       @media (max-width: 960px) {
         .about-line--paper,
-        .about-line--accent {
+        .about-line--contact {
           background-image: linear-gradient(var(--paper), var(--paper));
         }
 
-        .about-line--accent.is-highlighted,
-        .about-line--paper.is-highlighted {
+        .about-line--paper.is-highlighted,
+        .about-line--contact.is-highlighted {
           color: inherit;
         }
 
-        .about-line--accent.is-highlighted .about-text__link {
-          color: var(--accent);
-          text-decoration-color: currentColor;
+        .about-line--contact.is-highlighted .about-text__link {
+          background-image: linear-gradient(var(--accent), var(--accent));
+          background-size: 100% 100%;
+          color: #fff;
+          text-decoration-color: rgba(255, 255, 255, 0.65);
         }
       }
 
@@ -1709,9 +1728,69 @@
         }
       }
 
+      .about-email-pill.is-anchor-above {
+        opacity: 1;
+        transform: translate3d(-50%, calc(-100% - 12px), 0) scale(0.86);
+        transform-origin: center bottom;
+        transition:
+          width 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          padding 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          border-radius 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          background 180ms ease,
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          visibility 0ms linear 320ms;
+      }
+
+      .about-email-pill.is-anchor-above.is-visible {
+        opacity: 1;
+        transform: translate3d(-50%, calc(-100% - 12px), 0) scale(1);
+        transition:
+          width 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          padding 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          border-radius 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          background 180ms ease,
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          visibility 0ms linear 0ms;
+      }
+
+      .about-email-pill.is-anchor-above.is-visible.is-pressed {
+        background: #8e2e2d;
+        transform: translate3d(-50%, calc(-100% - 12px), 0) scale(0.92);
+      }
+
+      .about-email-pill.is-anchor-above.is-bouncing {
+        animation: about-email-pill-bounce-above 520ms cubic-bezier(0.22, 1.32, 0.36, 1);
+      }
+
+      .about-email-pill.is-anchor-above .about-email-pill__content {
+        opacity: 1;
+        transition: transform 260ms cubic-bezier(0.22, 0.78, 0.18, 1) 40ms;
+      }
+
+      @keyframes about-email-pill-bounce-above {
+        0% {
+          transform: translate3d(-50%, calc(-100% - 12px), 0) scale(0.92);
+        }
+
+        45% {
+          transform: translate3d(-50%, calc(-100% - 12px), 0) scale(1.06);
+        }
+
+        100% {
+          transform: translate3d(-50%, calc(-100% - 12px), 0) scale(1);
+        }
+      }
+
       body.about-email-pill-active,
       body.about-email-pill-active .about-text__link--email {
         cursor: none !important;
+      }
+
+      @media (max-width: 960px) {
+        .about-email-pill.is-anchor-above,
+        .about-email-pill.is-anchor-above.is-visible {
+          will-change: width, padding, border-radius, transform, background;
+        }
       }
 
       .about-chip__label {
@@ -2347,7 +2426,9 @@
         }
 
         .about-email-pill,
-        .about-email-pill__content {
+        .about-email-pill__content,
+        .about-email-pill.is-anchor-above,
+        .about-email-pill.is-anchor-above .about-email-pill__content {
           animation: none;
           transition: none;
         }
@@ -5456,6 +5537,7 @@
     <script>
       (function initAboutEmailPill() {
         if (!window.matchMedia("(pointer: fine)").matches) return;
+        if (window.matchMedia("(max-width: 960px)").matches) return;
 
         const aboutText = document.querySelector("#about .about-text");
         if (!aboutText) return;
@@ -5618,6 +5700,8 @@
         });
 
         aboutText.addEventListener("click", async (event) => {
+          if (window.matchMedia("(max-width: 960px)").matches) return;
+
           const link = getEmailLink(event.target);
           if (!link) return;
 
@@ -5654,6 +5738,163 @@
         window.addEventListener("blur", () => {
           activeLink = null;
           onLeave();
+        });
+      })();
+    </script>
+    <script>
+      (function initAboutEmailMobilePill() {
+        const aboutText = document.querySelector("#about .about-text");
+        if (!aboutText) return;
+
+        const mobileMq = window.matchMedia("(max-width: 960px)");
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const HOLD_MS = 3200;
+
+        const pill = document.createElement("span");
+        pill.className = "about-email-pill is-anchor-above";
+        pill.setAttribute("role", "status");
+        pill.setAttribute("aria-live", "polite");
+        pill.innerHTML = `
+          <span class="about-email-pill__content">
+            <svg class="icon about-email-pill__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="assets/icons.svg#icon-mail" />
+            </svg>
+            <span class="about-email-pill__label">email copied!</span>
+          </span>
+        `;
+        document.body.appendChild(pill);
+
+        const label = pill.querySelector(".about-email-pill__label");
+        let holdTimer = 0;
+        let bounceTimer = 0;
+        let activeLink = null;
+
+        const isMobileMode = () => mobileMq.matches;
+
+        const getEmailLink = (target) => {
+          if (!(target instanceof Element)) return null;
+          return target.closest("[data-about-email]");
+        };
+
+        const getEmail = (link) =>
+          link?.dataset.email || "dogacimen35@gmail.com";
+
+        const copyEmailSync = (email) => {
+          const field = document.createElement("textarea");
+          field.value = email;
+          field.setAttribute("readonly", "");
+          field.style.position = "absolute";
+          field.style.left = "-9999px";
+          field.style.top = "0";
+          document.body.appendChild(field);
+
+          const selection = document.getSelection();
+          const selected =
+            selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+          field.select();
+          field.setSelectionRange(0, email.length);
+
+          let copied = false;
+          try {
+            copied = document.execCommand("copy");
+          } catch {
+            copied = false;
+          }
+
+          if (selected && selection) {
+            selection.removeAllRanges();
+            selection.addRange(selected);
+          } else if (selection) {
+            selection.removeAllRanges();
+          }
+
+          field.remove();
+          return copied;
+        };
+
+        const positionAboveLink = (link) => {
+          const rect = link.getBoundingClientRect();
+          pill.style.left = `${rect.left + rect.width / 2}px`;
+          pill.style.top = `${rect.top}px`;
+        };
+
+        const runBounce = () => {
+          if (reduceMotion.matches) return;
+          pill.classList.remove("is-bouncing");
+          void pill.offsetWidth;
+          pill.classList.add("is-bouncing");
+          window.clearTimeout(bounceTimer);
+          bounceTimer = window.setTimeout(() => {
+            pill.classList.remove("is-bouncing");
+            bounceTimer = 0;
+          }, 540);
+        };
+
+        const hidePill = () => {
+          window.clearTimeout(holdTimer);
+          holdTimer = 0;
+          activeLink = null;
+          pill.classList.remove(
+            "is-visible",
+            "is-copied",
+            "is-pressed",
+            "is-bouncing"
+          );
+        };
+
+        const showCopiedPill = (link) => {
+          hidePill();
+          activeLink = link;
+          positionAboveLink(link);
+          if (label) label.textContent = "email copied!";
+
+          requestAnimationFrame(() => {
+            pill.classList.add("is-visible", "is-copied", "is-pressed");
+
+            requestAnimationFrame(() => {
+              pill.classList.remove("is-pressed");
+              runBounce();
+            });
+          });
+
+          holdTimer = window.setTimeout(hidePill, HOLD_MS);
+        };
+
+        const handleEmailTap = (event) => {
+          if (!isMobileMode()) return;
+
+          const link = getEmailLink(event.target);
+          if (!link) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          const copied = copyEmailSync(getEmail(link));
+
+          if (!copied) {
+            window.setTimeout(() => {
+              window.location.href = link.href;
+            }, 60);
+            return;
+          }
+
+          showCopiedPill(link);
+        };
+
+        aboutText.addEventListener("click", handleEmailTap, true);
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!activeLink || !pill.classList.contains("is-visible")) return;
+            positionAboveLink(activeLink);
+          },
+          { passive: true }
+        );
+
+        mobileMq.addEventListener("change", (event) => {
+          if (!event.matches) hidePill();
         });
       })();
     </script>

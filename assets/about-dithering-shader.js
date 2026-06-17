@@ -325,7 +325,7 @@ void main() {
   const startedAt = performance.now();
 
   function resize() {
-    const rect = about.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     width = Math.max(1, Math.round(rect.width * dpr));
     height = Math.max(1, Math.round(rect.height * dpr));

@@ -119,11 +119,11 @@
     return groups.map((nodes) => {
       const line = document.createElement("span");
       const paragraphIndex = targets.indexOf(root);
-      const isPaperLine = paragraphIndex < 2;
 
-      line.className = isPaperLine
-        ? "about-line about-line--paper"
-        : "about-line about-line--accent";
+      line.className =
+        paragraphIndex < 2
+          ? "about-line about-line--paper"
+          : "about-line about-line--paper about-line--contact";
       root.insertBefore(line, nodes[0]);
       nodes.forEach((node) => line.appendChild(node));
       return line;
