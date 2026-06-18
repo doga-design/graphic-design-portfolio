@@ -1,3 +1,5 @@
+import { createHash, randomUUID } from "node:crypto";
+
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const MODEL = "gpt-4o-mini";
 const MAX_MESSAGES = 12;
@@ -6,10 +8,14 @@ const MAX_TOTAL_CHARS = 6000;
 const MAX_PAGE_CONTEXT_TITLE_CHARS = 80;
 const MAX_PAGE_CONTEXT_PATH_CHARS = 120;
 const MAX_PAGE_CONTEXT_TEXT_CHARS = 14000;
+const MAX_SESSION_ID_CHARS = 80;
+const MAX_USER_AGENT_CHARS = 500;
+const MAX_URL_CHARS = 500;
 const RATE_LIMIT_MAX_REQUESTS = 20;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const MIN_REQUEST_DELAY_MS = 2000;
 const OPENAI_TIMEOUT_MS = 15000;
+const SUPABASE_TIMEOUT_MS = 3000;
 const ipRequestState = new Map();
 const CASE_STUDY_SLUGS = new Set([
   "bountt",
@@ -112,6 +118,15 @@ function getHeaderValue(value) {
   return typeof value === "string" ? value : "";
 }
 
+function getEnvValue(...names) {
+  for (const name of names) {
+    const value = process.env[name];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+
+  return "";
+}
+
 function isAllowedRequestSource(value) {
   return ALLOWED_SOURCE_MARKERS.some((marker) => value.includes(marker));
 }
@@ -165,6 +180,16 @@ function enforceIpLimits(ip) {
 
 function stripControlCharacters(value) {
   return value.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
+}
+
+function sanitizeText(value, maxChars) {
+  if (typeof value !== "string") return "";
+  return stripControlCharacters(value.trim()).slice(0, maxChars);
+}
+
+function sanitizeSessionId(value) {
+  const sessionId = sanitizeText(value, MAX_SESSION_ID_CHARS);
+  return /^[a-zA-Z0-9_-]{12,80}$/.test(sessionId) ? sessionId : randomUUID();
 }
 
 function sanitizeMessages(value) {
@@ -238,6 +263,80 @@ ${pageContext.text}
 `.trim();
 }
 
+function hashClientIp(ip) {
+  const salt = getEnvValue("CHAT_LOG_HASH_SALT");
+  if (!salt || !ip || ip === "unknown") return null;
+
+  return createHash("sha256").update(`${salt}:${ip}`).digest("hex");
+}
+
+function getRequestMetadata(req, body, ip) {
+  const country = sanitizeText(getHeaderValue(req.headers["x-vercel-ip-country"]), 8);
+  const region = sanitizeText(getHeaderValue(req.headers["x-vercel-ip-country-region"]), 80);
+  const city = sanitizeText(getHeaderValue(req.headers["x-vercel-ip-city"]), 120);
+  const referer = sanitizeText(getHeaderValue(req.headers.referer), MAX_URL_CHARS);
+  const origin = sanitizeText(getHeaderValue(req.headers.origin), MAX_URL_CHARS);
+
+  return {
+    session_id: sanitizeSessionId(body.sessionId),
+    ip_hash: hashClientIp(ip),
+    user_agent: sanitizeText(getHeaderValue(req.headers["user-agent"]), MAX_USER_AGENT_CHARS),
+    request_origin: origin || null,
+    request_referer: referer || null,
+    visitor_country: country || null,
+    visitor_region: region || null,
+    visitor_city: city ? decodeURIComponent(city) : null,
+  };
+}
+
+async function logChatExchange({ req, body, ip, cleanMessages, pageContext, assistantMessage }) {
+  const supabaseUrl = getEnvValue("SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL");
+  const serviceRoleKey = getEnvValue("SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !serviceRoleKey) return;
+
+  const latestUserMessage = [...cleanMessages].reverse().find((message) => message.role === "user");
+  if (!latestUserMessage?.content || !assistantMessage) return;
+
+  const metadata = getRequestMetadata(req, body, ip);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), SUPABASE_TIMEOUT_MS);
+
+  const payload = {
+    ...metadata,
+    user_message: latestUserMessage.content,
+    assistant_message: assistantMessage,
+    messages: cleanMessages,
+    page_context_type: pageContext?.type || null,
+    page_context_slug: pageContext?.slug || null,
+    page_context_title: pageContext?.title || null,
+    page_context_path: pageContext?.path || null,
+  };
+
+  try {
+    const response = await fetch(`${supabaseUrl.replace(/\/$/, "")}/rest/v1/chat_logs`, {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.error(`Chat log insert failed: ${response.status}`);
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") {
+      console.error("Chat log insert failed.");
+    }
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 function getErrorMessage(status) {
   if (status === 401 || status === 403) {
     return "Chat is not configured correctly.";
@@ -284,7 +383,8 @@ export default async function handler(req, res) {
   if (!cleanMessages.length) {
     return sendJson(res, 400, { error: "A message is required." });
   }
-  const pageContextPrompt = buildPageContextPrompt(sanitizePageContext(body.pageContext));
+  const pageContext = sanitizePageContext(body.pageContext);
+  const pageContextPrompt = buildPageContextPrompt(pageContext);
   const openAiMessages = [
     { role: "system", content: systemPrompt },
     ...(pageContextPrompt ? [{ role: "system", content: pageContextPrompt }] : []),
@@ -326,6 +426,15 @@ export default async function handler(req, res) {
     if (!content) {
       return sendJson(res, 502, { error: "Chat returned an empty response." });
     }
+
+    await logChatExchange({
+      req,
+      body,
+      ip,
+      cleanMessages,
+      pageContext,
+      assistantMessage: content,
+    });
 
     return sendJson(res, 200, { content });
   } catch (error) {
