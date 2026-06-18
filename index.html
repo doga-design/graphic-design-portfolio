@@ -2491,6 +2491,133 @@
         }
       }
 
+      /* Tablet: 641px–960px */
+      @media (min-width: 641px) and (max-width: 960px) {
+        .work-section {
+          padding-inline: clamp(1.5rem, 4vw, 2.5rem);
+        }
+
+        .work-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: stretch;
+          justify-items: stretch;
+          max-width: min(100%, 680px);
+          gap: clamp(28px, 3.5vw, 40px);
+        }
+
+        .work-card-link {
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          width: 100%;
+        }
+
+        .work-card-link .work-card {
+          flex: 1;
+          width: 100%;
+        }
+
+        .work-card-link[href*="bountt"] {
+          order: -1;
+        }
+
+        .work-card-link[href*="visugenie"] {
+          order: 0;
+        }
+
+        .work-card-link[href*="distro-disco"] {
+          order: 1;
+        }
+
+        .work-card-link:has(.work-card--featured) {
+          grid-column: 1 / -1;
+          max-width: min(100%, 480px);
+          justify-self: center;
+          width: 100%;
+        }
+
+        .work-section.visible .work-card-link[href*="bountt"] .work-card {
+          transition-delay: 0ms;
+        }
+
+        .work-section.visible .work-card-link[href*="visugenie"] .work-card {
+          transition-delay: 140ms;
+        }
+
+        .work-section.visible .work-card-link[href*="distro-disco"] .work-card {
+          transition-delay: 280ms;
+        }
+
+        .work-card--left,
+        .work-card--right,
+        .work-card--featured {
+          margin-top: 0;
+        }
+
+        .work-more,
+        .work-extra {
+          max-width: min(100%, 680px);
+          margin-inline: auto;
+        }
+
+        .work-extra-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: stretch;
+          justify-items: stretch;
+          gap: clamp(28px, 3.5vw, 40px);
+        }
+
+        .work-extra-grid > .work-card-link,
+        .work-extra-grid > .work-extra-slot {
+          width: 100%;
+        }
+
+        .work-extra-grid > :nth-child(3) {
+          grid-column: 1 / -1;
+          max-width: min(100%, 310px);
+          justify-self: center;
+          width: 100%;
+        }
+
+        .about-section {
+          padding-inline: clamp(1.5rem, 4vw, 2.5rem);
+        }
+
+        .about-grid {
+          justify-items: center;
+          text-align: center;
+          max-width: min(100%, 600px);
+          gap: clamp(32px, 4.5vw, 48px);
+        }
+
+        .about-title,
+        .about-text {
+          text-align: center;
+          justify-self: center;
+          max-width: 44ch;
+        }
+
+        .about-stack-wrap {
+          justify-self: center;
+          width: 100%;
+          min-height: clamp(340px, 44vw, 460px);
+        }
+
+        .about-card-stack {
+          width: min(400px, 52vw);
+          transform: none;
+          margin-inline: auto;
+        }
+
+        .about-chip {
+          justify-self: center;
+        }
+
+        #hero-copy p {
+          max-width: 36ch;
+        }
+      }
+
       /* Mobile: max-width 640px */
       @media (max-width: 640px) {
         :root {
@@ -4889,6 +5016,20 @@
         }
       }
 
+      function preloadWorkCardAssets() {
+        document.querySelectorAll(".work-thumb__media[src]").forEach((img) => {
+          if (img.loading === "lazy") img.loading = "eager";
+        });
+
+        document.querySelectorAll(".work-thumb-video[src]").forEach((video) => {
+          try {
+            video.load();
+          } catch {
+            /* ignore */
+          }
+        });
+      }
+
       let entranceTimeouts = [];
       let scrollLocked = false;
       let scrollUnlockFallbackId = null;
@@ -5101,6 +5242,7 @@
       }
 
       const boot = () => {
+        preloadWorkCardAssets();
         const skipIntro = hasSeenIntro();
         const canvas = document.getElementById("hero-canvas");
         const isMobile = window.matchMedia("(max-width: 960px)").matches;

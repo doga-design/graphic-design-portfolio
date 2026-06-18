@@ -96,4 +96,8 @@
   .main {
     padding-top: calc(clamp(48px, 6vw, 80px) + var(--desktop-nav-height));
   }
+
+  .layout .hero__ctas {
+    align-self: start;
+  }
 }
