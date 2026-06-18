@@ -287,6 +287,11 @@
     "Tell me about your internal design tool project.": ["since67"],
   };
 
+  const PROMPTS_WITHOUT_WORK_CARDS = new Set([
+    "How do you approach a new project?",
+    "What tools did you use on this project?",
+  ]);
+
   const SUGGESTION_FALLBACK_ANSWER =
     "I can answer that directly if you type it in, but this shortcut is still being wired up.";
 
@@ -870,6 +875,8 @@
   }
 
   function getMentionedWorks(prompt) {
+    if (PROMPTS_WITHOUT_WORK_CARDS.has(prompt)) return [];
+
     if (SUGGESTION_WORK_OVERRIDES[prompt]) {
       return SUGGESTION_WORK_OVERRIDES[prompt]
         .map((key) => works.find((work) => work.key === key))

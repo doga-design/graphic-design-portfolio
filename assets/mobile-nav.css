@@ -4,6 +4,7 @@
     --mobile-nav-height: 2.85rem;
     --mobile-nav-bg: var(--accent, #b03a39);
     --mobile-nav-fg: var(--bountt-accent, #faf0ca);
+    --cs-nav-backdrop-tint: rgba(12, 10, 20, 0.48);
     --mobile-nav-offset: calc(
       var(--mobile-nav-height, 3.25rem) + env(safe-area-inset-top, 0px)
     );
@@ -36,6 +37,21 @@
 
   .section {
     scroll-margin-top: var(--mobile-nav-offset);
+  }
+
+  .cs-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: var(--cs-nav-backdrop-tint);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--mobile-nav-motion) var(--ease-premium-out);
+  }
+
+  .cs-nav-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .cs-nav-shell {
@@ -75,6 +91,45 @@
     color: var(--ink, #1a1814);
   }
 
+  .cs-nav__burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    color: var(--mobile-nav-fg);
+    cursor: pointer;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cs-nav__burger .icon {
+    display: block;
+    width: 1.875rem;
+    height: 1.875rem;
+    flex-shrink: 0;
+    color: currentColor;
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__burger .icon {
+    color: currentColor;
+  }
+
+  .cs-nav__burger .icon--close {
+    display: none;
+  }
+
+  .cs-nav__burger[aria-expanded="true"] .icon--menu {
+    display: none;
+  }
+
+  .cs-nav__burger[aria-expanded="true"] .icon--close {
+    display: block;
+  }
+
   .cs-nav__logo {
     font-family: var(--font-copy, "Geist Sans", system-ui, sans-serif);
     font-size: 0.95rem;
@@ -84,13 +139,21 @@
     text-decoration: none;
   }
 
-  .cs-nav-shell.is-drawer-open .cs-nav__logo {
-    color: var(--mobile-nav-fg);
+  .cs-nav-shell.is-drawer-open {
+    color: var(--accent, #b03a39);
+    background: var(--brand-yellow, var(--mobile-nav-fg, #faf0ca));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: rgba(176, 58, 57, 0.12);
   }
 
-  .cs-nav__burger .icon {
-    width: 1.5rem;
-    height: 1.5rem;
+  .cs-nav-shell.is-drawer-open.is-past-home {
+    background: var(--brand-yellow, var(--mobile-nav-fg, #faf0ca));
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__logo,
+  .cs-nav-shell.is-drawer-open .cs-nav__burger {
+    color: var(--accent, #b03a39);
   }
 
   .cs-nav-shell.is-past-home:not(.is-drawer-open) {
@@ -104,30 +167,6 @@
     background: var(--paper, #faf8f4);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-  }
-
-  .cs-nav-shell.is-drawer-open {
-    color: var(--mobile-nav-fg);
-    background: linear-gradient(
-      180deg,
-      rgba(196, 52, 50, 0.97) 0%,
-      rgba(176, 58, 57, 0.94) 38%,
-      rgba(148, 40, 39, 0.92) 72%,
-      rgba(124, 32, 31, 0.9) 100%
-    );
-    backdrop-filter: blur(24px) saturate(1.3);
-    -webkit-backdrop-filter: blur(24px) saturate(1.3);
-    border-bottom-color: rgba(255, 255, 255, 0.18);
-  }
-
-  .cs-nav-shell.is-drawer-open.is-past-home {
-    background: linear-gradient(
-      180deg,
-      rgba(196, 52, 50, 0.98) 0%,
-      rgba(176, 58, 57, 0.96) 38%,
-      rgba(148, 40, 39, 0.94) 72%,
-      rgba(124, 32, 31, 0.92) 100%
-    );
   }
 
   .cs-nav-shell.is-scroll-hidden {
@@ -158,11 +197,6 @@
 
   .cs-nav__logo {
     color: var(--mobile-nav-fg);
-  }
-
-  .cs-nav__burger {
-    color: var(--mobile-nav-fg);
-    -webkit-tap-highlight-color: transparent;
   }
 
   .cs-nav-shell .cs-nav__drawer,
@@ -366,6 +400,81 @@
     text-transform: none;
   }
 
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer a {
+    color: var(--accent, #b03a39);
+    border-bottom-color: rgba(176, 58, 57, 0.14);
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer a.cs-nav__back {
+    color: color-mix(in srgb, var(--accent, #b03a39) 72%, transparent);
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer a.active {
+    color: var(--accent, #b03a39);
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer-social {
+    border-top-color: rgba(176, 58, 57, 0.14);
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer .icon-btn {
+    color: var(--accent, #b03a39);
+    border: 1px solid rgba(176, 58, 57, 0.22);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer .icon-btn::before {
+    display: none;
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer .icon-btn .icon {
+    color: var(--accent, #b03a39);
+    --icon-duotone-bg: color-mix(
+      in srgb,
+      var(--accent, #b03a39) 28%,
+      var(--brand-yellow, var(--mobile-nav-fg, #faf0ca))
+    );
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer .icon-btn:hover,
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer .icon-btn:focus-visible {
+    background: color-mix(
+      in srgb,
+      var(--accent, #b03a39) 8%,
+      var(--brand-yellow, var(--mobile-nav-fg, #faf0ca))
+    );
+    border-color: rgba(176, 58, 57, 0.32);
+    box-shadow: none;
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer .icon-btn:active {
+    background: color-mix(
+      in srgb,
+      var(--accent, #b03a39) 14%,
+      var(--brand-yellow, var(--mobile-nav-fg, #faf0ca))
+    );
+    border-color: rgba(176, 58, 57, 0.4);
+    box-shadow: none;
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer-ai {
+    border-top-color: rgba(176, 58, 57, 0.14);
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer-ai-link,
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer-ai-icon {
+    color: var(--accent, #b03a39);
+  }
+
+  .cs-nav-shell.is-drawer-open .cs-nav__drawer-ai-link:active {
+    background: color-mix(
+      in srgb,
+      var(--accent, #b03a39) 10%,
+      var(--brand-yellow, var(--mobile-nav-fg, #faf0ca))
+    );
+  }
+
   .mobile-ai-fab {
     display: inline-flex;
     align-items: center;
@@ -451,7 +560,8 @@
 @media (prefers-reduced-motion: reduce) {
   @media (max-width: 960px) {
     .cs-nav-shell,
-    .cs-nav__drawer {
+    .cs-nav__drawer,
+    .cs-nav-backdrop {
       transition-duration: 0.01ms !important;
     }
   }

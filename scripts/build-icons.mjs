@@ -11,8 +11,6 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   Letter,
-  CloseCircle,
-  HamburgerMenu,
   Home,
   UserCircle,
   CaseRound,
@@ -29,8 +27,6 @@ const assetsDir = join(__dirname, "../assets");
 /** @type {[string, import("react").ComponentType][]} */
 const SOLAR_ICON_MAP = [
   ["icon-mail", Letter],
-  ["icon-close", CloseCircle],
-  ["icon-menu", HamburgerMenu],
   ["icon-home", Home],
   ["icon-about", UserCircle],
   ["icon-work", CaseRound],
@@ -43,6 +39,20 @@ const SOLAR_ICON_MAP = [
 
 /** Stroke arrows/chevrons — kept as legacy line icons for case studies + UI rolls */
 const LEGACY_STROKE_SYMBOLS = new Map([
+  [
+    "icon-menu",
+    `    <symbol id="icon-menu" viewBox="0 0 24 24">
+      <path d="M4 9h16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M4 15h16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>`,
+  ],
+  [
+    "icon-close",
+    `    <symbol id="icon-close" viewBox="0 0 24 24">
+      <path d="M7 7l10 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M17 7L7 17" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>`,
+  ],
   [
     "icon-chevron-down",
     `    <symbol id="icon-chevron-down" viewBox="0 0 24 24">

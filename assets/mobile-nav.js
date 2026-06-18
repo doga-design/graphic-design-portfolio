@@ -23,6 +23,17 @@
 
   if (!shell) return;
 
+  const backdrop = (() => {
+    const existing = document.querySelector(".cs-nav-backdrop");
+    if (existing) return existing;
+
+    const el = document.createElement("div");
+    el.className = "cs-nav-backdrop";
+    el.setAttribute("aria-hidden", "true");
+    shell.parentNode?.insertBefore(el, shell);
+    return el;
+  })();
+
   const drawerInner = (() => {
     let inner = drawer.querySelector(".cs-nav__drawer-inner");
     if (inner) return inner;
@@ -177,6 +188,8 @@
     drawer.setAttribute("aria-hidden", "true");
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Open menu");
+    backdrop.classList.remove("is-open");
+    backdrop.setAttribute("aria-hidden", "true");
     syncMobileAiFab();
     applyNavHidden();
   };
@@ -190,6 +203,8 @@
     drawer.setAttribute("aria-hidden", "false");
     burger.setAttribute("aria-expanded", "true");
     burger.setAttribute("aria-label", "Close menu");
+    backdrop.classList.add("is-open");
+    backdrop.setAttribute("aria-hidden", "false");
     syncMobileAiFab();
   };
 
