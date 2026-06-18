@@ -351,6 +351,13 @@
         .dock__item.is-dropping {
           transition: none;
         }
+
+        @media (min-width: 961px) {
+          .dock__item[data-section]::after,
+          .dock__icon-wrap .icon {
+            transition: none;
+          }
+        }
       }
 
       @property --dock-scale {
@@ -385,17 +392,56 @@
         box-shadow: 1px 0 0 rgba(255, 255, 255, 0.2);
       }
 
-      .dock__item.is-active::after {
-        content: "";
-        position: absolute;
-        bottom: -6px;
-        left: 50%;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--accent);
-        opacity: 0.75;
-        transform: translateX(-50%);
+      @media (min-width: 961px) {
+        #dock {
+          display: block;
+        }
+
+        #page {
+          padding-bottom: 0;
+        }
+
+        .dock__item[data-section]::after {
+          content: "";
+          position: absolute;
+          bottom: -6px;
+          left: 50%;
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: var(--accent);
+          opacity: 0;
+          transform: translateX(-50%) scale(0.35);
+          pointer-events: none;
+          transition:
+            opacity 280ms cubic-bezier(0.22, 0.78, 0.18, 1),
+            transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .dock__item[data-section].is-active::after {
+          opacity: 0.75;
+          transform: translateX(-50%) scale(1);
+        }
+
+        .dock__icon-wrap .icon {
+          transition: color 320ms cubic-bezier(0.22, 0.78, 0.18, 1);
+        }
+
+        .dock__item.is-active:not(:has(.dock__icon-wrap--app)) .dock__icon-wrap {
+          background: linear-gradient(
+            180deg,
+            var(--paper-dock-top) 0%,
+            var(--paper-dock-mid) 100%
+          );
+          border-color: rgba(176, 58, 57, 0.2);
+          box-shadow:
+            0 2px 8px rgba(19, 17, 33, 0.07),
+            inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .dock__item.is-active:not(:has(.dock__icon-wrap--app)) .dock__icon-wrap::before {
+          opacity: 0.55;
+        }
       }
 
       .dock__icon-wrap {
@@ -570,16 +616,6 @@
       .dock__item:focus-visible .dock__tooltip {
         opacity: 1;
         transform: translateX(-50%) translateY(0) scale(1);
-      }
-
-      @media (min-width: 961px) {
-        #dock {
-          display: block;
-        }
-
-        #page {
-          padding-bottom: 0;
-        }
       }
 
       .icon {
@@ -4077,6 +4113,10 @@
           .filter(Boolean);
 
         if (sectionItems.length && sections.length) {
+          let activeOverride = null;
+          let scrollEndTimer = null;
+          let scrollListener = null;
+
           const setActive = (id) => {
             sectionItems.forEach((item) => {
               item.classList.toggle(
@@ -4086,8 +4126,51 @@
             });
           };
 
+          const releaseActiveOverride = () => {
+            activeOverride = null;
+            if (scrollListener) {
+              window.removeEventListener("scroll", scrollListener, true);
+              scrollListener = null;
+            }
+          };
+
+          const lockActive = (id) => {
+            activeOverride = id;
+            setActive(id);
+            window.clearTimeout(scrollEndTimer);
+
+            if (scrollListener) {
+              window.removeEventListener("scroll", scrollListener, true);
+            }
+
+            scrollListener = () => {
+              window.clearTimeout(scrollEndTimer);
+              scrollEndTimer = window.setTimeout(() => {
+                releaseActiveOverride();
+              }, 90);
+            };
+
+            window.addEventListener("scroll", scrollListener, {
+              passive: true,
+              capture: true,
+            });
+            scrollListener();
+          };
+
+          sectionItems.forEach((item) => {
+            item.addEventListener("click", () => {
+              const id = item.dataset.section;
+              if (id) lockActive(id);
+            });
+          });
+
           const observer = new IntersectionObserver(
             (entries) => {
+              if (activeOverride) {
+                setActive(activeOverride);
+                return;
+              }
+
               const visible = entries
                 .filter((entry) => entry.isIntersecting)
                 .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
