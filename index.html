@@ -1571,11 +1571,8 @@
         box-decoration-break: clone;
         -webkit-box-decoration-break: clone;
         padding: 0.1em 0.14em;
+        background: var(--paper);
         color: inherit;
-        background-image: linear-gradient(var(--paper), var(--paper));
-        background-repeat: no-repeat;
-        background-position: 0 0;
-        background-size: 100% 100%;
       }
 
       .about-text {
@@ -3256,17 +3253,18 @@
       <section id="about" class="about-section" aria-labelledby="about-title">
         <div class="about-grid">
           <div class="about-copy">
-            <h2 id="about-title" class="about-title">I design products, build react-based UI components, vibe-code apps & tools for fun and teach my friends how to ice skate.
+            <h2 id="about-title" class="about-title"><span class="about-line">I design products, build react-based UI components, vibe-code apps & tools for fun and teach my friends how to ice skate.</span>
             </h2>
             <div class="about-text">
               <p>
-                I'm a multidisciplinary designer who designs products end to end. Right now I'm deep into AI-native workflows and how
-                they're changing the way designers and developers work together.
+                <span class="about-line">I'm a multidisciplinary designer who designs products end to end. Right now I'm deep into AI-native workflows and how
+                they're changing the way designers and developers work together.</span>
               </p>
               <p class="about-text__muted">
-                Outside of work, I spend time with friends, playing sports, cafe-hopping, and exploring co-working events and hackathons around Toronto.              </p>
+                <span class="about-line">Outside of work, I spend time with friends, playing sports, cafe-hopping, and exploring co-working events and hackathons around Toronto.</span>
+              </p>
               <p>
-                To work together or just connect, reach out on
+                <span class="about-line">To work together or just connect, reach out on
                 <a
                   class="about-text__link"
                   href="https://www.linkedin.com/in/dogacimen"
@@ -3279,7 +3277,7 @@
                   href="mailto:dogacimen35@gmail.com"
                   data-about-email
                   data-email="dogacimen35@gmail.com"
-                >email</a>.
+                >email</a>.</span>
               </p>
             </div>
             <span class="about-chip">
@@ -6365,6 +6363,5 @@
       window.initLiquidEtherBackground();
     </script>
     <script src="assets/about-dithering-shader.js" defer></script>
-    <script src="assets/about-scroll-highlight.js" defer></script>
   </body>
 </html>
