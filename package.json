@@ -5,6 +5,7 @@
     "env:pull": "npx vercel env pull .env.local --environment=development --yes"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "geist": "^1.7.1"
   },
   "devDependencies": {
