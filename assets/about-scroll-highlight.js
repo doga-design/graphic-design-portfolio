@@ -1,4 +1,4 @@
-(function initAboutScrollHighlight() {
+(function initAboutLineWrap() {
   "use strict";
 
   const about = document.getElementById("about");
@@ -6,31 +6,10 @@
   const aboutText = copy?.querySelector(".about-text");
   if (!about || !aboutText) return;
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const mobileMq = window.matchMedia("(max-width: 960px)");
   const targets = [...aboutText.querySelectorAll("p")];
   if (!targets.length) return;
 
   const originals = new Map(targets.map((el) => [el, el.innerHTML]));
-  let lines = [];
-  let ticking = false;
-
-  function getScrollContainer() {
-    const main = document.querySelector(".app-shell__main");
-    if (!main || !main.contains(about)) {
-      return document.scrollingElement || document.documentElement;
-    }
-
-    const { overflowY } = getComputedStyle(main);
-    if (
-      (overflowY === "auto" || overflowY === "scroll") &&
-      main.scrollHeight > main.clientHeight
-    ) {
-      return main;
-    }
-
-    return document.scrollingElement || document.documentElement;
-  }
 
   function getNodeTop(node) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -118,41 +97,10 @@
 
     return groups.map((nodes) => {
       const line = document.createElement("span");
-      const paragraphIndex = targets.indexOf(root);
-
-      line.className =
-        paragraphIndex < 2
-          ? "about-line about-line--paper"
-          : "about-line about-line--paper about-line--contact";
+      line.className = "about-line";
       root.insertBefore(line, nodes[0]);
       nodes.forEach((node) => line.appendChild(node));
       return line;
-    });
-  }
-
-  function update() {
-    if (!lines.length) return;
-
-    const scrollEl = getScrollContainer();
-    const isDocumentScroll =
-      scrollEl === document.documentElement ||
-      scrollEl === document.body ||
-      scrollEl === document.scrollingElement;
-
-    const trigger = isDocumentScroll
-      ? window.innerHeight * 0.76
-      : scrollEl.getBoundingClientRect().top + scrollEl.clientHeight * 0.76;
-
-    let activeCount = 0;
-
-    for (let i = 0; i < lines.length; i += 1) {
-      const rect = lines[i].getBoundingClientRect();
-      if (rect.top < trigger) activeCount = i + 1;
-      else break;
-    }
-
-    lines.forEach((line, index) => {
-      line.classList.toggle("is-highlighted", index < activeCount);
     });
   }
 
@@ -162,31 +110,7 @@
       splitTextNodes(el);
     });
 
-    lines = targets.flatMap((el) => groupLines(el));
-
-    if (reduceMotion.matches) {
-      lines.forEach((line) => line.classList.add("is-highlighted"));
-      return;
-    }
-
-    update();
-  }
-
-  function onScroll() {
-    if (ticking || reduceMotion.matches) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      update();
-      ticking = false;
-    });
-  }
-
-  function bindScroll() {
-    const scrollEl = getScrollContainer();
-    window.removeEventListener("scroll", onScroll);
-    scrollEl.removeEventListener("scroll", onScroll);
-    scrollEl.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
+    targets.flatMap((el) => groupLines(el));
   }
 
   let resizeTimer = 0;
@@ -194,27 +118,11 @@
     "resize",
     () => {
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        rebuild();
-        bindScroll();
-      }, 120);
+      resizeTimer = window.setTimeout(rebuild, 120);
     },
     { passive: true }
   );
 
-  reduceMotion.addEventListener("change", () => {
-    rebuild();
-    bindScroll();
-  });
-
-  mobileMq.addEventListener("change", () => {
-    rebuild();
-    bindScroll();
-  });
-
   const ready = document.fonts?.ready ?? Promise.resolve();
-  ready.then(() => {
-    rebuild();
-    bindScroll();
-  });
+  ready.then(rebuild);
 })();
