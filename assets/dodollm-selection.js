@@ -224,7 +224,7 @@
     icon.className = "dodollm-selection-quote__icon";
     icon.setAttribute("aria-hidden", "true");
     icon.innerHTML = `
-      <svg viewBox="0 0 88 72" aria-hidden="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
         <use href="assets/icons.svg#icon-quote" />
       </svg>
     `;

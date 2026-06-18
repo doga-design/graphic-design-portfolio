@@ -5,10 +5,10 @@
     "env:pull": "npx vercel env pull .env.local --environment=development --yes"
   },
   "dependencies": {
-    "@untitledui/icons": "^0.0.22",
     "geist": "^1.7.1"
   },
   "devDependencies": {
+    "@solar-icons/react": "^1.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   }

@@ -21,6 +21,7 @@
         --ink-muted: rgba(19, 17, 33, 0.6);
         --ink-border: rgba(19, 17, 33, 0.1);
         --accent: #b03a39;
+        --brand-yellow: #faf0ca;
         --work-badge-secondary-bg: #f1e1d9;
         --hero-width: 1142px;
         --hero-canvas-lift: -2.85rem;
@@ -269,8 +270,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: calc(var(--dock-scale, 1) * 48px);
-        height: calc(var(--dock-scale, 1) * 48px);
+        width: calc(var(--dock-scale, 1) * 52px);
+        height: calc(var(--dock-scale, 1) * 52px);
         padding: 0;
         border: none;
         border-radius: 20px;
@@ -336,8 +337,8 @@
 
       .dock__placeholder {
         flex-shrink: 0;
-        width: calc(var(--dock-scale, 1) * 48px);
-        height: calc(var(--dock-scale, 1) * 48px);
+        width: calc(var(--dock-scale, 1) * 52px);
+        height: calc(var(--dock-scale, 1) * 52px);
         border-radius: 20px;
         pointer-events: none;
         opacity: 0;
@@ -392,8 +393,8 @@
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        background: var(--ink);
-        opacity: 0.45;
+        background: var(--accent);
+        opacity: 0.75;
         transform: translateX(-50%);
       }
 
@@ -404,17 +405,16 @@
         justify-content: center;
         width: 100%;
         height: 100%;
+        padding: 0.125rem;
         border-radius: 18px;
-        background: linear-gradient(
-          180deg,
-          rgba(248, 245, 239, 0.72) 0%,
-          rgba(236, 232, 224, 0.55) 100%
-        );
-        border: 1px solid rgba(26, 24, 20, 0.07);
-        box-shadow:
-          0 2px 8px rgba(19, 17, 33, 0.07),
-          inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        background: transparent;
+        border: 1px solid transparent;
+        box-shadow: none;
         overflow: hidden;
+        transition:
+          background 180ms ease,
+          border-color 180ms ease,
+          box-shadow 180ms ease;
       }
 
       .dock__icon-wrap::before {
@@ -427,14 +427,59 @@
           rgba(255, 255, 255, 0.22) 0%,
           transparent 55%
         );
+        opacity: 0;
         pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+
+      .dock__item:hover .dock__icon-wrap,
+      .dock__item:focus-visible .dock__icon-wrap {
+        background: linear-gradient(
+          180deg,
+          var(--paper-dock-top) 0%,
+          var(--paper-dock-mid) 100%
+        );
+        border-color: var(--ink-border);
+        box-shadow:
+          0 2px 8px rgba(19, 17, 33, 0.07),
+          inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      }
+
+      .dock__item:hover .dock__icon-wrap::before,
+      .dock__item:focus-visible .dock__icon-wrap::before {
+        opacity: 1;
       }
 
       .dock__icon-wrap .icon {
         position: relative;
-        width: 58%;
-        height: 58%;
+        width: 86%;
+        height: 86%;
         z-index: 1;
+        color: var(--ink);
+        --icon-duotone-bg: color-mix(in srgb, var(--ink) 20%, var(--paper));
+      }
+
+      @supports (color: oklch(from white l c h)) {
+        .dock__icon-wrap .icon {
+          --icon-duotone-bg: oklch(
+            from var(--ink) calc(l * 0.9 + 0.08) calc(c * 0.55) h / 0.24
+          );
+        }
+      }
+
+      @supports not (color: oklch(from white l c h)) {
+        .dock__icon-wrap .icon {
+          --icon-duotone-bg: color-mix(
+            in srgb,
+            color-mix(in srgb, var(--ink) 18%, transparent) 62%,
+            var(--paper-dock-mid) 38%
+          );
+        }
+      }
+
+      .dock__item.is-active:not(:has(.dock__icon-wrap--app)) .dock__icon-wrap .icon {
+        color: var(--accent);
+        --icon-duotone-bg: color-mix(in srgb, var(--brand-yellow) 70%, var(--accent));
       }
 
       .dock__icon-wrap--app {
@@ -450,16 +495,17 @@
 
       .dock__item > .dock__badge {
         position: absolute;
-        top: -2px;
-        right: -2px;
+        top: -3px;
+        right: -3px;
         z-index: 3;
-        min-width: 18px;
-        height: 18px;
-        padding: 0 5px;
+        min-width: 22px;
+        height: 22px;
+        padding: 0 7px;
+        border: 2px solid var(--paper-dock-mid);
         border-radius: 999px;
         background: #f44336;
         color: #fff;
-        font-size: 10.5px;
+        font-size: 11px;
         font-weight: 700;
         line-height: 18px;
         text-align: center;
@@ -788,7 +834,7 @@
 
       .hero-divider {
         align-self: center;
-        width: min(100%, var(--hero-width));
+        width: min(100%, calc(var(--hero-width) + 6rem));
         max-width: calc(100% - 2 * clamp(1.25rem, 5vw, 3rem));
         margin-inline: auto;
         height: 1px;
@@ -1219,7 +1265,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        max-width: var(--hero-width);
+        max-width: min(100%, calc(var(--hero-width) + 12rem));
         margin: clamp(56px, 8vw, 80px) auto 0;
       }
 
@@ -1605,7 +1651,6 @@
 
       .about-text__link {
         color: var(--accent);
-        font-weight: 700;
         text-decoration: none;
       }
 
@@ -1700,9 +1745,21 @@
       }
 
       .about-email-pill__icon {
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
         flex-shrink: 0;
+        color: var(--accent);
+        --icon-duotone-bg: var(--paper);
+      }
+
+      @supports (color: oklch(from white l c h)) {
+        .about-email-pill__icon {
+          --icon-duotone-bg: color-mix(
+            in srgb,
+            var(--paper-dock-top) 42%,
+            var(--paper-dock-deep) 58%
+          );
+        }
       }
 
       .about-email-pill__label {
@@ -2837,20 +2894,15 @@
             </svg>
           </span>
         </a>
-        <span class="dock__divider" data-dock-fixed aria-hidden="true"></span>
-        <a
-          class="dock__item"
-          href="mailto:dogacimen35@gmail.com"
-          data-dock-item
-          data-dock-id="email"
-        >
-          <span class="dock__tooltip">Email</span>
+        <a class="dock__item" href="#about" data-dock-item data-dock-id="about" data-section="about">
+          <span class="dock__tooltip">About</span>
           <span class="dock__icon-wrap">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <use href="assets/icons.svg#icon-mail" />
+              <use href="assets/icons.svg#icon-about" />
             </svg>
           </span>
         </a>
+        <span class="dock__divider" data-dock-fixed aria-hidden="true"></span>
         <a
           class="dock__item"
           href="https://github.com/doga-design"
@@ -2862,7 +2914,7 @@
           <span class="dock__tooltip">GitHub</span>
           <span class="dock__icon-wrap">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <use href="assets/icons.svg#icon-github" />
+              <use href="assets/icons.svg#icon-code-circle" />
             </svg>
           </span>
         </a>
@@ -2877,7 +2929,20 @@
           <span class="dock__tooltip">LinkedIn</span>
           <span class="dock__icon-wrap">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <use href="assets/icons.svg#icon-linkedin" />
+              <use href="assets/icons.svg#icon-link-circle" />
+            </svg>
+          </span>
+        </a>
+        <a
+          class="dock__item"
+          href="mailto:dogacimen35@gmail.com"
+          data-dock-item
+          data-dock-id="email"
+        >
+          <span class="dock__tooltip">Email</span>
+          <span class="dock__icon-wrap">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="assets/icons.svg#icon-mail" />
             </svg>
           </span>
         </a>
@@ -3114,7 +3179,7 @@
       <section id="about" class="about-section" aria-labelledby="about-title">
         <div class="about-grid">
           <div class="about-copy">
-            <h2 id="about-title" class="about-title">I design products, build react-based UI components, draw for fun and teach my friends how to ice skate.
+            <h2 id="about-title" class="about-title">I design products, build react-based UI components, vibe-code apps & tools for fun and teach my friends how to ice skate.
             </h2>
             <div class="about-text">
               <p>
@@ -3259,7 +3324,15 @@
     <script src="assets/mobile-nav.js"></script>
     <script>
       (function initDockReorder() {
-        const STORAGE_KEY = "dock-order";
+        const DEFAULT_DOCK_ORDER = [
+          "home",
+          "work",
+          "about",
+          "github",
+          "linkedin",
+          "email",
+          "dodollm",
+        ];
         const HOLD_MS = 180;
         const MOVE_CANCEL_PX = 8;
 
@@ -3289,47 +3362,33 @@
             (el) => el.dataset.dockId
           );
 
-        const saveDockOrder = () => {
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(getDockOrder()));
-          } catch {
-            /* quota / private mode */
-          }
-        };
-
-        const restoreDockOrder = () => {
-          let saved;
-          try {
-            saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-          } catch {
-            return;
-          }
-          if (!Array.isArray(saved)) return;
+        const applyDockOrder = (orderIds) => {
+          if (!Array.isArray(orderIds)) return;
 
           const allIds = getDockOrder();
           if (
-            saved.length !== allIds.length ||
-            !saved.every((id) => allIds.includes(id))
+            orderIds.length !== allIds.length ||
+            !orderIds.every((id) => allIds.includes(id))
           ) {
             return;
           }
 
           getGroups().forEach((group) => {
             const ids = group.map((el) => el.dataset.dockId);
-            const ordered = saved.filter((id) => ids.includes(id));
+            const ordered = orderIds.filter((id) => ids.includes(id));
             if (ordered.length !== ids.length) return;
 
             const sorted = ordered.map((id) =>
               group.find((el) => el.dataset.dockId === id)
             );
             const insertBefore = group[group.length - 1].nextElementSibling;
-            for (let i = sorted.length - 1; i >= 0; i--) {
+            for (let i = 0; i < sorted.length; i++) {
               track.insertBefore(sorted[i], insertBefore);
             }
           });
         };
 
-        restoreDockOrder();
+        applyDockOrder(DEFAULT_DOCK_ORDER);
 
         let holdTimer = null;
         let dragItem = null;
@@ -3522,8 +3581,6 @@
               placeholder.remove();
             }
             cleanup();
-
-            if (commit) saveDockOrder();
           };
 
           stopFollowLoop();
@@ -5285,6 +5342,61 @@
 
         const SHUFFLE_MS = 520;
         const SHUFFLE_SETTLE_MS = Math.round(SHUFFLE_MS * 0.34);
+        const AUTO_SHUFFLE_MIN_MS = 4800;
+        const AUTO_SHUFFLE_MAX_MS = 9200;
+        let autoShuffleTimerId = 0;
+        let isInView = false;
+
+        const clearAutoShuffle = () => {
+          window.clearTimeout(autoShuffleTimerId);
+          autoShuffleTimerId = 0;
+        };
+
+        const scheduleAutoShuffle = () => {
+          clearAutoShuffle();
+          if (!isInView || document.hidden) return;
+
+          const delay =
+            AUTO_SHUFFLE_MIN_MS +
+            Math.random() * (AUTO_SHUFFLE_MAX_MS - AUTO_SHUFFLE_MIN_MS);
+
+          autoShuffleTimerId = window.setTimeout(() => {
+            autoShuffleTimerId = 0;
+            if (!isInView || document.hidden || isAnimating || pointerState) {
+              scheduleAutoShuffle();
+              return;
+            }
+
+            shuffle(Math.random() < 0.5 ? "left" : "right");
+            scheduleAutoShuffle();
+          }, delay);
+        };
+
+        const resetAutoShuffle = () => {
+          clearAutoShuffle();
+          scheduleAutoShuffle();
+        };
+
+        const aboutSection = stack.closest("#about") || stack.closest("section");
+        if (aboutSection && "IntersectionObserver" in window) {
+          const viewObserver = new IntersectionObserver(
+            (entries) => {
+              isInView = entries.some((entry) => entry.isIntersecting);
+              if (isInView) scheduleAutoShuffle();
+              else clearAutoShuffle();
+            },
+            { threshold: 0.25 }
+          );
+          viewObserver.observe(aboutSection);
+        } else {
+          isInView = true;
+          scheduleAutoShuffle();
+        }
+
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) clearAutoShuffle();
+          else scheduleAutoShuffle();
+        });
 
         const finishShuffle = () => {
           stack.classList.remove("is-shuffling");
@@ -5419,6 +5531,7 @@
 
         stack.addEventListener("pointerdown", (event) => {
           if (isAnimating || event.button !== 0) return;
+          resetAutoShuffle();
           cursor?.classList.add("is-pressed");
 
           pointerState = {
@@ -5480,6 +5593,7 @@
           stack.classList.remove("is-dragging", "is-compressing");
           clearDragVars();
           pointerState = null;
+          resetAutoShuffle();
           shuffle(direction);
           bounceCursor();
         };
@@ -5500,12 +5614,14 @@
         stack.addEventListener("keydown", (event) => {
           if (event.key === "ArrowLeft") {
             event.preventDefault();
+            resetAutoShuffle();
             shuffle("left");
             bounceCursor();
           }
 
           if (event.key === "ArrowRight" || event.key === " " || event.key === "Enter") {
             event.preventDefault();
+            resetAutoShuffle();
             shuffle("right");
             bounceCursor();
           }
