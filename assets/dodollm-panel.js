@@ -218,7 +218,7 @@
       followUp: [
         "How does Bountt reduce financial tension in groups?",
         "What did you ship and what were the results?",
-        "What tools did you use on this project?",
+        "What does AI-native mean here?",
       ],
     },
     visugenie: {
@@ -283,6 +283,24 @@
     },
   };
 
+  const BOUNTT_WORKFLOW_ANSWER =
+    "I built Bountt through an AI-native loop instead of a traditional design-to-dev handoff.\n\n- **Figma:** Design ideas, wireframes, and prototypes.\n- **Lovable & Supabase:** Backend and core functionality.\n- **GitHub:** Version control and code management.\n- **Cursor:** UI, design systems, and customization.\n- **Claude + Lovable:** Together I refined features, fixed bugs, analyzed usage, and iterated until it was ready to ship.";
+
+  const CASE_STUDY_SUGGESTION_OVERRIDES = {
+    bountt: {
+      "What tools did you use on this project?": BOUNTT_WORKFLOW_ANSWER,
+      "What does AI-native mean here?": BOUNTT_WORKFLOW_ANSWER,
+    },
+    "distro-disco": {
+      "What tools did you use on this project?":
+        "I used Figma for UX and visual design, then built coded prototype moments with HTML, CSS, and JavaScript. The combination helped me test motion, scrolling, and interaction details directly in the browser.",
+    },
+    since67: {
+      "What tools did you use on this project?":
+        "I used Figma for the identity and system design, After Effects for motion thinking, and browser-based code for the interactive poster tool. The project sits right between branding, motion, and product interaction.",
+    },
+  };
+
   const SUGGESTION_WORK_OVERRIDES = {
     "Tell me about your internal design tool project.": ["since67"],
   };
@@ -290,6 +308,7 @@
   const PROMPTS_WITHOUT_WORK_CARDS = new Set([
     "How do you approach a new project?",
     "What tools did you use on this project?",
+    "What does AI-native mean here?",
   ]);
 
   const SUGGESTION_FALLBACK_ANSWER =
@@ -319,10 +338,7 @@
       "It reduces tension by making the status of shared costs visible and easy to act on. Instead of relying on memory or uncomfortable reminders, the app gives the group a calmer shared source of truth.",
     "What did you ship and what were the results?":
       "I shipped a live React-based expense app with the core flows needed to add, track, and settle shared costs. The result is a working product rather than just a static concept, which let me validate the experience more realistically.",
-    "What tools did you use on this project?":
-      "I built Bountt through an AI-native loop instead of a traditional design-to-dev handoff.\n\n- **Figma:** Design ideas, wireframes, and prototypes.\n- **Lovable & Supabase:** Backend and core functionality.\n- **GitHub:** Version control and code management.\n- **Cursor:** UI, design systems, and customization.\n- **Claude + Lovable:** Together I refined features, fixed bugs, analyzed usage, and iterated until it was ready to ship.",
-    "What tools did you use on this project?":
-      "For this project I used Figma for product design and prototyping, then React, HTML, CSS, and JavaScript for the build. Cursor helped me move faster between design decisions and implementation details.",
+    "What does AI-native mean here?": BOUNTT_WORKFLOW_ANSWER,
 
     "What was wrong with the VisuGenie landing page?":
       "The landing page was not doing enough to explain the product quickly or guide visitors toward downloading. I reworked the structure and messaging so the value was clearer earlier in the page.",
@@ -347,8 +363,6 @@
       "The workflow supports both donation and discovery. A person can understand what the mobile free store needs, contribute items, and browse available resources through a structure that keeps the community context visible.",
     "What did the live prototype demonstrate?":
       "The live prototype demonstrated the key product moments, including donation flow, collection browsing, and interaction feedback. It made the concept tangible enough to evaluate beyond static screens.",
-    "What tools did you use on this project?":
-      "I used Figma for UX and visual design, then built coded prototype moments with HTML, CSS, and JavaScript. The combination helped me test motion, scrolling, and interaction details directly in the browser.",
 
     "What was the CTRLBREAK exhibition about?":
       "CTRLBREAK was an exhibition identity for a Neville Brody retrospective. The project explored expressive typography, disruption, and editorial energy through a system that could extend across digital and print touchpoints.",
@@ -373,8 +387,6 @@
       "It engages fans by treating the wait as shared culture. Instead of only celebrating victory, the campaign gives people a way to express loyalty, humor, and frustration through the identity.",
     "What makes the interactive poster tool unique?":
       "The tool turns a brand system into an experience. People are not just looking at campaign assets, they can make something inside the system and feel how the rules shape the output.",
-    "What tools did you use on this project?":
-      "I used Figma for the identity and system design, After Effects for motion thinking, and browser-based code for the interactive poster tool. The project sits right between branding, motion, and product interaction.",
 
     "What problem does this design system solve?":
       "This design system solves the problem of keeping AI-generated or fast-moving interface work consistent. It creates reusable rules and safeguards so speed does not break usability or brand coherence.",
@@ -611,6 +623,13 @@
   function getFollowUpPrompts() {
     const slug = getCurrentCaseStudySlug();
     return CASE_STUDY_PROMPTS[slug]?.followUp ?? DEFAULT_FOLLOW_UP_PROMPTS;
+  }
+
+  function getSuggestionAnswer(prompt) {
+    const slug = getCurrentCaseStudySlug();
+    const caseStudyAnswer = slug && CASE_STUDY_SUGGESTION_OVERRIDES[slug]?.[prompt];
+    if (caseStudyAnswer) return caseStudyAnswer;
+    return SUGGESTION_ANSWERS[prompt];
   }
 
   function positionInfoDisclaimer() {
@@ -940,6 +959,28 @@
     return line.replace(/^[-•]\s+/, "");
   }
 
+  function sanitizePartialMarkdown(text) {
+    let result = text.replace(/\r\n/g, "\n");
+
+    const delimiterCount = (result.match(/\*\*/g) || []).length;
+    if (delimiterCount % 2 === 1) {
+      const lastIndex = result.lastIndexOf("**");
+      if (lastIndex !== -1) {
+        result = result.slice(0, lastIndex);
+      }
+    }
+
+    const lines = result.split("\n");
+    if (lines.length > 0) {
+      const lastLine = lines[lines.length - 1];
+      if (/^[-•]\s*$/.test(lastLine)) {
+        result = lines.slice(0, -1).join("\n");
+      }
+    }
+
+    return result;
+  }
+
   function formatBotMessageHtml(text) {
     const normalized = text.replace(/\r\n/g, "\n").trim();
     if (!normalized) return "";
@@ -981,8 +1022,8 @@
     });
   }
 
-  function setBotMessageContent(el, text) {
-    if (hasBotMessageFormatting(text)) {
+  function setBotMessageContent(el, text, forceFormat = false) {
+    if (forceFormat || hasBotMessageFormatting(text)) {
       el.classList.remove("dodollm-message-bot--plain");
       el.innerHTML = formatBotMessageHtml(text);
       return;
@@ -990,6 +1031,13 @@
 
     el.classList.add("dodollm-message-bot--plain");
     el.textContent = text;
+  }
+
+  function appendTypingCursor(container, cursor) {
+    const anchor =
+      container.querySelector("li:last-of-type") ??
+      container.querySelector(".dodollm-message-bot__p:last-of-type");
+    (anchor ?? container).append(cursor);
   }
 
   function renderUserMessage(text) {
@@ -1135,11 +1183,19 @@
     cursor.textContent = "|";
 
     let index = 0;
+    const willFormat = hasBotMessageFormatting(text);
     if (typingTimer) window.clearInterval(typingTimer);
 
     typingTimer = window.setInterval(() => {
-      bot.textContent = text.slice(0, index);
-      bot.append(cursor);
+      const partial = text.slice(0, index);
+      if (willFormat) {
+        setBotMessageContent(bot, sanitizePartialMarkdown(partial), true);
+        appendTypingCursor(bot, cursor);
+      } else {
+        bot.textContent = partial;
+        bot.classList.add("dodollm-message-bot--plain");
+        bot.append(cursor);
+      }
       index += 1;
       scrollChatToBottom();
 
@@ -1198,7 +1254,7 @@
     if (!submission) return;
 
     const { prompt, mentionedWorks, requestId } = submission;
-    const content = SUGGESTION_ANSWERS[prompt] ?? SUGGESTION_FALLBACK_ANSWER;
+    const content = getSuggestionAnswer(prompt) ?? SUGGESTION_FALLBACK_ANSWER;
 
     window.setTimeout(() => {
       if (requestId !== activeRequestId) return;
