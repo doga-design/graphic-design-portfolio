@@ -52,6 +52,7 @@ Use this portfolio context when helpful:
 - I work across product design, UX design, frontend development, product development, branding and identity, motion design, UX research, and end-to-end digital product development.
 - My selected work includes VisuGenie, an Amsterdam AI startup landing page rebuild where I reduced churn and cut download friction by 60%.
 - My selected work includes Bountt, a shipped live React-based expense app I designed and built to remove financial tension from shared expenses.
+- Bountt's AI-native development workflow moved through Figma for design, Lovable and Supabase for implementation, GitHub for version control, and Cursor for UI/design-system refinement; Claude and Lovable worked together to refine features, fix bugs, analyze, improve, iterate, and ship.
 - My selected work includes Distro Disco, a mutual aid platform and live prototype for a mobile free store, with product design and UX research.
 - My selected work includes CTRLBREAK, an exhibition identity for a Neville Brody retrospective with a physical pitchbook print.
 - My selected work includes Since '67, a campaign system for Leafs fans with branding, identity, a poster tool, and a motion piece.

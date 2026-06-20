@@ -320,6 +320,8 @@
     "What did you ship and what were the results?":
       "I shipped a live React-based expense app with the core flows needed to add, track, and settle shared costs. The result is a working product rather than just a static concept, which let me validate the experience more realistically.",
     "What tools did you use on this project?":
+      "I built Bountt through an AI-native loop instead of a traditional design-to-dev handoff.\n\n- **Figma:** Design ideas, wireframes, and prototypes.\n- **Lovable & Supabase:** Backend and core functionality.\n- **GitHub:** Version control and code management.\n- **Cursor:** UI, design systems, and customization.\n- **Claude + Lovable:** Together I refined features, fixed bugs, analyzed usage, and iterated until it was ready to ship.",
+    "What tools did you use on this project?":
       "For this project I used Figma for product design and prototyping, then React, HTML, CSS, and JavaScript for the build. Cursor helped me move faster between design decisions and implementation details.",
 
     "What was wrong with the VisuGenie landing page?":
