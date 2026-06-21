@@ -40,6 +40,12 @@
         --font-bountt: "Bringbold Nineties", sans-serif;
       }
 
+      @property --hero-toolchain-card-fill {
+        syntax: "<color>";
+        inherits: false;
+        initial-value: #f2f1ef;
+      }
+
       *,
       *::before,
       *::after {
@@ -593,8 +599,17 @@
         --hero-toolchain-card-hover-duration: 0.6s;
         --hero-toolchain-card-ease-in: cubic-bezier(0.87, 0, 0.13, 1);
         --hero-toolchain-card-ease-out: cubic-bezier(0.45, 0, 0.55, 1);
+        --hero-toolchain-card-bg-duration: 280ms;
+        --hero-toolchain-card-bg-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
         --hero-toolchain-card-shadow: none;
         --hero-toolchain-card-shadow-hover: 0 12px 32px rgba(19, 17, 33, 0.1);
+        --hero-toolchain-lovable-border: linear-gradient(
+          120deg,
+          #f5d0d8 0%,
+          #f0dde3 42%,
+          #dcefe4 58%,
+          #cfe8d6 100%
+        );
         position: relative;
         width: 100%;
         min-width: 0;
@@ -734,7 +749,8 @@
           transition: none;
         }
 
-        .hero-toolchain__step:hover .hero-toolchain__card {
+        .hero-toolchain__step:hover .hero-toolchain__card,
+        .hero-toolchain__step.is-tilting .hero-toolchain__card {
           transform: none;
           background: var(--paper);
           box-shadow: none;
@@ -809,16 +825,55 @@
         gap: 0.7rem;
         transform: translate3d(0, 0, 0);
         transition-property: transform, background, box-shadow;
-        transition-duration: var(--hero-toolchain-card-hover-duration);
-        transition-timing-function: var(--hero-toolchain-card-ease-out);
+        transition-duration:
+          var(--hero-toolchain-card-hover-duration),
+          var(--hero-toolchain-card-hover-duration),
+          120ms;
+        transition-timing-function:
+          var(--hero-toolchain-card-ease-out),
+          var(--hero-toolchain-card-ease-out),
+          ease-out;
       }
 
       @media (hover: hover) and (min-width: 961px) {
-        .hero-toolchain__step:hover .hero-toolchain__card {
-          transform: translate3d(0, var(--hero-toolchain-card-hover-lift), 0);
+        .hero-toolchain__step {
+          perspective: 650px; 
+        }
+
+        .hero-toolchain__card {
+          --tilt-x: 0deg;
+          --tilt-y: 0deg;
+          --tilt-lift: 0px;
+          transform-style: preserve-3d;
+          transform: translate3d(0, var(--tilt-lift), 0)
+            rotateX(var(--tilt-x))
+            rotateY(var(--tilt-y));
+        }
+
+        .hero-toolchain__step.is-tilting .hero-toolchain__card {
+          --tilt-lift: var(--hero-toolchain-card-hover-lift);
           background: #fff;
           box-shadow: var(--hero-toolchain-card-shadow-hover);
-          transition-timing-function: var(--hero-toolchain-card-ease-in);
+          transition-duration:
+            120ms,
+            var(--hero-toolchain-card-bg-duration),
+            120ms;
+          transition-timing-function:
+            ease-out,
+            var(--hero-toolchain-card-bg-ease-in),
+            ease-out;
+        }
+
+        .hero-toolchain__step--lovable.is-tilting .hero-toolchain__card {
+          --hero-toolchain-card-fill: #fff;
+          transition-duration:
+            120ms,
+            120ms,
+            var(--hero-toolchain-card-bg-duration);
+          transition-timing-function:
+            ease-out,
+            ease-out,
+            var(--hero-toolchain-card-bg-ease-in);
         }
       }
 
@@ -861,6 +916,40 @@
         justify-content: center;
         gap: 0.55rem;
         width: 100%;
+      }
+
+      .hero-toolchain__card-head--pair {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(0.65rem, 2vw, 0.85rem);
+      }
+
+      .hero-toolchain__pair-sep {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        align-self: center;
+        width: 1.1rem;
+        height: 1.1rem;
+        color: #9ca3af;
+        transform: translateY(calc(-0.34rem - 0.125rem));
+      }
+
+      .hero-toolchain__pair-sep svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .hero-toolchain__card-head--pair .hero-toolchain__cycle-item img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .hero-toolchain__card-head--pair .hero-toolchain__cycle-item span {
+        font-size: 0.68rem;
       }
 
       .hero-toolchain__logo {
@@ -913,7 +1002,24 @@
       }
 
       .hero-toolchain__step--lovable .hero-toolchain__card {
-        border-color: #f5d0d8;
+        --hero-toolchain-card-fill: var(--paper);
+        border-color: transparent;
+        background:
+          linear-gradient(
+              var(--hero-toolchain-card-fill),
+              var(--hero-toolchain-card-fill)
+            )
+            padding-box,
+          var(--hero-toolchain-lovable-border) border-box;
+        transition-property: transform, box-shadow, --hero-toolchain-card-fill;
+        transition-duration:
+          var(--hero-toolchain-card-hover-duration),
+          120ms,
+          var(--hero-toolchain-card-hover-duration);
+        transition-timing-function:
+          var(--hero-toolchain-card-ease-out),
+          ease-out,
+          var(--hero-toolchain-card-ease-out);
       }
 
       .hero-toolchain__step--lovable .hero-toolchain__badge {
@@ -3172,7 +3278,27 @@
         }
       }
 
-      @media (hover: hover) {
+      @media (min-width: 961px) {
+        .marquee--problem .problem-evidence__card {
+          position: relative;
+          cursor: default;
+          transition:
+            transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 480ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @media (hover: hover) {
+          .marquee--problem .problem-evidence__card--reddit:hover,
+          .marquee--problem .problem-evidence__card--splitwise:hover,
+          .marquee--problem .problem-evidence__card--venmo:hover {
+            transform: rotate(0deg) scale(1.05) translateY(-6px);
+            z-index: 10;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16);
+          }
+        }
+      }
+
+      @media (hover: hover) and (max-width: 960px) {
         .marquee--problem .problem-evidence__card {
           cursor: zoom-in;
         }
@@ -3424,17 +3550,41 @@
                 <li class="hero-toolchain__step hero-toolchain__step--lovable">
                   <article class="hero-toolchain__card">
                     <span class="hero-toolchain__badge" aria-hidden="true">2</span>
-                    <div class="hero-toolchain__card-head">
-                      <img
-                        class="hero-toolchain__logo"
-                        src="assets/bountt-assets/toolchain/lovable-logo.png"
-                        alt="Lovable"
-                        width="40"
-                        height="40"
-                        loading="eager"
-                        decoding="async"
-                      />
-                      <h3 class="hero-toolchain__name">Lovable</h3>
+                    <div class="hero-toolchain__card-head hero-toolchain__card-head--pair">
+                      <div class="hero-toolchain__cycle-item">
+                        <img
+                          class="hero-toolchain__logo"
+                          src="assets/bountt-assets/toolchain/lovable-logo.png"
+                          alt="Lovable"
+                          width="36"
+                          height="36"
+                          loading="eager"
+                          decoding="async"
+                        />
+                        <span>Lovable</span>
+                      </div>
+                      <span class="hero-toolchain__pair-sep" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M12 5v14M5 12h14"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </span>
+                      <div class="hero-toolchain__cycle-item">
+                        <img
+                          class="hero-toolchain__logo"
+                          src="assets/bountt-assets/toolchain/supabase-logo.png"
+                          alt="Supabase"
+                          width="36"
+                          height="36"
+                          loading="eager"
+                          decoding="async"
+                        />
+                        <span>Supabase</span>
+                      </div>
                     </div>
                     <p class="hero-toolchain__subtitle">
                       Build the backend and implement functionality.
@@ -3999,6 +4149,71 @@
           });
           history.replaceState(null, "", "#the-result");
         });
+      })();
+
+      (function initHeroToolchainTilt() {
+        const desktopMq = window.matchMedia("(min-width: 961px) and (hover: hover)");
+        const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const steps = document.querySelectorAll(".hero-toolchain__step");
+        if (!steps.length) return;
+
+        const MAX_TILT = 13;
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const resetCard = (card) => {
+          card.style.removeProperty("--tilt-x");
+          card.style.removeProperty("--tilt-y");
+        };
+
+        const resetAll = () => {
+          steps.forEach((step) => {
+            step.classList.remove("is-tilting");
+            const card = step.querySelector(".hero-toolchain__card");
+            if (card) resetCard(card);
+          });
+        };
+
+        const bindTilt = () => {
+          if (!desktopMq.matches || reducedMq.matches) {
+            resetAll();
+            return;
+          }
+
+          steps.forEach((step) => {
+            if (step.dataset.toolchainTiltBound) return;
+            step.dataset.toolchainTiltBound = "1";
+
+            const card = step.querySelector(".hero-toolchain__card");
+            if (!card) return;
+
+            step.addEventListener("mouseenter", () => {
+              if (!desktopMq.matches || reducedMq.matches) return;
+              step.classList.add("is-tilting");
+            });
+
+            step.addEventListener("mousemove", (event) => {
+              if (!desktopMq.matches || reducedMq.matches) return;
+              const rect = card.getBoundingClientRect();
+              const cx = rect.left + rect.width / 2;
+              const cy = rect.top + rect.height / 2;
+              const nx = clamp((event.clientX - cx) / (rect.width / 2), -1, 1);
+              const ny = clamp((event.clientY - cy) / (rect.height / 2), -1, 1);
+
+              card.style.setProperty("--tilt-y", `${nx * MAX_TILT}deg`);
+              card.style.setProperty("--tilt-x", `${-ny * MAX_TILT}deg`);
+            });
+
+            step.addEventListener("mouseleave", () => {
+              step.classList.remove("is-tilting");
+              resetCard(card);
+            });
+          });
+        };
+
+        bindTilt();
+        desktopMq.addEventListener("change", bindTilt);
+        reducedMq.addEventListener("change", bindTilt);
       })();
 
       (function initScrollspy() {
@@ -4835,6 +5050,7 @@
         if (!modal || !mImg) return;
 
         const mobileMq = window.matchMedia("(max-width: 640px)");
+        const desktopMq = window.matchMedia("(min-width: 961px)");
 
         const problemImages = [
           ...document.querySelectorAll(
@@ -4902,10 +5118,14 @@
           document.querySelectorAll(".marquee--problem .problem-evidence__card").forEach((figure) => {
             const img = figure.querySelector("img");
             if (!img) return;
-            if (window.matchMedia("(hover: hover)").matches) {
+            if (
+              window.matchMedia("(hover: hover)").matches &&
+              !desktopMq.matches
+            ) {
               figure.style.cursor = "zoom-in";
             }
             figure.addEventListener("click", (e) => {
+              if (desktopMq.matches) return;
               e.stopPropagation();
               const i = imageIndex(img, problemImages);
               if (i >= 0) openGallery(problemImages, i);
