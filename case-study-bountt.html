@@ -589,6 +589,12 @@
 
       /* Hero toolchain flow */
       .hero-toolchain {
+        --hero-toolchain-card-hover-lift: -8px;
+        --hero-toolchain-card-hover-duration: 0.6s;
+        --hero-toolchain-card-ease-in: cubic-bezier(0.87, 0, 0.13, 1);
+        --hero-toolchain-card-ease-out: cubic-bezier(0.45, 0, 0.55, 1);
+        --hero-toolchain-card-shadow: none;
+        --hero-toolchain-card-shadow-hover: 0 12px 32px rgba(19, 17, 33, 0.1);
         position: relative;
         width: 100%;
         min-width: 0;
@@ -619,11 +625,12 @@
         position: relative;
         display: inline-flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 0;
         width: 34px;
         height: 34px;
-        padding: 0;
+        padding-inline: 9px 0;
+        padding-block: 0;
         overflow: hidden;
         border: 1px solid rgba(26, 26, 26, 0.12);
         border-radius: 999px;
@@ -637,19 +644,19 @@
         white-space: nowrap;
         cursor: pointer;
         transition:
-          width 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
-          padding 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
-          border-radius 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
-          background 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
-          border-color 320ms cubic-bezier(0.22, 0.78, 0.18, 1),
-          color 320ms cubic-bezier(0.22, 0.78, 0.18, 1);
+          width 420ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          padding 420ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          gap 420ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          border-radius 420ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          background 420ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          border-color 420ms cubic-bezier(0.22, 0.78, 0.18, 1),
+          color 420ms cubic-bezier(0.22, 0.78, 0.18, 1);
         will-change: width, padding, border-radius, background, color;
       }
 
       .hero-toolchain__ask:hover,
       .hero-toolchain__ask:focus-visible {
         width: 182px;
-        justify-content: flex-start;
         gap: 0.45rem;
         padding-inline: 9px 14px;
         border-color: transparent;
@@ -674,7 +681,7 @@
 
       .hero-toolchain__ask:hover .hero-toolchain__ask-icon,
       .hero-toolchain__ask:focus-visible .hero-toolchain__ask-icon {
-        transform: rotate(360deg) scale(1.05);
+        transform: rotate(360deg) scale(1.03);
       }
 
       .hero-toolchain__ask-label {
@@ -686,9 +693,9 @@
         pointer-events: none;
         transform: translateX(-4px) scale(0.96);
         transition:
-          opacity 190ms ease 40ms,
-          transform 260ms cubic-bezier(0.22, 0.78, 0.18, 1) 40ms,
-          max-width 320ms cubic-bezier(0.22, 0.78, 0.18, 1);
+          opacity 220ms ease 120ms,
+          transform 320ms cubic-bezier(0.22, 0.78, 0.18, 1) 120ms,
+          max-width 420ms cubic-bezier(0.22, 0.78, 0.18, 1);
       }
 
       .hero-toolchain__ask:hover .hero-toolchain__ask-label,
@@ -710,6 +717,27 @@
         .hero-toolchain__ask:hover .hero-toolchain__ask-icon,
         .hero-toolchain__ask:focus-visible .hero-toolchain__ask-icon {
           transform: none;
+        }
+
+        .hero-toolchain__step--figma,
+        .hero-toolchain__step--lovable,
+        .hero-toolchain__step--github,
+        .hero-toolchain__step--cursor,
+        .hero-toolchain__card {
+          animation: none;
+          opacity: 1;
+          transform: none;
+          filter: none;
+        }
+
+        .hero-toolchain__card {
+          transition: none;
+        }
+
+        .hero-toolchain__step:hover .hero-toolchain__card {
+          transform: none;
+          background: var(--paper);
+          box-shadow: none;
         }
       }
 
@@ -775,9 +803,37 @@
         padding: 1.65rem 1.1rem 1.35rem;
         border: 1.5px solid transparent;
         border-radius: 16px;
-        background: #fff;
+        background: var(--paper);
+        box-shadow: var(--hero-toolchain-card-shadow);
         text-align: center;
         gap: 0.7rem;
+        transform: translate3d(0, 0, 0);
+        transition-property: transform, background, box-shadow;
+        transition-duration: var(--hero-toolchain-card-hover-duration);
+        transition-timing-function: var(--hero-toolchain-card-ease-out);
+      }
+
+      @media (hover: hover) and (min-width: 961px) {
+        .hero-toolchain__step:hover .hero-toolchain__card {
+          transform: translate3d(0, var(--hero-toolchain-card-hover-lift), 0);
+          background: #fff;
+          box-shadow: var(--hero-toolchain-card-shadow-hover);
+          transition-timing-function: var(--hero-toolchain-card-ease-in);
+        }
+      }
+
+      @keyframes heroToolchainCardEnter {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+          filter: blur(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
       }
 
       .hero-toolchain__badge {
@@ -1067,6 +1123,31 @@
           bottom: 6.67%;
           left: 50%;
           transform: translate(-50%, 50%);
+        }
+
+        .hero-toolchain__step--figma,
+        .hero-toolchain__step--lovable,
+        .hero-toolchain__step--github,
+        .hero-toolchain__step--cursor {
+          opacity: 0;
+          animation: heroToolchainCardEnter 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+          will-change: opacity, transform, filter;
+        }
+
+        .hero-toolchain__step--figma {
+          animation-delay: 0ms;
+        }
+
+        .hero-toolchain__step--lovable {
+          animation-delay: 200ms;
+        }
+
+        .hero-toolchain__step--github {
+          animation-delay: 400ms;
+        }
+
+        .hero-toolchain__step--cursor {
+          animation-delay: 600ms;
         }
 
         .placeholder-hero.placeholder-hero--bountt {
