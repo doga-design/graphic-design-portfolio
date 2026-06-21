@@ -218,6 +218,7 @@
       followUp: [
         "How does Bountt reduce financial tension in groups?",
         "What did you ship and what were the results?",
+        "How long did Bountt take to build?",
         "What does AI-native mean here?",
       ],
     },
@@ -318,7 +319,7 @@
     "What kind of work do you do?":
       "I work across product design, UX, branding, motion, and frontend development — building digital experiences end-to-end.",
     "Tell me about Bountt":
-      "Bountt is a live React-based expense app I designed and built to reduce the awkwardness around shared costs. I focused on making group expenses feel clearer, calmer, and less transactional.",
+      "Bountt is a live React-based expense app I designed and built solo in an 8-week sprint to MVP (Mar–May 2026). I focused on making group expenses feel clearer, calmer, and less transactional.",
     "Tell me about your internal design tool project.":
       "I built an internal poster-design tool around the Since '67 Leafs campaign concept. It turns a visual system into something interactive, so designers can generate campaign posters while the brand rules stay consistent, without needing any tools.",
     "What makes your process different?":
@@ -337,7 +338,9 @@
     "How does Bountt reduce financial tension in groups?":
       "It reduces tension by making the status of shared costs visible and easy to act on. Instead of relying on memory or uncomfortable reminders, the app gives the group a calmer shared source of truth.",
     "What did you ship and what were the results?":
-      "I shipped a live React-based expense app with the core flows needed to add, track, and settle shared costs. The result is a working product rather than just a static concept, which let me validate the experience more realistically.",
+      "I shipped a live React-based expense app with the core flows needed to add, track, and settle shared costs — solo, in an 8-week sprint to MVP (Mar–May 2026). The result is a working product rather than just a static concept, which let me validate the experience more realistically.",
+    "How long did Bountt take to build?":
+      "I built Bountt solo in an 8-week sprint to MVP, from Mar–May 2026. I used an AI-native workflow — Figma, Lovable, Supabase, GitHub, and Cursor — to move from concept to a live shipped product without a traditional design-to-dev handoff.",
     "What does AI-native mean here?": BOUNTT_WORKFLOW_ANSWER,
 
     "What was wrong with the VisuGenie landing page?":

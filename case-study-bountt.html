@@ -848,30 +848,34 @@
           transform: translate3d(0, var(--tilt-lift), 0)
             rotateX(var(--tilt-x))
             rotateY(var(--tilt-y));
+          transition-property: background, box-shadow;
+          transition-duration:
+            var(--hero-toolchain-card-hover-duration),
+            120ms;
+          transition-timing-function:
+            var(--hero-toolchain-card-ease-out),
+            ease-out;
         }
 
         .hero-toolchain__step.is-tilting .hero-toolchain__card {
-          --tilt-lift: var(--hero-toolchain-card-hover-lift);
           background: #fff;
           box-shadow: var(--hero-toolchain-card-shadow-hover);
+          transition-property: background, box-shadow;
           transition-duration:
-            120ms,
             var(--hero-toolchain-card-bg-duration),
             120ms;
           transition-timing-function:
-            ease-out,
             var(--hero-toolchain-card-bg-ease-in),
             ease-out;
         }
 
         .hero-toolchain__step--lovable.is-tilting .hero-toolchain__card {
           --hero-toolchain-card-fill: #fff;
+          transition-property: box-shadow, --hero-toolchain-card-fill;
           transition-duration:
-            120ms,
             120ms,
             var(--hero-toolchain-card-bg-duration);
           transition-timing-function:
-            ease-out,
             ease-out,
             var(--hero-toolchain-card-bg-ease-in);
         }
@@ -1011,13 +1015,11 @@
             )
             padding-box,
           var(--hero-toolchain-lovable-border) border-box;
-        transition-property: transform, box-shadow, --hero-toolchain-card-fill;
+        transition-property: box-shadow, --hero-toolchain-card-fill;
         transition-duration:
-          var(--hero-toolchain-card-hover-duration),
           120ms,
           var(--hero-toolchain-card-hover-duration);
         transition-timing-function:
-          var(--hero-toolchain-card-ease-out),
           ease-out,
           var(--hero-toolchain-card-ease-out);
       }
@@ -3442,8 +3444,8 @@
                 <p class="meta__value">Solo</p>
               </div>
               <div>
-                <p class="meta__label">Timeline</p>
-                <p class="meta__value">Late Feb 2026 – May 2026<br />(3 months)</p>
+                <p class="meta__label">Timeline to MVP</p>
+                <p class="meta__value">Mar 2026 – May 2026 <br /> (8 weeks)</p>
               </div>
             </div>
             <figure class="hero-toolchain" aria-label="AI-native development workflow">
@@ -4158,19 +4160,81 @@
         if (!steps.length) return;
 
         const MAX_TILT = 13;
+        const LIFT = -8;
+        const LERP = 0.11;
+        const SETTLE = 0.04;
 
         const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+        const motion = new WeakMap();
 
-        const resetCard = (card) => {
+        const applyTransform = (card, current) => {
+          card.style.transform = `translate3d(0, ${current.lift.toFixed(2)}px, 0) rotateX(${current.rx.toFixed(3)}deg) rotateY(${current.ry.toFixed(3)}deg)`;
+        };
+
+        const clearTransform = (card) => {
+          card.style.removeProperty("transform");
           card.style.removeProperty("--tilt-x");
           card.style.removeProperty("--tilt-y");
+        };
+
+        const tick = (card) => {
+          const entry = motion.get(card);
+          if (!entry) return;
+
+          const { target, current } = entry;
+          current.rx += (target.rx - current.rx) * LERP;
+          current.ry += (target.ry - current.ry) * LERP;
+          current.lift += (target.lift - current.lift) * LERP;
+          applyTransform(card, current);
+
+          const settled =
+            Math.abs(current.rx - target.rx) < SETTLE &&
+            Math.abs(current.ry - target.ry) < SETTLE &&
+            Math.abs(current.lift - target.lift) < SETTLE;
+
+          if (settled) {
+            current.rx = target.rx;
+            current.ry = target.ry;
+            current.lift = target.lift;
+            applyTransform(card, current);
+
+            if (target.rx === 0 && target.ry === 0 && target.lift === 0) {
+              clearTransform(card);
+              entry.rafId = null;
+              return;
+            }
+          }
+
+          entry.rafId = requestAnimationFrame(() => tick(card));
+        };
+
+        const startMotion = (card) => {
+          const entry = motion.get(card);
+          if (!entry || entry.rafId) return;
+          entry.rafId = requestAnimationFrame(() => tick(card));
+        };
+
+        const getMotion = (card, step) => {
+          if (!motion.has(card)) {
+            motion.set(card, {
+              step,
+              target: { rx: 0, ry: 0, lift: 0 },
+              current: { rx: 0, ry: 0, lift: 0 },
+              rafId: null,
+            });
+          }
+          return motion.get(card);
         };
 
         const resetAll = () => {
           steps.forEach((step) => {
             step.classList.remove("is-tilting");
             const card = step.querySelector(".hero-toolchain__card");
-            if (card) resetCard(card);
+            if (!card) return;
+            const entry = motion.get(card);
+            if (entry?.rafId) cancelAnimationFrame(entry.rafId);
+            motion.delete(card);
+            clearTransform(card);
           });
         };
 
@@ -4189,24 +4253,33 @@
 
             step.addEventListener("mouseenter", () => {
               if (!desktopMq.matches || reducedMq.matches) return;
+              const entry = getMotion(card, step);
+              entry.target.lift = LIFT;
               step.classList.add("is-tilting");
+              startMotion(card);
             });
 
             step.addEventListener("mousemove", (event) => {
               if (!desktopMq.matches || reducedMq.matches) return;
+              const entry = getMotion(card, step);
               const rect = card.getBoundingClientRect();
               const cx = rect.left + rect.width / 2;
               const cy = rect.top + rect.height / 2;
               const nx = clamp((event.clientX - cx) / (rect.width / 2), -1, 1);
               const ny = clamp((event.clientY - cy) / (rect.height / 2), -1, 1);
 
-              card.style.setProperty("--tilt-y", `${nx * MAX_TILT}deg`);
-              card.style.setProperty("--tilt-x", `${-ny * MAX_TILT}deg`);
+              entry.target.ry = nx * MAX_TILT;
+              entry.target.rx = -ny * MAX_TILT;
+              startMotion(card);
             });
 
             step.addEventListener("mouseleave", () => {
+              const entry = getMotion(card, step);
+              entry.target.rx = 0;
+              entry.target.ry = 0;
+              entry.target.lift = 0;
               step.classList.remove("is-tilting");
-              resetCard(card);
+              startMotion(card);
             });
           });
         };
