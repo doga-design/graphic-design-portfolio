@@ -60,13 +60,16 @@
 
   const isDrawerOpen = () => shell.classList.contains("is-drawer-open");
 
+  const isCaseStudyPage = () =>
+    Boolean(document.querySelector(".layout")) && !document.getElementById("home");
+
   let inHero = false;
 
   const applyNavHidden = () => {
-    const heroHidden = inHero && !isDrawerOpen();
+    const heroHidden = !isCaseStudyPage() && inHero && !isDrawerOpen();
     const hidden = interactionHidden || scrollHidden || heroHidden;
     shell.classList.toggle("is-scroll-hidden", hidden);
-    shell.classList.toggle("is-in-hero", inHero);
+    shell.classList.toggle("is-in-hero", inHero && !isCaseStudyPage());
     if (hidden && isDrawerOpen()) close();
   };
 
@@ -313,9 +316,6 @@
     if (!hidden) onScroll();
   };
 
-  const isCaseStudyPage = () =>
-    Boolean(document.querySelector(".layout")) && !document.getElementById("home");
-
   const isNavActive = () => {
     if (!mobileMq.matches) return false;
     const home = document.getElementById("home");
@@ -328,14 +328,14 @@
 
     const y = Math.max(0, window.scrollY || window.pageYOffset);
 
-    if (inHero) {
-      setScrollHidden(true);
+    if (isCaseStudyPage()) {
+      setScrollHidden(false);
       lastY = y;
       return;
     }
 
-    if (isCaseStudyPage()) {
-      setScrollHidden(false);
+    if (inHero) {
+      setScrollHidden(true);
       lastY = y;
       return;
     }
@@ -421,6 +421,15 @@
       return;
     }
 
+    if (isCaseStudyPage()) {
+      if (inHero) {
+        inHero = false;
+        applyNavHidden();
+        onScroll();
+      }
+      return;
+    }
+
     const pastHero = !nextInHero;
     if (inHero === nextInHero) {
       setPastHome(pastHero);
@@ -442,6 +451,16 @@
 
     const rect = heroZone.getBoundingClientRect();
     const pastHero = rect.bottom <= 0 && rect.top < 0;
+
+    if (isCaseStudyPage()) {
+      setPastHome(pastHero);
+      if (inHero) {
+        inHero = false;
+        applyNavHidden();
+      }
+      return;
+    }
+
     setInHero(!pastHero);
   };
 
@@ -455,6 +474,16 @@
         }
 
         const pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+
+        if (isCaseStudyPage()) {
+          setPastHome(pastHero);
+          if (inHero) {
+            inHero = false;
+            applyNavHidden();
+          }
+          return;
+        }
+
         setInHero(!pastHero);
       },
       { threshold: [0, 0.01, 0.1] }
