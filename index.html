@@ -1170,6 +1170,97 @@
         border-radius: 15px;
       }
 
+      .work-ribbon {
+        position: absolute;
+        top: 30px;
+        left: 0;
+        z-index: 2;
+        padding: 10px 15px;
+        background: linear-gradient(180deg, #c0423f 0%, #a8332f 100%);
+        box-shadow:
+          0 6px 16px -6px rgba(176, 58, 57, 0.55),
+          inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        font-size: clamp(12px, 1.35vw, 15px);
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        border-top-right-radius: 999px;
+        border-bottom-right-radius: 999px;
+      }
+
+      .work-ribbon__text {
+        display: inline-flex;
+        color: #fff;
+      }
+
+      .work-ribbon__char {
+        position: relative;
+        display: inline-block;
+        white-space: pre;
+        transform-origin: center 65%;
+        will-change: transform;
+        animation: ribbon-char-pop var(--glimmer-period, 3.6s) ease-in-out infinite;
+        animation-delay: calc(var(--i, 0) * var(--glimmer-step, 0.07s));
+      }
+
+      .work-ribbon__char--sparkle::before {
+        content: "\2726";
+        position: absolute;
+        left: 50%;
+        top: var(--sy, -0.6em);
+        font-size: var(--ss, 0.5em);
+        line-height: 1;
+        color: #ffffff;
+        opacity: 0;
+        transform: translate(calc(-50% + var(--sx, 0px)), 0) scale(0) rotate(0deg);
+        text-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+        pointer-events: none;
+        animation: ribbon-sparkle var(--glimmer-period, 3.6s) ease-in-out infinite;
+        animation-delay: calc(var(--i, 0) * var(--glimmer-step, 0.07s));
+      }
+
+      @keyframes ribbon-char-pop {
+        0%,
+        16%,
+        100% {
+          transform: scale(1) translateY(0);
+          color: rgba(255, 255, 255, 0.82);
+          text-shadow: none;
+        }
+
+        7% {
+          transform: scale(1.28) translateY(-2px);
+          color: #fff;
+          text-shadow:
+            0 0 8px rgba(255, 255, 255, 0.85),
+            0 0 16px rgba(255, 214, 180, 0.5);
+        }
+      }
+
+      @keyframes ribbon-sparkle {
+        0%,
+        4%,
+        20%,
+        100% {
+          opacity: 0;
+          transform: translate(calc(-50% + var(--sx, 0px)), 0) scale(0)
+            rotate(0deg);
+        }
+
+        9% {
+          opacity: 1;
+          transform: translate(calc(-50% + var(--sx, 0px)), -3px) scale(1)
+            rotate(var(--sr, 35deg));
+        }
+
+        16% {
+          opacity: 0;
+          transform: translate(calc(-50% + var(--sx, 0px)), -7px) scale(0)
+            rotate(calc(var(--sr, 35deg) + 40deg));
+        }
+      }
+
       .work-card--small .work-thumb {
         aspect-ratio: 310 / 311;
       }
@@ -1237,6 +1328,21 @@
 
         .work-cursor-pill {
           transition: none;
+        }
+
+        .work-ribbon__text {
+          color: #fff;
+        }
+
+        .work-ribbon__char {
+          animation: none;
+          transform: none;
+          color: #fff;
+          text-shadow: none;
+        }
+
+        .work-ribbon__char--sparkle::before {
+          display: none;
         }
       }
 
@@ -3144,6 +3250,9 @@
                 <span class="work-badge work-badge--owned">Live Product</span>
               </div>
               <div class="work-thumb">
+                <span class="work-ribbon">
+                  <span class="work-ribbon__text" data-glimmer-text>AI-Native Development</span>
+                </span>
                 <img
                   class="work-thumb__media"
                   src="assets/bount-thumb-2.webp"
@@ -3157,9 +3266,9 @@
               Built React-Based Expense App That Removes Financial Tension
             </h2>
             <div class="work-tags">
+              <span class="work-tag">Student Awards Winner</span>
               <span class="work-tag">Product Design</span>
               <span class="work-tag">Product Development</span>
-              <span class="work-tag">End-to-end Ownership</span>
             </div>
           </article>
           </a>
@@ -3444,6 +3553,54 @@
     <script src="assets/dodollm-selection.js"></script>
     <script src="assets/mobile-nav.js"></script>
     <script>
+      (function initRibbonGlimmer() {
+        const build = () => {
+          document.querySelectorAll("[data-glimmer-text]").forEach((el) => {
+            if (el.dataset.glimmerReady) return;
+            el.dataset.glimmerReady = "true";
+            const label = el.textContent;
+            el.setAttribute("aria-label", label.trim());
+            el.textContent = "";
+
+            const chars = [...label];
+            const total = chars.length;
+            chars.forEach((ch, i) => {
+              const span = document.createElement("span");
+              span.className = "work-ribbon__char";
+              span.setAttribute("aria-hidden", "true");
+              span.textContent = ch;
+              span.style.setProperty("--i", String(i));
+
+              if (ch.trim() && Math.random() < 0.55) {
+                span.classList.add("work-ribbon__char--sparkle");
+                const sx = (Math.random() * 8 - 4).toFixed(1);
+                const sy = (-0.45 - Math.random() * 0.55).toFixed(2);
+                const ss = (0.42 + Math.random() * 0.22).toFixed(2);
+                const sr = Math.round(15 + Math.random() * 50);
+                span.style.setProperty("--sx", `${sx}px`);
+                span.style.setProperty("--sy", `${sy}em`);
+                span.style.setProperty("--ss", `${ss}em`);
+                span.style.setProperty("--sr", `${sr}deg`);
+              }
+              el.appendChild(span);
+            });
+
+            // Scale the per-char step so the wave spans a consistent share of
+            // the loop regardless of label length.
+            const period = 3.6;
+            const step = (period * 0.42) / Math.max(total, 1);
+            el.style.setProperty("--glimmer-period", `${period}s`);
+            el.style.setProperty("--glimmer-step", `${step.toFixed(3)}s`);
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", build);
+        } else {
+          build();
+        }
+      })();
+
       (function initDockReorder() {
         const DEFAULT_DOCK_ORDER = [
           "home",
