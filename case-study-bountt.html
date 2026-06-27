@@ -647,6 +647,15 @@
         transform: scale(1.04);
       }
 
+      .award-sticker.is-snapping {
+        transition:
+          transform 240ms ease,
+          opacity 240ms ease,
+          visibility 240ms ease,
+          left 240ms ease,
+          top 240ms ease;
+      }
+
       .award-sticker__badge {
         position: relative;
         width: 100%;
@@ -1276,6 +1285,13 @@
             "toolchain toolchain"
             "image image";
           align-items: center;
+        }
+
+        .award-sticker:not(.is-placed) {
+          top: clamp(32px, 4.5vw, 60px);
+          right: clamp(1.5rem, 3vw, 3rem);
+          bottom: auto;
+          left: auto;
         }
 
         .hero__title-row {
@@ -2693,6 +2709,17 @@
 
         .award-sticker {
           --award-sticker-size: clamp(120px, 20vw, 160px);
+          padding: clamp(1px, 0.5vw, 4px);
+          background: radial-gradient(
+            circle at 50% 38%,
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0.32) 70%,
+            rgba(255, 255, 255, 0) 100%
+          );
+        }
+
+        .award-sticker.is-dragging {
+          transform: scale(1.18);
         }
 
         .award-sticker__ring text {
@@ -4305,12 +4332,150 @@
         if (!sticker) return;
 
         const EDGE_GAP = 12;
+        const DRAG_THRESHOLD = 8;
+        const SNAP_RADIUS = 48;
+        const SNAP_TRANSITION_MS = 240;
+
+        const mobileMq = window.matchMedia("(max-width: 960px)");
+        const desktopMq = window.matchMedia("(min-width: 961px)");
+        const heroTitleRow = document.querySelector(".hero__title-row");
+
         let dragState = null;
+        let snapTimer = null;
+        let cachedDefaultRect = null;
 
         const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
+        // Ease the ring's spin speed down while hovered/interacted, back up on
+        // release. Driving playbackRate (not animation-duration) keeps the
+        // current rotation position, so there is no visual jump.
+        const ring = sticker.querySelector(".award-sticker__ring");
+        const SPIN_NORMAL_RATE = 1;
+        const SPIN_SLOW_RATE = 0.2;
+        const SPIN_RAMP_MS = 600;
+        let spinHovered = false;
+        let spinPressed = false;
+        let spinRampRaf = null;
+
+        const easeInOut = (t) =>
+          t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        const getSpinAnimation = () => {
+          const animations = ring?.getAnimations?.() ?? [];
+          return animations[0] ?? null;
+        };
+
+        const rampSpinTo = (targetRate) => {
+          const spin = getSpinAnimation();
+          if (!spin) return;
+
+          cancelAnimationFrame(spinRampRaf);
+          const startRate = spin.playbackRate;
+          if (Math.abs(startRate - targetRate) < 0.001) return;
+
+          const startTime = performance.now();
+          const step = (now) => {
+            const progress = Math.min(1, (now - startTime) / SPIN_RAMP_MS);
+            spin.playbackRate =
+              startRate + (targetRate - startRate) * easeInOut(progress);
+            if (progress < 1) spinRampRaf = requestAnimationFrame(step);
+          };
+          spinRampRaf = requestAnimationFrame(step);
+        };
+
+        const syncSpinSpeed = () => {
+          rampSpinTo(
+            spinHovered || spinPressed ? SPIN_SLOW_RATE : SPIN_NORMAL_RATE
+          );
+        };
+
+        sticker.addEventListener("pointerenter", () => {
+          spinHovered = true;
+          syncSpinSpeed();
+        });
+        sticker.addEventListener("pointerleave", () => {
+          spinHovered = false;
+          syncSpinSpeed();
+        });
+
+        const invalidateDefaultRect = () => {
+          cachedDefaultRect = null;
+        };
+
+        const syncDefaultPosition = () => {
+          if (sticker.classList.contains("is-placed") || dragState) return;
+
+          if (desktopMq.matches && heroTitleRow) {
+            sticker.style.removeProperty("left");
+            sticker.style.right = "clamp(1.5rem, 3vw, 3rem)";
+            sticker.style.bottom = "auto";
+            sticker.style.top = `${heroTitleRow.getBoundingClientRect().top - 16}px`;
+            return;
+          }
+
+          sticker.style.removeProperty("top");
+          sticker.style.removeProperty("left");
+          sticker.style.removeProperty("right");
+          sticker.style.removeProperty("bottom");
+        };
+
+        const getDefaultRect = () => {
+          if (cachedDefaultRect) return cachedDefaultRect;
+
+          const saved = {
+            placed: sticker.classList.contains("is-placed"),
+            left: sticker.style.left,
+            top: sticker.style.top,
+            right: sticker.style.right,
+            bottom: sticker.style.bottom,
+          };
+
+          sticker.classList.remove("is-placed");
+          sticker.style.removeProperty("left");
+          sticker.style.removeProperty("top");
+          sticker.style.removeProperty("right");
+          sticker.style.removeProperty("bottom");
+
+          if (desktopMq.matches && heroTitleRow) {
+            sticker.style.right = "clamp(1.5rem, 3vw, 3rem)";
+            sticker.style.bottom = "auto";
+            sticker.style.top = `${heroTitleRow.getBoundingClientRect().top - 16}px`;
+          }
+
+          cachedDefaultRect = sticker.getBoundingClientRect();
+
+          if (saved.placed) sticker.classList.add("is-placed");
+          for (const prop of ["left", "top", "right", "bottom"]) {
+            if (saved[prop]) sticker.style[prop] = saved[prop];
+            else sticker.style.removeProperty(prop);
+          }
+
+          return cachedDefaultRect;
+        };
+
+        const dockToDefault = ({ animate = false } = {}) => {
+          clearTimeout(snapTimer);
+          sticker.classList.remove("is-placed", "is-snapping");
+          sticker.style.removeProperty("left");
+          sticker.style.removeProperty("top");
+          sticker.style.removeProperty("right");
+          sticker.style.removeProperty("bottom");
+          syncDefaultPosition();
+          invalidateDefaultRect();
+          getDefaultRect();
+
+          if (animate) {
+            sticker.classList.add("is-snapping");
+            snapTimer = setTimeout(() => {
+              sticker.classList.remove("is-snapping");
+            }, SNAP_TRANSITION_MS);
+          }
+        };
+
         const applyPosition = (x, y) => {
           sticker.classList.add("is-placed");
+          sticker.style.right = "auto";
+          sticker.style.bottom = "auto";
           const rect = sticker.getBoundingClientRect();
           const maxX = Math.max(EDGE_GAP, window.innerWidth - rect.width - EDGE_GAP);
           const maxY = Math.max(EDGE_GAP, window.innerHeight - rect.height - EDGE_GAP);
@@ -4318,22 +4483,54 @@
           sticker.style.top = `${clamp(y, EDGE_GAP, maxY)}px`;
         };
 
+        const cancelSnap = () => {
+          clearTimeout(snapTimer);
+          sticker.classList.remove("is-snapping");
+        };
+
+        const distanceToDefault = () => {
+          const current = sticker.getBoundingClientRect();
+          const target = getDefaultRect();
+          const cx = current.left + current.width / 2;
+          const cy = current.top + current.height / 2;
+          const tx = target.left + target.width / 2;
+          const ty = target.top + target.height / 2;
+          return Math.hypot(cx - tx, cy - ty);
+        };
+
         sticker.addEventListener("pointerdown", (event) => {
           if (event.button !== 0 || !event.isPrimary) return;
+
+          cancelSnap();
           const rect = sticker.getBoundingClientRect();
-          applyPosition(rect.left, rect.top);
           dragState = {
             pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
             offsetX: event.clientX - rect.left,
             offsetY: event.clientY - rect.top,
+            moved: false,
           };
           sticker.classList.add("is-dragging");
+          spinPressed = true;
+          syncSpinSpeed();
           sticker.setPointerCapture?.(event.pointerId);
           event.preventDefault();
         });
 
         sticker.addEventListener("pointermove", (event) => {
           if (!dragState || event.pointerId !== dragState.pointerId) return;
+
+          if (!dragState.moved) {
+            const dx = event.clientX - dragState.startX;
+            const dy = event.clientY - dragState.startY;
+            if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+
+            dragState.moved = true;
+            const rect = sticker.getBoundingClientRect();
+            applyPosition(rect.left, rect.top);
+          }
+
           applyPosition(
             event.clientX - dragState.offsetX,
             event.clientY - dragState.offsetY
@@ -4342,17 +4539,42 @@
 
         const endDrag = (event) => {
           if (!dragState || event.pointerId !== dragState.pointerId) return;
+
+          const didMove = dragState.moved;
           sticker.classList.remove("is-dragging");
+          spinPressed = false;
+          syncSpinSpeed();
           sticker.releasePointerCapture?.(event.pointerId);
           dragState = null;
+
+          if (!didMove) return;
+
+          if (mobileMq.matches && distanceToDefault() <= SNAP_RADIUS) {
+            dockToDefault({ animate: true });
+          }
         };
 
         sticker.addEventListener("pointerup", endDrag);
         sticker.addEventListener("pointercancel", endDrag);
 
-        // Mobile only: hide the sticker once the bottom case-study nav is in view
-        // so it never sits on top of those buttons at the end of the page.
-        const mobileMq = window.matchMedia("(max-width: 960px)");
+        syncDefaultPosition();
+        getDefaultRect();
+        window.addEventListener("resize", () => {
+          invalidateDefaultRect();
+          syncDefaultPosition();
+          if (!sticker.classList.contains("is-placed")) getDefaultRect();
+        });
+        desktopMq.addEventListener?.("change", () => {
+          invalidateDefaultRect();
+          syncDefaultPosition();
+          if (!sticker.classList.contains("is-placed")) getDefaultRect();
+        });
+        mobileMq.addEventListener?.("change", () => {
+          invalidateDefaultRect();
+          syncDefaultPosition();
+          if (!sticker.classList.contains("is-placed")) getDefaultRect();
+        });
+
         const bottomNav = document.querySelector(".cs-nav-cards");
         if (bottomNav) {
           let navVisible = false;
