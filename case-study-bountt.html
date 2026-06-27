@@ -1950,6 +1950,14 @@
         transform: scaleX(1);
       }
 
+      .problem-stat-highlight--cream::before {
+        background: var(--bountt-accent, #faf0ca);
+      }
+
+      .problem-stat-highlight--cream.is-visible {
+        color: #b03a39;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .problem-stat-highlight::before {
           transition: none;
@@ -2466,6 +2474,15 @@
         margin-bottom: 0.25rem;
       }
 
+      #the-solution > .section__label {
+        margin-bottom: 0.4rem;
+      }
+
+      .solution-features__lead--heading {
+        text-align: left;
+        margin-bottom: clamp(1.5rem, 3vw, 2rem);
+      }
+
       .feature-card {
         border-radius: 12px;
         padding: 28px 32px;
@@ -2481,6 +2498,17 @@
         font-size: 0.85rem;
         font-weight: 500;
         flex-shrink: 0;
+      }
+
+      .feature-card__body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        min-width: 0;
+      }
+
+      .feature-card__body p {
+        margin: 0;
       }
 
       .feature-card--pink {
@@ -4258,7 +4286,10 @@
           </section>
 
           <section id="the-solution" class="section">
-            <h2 class="section__label">The Solution</h2>
+            <h2 class="section__label">Product decisions &amp; Trade-offs</h2>
+            <p class="solution-features__lead solution-features__lead--heading">
+              What if splitting money actually felt like it was about the people and not the numbers?
+            </p>
             <div class="solution-grid">
               <div
                 class="solution-card-left"
@@ -4266,26 +4297,33 @@
                 aria-hidden="true"
               ></div>
               <div class="solution-features">
-                <p class="solution-features__lead">
-                  What if splitting money actually felt like it was about the people and not the numbers?
-                </p>
                 <div class="feature-card feature-card--pink">
                   <span class="feature-card__num">1</span>
-                  <p>Bountt has one <strong>hard language rule</strong>: no debt framing. The <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">trade-off was precision.</span> &ldquo;Pays&rdquo; instead of &ldquo;owes.&rdquo; &ldquo;Covers&rdquo; instead of &ldquo;is responsible for.&rdquo; The math stays clear, the obligation disappears.</p>
+                  <div class="feature-card__body">
+                    <p>Bountt has one <strong class="problem-stat-highlight problem-stat-highlight--cream" data-stat-highlight>hard language rule</strong>: no debt framing.</p>
+                    <p>The <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">trade-off was precision.</span> &ldquo;Pays&rdquo; instead of &ldquo;is responsible for.&rdquo; &ldquo;Covers&rdquo; instead of &ldquo;liable.&rdquo; The math stays clear, the obligation disappears.</p>
+                  </div>
                 </div>
                 <div class="feature-card feature-card--periwinkle">
                   <span class="feature-card__num">2</span>
-                  <p><strong>Debt simplification</strong> that figures out the fewest possible payments to settle everything up. Visualizes the whole thing, open to everyone to see.</p>
+                  <div class="feature-card__body">
+                    <p><strong class="problem-stat-highlight problem-stat-highlight--cream" data-stat-highlight>Debt simplification + transparency layer.</strong> Bountt settles everything in the fewest possible payments and puts the full picture on the table for everyone to see.</p>
+                    <p><span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">Trade-off was privacy.</span> The whole group sees the whole balance, not just their own slice.</p>
+                  </div>
                 </div>
                 <div class="feature-card feature-card--sage">
                   <span class="feature-card__num">3</span>
-                  <p><strong>Gentle nudges</strong> instead of reminders. A quiet note in-app if something has been sitting too long or is a small amount. No push notifications, ever.</p>
+                  <div class="feature-card__body">
+                    <p><strong class="problem-stat-highlight problem-stat-highlight--cream" data-stat-highlight>Gentle nudges.</strong> Bountt never interrupts. A socially aware smart card surfaces quietly if something has been sitting too long, nothing more.</p>
+                    <p>The <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">trade-off was urgency.</span> The app stays polite but has no teeth if someone just doesn't open it.</p>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
           <section id="the-result" class="section">
+            <h2 class="section__label">The Solution</h2>
             <div
               class="collection-surfer"
               data-collection-surfer
@@ -5842,7 +5880,7 @@
               observer.unobserve(entry.target);
             });
           },
-          { threshold: 0.55, rootMargin: "0px 0px -6% 0px" }
+          { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
         );
 
         stats.forEach((stat) => observer.observe(stat));
