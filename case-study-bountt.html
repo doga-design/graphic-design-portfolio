@@ -928,6 +928,10 @@
         height: 0.75rem;
       }
 
+      .hero-toolchain__connector-stack {
+        display: none;
+      }
+
       .hero-toolchain__card {
         position: relative;
         display: flex;
@@ -1326,6 +1330,7 @@
 
         .hero-toolchain {
           grid-area: toolchain;
+          margin-top: clamp(-2.5rem, -3.5vw, -1.75rem);
           margin-bottom: 0;
         }
 
@@ -2753,7 +2758,65 @@
         }
 
         .hero-toolchain {
-          display: none !important;
+          display: block;
+          order: 5;
+          margin: 0 0 -4.75rem;
+          width: 100%;
+          min-width: 0;
+        }
+
+        .hero-toolchain__title-dev {
+          display: none;
+        }
+
+        .hero-toolchain__loops,
+        .hero-toolchain__loop-label {
+          display: none;
+        }
+
+        .hero-toolchain__diagram {
+          padding: 0.25rem 0 0;
+        }
+
+        .hero-toolchain__track {
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          scroll-padding-inline: 1rem;
+          padding: 1.35rem 1rem 0.5rem;
+          align-items: center;
+          gap: 0.5rem;
+          scrollbar-width: none;
+        }
+
+        .hero-toolchain__track::-webkit-scrollbar {
+          display: none;
+        }
+
+        .hero-toolchain__step {
+          flex: 0 0 auto;
+          width: min(78vw, 280px);
+          scroll-snap-align: center;
+        }
+
+        .hero-toolchain__card {
+          height: auto;
+          justify-content: center;
+        }
+
+        .hero-toolchain__connector {
+          flex: 0 0 1.25rem;
+          align-self: center;
+        }
+
+        .hero-toolchain__connector--two-way .hero-toolchain__connector-single {
+          display: none;
+        }
+
+        .hero-toolchain__connector--two-way .hero-toolchain__connector-stack {
+          display: block;
+          width: 1.75rem;
+          height: 1.5rem;
         }
 
         .problem-evidence__stack,
@@ -2966,6 +3029,10 @@
 
         .hero__title br {
           display: none;
+        }
+
+        .hero-toolchain__step {
+          width: min(84vw, 260px);
         }
 
         .placeholder-hero.placeholder-hero--bountt {
@@ -3642,7 +3709,7 @@
             </div>
             <figure class="hero-toolchain" aria-label="AI-native development workflow">
               <div class="hero-toolchain__title-row">
-                <h2 class="hero-toolchain__title">AI-native development &amp; building workflow</h2>
+                <h2 class="hero-toolchain__title">AI-native <span class="hero-toolchain__title-dev">development &amp; </span>building workflow</h2>
                 <button
                   class="hero-toolchain__ask"
                   type="button"
@@ -3829,8 +3896,8 @@
                     </div>
                   </article>
                 </li>
-                <li class="hero-toolchain__connector" aria-hidden="true">
-                  <svg viewBox="0 0 32 12" fill="none">
+                <li class="hero-toolchain__connector hero-toolchain__connector--two-way" aria-hidden="true">
+                  <svg class="hero-toolchain__connector-single" viewBox="0 0 32 12" fill="none">
                     <path
                       d="M2 6h20"
                       stroke="currentColor"
@@ -3839,6 +3906,34 @@
                     />
                     <path
                       d="M18 2l6 4-6 4"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <svg class="hero-toolchain__connector-stack" viewBox="0 0 32 24" fill="none">
+                    <path
+                      d="M4 7h18"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M18 3l6 4-6 4"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 17h18"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M14 13l-6 4 6 4"
                       stroke="currentColor"
                       stroke-width="2"
                       stroke-linecap="round"
@@ -3867,8 +3962,8 @@
                     </p>
                   </article>
                 </li>
-                <li class="hero-toolchain__connector" aria-hidden="true">
-                  <svg viewBox="0 0 32 12" fill="none">
+                <li class="hero-toolchain__connector hero-toolchain__connector--two-way" aria-hidden="true">
+                  <svg class="hero-toolchain__connector-single" viewBox="0 0 32 12" fill="none">
                     <path
                       d="M2 6h20"
                       stroke="currentColor"
@@ -3877,6 +3972,34 @@
                     />
                     <path
                       d="M18 2l6 4-6 4"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <svg class="hero-toolchain__connector-stack" viewBox="0 0 32 24" fill="none">
+                    <path
+                      d="M4 7h18"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M18 3l6 4-6 4"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 17h18"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M14 13l-6 4 6 4"
                       stroke="currentColor"
                       stroke-width="2"
                       stroke-linecap="round"
