@@ -212,12 +212,11 @@
     bountt: {
       initial: [
         "What problem was Bountt solving?",
-        "What did the research reveal?",
         "How did you approach the solution?",
+        "What award did Bountt win?",
       ],
       followUp: [
         "How does Bountt reduce financial tension in groups?",
-        "What did you ship and what were the results?",
         "How long did Bountt take to build?",
         "What does AI-native mean here?",
       ],
@@ -287,6 +286,9 @@
   const BOUNTT_WORKFLOW_ANSWER =
     "I built Bountt through an AI-native loop instead of a traditional design-to-dev handoff.\n\n- **Figma:** Design ideas, wireframes, and prototypes.\n- **Lovable & Supabase:** Backend and core functionality.\n- **GitHub:** Version control and code management.\n- **Cursor:** UI, design systems, and customization.\n- **Claude + Lovable:** Together I refined features, fixed bugs, analyzed usage, and iterated until it was ready to ship.";
 
+  const BOUNTT_AWARD_ANSWER =
+    "Bountt won an Applied Arts Magazine 2026 Student Award in the Apps, Single category (WS/01). The winning entry is Bountt App by me, Doga Cimen, winner number S-158. It will be published in the Winter 2026 Awards Annual and featured in the online Winners Gallery.";
+
   const CASE_STUDY_SUGGESTION_OVERRIDES = {
     bountt: {
       "What tools did you use on this project?": BOUNTT_WORKFLOW_ANSWER,
@@ -304,6 +306,7 @@
 
   const SUGGESTION_WORK_OVERRIDES = {
     "Tell me about your internal design tool project.": ["since67"],
+    "What award did Bountt win?": ["applied-arts"],
   };
 
   const PROMPTS_WITHOUT_WORK_CARDS = new Set([
@@ -319,7 +322,7 @@
     "What kind of work do you do?":
       "I work across product design, UX, branding, motion, and frontend development — building digital experiences end-to-end.",
     "Tell me about Bountt":
-      "Bountt is a live React-based expense app I designed and built solo in an 8-week sprint to MVP (Mar–May 2026). I focused on making group expenses feel clearer, calmer, and less transactional.",
+      "Bountt is a live React-based expense app I designed and built solo in an 8-week sprint to MVP (Mar–May 2026). I focused on making group expenses feel clearer, calmer, and less transactional. It also won an Applied Arts Magazine 2026 Student Award in Apps, Single.",
     "Tell me about your internal design tool project.":
       "I built an internal poster-design tool around the Since '67 Leafs campaign concept. It turns a visual system into something interactive, so designers can generate campaign posters while the brand rules stay consistent, without needing any tools.",
     "What makes your process different?":
@@ -331,14 +334,11 @@
 
     "What problem was Bountt solving?":
       "Bountt was solving the tension that shows up when people share costs but do not have a simple, transparent way to settle them. The product makes shared expenses easier to track, understand, and resolve without creating social friction.",
-    "What did the research reveal?":
-      "The research showed that the hard part was not only calculating money, it was the emotional awkwardness around asking, reminding, and settling. That pushed me toward flows that feel clear, lightweight, and low-pressure.",
     "How did you approach the solution?":
       "I approached Bountt as both a product and interaction problem. I designed the core expense flow around clarity, built it in React, and kept reducing steps until the experience felt fast without becoming vague.",
     "How does Bountt reduce financial tension in groups?":
       "It reduces tension by making the status of shared costs visible and easy to act on. Instead of relying on memory or uncomfortable reminders, the app gives the group a calmer shared source of truth.",
-    "What did you ship and what were the results?":
-      "I shipped a live React-based expense app with the core flows needed to add, track, and settle shared costs — solo, in an 8-week sprint to MVP (Mar–May 2026). The result is a working product rather than just a static concept, which let me validate the experience more realistically.",
+    "What award did Bountt win?": BOUNTT_AWARD_ANSWER,
     "How long did Bountt take to build?":
       "I built Bountt solo in an 8-week sprint to MVP, from Mar–May 2026. I used an AI-native workflow — Figma, Lovable, Supabase, GitHub, and Cursor — to move from concept to a live shipped product without a traditional design-to-dev handoff.",
     "What does AI-native mean here?": BOUNTT_WORKFLOW_ANSWER,
@@ -462,6 +462,14 @@
         "A macOS native app that helps vibe coders and designers understand what's actually happening under the hood, in real time.",
       image: "assets/work3-thumb.webp",
       alt: "Coming soon macOS native app thumbnail",
+    },
+    {
+      key: "applied-arts",
+      aliases: ["applied arts", "applied arts magazine", "appliedarts"],
+      title: "Applied Arts Magazine 2026 Student Award Winner — Bountt App, Apps (Single).",
+      image: "assets/appliedartsmag.webp",
+      alt: "Applied Arts Magazine thumbnail",
+      href: "https://www.appliedartsmag.com/",
     },
   ];
 
@@ -1132,6 +1140,10 @@
       card.className = "dodollm-work-card";
       if (work.href) {
         card.href = work.href;
+        if (/^https?:\/\//.test(work.href)) {
+          card.target = "_blank";
+          card.rel = "noopener noreferrer";
+        }
       }
 
       const image = document.createElement("img");

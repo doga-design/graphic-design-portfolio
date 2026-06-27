@@ -1346,6 +1346,16 @@
           flex-basis: 2.25rem;
         }
 
+        .hero-toolchain__connector--two-way .hero-toolchain__connector-single {
+          display: none;
+        }
+
+        .hero-toolchain__connector--two-way .hero-toolchain__connector-stack {
+          display: block;
+          width: 2rem;
+          height: 1.25rem;
+        }
+
         .hero-toolchain__loops--top {
           display: block;
         }
@@ -4176,7 +4186,7 @@
                 </p>
                 <h3>Splitwise has 10 million users and hasn't touched the emotional side of the problem in 8 years.</h3>
                 <p>
-                  I went through <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">200+</span> App Store and Reddit reviews. The same words kept showing up: nagging, petty, transactional, awkward. More than <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 1">20%</span> of people complained about too many notifications. Nearly <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 2">40%</span> felt like the app was making them cheap by being so precise about every cent. The app is good at math. It's not good at friendships.
+                  I went through <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">200+</span> App Store and Reddit reviews. The same words kept showing up: nagging, petty, transactional, awkward. More than <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 1">20%</span> described an immediate sense of anxiety when the app was in view. Nearly <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 2">40%</span> felt like the app was making them cheap by being so precise about every cent. The app is good at math. It's not good at friendships.
                 </p>
               </div>
             </div>
@@ -4215,13 +4225,13 @@
               <div class="disc-wrap disc-wrap--2">
                 <div class="disc disc--2">
                   <div class="disc__value">~40%</div>
-                  <div class="disc__label">Talked about pettiness or over precision</div>
+                  <div class="disc__label">Felt like an accountant among friends</div>
                 </div>
               </div>
               <div class="disc-wrap disc-wrap--3">
                 <div class="disc disc--3">
                   <div class="disc__value">20%</div>
-                  <div class="disc__label">Complained about too many notifications</div>
+                  <div class="disc__label">Described a sense of anxiety when they opened the app</div>
                 </div>
               </div>
               <div class="disc-wrap disc-wrap--4">
@@ -5249,58 +5259,11 @@
         const scene = root?.querySelector(".collection-surfer__scene");
         if (!root || !track || !scroller || !scrollerInner || !stage || !viewport || !scene) return;
 
-        const ITEMS = [
-          {
-            id: 1,
-            image: "assets/bountt-product-mockups/0.webp",
-            alt: "Bountt product screen 0",
-          },
-          {
-            id: 2,
-            image: "assets/bountt-product-mockups/1.2.webp",
-            alt: "Bountt product screen 1.2",
-          },
-          {
-            id: 3,
-            image: "assets/bountt-product-mockups/2.webp",
-            alt: "Bountt product screen 2",
-          },
-          {
-            id: 4,
-            image: "assets/bountt-product-mockups/3.webp",
-            alt: "Bountt product screen 3",
-          },
-          {
-            id: 5,
-            image: "assets/bountt-product-mockups/3.1.webp",
-            alt: "Bountt product screen 3.1",
-          },
-          {
-            id: 6,
-            image: "assets/bountt-product-mockups/4.webp",
-            alt: "Bountt product screen 4",
-          },
-          {
-            id: 7,
-            image: "assets/bountt-product-mockups/6.webp",
-            alt: "Bountt product screen 6",
-          },
-          {
-            id: 8,
-            image: "assets/bountt-product-mockups/7.webp",
-            alt: "Bountt product screen 7",
-          },
-          {
-            id: 9,
-            image: "assets/bountt-product-mockups/8.webp",
-            alt: "Bountt product screen 8",
-          },
-          {
-            id: 10,
-            image: "assets/bountt-product-mockups/9.webp",
-            alt: "Bountt product screen 9",
-          },
-        ];
+        const ITEMS = Array.from({ length: 17 }, (_, i) => ({
+          id: i + 1,
+          image: `assets/bountt-product-mockups/${i}.webp`,
+          alt: `Bountt product screen ${i + 1}`,
+        }));
 
         const itemCount = ITEMS.length;
         const loopDistance = itemCount;
@@ -5310,11 +5273,6 @@
         const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
         const duplicated = [...ITEMS, ...ITEMS];
-        duplicated[10] = {
-          id: 11,
-          image: "assets/bountt-product-mockups/6.webp",
-          alt: "Bountt product screen 6",
-        };
         const cards = [];
 
         duplicated.forEach((item, i) => {
