@@ -528,6 +528,10 @@
       }
 
       /* Hero */
+      .hero {
+        position: relative;
+      }
+
       .hero__title {
         font-size: clamp(1.75rem, 5vw, 2.5rem);
         font-weight: 400;
@@ -591,6 +595,114 @@
 
       .hero__ctas .hero__cta span {
         color: inherit;
+      }
+
+      .award-sticker {
+        --award-sticker-size: clamp(190px, 19vw, 250px);
+        position: fixed;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+        right: 1rem;
+        top: auto;
+        z-index: 200;
+        width: var(--award-sticker-size);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        -webkit-backdrop-filter: blur(9px);
+        backdrop-filter: blur(9px);
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
+        transform-origin: center;
+        transition:
+          transform 220ms ease,
+          opacity 220ms ease,
+          visibility 220ms ease;
+      }
+
+      .award-sticker:focus-visible {
+        outline: 2px solid #b03a39;
+        outline-offset: 4px;
+      }
+
+      .award-sticker.is-scrolling {
+        opacity: 0;
+      }
+
+      .award-sticker.is-stowed {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: scale(0.85);
+      }
+
+      .award-sticker.is-placed {
+        position: fixed;
+        right: auto;
+        bottom: auto;
+      }
+
+      .award-sticker.is-dragging {
+        z-index: 1000;
+        cursor: grabbing;
+        transform: scale(1.04);
+      }
+
+      .award-sticker__badge {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .award-sticker__ring {
+        position: absolute;
+        inset: 0;
+        animation: awardStickerSpin 12s linear infinite;
+      }
+
+      .award-sticker__ring text {
+        fill: var(--ink);
+        font-family: var(--font-body);
+        font-weight: 600;
+        letter-spacing: 3.6px;
+      }
+
+      .award-sticker__ring-em {
+        fill: #b03a39;
+        font-weight: 800;
+      }
+
+      .award-sticker__icon {
+        position: relative;
+        z-index: 1;
+        width: 59%;
+        height: 59%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .award-sticker__icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      @keyframes awardStickerSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .award-sticker,
+        .award-sticker__ring {
+          transition: none;
+          animation: none;
+        }
       }
 
       /* Hero toolchain flow */
@@ -2579,6 +2691,15 @@
           gap: clamp(1.25rem, 4vw, 1.75rem);
         }
 
+        .award-sticker {
+          --award-sticker-size: clamp(120px, 20vw, 160px);
+        }
+
+        .award-sticker__ring text {
+          font-size: 12.8px;
+          letter-spacing: 3px;
+        }
+
         .main__inner > .hero {
           margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
         }
@@ -2768,6 +2889,15 @@
 
         .hero {
           gap: clamp(1.5rem, 5vw, 2.25rem);
+        }
+
+        .award-sticker {
+          --award-sticker-size: clamp(104px, 30vw, 132px);
+        }
+
+        .award-sticker__ring text {
+          font-size: 13.6px;
+          letter-spacing: 2.6px;
         }
 
         .main__inner > .hero {
@@ -3408,6 +3538,41 @@
       <main class="main">
         <div class="main__inner">
           <header class="hero">
+            <div
+              class="award-sticker"
+              role="button"
+              tabindex="0"
+              aria-label="Draggable Applied Arts 2026 award sticker"
+              data-award-sticker
+            >
+              <div class="award-sticker__badge" aria-hidden="true">
+                <svg
+                  class="award-sticker__ring"
+                  viewBox="0 0 220 220"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <path
+                      id="award-sticker-circle-path"
+                      d="M110,110 m-95,0 a95,95 0 1,1 190,0 a95,95 0 1,1 -190,0"
+                    />
+                  </defs>
+                  <text font-size="11.2">
+                    <textPath href="#award-sticker-circle-path">
+                      APPLIED ARTS 2026 · <tspan class="award-sticker__ring-em">STUDENT AWARDS</tspan> · <tspan class="award-sticker__ring-em">WINNER</tspan> · APPS · SINGLE ·&nbsp;
+                    </textPath>
+                  </text>
+                </svg>
+                <div class="award-sticker__icon">
+                  <img
+                    src="assets/applied-arts-student-award-badge.png"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </div>
             <div class="hero__title-row">
               <a class="hero__back" href="index.html">
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -4135,6 +4300,91 @@
     </script>
     <script src="assets/mobile-nav.js"></script>
     <script>
+      (function initAwardStickerDrag() {
+        const sticker = document.querySelector("[data-award-sticker]");
+        if (!sticker) return;
+
+        const EDGE_GAP = 12;
+        let dragState = null;
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const applyPosition = (x, y) => {
+          sticker.classList.add("is-placed");
+          const rect = sticker.getBoundingClientRect();
+          const maxX = Math.max(EDGE_GAP, window.innerWidth - rect.width - EDGE_GAP);
+          const maxY = Math.max(EDGE_GAP, window.innerHeight - rect.height - EDGE_GAP);
+          sticker.style.left = `${clamp(x, EDGE_GAP, maxX)}px`;
+          sticker.style.top = `${clamp(y, EDGE_GAP, maxY)}px`;
+        };
+
+        sticker.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0 || !event.isPrimary) return;
+          const rect = sticker.getBoundingClientRect();
+          applyPosition(rect.left, rect.top);
+          dragState = {
+            pointerId: event.pointerId,
+            offsetX: event.clientX - rect.left,
+            offsetY: event.clientY - rect.top,
+          };
+          sticker.classList.add("is-dragging");
+          sticker.setPointerCapture?.(event.pointerId);
+          event.preventDefault();
+        });
+
+        sticker.addEventListener("pointermove", (event) => {
+          if (!dragState || event.pointerId !== dragState.pointerId) return;
+          applyPosition(
+            event.clientX - dragState.offsetX,
+            event.clientY - dragState.offsetY
+          );
+        });
+
+        const endDrag = (event) => {
+          if (!dragState || event.pointerId !== dragState.pointerId) return;
+          sticker.classList.remove("is-dragging");
+          sticker.releasePointerCapture?.(event.pointerId);
+          dragState = null;
+        };
+
+        sticker.addEventListener("pointerup", endDrag);
+        sticker.addEventListener("pointercancel", endDrag);
+
+        // Mobile only: hide the sticker once the bottom case-study nav is in view
+        // so it never sits on top of those buttons at the end of the page.
+        const mobileMq = window.matchMedia("(max-width: 960px)");
+        const bottomNav = document.querySelector(".cs-nav-cards");
+        if (bottomNav) {
+          let navVisible = false;
+          const syncStowed = () => {
+            sticker.classList.toggle("is-stowed", navVisible && mobileMq.matches);
+          };
+          new IntersectionObserver(
+            (entries) => {
+              navVisible = entries[0].isIntersecting;
+              syncStowed();
+            },
+            { rootMargin: "0px 0px -8% 0px" }
+          ).observe(bottomNav);
+          mobileMq.addEventListener?.("change", syncStowed);
+        }
+
+        // Mobile only: fade the sticker down while the page is actively scrolling.
+        let scrollTimer = null;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!mobileMq.matches || dragState) return;
+            sticker.classList.add("is-scrolling");
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+              sticker.classList.remove("is-scrolling");
+            }, 1100);
+          },
+          { passive: true }
+        );
+      })();
+
       (function initHeroScrollToResult() {
         const link = document.querySelector("[data-scroll-to-result]");
         const target = document.getElementById("the-result");
