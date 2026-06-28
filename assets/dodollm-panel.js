@@ -907,17 +907,23 @@
   }
 
   function getMentionedWorks(prompt) {
+    const currentSlug = getCurrentCaseStudySlug();
+    const excludeCurrent = (list) =>
+      currentSlug ? list.filter((work) => work.key !== currentSlug) : list;
+
     if (PROMPTS_WITHOUT_WORK_CARDS.has(prompt)) return [];
 
     if (SUGGESTION_WORK_OVERRIDES[prompt]) {
-      return SUGGESTION_WORK_OVERRIDES[prompt]
-        .map((key) => works.find((work) => work.key === key))
-        .filter(Boolean);
+      return excludeCurrent(
+        SUGGESTION_WORK_OVERRIDES[prompt]
+          .map((key) => works.find((work) => work.key === key))
+          .filter(Boolean)
+      );
     }
 
     const normalized = normalizePrompt(prompt);
-    const matches = works.filter((work) =>
-      work.aliases.some((alias) => normalized.includes(alias))
+    const matches = excludeCurrent(
+      works.filter((work) => work.aliases.some((alias) => normalized.includes(alias)))
     );
 
     if (matches.length) return matches.slice(0, 3);
@@ -926,7 +932,7 @@
       /\b(work|works|project|projects|portfolio|case stud(?:y|ies))\b/.test(normalized);
     if (!asksForWork) return [];
 
-    return works.slice(0, 3);
+    return excludeCurrent(works).slice(0, 3);
   }
 
   function setWaitingState(isWaiting) {
