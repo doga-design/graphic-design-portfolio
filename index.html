@@ -1476,14 +1476,14 @@
 
       .award-star {
         position: absolute;
-        color: #ffc875;
-        font-size: 12px;
+        color: #ffc355;
+        font-size: 13px;
         line-height: 1;
         pointer-events: none;
         opacity: 0;
         text-shadow:
-          0 0 8px rgba(255, 255, 255, 0.85),
-          0 0 16px rgba(255, 214, 180, 0.5),
+          0 0 6px rgba(255, 230, 44, 0.85),
+          0 0 14px rgba(255, 214, 180, 0.6),
           0 0 22px rgba(250, 240, 202, 0.45);
         will-change: transform, opacity;
       }
@@ -1643,6 +1643,83 @@
 
       .work-more__btn[aria-expanded="true"] .icon {
         transform: rotate(180deg);
+      }
+
+      /* Roll-out on hover: label rolls bottom -> top */
+      .work-more__btn-label {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        line-height: 1;
+        text-align: center;
+      }
+
+      .work-more__btn-label-line {
+        display: block;
+        white-space: nowrap;
+        transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .work-more__btn-label-line--b {
+        position: absolute;
+        inset: 0;
+        transform: translateY(100%);
+      }
+
+      /* Chevron rolls the opposite way: top -> bottom */
+      .work-more__chev {
+        position: relative;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        overflow: hidden;
+      }
+
+      .work-more__chev-item {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .work-more__chev-item--b {
+        transform: translateY(-100%);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .work-more__btn:hover .work-more__btn-label-line--a,
+        .work-more__btn:focus-visible .work-more__btn-label-line--a {
+          transform: translateY(-100%);
+        }
+
+        .work-more__btn:hover .work-more__btn-label-line--b,
+        .work-more__btn:focus-visible .work-more__btn-label-line--b {
+          transform: translateY(0);
+        }
+
+        .work-more__btn:hover .work-more__chev-item--a,
+        .work-more__btn:focus-visible .work-more__chev-item--a {
+          transform: translateY(100%);
+        }
+
+        .work-more__btn:hover .work-more__chev-item--b,
+        .work-more__btn:focus-visible .work-more__chev-item--b {
+          transform: translateY(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .work-more__btn-label-line,
+        .work-more__chev-item {
+          transition: none;
+        }
+
+        .work-more__btn-label-line--b,
+        .work-more__chev-item--b {
+          display: none;
+        }
       }
 
       .work-extra {
@@ -3513,10 +3590,28 @@
             aria-expanded="false"
             aria-controls="work-extra"
           >
-            <span class="work-more__btn-label">View more work</span>
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <use href="assets/icons.svg#icon-chevron-down" />
-            </svg>
+            <span class="work-more__btn-label">
+              <span class="work-more__btn-label-line work-more__btn-label-line--a"
+                >View more work</span
+              >
+              <span
+                class="work-more__btn-label-line work-more__btn-label-line--b"
+                aria-hidden="true"
+                >View more work</span
+              >
+            </span>
+            <span class="work-more__chev" aria-hidden="true">
+              <span class="work-more__chev-item work-more__chev-item--a">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="assets/icons.svg#icon-chevron-down" />
+                </svg>
+              </span>
+              <span class="work-more__chev-item work-more__chev-item--b">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="assets/icons.svg#icon-chevron-down" />
+                </svg>
+              </span>
+            </span>
           </button>
         </div>
 
@@ -5774,7 +5869,12 @@
           panel.classList.toggle("is-open", open);
           btn.setAttribute("aria-expanded", String(open));
           panel.setAttribute("aria-hidden", String(!open));
-          label.textContent = open ? labelLess : labelMore;
+          const nextLabel = open ? labelLess : labelMore;
+          label
+            .querySelectorAll(".work-more__btn-label-line")
+            .forEach((line) => {
+              line.textContent = nextLabel;
+            });
 
           if (open) {
             scrollTowardExtraWork();

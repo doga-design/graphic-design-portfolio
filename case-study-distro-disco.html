@@ -2030,6 +2030,32 @@
         align-items: start;
       }
 
+      .motion-principles-note {
+        max-width: 860px;
+        padding: clamp(1.25rem, 3vw, 1.75rem);
+        border: 1px solid rgba(41, 41, 102, 0.12);
+        border-radius: 24px;
+        background:
+          linear-gradient(135deg, rgba(255, 221, 206, 0.09), rgba(248, 245, 241, 0.92)),
+          var(--paper);
+        box-shadow: 0 18px 46px rgba(19, 17, 33, 0.08);
+      }
+
+      .motion-principles-note__eyebrow {
+        display: block;
+        margin-bottom: 0.6rem;
+        color: var(--ink);
+        font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+      }
+
+      .motion-principles-note p {
+        max-width: 760px;
+        margin: 0;
+      }
+
       .interaction-grid__item {
         display: flex;
         flex-direction: column;
@@ -2596,6 +2622,10 @@
         .team-grid,
         .interaction-grid {
           grid-template-columns: 1fr;
+        }
+
+        .interaction-grid {
+          margin-bottom: clamp(1rem, 3vw, 1.5rem);
         }
 
         .placeholder-tall {
@@ -3647,7 +3677,6 @@
                   </div>
                 </div>
                 <h3>Spring-bounce interaction system</h3>
-              
                 <p>
                   <strong>A product that feels physically real is one people trust to do real things.</strong><br/>
                   On tap, every interactive element across the app—buttons, cards, nav items, role
@@ -3779,6 +3808,20 @@
                 </p>
               </div>
             </div>
+            <aside class="motion-principles-note" aria-label="Motion principles reference">
+              <span class="motion-principles-note__eyebrow">Spring motion system rationale</span>
+              <p>
+                The spring parameters were informed by
+                <a
+                  class="text-link-highlight"
+                  href="https://github.com/emilkowalski/skills/blob/main/skills/emil-design-eng/SKILL.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Emil Kowalski’s motion principles</a
+                >: springs simulate physical response through stiffness and damping rather than a fixed
+                duration, which makes the interaction feel more trustworthy than keyframe-based easing.
+              </p>
+            </aside>
           </section>
 
           <section id="the-result" class="section">
