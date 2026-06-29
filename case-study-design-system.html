@@ -543,8 +543,10 @@
         transition: background 200ms ease;
       }
 
-      .cta-block:hover {
-        background: #f795c8;
+      @media (hover: hover) and (pointer: fine) {
+        .cta-block:hover {
+          background: #f795c8;
+        }
       }
 
       .cta-block span {
@@ -696,6 +698,17 @@
 
         .cta-block {
           padding-inline: clamp(1.5rem, 5vw, 2rem);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
         }
       }
     </style>

@@ -266,9 +266,14 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   transition: opacity 150ms ease;
 }
 
-.dodollm-panel__icon-btn:hover,
 .dodollm-panel__icon-btn:focus-visible {
   opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dodollm-panel__icon-btn:hover {
+    opacity: 1;
+  }
 }
 
 .dodollm-panel__chat {
@@ -552,10 +557,15 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   will-change: transform;
 }
 
-.dodollm-signature-wrap:hover .dodollm-signature svg,
 .dodollm-signature-wrap:focus-within .dodollm-signature svg,
 .dodollm-signature-wrap.is-open .dodollm-signature svg {
   transform: rotate(360deg) scale(1.05);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dodollm-signature-wrap:hover .dodollm-signature svg {
+    transform: rotate(360deg) scale(1.05);
+  }
 }
 
 .dodollm-signature-tip {
@@ -597,13 +607,21 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   transform: translateY(-50%) rotate(45deg);
 }
 
-.dodollm-signature-wrap:hover .dodollm-signature-tip,
 .dodollm-signature-wrap:focus-within .dodollm-signature-tip,
 .dodollm-signature-wrap.is-open .dodollm-signature-tip {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateY(-50%) translateX(0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dodollm-signature-wrap:hover .dodollm-signature-tip {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 .dodollm-cursor {
@@ -644,10 +662,16 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
     background-color 150ms ease;
 }
 
-.dodollm-chip:hover,
 .dodollm-chip:focus-visible {
   color: var(--accent, #b03a39);
   background-color: rgba(176, 58, 57, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dodollm-chip:hover {
+    color: var(--accent, #b03a39);
+    background-color: rgba(176, 58, 57, 0.08);
+  }
 }
 
 .dodollm-chip::before {
@@ -717,14 +741,26 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   cursor: pointer;
   transition:
     background 150ms ease,
-    color 150ms ease;
+    color 150ms ease,
+    transform 120ms ease;
 }
 
-.dodollm-panel__send:hover,
 .dodollm-panel__send:focus-visible {
   border-color: var(--accent, #b03a39);
   background: var(--accent, #b03a39);
   color: #fff;
+}
+
+.dodollm-panel__send:active {
+  transform: scale(0.95);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dodollm-panel__send:hover {
+    border-color: var(--accent, #b03a39);
+    background: var(--accent, #b03a39);
+    color: #fff;
+  }
 }
 
 @keyframes dodollmMessageIn {
@@ -832,5 +868,15 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .dodollm-message-user,
+  .dodollm-info-disclaimer {
+    animation: none;
+    transition: none;
+  }
+
+  .dodollm-cursor {
+    animation: none;
   }
 }

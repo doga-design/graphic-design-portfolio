@@ -395,11 +395,17 @@
         font-weight: 500;
         letter-spacing: -0.01em;
         text-decoration: none;
-        transition: background 200ms ease, border-color 200ms ease;
+        transition: background 200ms ease, border-color 200ms ease, transform 120ms ease;
       }
 
-      .hero__ctas .hero__cta:hover {
-        background: #162d47;
+      .hero__ctas .hero__cta:active {
+        transform: scale(0.97);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .hero__ctas .hero__cta:hover {
+          background: #162d47;
+        }
       }
 
       .hero__ctas .hero__cta--secondary {
@@ -408,9 +414,11 @@
         border: 1px solid rgba(26, 26, 26, 0.18);
       }
 
-      .hero__ctas .hero__cta--secondary:hover {
-        background: rgba(13, 27, 42, 0.06);
-        border-color: rgba(26, 26, 26, 0.28);
+      @media (hover: hover) and (pointer: fine) {
+        .hero__ctas .hero__cta--secondary:hover {
+          background: rgba(13, 27, 42, 0.06);
+          border-color: rgba(26, 26, 26, 0.28);
+        }
       }
 
       .hero__ctas .hero__cta span {
@@ -1066,11 +1074,18 @@
         transition: background-color 0.15s ease, color 0.15s ease;
       }
 
-      .text-link-highlight:hover,
       .text-link-highlight:focus-visible {
         background: rgba(232, 168, 74, 0.55);
         color: #962f2e;
         text-decoration-color: #962f2e;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .text-link-highlight:hover {
+          background: rgba(232, 168, 74, 0.55);
+          color: #962f2e;
+          text-decoration-color: #962f2e;
+        }
       }
 
       .section__body--flow-intro {
@@ -1384,7 +1399,7 @@
         position: absolute;
         inset: 0;
         transform-style: preserve-3d;
-        transition: transform 0.55s cubic-bezier(0.42, 0, 0.58, 1);
+        transition: transform 0.35s cubic-bezier(0.42, 0, 0.58, 1);
       }
 
       @media (hover: hover) {
@@ -1785,8 +1800,8 @@
         pointer-events: none;
         z-index: 3;
         transition:
-          opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
-          transform 0.55s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s;
+          opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+          transform 0.3s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s;
       }
 
       .slide-confirm-control.is-complete .slide-confirm-control__label {
@@ -2066,9 +2081,14 @@
         overflow: hidden;
       }
 
-      .cta-block--try:hover,
       .cta-block--try:focus-visible {
         background: #243556;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .cta-block--try:hover {
+          background: #243556;
+        }
       }
 
       .cta-block__deco {
@@ -2150,9 +2170,12 @@
         top: var(--burst-item-y);
         width: var(--burst-item-size);
         display: block;
-        scale: 0;
+        scale: 0.4;
+        opacity: 0;
         transform-origin: center center;
-        transition: scale 320ms cubic-bezier(0.175, 0.885, 0.32, 1.08);
+        transition:
+          scale 320ms cubic-bezier(0.175, 0.885, 0.32, 1.08),
+          opacity 200ms ease-out;
       }
 
       .cta-block__burst-item::before {
@@ -2178,6 +2201,7 @@
 
       .cta-block__deco-stage.is-cta-open .cta-block__burst-item {
         scale: 1;
+        opacity: 1;
       }
 
       .cta-block__burst-item svg {
@@ -2347,12 +2371,15 @@
         .cta-block__burst-item--sparkle-sm,
         .cta-block__burst-item--lines-left,
         .cta-block__burst-item--lines-right {
-          transition: scale 80ms ease;
+          transition:
+            scale 80ms ease,
+            opacity 80ms ease;
           transition-delay: 0ms;
         }
 
         .cta-block__deco-stage.is-cta-open .cta-block__burst-item {
           scale: 1;
+          opacity: 1;
         }
 
         .cta-block__deco-stage.is-cta-open .cta-block__burst-item > svg {
@@ -2393,7 +2420,7 @@
         --cs-nav-card-greyout: grayscale(1) brightness(0.68);
         --cs-nav-card-ease-heavy: cubic-bezier(0.16, 1, 0.3, 1);
         --cs-nav-card-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-        --cs-nav-card-duration-heavy: 640ms;
+        --cs-nav-card-duration-heavy: 240ms;
         --cs-nav-card-duration-soft: 480ms;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2781,12 +2808,13 @@
         background: rgba(0, 0, 0, 0.84);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 280ms ease;
+        transition: opacity 160ms ease;
       }
 
       #img-modal.open {
         opacity: 1;
         pointer-events: auto;
+        transition: opacity 280ms ease;
       }
 
       .img-modal__dialog {
@@ -2936,6 +2964,19 @@
         .team-card__avatar:hover .team-card__flip,
         .team-card__avatar:active .team-card__flip {
           transform: none;
+        }
+
+        .cs-nav-card__bg {
+          transition: none;
+        }
+
+        .hero__ctas .hero__cta:active {
+          transform: none;
+        }
+
+        .spring-bounce-showcase .spring-bounce-btn.spring-bounce,
+        .spring-bounce-showcase .spring-bounce-card.spring-bounce {
+          animation: none;
         }
       }
     </style>

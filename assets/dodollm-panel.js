@@ -1199,6 +1199,17 @@
     bot.className = "dodollm-message-bot dodollm-message-bot--plain";
     messages.append(bot);
 
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setBotMessageContent(bot, text);
+      onDone?.();
+      scrollChatToBottom();
+      return;
+    }
+
     const cursor = document.createElement("span");
     cursor.className = "dodollm-cursor";
     cursor.textContent = "|";

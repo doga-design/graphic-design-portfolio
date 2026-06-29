@@ -20,8 +20,17 @@
     forums: 'forums'
   };
 
+  function prefersReducedMotion() {
+    return (
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }
+
   function replayAnimation(el, className, durationMs) {
     if (!el) return;
+    if (prefersReducedMotion()) return;
     el.classList.remove(className);
     void el.offsetWidth;
     el.classList.add(className);

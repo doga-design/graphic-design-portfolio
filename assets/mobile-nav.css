@@ -10,7 +10,6 @@
     );
     --mobile-nav-motion: 360ms;
     --ease-premium-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-premium-in: cubic-bezier(0.4, 0, 1, 1);
     --cs-mobile-type-scale: 0.9375;
     --cs-mobile-hero-title-min: 1.55rem;
     --cs-mobile-hero-title-fluid: 6.75vw;
@@ -564,8 +563,17 @@
   @media (max-width: 960px) {
     .cs-nav-shell,
     .cs-nav__drawer,
-    .cs-nav-backdrop {
+    .cs-nav-backdrop,
+    .cs-nav__drawer .icon-btn,
+    .cs-nav__drawer-ai-link,
+    .mobile-ai-fab {
       transition-duration: 0.01ms !important;
+      animation: none !important;
+    }
+
+    .cs-nav__drawer-ai-link:active,
+    .mobile-ai-fab:active {
+      transform: none;
     }
   }
 }

@@ -642,13 +642,21 @@
           visibility 220ms ease;
       }
 
-      .video-pair__item:hover .video-pair__controls,
       .video-pair__item:focus-within .video-pair__controls,
       .video-pair__item.is-previewing .video-pair__controls {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
         transform: translateY(0);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .video-pair__item:hover .video-pair__controls {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
       }
 
       .video-pair__sound,
@@ -880,8 +888,8 @@
         opacity: 1;
         transform: scale(1);
         transition:
-          opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
-          transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+          opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
+          transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       .tool-walkthrough__feedback-icon--pause.is-hiding {
@@ -978,12 +986,20 @@
         transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease, color 220ms ease, border-color 220ms ease;
       }
 
-      .wall-preview:hover .wall-preview__overlay,
       .wall-preview:focus-visible .wall-preview__overlay {
         transform: translateY(-1px);
         background: #fff;
         color: #0d1b2a;
         box-shadow: 0 10px 24px rgba(13, 27, 42, 0.18);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .wall-preview:hover .wall-preview__overlay {
+          transform: translateY(-1px);
+          background: #fff;
+          color: #0d1b2a;
+          box-shadow: 0 10px 24px rgba(13, 27, 42, 0.18);
+        }
       }
 
       .wall-preview__overlay .icon-roll__glyph {
@@ -1015,8 +1031,10 @@
         transition: background 200ms ease;
       }
 
-      .cta-block:not(.cta-block--try):hover {
-        background: #f795c8;
+      @media (hover: hover) and (pointer: fine) {
+        .cta-block:not(.cta-block--try):hover {
+          background: #f795c8;
+        }
       }
 
       .cta-block span {
@@ -1073,7 +1091,7 @@
         --stack-back-lift: clamp(8px, 2vw, 24px);
         --stack-back-scale: 0.78;
         --stack-back-rotate: 9deg;
-        --stack-cycle-duration: 620ms;
+        --stack-cycle-duration: 300ms;
         --stack-cycle-ease: cubic-bezier(0.22, 0.98, 0.36, 1);
         --stack-scroll-progress: 0;
         --stack-scroll-offset: calc(
@@ -1167,12 +1185,20 @@
           transform 180ms ease;
       }
 
-      .poster-stack__btn:hover,
       .poster-stack__btn:focus-visible {
         border-color: #00035f;
         background: #00035f;
         color: #fff;
         transform: translateY(-1px);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .poster-stack__btn:hover {
+          border-color: #00035f;
+          background: #00035f;
+          color: #fff;
+          transform: translateY(-1px);
+        }
       }
 
       .poster-stack__btn:active {
@@ -1213,7 +1239,7 @@
         --cs-nav-card-greyout: grayscale(1) brightness(0.68);
         --cs-nav-card-ease-heavy: cubic-bezier(0.16, 1, 0.3, 1);
         --cs-nav-card-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-        --cs-nav-card-duration-heavy: 640ms;
+        --cs-nav-card-duration-heavy: 240ms;
         --cs-nav-card-duration-soft: 480ms;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));

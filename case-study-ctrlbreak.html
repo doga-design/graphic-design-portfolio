@@ -359,11 +359,17 @@
         letter-spacing: -0.01em;
         text-decoration: none;
         white-space: nowrap;
-        transition: background 200ms ease;
+        transition: background 200ms ease, transform 120ms ease;
       }
 
-      .hero__ctas .hero__cta:hover {
-        background: #162d47;
+      .hero__ctas .hero__cta:active {
+        transform: scale(0.97);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .hero__ctas .hero__cta:hover {
+          background: #162d47;
+        }
       }
 
       .hero__ctas .hero__cta span {
@@ -1040,13 +1046,13 @@
         width: 100%;
         border-radius: 12px;
         background: #111;
-        transition: height 420ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: height 300ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       .pitchbook__track {
         display: flex;
         align-items: flex-start;
-        transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
         will-change: transform;
       }
 
@@ -1117,10 +1123,9 @@
         border: 1px solid var(--rule);
         border-radius: 50%;
         background: transparent;
-        transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+        transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 120ms ease;
       }
 
-      .pitchbook__btn:hover,
       .pitchbook__btn:focus-visible {
         border-color: #ed2224;
         background: #ed2224;
@@ -1131,6 +1136,15 @@
         border-color: #000;
         background: #000;
         color: #fff;
+        transform: scale(0.95);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .pitchbook__btn:hover {
+          border-color: #ed2224;
+          background: #ed2224;
+          color: #fff;
+        }
       }
 
       .pitchbook__btn svg {
@@ -1162,7 +1176,7 @@
         --cs-nav-card-greyout: grayscale(1) brightness(0.68);
         --cs-nav-card-ease-heavy: cubic-bezier(0.16, 1, 0.3, 1);
         --cs-nav-card-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-        --cs-nav-card-duration-heavy: 640ms;
+        --cs-nav-card-duration-heavy: 240ms;
         --cs-nav-card-duration-soft: 480ms;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1477,6 +1491,11 @@
         .cs-nav-card,
         .icon-roll__track {
           transition: none;
+        }
+
+        .pitchbook__btn:active,
+        .hero__ctas .hero__cta:active {
+          transform: none;
         }
 
         .hero-arrow-indicator__svg--inactive,

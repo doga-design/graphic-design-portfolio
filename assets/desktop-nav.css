@@ -61,11 +61,23 @@
     transition: color 180ms ease;
   }
 
-  .desktop-nav__links a:hover,
   .desktop-nav__links a:focus-visible,
-  .desktop-nav__llm:hover,
   .desktop-nav__llm:focus-visible {
     color: var(--ink, #1a1814);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .desktop-nav__links a:hover,
+    .desktop-nav__llm:hover {
+      color: var(--ink, #1a1814);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .desktop-nav__links a,
+    .desktop-nav__llm {
+      transition: none;
+    }
   }
 
   .desktop-nav__llm {

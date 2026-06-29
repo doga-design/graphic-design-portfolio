@@ -289,6 +289,10 @@
           transition: none;
         }
 
+        .hero__ctas .hero__cta:active {
+          transform: none;
+        }
+
         :is(a, button):hover .icon-roll__track,
         :is(a, button):focus-visible .icon-roll__track {
           transform: none;
@@ -367,11 +371,17 @@
         font-weight: 500;
         letter-spacing: -0.01em;
         text-decoration: none;
-        transition: background 200ms ease, border-color 200ms ease;
+        transition: background 200ms ease, border-color 200ms ease, transform 120ms ease;
       }
 
-      .hero__ctas .hero__cta:hover {
-        background: #162d47;
+      .hero__ctas .hero__cta:active {
+        transform: scale(0.97);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .hero__ctas .hero__cta:hover {
+          background: #162d47;
+        }
       }
 
       .hero__ctas .hero__cta span {
@@ -1603,7 +1613,7 @@
       .user-types__icon-layer--fg-visual {
         transform-box: fill-box;
         transform-origin: center;
-        transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       .user-types__icon-layer--bg {
@@ -2113,12 +2123,14 @@
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
       }
 
-      .onboarding-demo[data-layout="desktop"] .onboarding-demo__card:not(.is-selected):hover {
-        background: rgba(255, 144, 0, 0.06);
-        box-shadow:
-          0 12px 28px rgba(255, 144, 0, 0.16),
-          0 4px 14px rgba(0, 0, 0, 0.08);
-        transform: translateY(-3px);
+      @media (hover: hover) and (pointer: fine) {
+        .onboarding-demo[data-layout="desktop"] .onboarding-demo__card:not(.is-selected):hover {
+          background: rgba(255, 144, 0, 0.06);
+          box-shadow:
+            0 12px 28px rgba(255, 144, 0, 0.16),
+            0 4px 14px rgba(0, 0, 0, 0.08);
+          transform: translateY(-3px);
+        }
       }
 
       .onboarding-demo__card:focus-visible {
@@ -2137,10 +2149,12 @@
         box-shadow: 0 8px 28px rgba(224, 112, 0, 0.38);
       }
 
-      .onboarding-demo[data-layout="desktop"] .onboarding-demo__card.is-selected:hover {
-        background: linear-gradient(155deg, #ffb347 0%, #ff9000 52%, #e07000 100%);
-        box-shadow: 0 14px 36px rgba(224, 112, 0, 0.45);
-        transform: translateY(-2px);
+      @media (hover: hover) and (pointer: fine) {
+        .onboarding-demo[data-layout="desktop"] .onboarding-demo__card.is-selected:hover {
+          background: linear-gradient(155deg, #ffb347 0%, #ff9000 52%, #e07000 100%);
+          box-shadow: 0 14px 36px rgba(224, 112, 0, 0.45);
+          transform: translateY(-2px);
+        }
       }
 
       .onboarding-demo.has-selection .onboarding-demo__card:not(.is-selected) {
@@ -2151,11 +2165,13 @@
         opacity: 0.85;
       }
 
-      .onboarding-demo[data-layout="desktop"].has-selection .onboarding-demo__card:not(.is-selected):hover {
-        opacity: 0.94;
-        background: rgba(255, 144, 0, 0.05);
-        box-shadow: 0 8px 22px rgba(255, 144, 0, 0.12);
-        transform: translateY(-2px);
+      @media (hover: hover) and (pointer: fine) {
+        .onboarding-demo[data-layout="desktop"].has-selection .onboarding-demo__card:not(.is-selected):hover {
+          opacity: 0.94;
+          background: rgba(255, 144, 0, 0.05);
+          box-shadow: 0 8px 22px rgba(255, 144, 0, 0.12);
+          transform: translateY(-2px);
+        }
       }
 
       .onboarding-demo__card-title {
@@ -2392,11 +2408,18 @@
         box-shadow: 0 4px 14px rgba(255, 144, 0, 0.35);
       }
 
-      .onboarding-demo__btn--continue:hover:not(:disabled),
       .onboarding-demo__btn--continue:focus-visible:not(:disabled) {
         transform: translateY(-1px);
         box-shadow: 0 6px 18px rgba(255, 144, 0, 0.42);
         outline: none;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .onboarding-demo__btn--continue:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 0 6px 18px rgba(255, 144, 0, 0.42);
+          outline: none;
+        }
       }
 
       .onboarding-demo__btn--continue:disabled {
@@ -2494,9 +2517,9 @@
         filter: blur(0);
         transform: scale(1.02);
         transition:
-          opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-          filter 0.4s cubic-bezier(0.4, 0, 1, 1),
-          transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+          opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+          filter 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       .onboarding-demo__result-wireframes {
@@ -2511,9 +2534,9 @@
         filter: blur(0);
         transform: scale(1.02);
         transition:
-          opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-          filter 0.4s cubic-bezier(0.4, 0, 1, 1),
-          transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+          opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+          filter 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       .onboarding-demo__wire-top {
@@ -2944,7 +2967,7 @@
         --cs-nav-card-greyout: grayscale(1) brightness(0.68);
         --cs-nav-card-ease-heavy: cubic-bezier(0.16, 1, 0.3, 1);
         --cs-nav-card-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-        --cs-nav-card-duration-heavy: 640ms;
+        --cs-nav-card-duration-heavy: 240ms;
         --cs-nav-card-duration-soft: 480ms;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3481,12 +3504,17 @@
 
         #intent-onboarding foreignObject,
         .onboarding-demo[data-layout="mobile"] foreignObject {
-          display: block;
+          display: none;
         }
 
         #intent-onboarding [data-figma-bg-blur-radius],
         .onboarding-demo[data-layout="mobile"] [data-figma-bg-blur-radius] {
           opacity: 1;
+        }
+
+        #intent-onboarding use[filter],
+        .onboarding-demo[data-layout="mobile"] use[filter] {
+          filter: none !important;
         }
 
         #intent-onboarding .user-types__icon-layer--bg,
@@ -3630,12 +3658,13 @@
         background: rgba(0, 0, 0, 0.84);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 280ms ease;
+        transition: opacity 160ms ease;
       }
 
       #img-modal.open {
         opacity: 1;
         pointer-events: auto;
+        transition: opacity 280ms ease;
       }
 
       .img-modal__dialog {

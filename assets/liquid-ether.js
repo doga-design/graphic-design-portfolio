@@ -1038,6 +1038,15 @@ export function initLiquidEther(container, options = {}) {
     }
 
     start() {
+      const prefersReducedMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReducedMotion) {
+        this.running = false;
+        this.render();
+        return;
+      }
       if (!this.running) {
         this.running = true;
         this._loop();
@@ -1090,6 +1099,18 @@ export function initLiquidEther(container, options = {}) {
   );
   io.observe(container);
   intersectionObserverRef = io;
+
+  const reducedMotionMql =
+    typeof window !== "undefined" && window.matchMedia
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : null;
+  if (reducedMotionMql && reducedMotionMql.addEventListener) {
+    reducedMotionMql.addEventListener("change", (e) => {
+      if (!webglRef) return;
+      if (e.matches) webglRef.pause();
+      else if (isVisibleRef && !document.hidden) webglRef.start();
+    });
+  }
 
   const ro = new ResizeObserver(() => {
     if (resizeRafRef) cancelAnimationFrame(resizeRafRef);
