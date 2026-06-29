@@ -4,7 +4,7 @@
   --icon-size-nav: 38px;
   --icon-size-nav-center: 48px;
   --nav-center-circle-size: 68px;
-  --dur-bounce: 280ms;
+  --dur-bounce: 500ms;
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
   --z-bottom-nav: 9999;
@@ -152,7 +152,8 @@
     filter: grayscale(1) opacity(0.6);
     transform: scale(1);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                background 0.25s ease;
+                background 0.25s ease,
+                filter 0.25s ease;
   }
   .bottom-nav .nav-item:not(.center-item).active .nav-icon {
     filter: none;
@@ -267,7 +268,7 @@
     100% { transform: scale(1.1)    translateY(0); }
   }
   .bottom-nav .icon-home.active .home-accent {
-    animation: home-accent-pulse 280ms var(--ease-spring) forwards;
+    animation: home-accent-pulse 550ms var(--ease-spring) forwards;
     transform-origin: 60% 55%;
   }
   @keyframes home-accent-pulse {
@@ -293,7 +294,7 @@
     100% { transform: scaleY(1)    scaleX(1); }
   }
   .bottom-nav .icon-calendar.active .cal-header {
-    animation: cal-header-slide 280ms var(--ease-spring) forwards;
+    animation: cal-header-slide 480ms var(--ease-spring) forwards;
     transform-origin: 25% 50%;
   }
   @keyframes cal-header-slide {
@@ -315,7 +316,7 @@
     transform-origin: center center;
   }
   .bottom-nav .icon-forum.active .forum-bubble-left {
-    animation: bubble-left 280ms var(--ease-spring) forwards;
+    animation: bubble-left 500ms var(--ease-spring) forwards;
     transform-origin: 38% 45%;
   }
   @keyframes bubble-left {
@@ -325,7 +326,7 @@
     100% { transform: scale(1)   translate(0, 0);      opacity: 1; }
   }
   .bottom-nav .icon-forum.active .forum-bubble-right {
-    animation: bubble-right 280ms var(--ease-spring) 80ms forwards;
+    animation: bubble-right 520ms var(--ease-spring) 80ms forwards;
     transform-origin: 74% 62%;
   }
   @keyframes bubble-right {
@@ -334,11 +335,11 @@
     60%  { transform: scale(0.96) translate(0, 0); opacity: 1; }
     100% { transform: scale(1)   translate(0, 0); opacity: 1; }
   }
-  .bottom-nav .icon-forum.active .forum-dot-1 { animation: dot-pop 280ms var(--ease-spring) 120ms forwards; transform-origin: center; }
-  .bottom-nav .icon-forum.active .forum-dot-2 { animation: dot-pop 280ms var(--ease-spring) 175ms forwards; transform-origin: center; }
-  .bottom-nav .icon-forum.active .forum-dot-3 { animation: dot-pop 280ms var(--ease-spring) 230ms forwards; transform-origin: center; }
-  .bottom-nav .icon-forum.active .forum-dot-4 { animation: dot-pop 280ms var(--ease-spring) 160ms forwards; transform-origin: center; }
-  .bottom-nav .icon-forum.active .forum-dot-5 { animation: dot-pop 280ms var(--ease-spring) 220ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-1 { animation: dot-pop 350ms var(--ease-spring) 120ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-2 { animation: dot-pop 350ms var(--ease-spring) 175ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-3 { animation: dot-pop 350ms var(--ease-spring) 230ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-4 { animation: dot-pop 350ms var(--ease-spring) 160ms forwards; transform-origin: center; }
+  .bottom-nav .icon-forum.active .forum-dot-5 { animation: dot-pop 350ms var(--ease-spring) 220ms forwards; transform-origin: center; }
   @keyframes dot-pop {
     0%   { transform: scale(1); }
     40%  { transform: scale(1.6); }
@@ -358,7 +359,7 @@
     transform-origin: center center;
   }
   .bottom-nav .icon-items.active .items-bag-main {
-    animation: bag-toss 300ms var(--ease-spring) forwards;
+    animation: bag-toss 550ms var(--ease-spring) forwards;
     transform-origin: 63% 42%;
   }
   @keyframes bag-toss {
@@ -369,7 +370,7 @@
     100% { transform: translateY(0)    rotate(0deg)   scale(1); }
   }
   .bottom-nav .icon-items.active .items-bag-secondary {
-    animation: bag-settle 300ms var(--ease-spring) 90ms forwards;
+    animation: bag-settle 500ms var(--ease-spring) 90ms forwards;
     transform-origin: 22% 72%;
   }
   @keyframes bag-settle {
@@ -380,7 +381,7 @@
     100% { transform: translateY(0)    scale(1); }
   }
   .bottom-nav .icon-items.active .items-accent {
-    animation: items-ripple 280ms var(--ease-out) 200ms forwards;
+    animation: items-ripple 400ms var(--ease-out) 200ms forwards;
     transform-origin: 50% 78%;
   }
   @keyframes items-ripple {
@@ -428,14 +429,14 @@
     transform-origin: center center;
   }
   .donate-svg.active .globe-accent {
-    animation: globe-accent-pop 280ms var(--ease-spring) 60ms forwards;
+    animation: globe-accent-pop 520ms var(--ease-spring) 60ms forwards;
     transform-origin: 56% 54%;
   }
-  .donate-svg.active .donate-spark-1 { animation: spark-flick 280ms var(--ease-out) 0ms forwards; transform-origin: 84% 10%; }
-  .donate-svg.active .donate-spark-2 { animation: spark-flick 280ms var(--ease-out) 60ms forwards; transform-origin: 95% 17%; }
-  .donate-svg.active .donate-spark-3 { animation: spark-flick 280ms var(--ease-out) 40ms forwards; transform-origin: 18% 94%; }
-  .donate-svg.active .donate-spark-4 { animation: spark-flick 280ms var(--ease-out) 100ms forwards; transform-origin: 6% 90%; }
-  .donate-svg.active .donate-spark-5 { animation: spark-flick 280ms var(--ease-out) 80ms forwards; transform-origin: 5% 77%; }
+  .donate-svg.active .donate-spark-1 { animation: spark-flick 380ms var(--ease-out) 0ms forwards; transform-origin: 84% 10%; }
+  .donate-svg.active .donate-spark-2 { animation: spark-flick 380ms var(--ease-out) 60ms forwards; transform-origin: 95% 17%; }
+  .donate-svg.active .donate-spark-3 { animation: spark-flick 380ms var(--ease-out) 40ms forwards; transform-origin: 18% 94%; }
+  .donate-svg.active .donate-spark-4 { animation: spark-flick 380ms var(--ease-out) 100ms forwards; transform-origin: 6% 90%; }
+  .donate-svg.active .donate-spark-5 { animation: spark-flick 380ms var(--ease-out) 80ms forwards; transform-origin: 5% 77%; }
   @keyframes globe-accent-pop {
     0%   { transform: scale(1); }
     40%  { transform: scale(1.14); }
@@ -457,12 +458,12 @@
   #p5 { transform-origin: 3.37px 34.22px; }
 
   /* Fired state — particles shoot out (ease-in-out: slow → fast → slow) */
-  .donate-icon-btn.fired #p1 { animation: shoot1 0.45s cubic-bezier(0.42,0,0.58,1) forwards; }
-  .donate-icon-btn.fired #p2 { animation: shoot2 0.45s 0.03s cubic-bezier(0.42,0,0.58,1) forwards; }
-  .donate-icon-btn.fired #p3 { animation: shoot3 0.45s 0.06s cubic-bezier(0.42,0,0.58,1) forwards; }
-  .donate-icon-btn.fired #p4 { animation: shoot4 0.45s 0.02s cubic-bezier(0.42,0,0.58,1) forwards; }
-  .donate-icon-btn.fired #p5 { animation: shoot5 0.45s 0.05s cubic-bezier(0.42,0,0.58,1) forwards; }
-  .donate-icon-btn.fired #globe-body { animation: globePulse 0.3s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p1 { animation: shoot1 0.7s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p2 { animation: shoot2 0.7s 0.03s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p3 { animation: shoot3 0.7s 0.06s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p4 { animation: shoot4 0.7s 0.02s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #p5 { animation: shoot5 0.7s 0.05s cubic-bezier(0.42,0,0.58,1) forwards; }
+  .donate-icon-btn.fired #globe-body { animation: globePulse 0.6s cubic-bezier(0.42,0,0.58,1) forwards; }
 
   @keyframes shoot1 {
     0%   { transform: translate(0,0);       opacity: 1; }
@@ -506,15 +507,4 @@
     height: var(--icon-size-nav-center);
     display: block;
     overflow: visible;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bottom-nav *,
-    .bottom-nav *::before,
-    .bottom-nav *::after,
-    .donate-icon-btn *,
-    .donate-svg * {
-      animation: none !important;
-      transition: none !important;
-    }
   }
