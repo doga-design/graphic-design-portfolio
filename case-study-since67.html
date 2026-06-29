@@ -403,6 +403,31 @@
         object-position: center center;
       }
 
+      .video-loader {
+        --accent: #b03a39;
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.42);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 280ms ease,
+          visibility 280ms ease;
+      }
+
+      .is-loading .video-loader,
+      [data-video-container].is-loading .video-loader {
+        opacity: 1;
+        visibility: visible;
+      }
+
       .section {
         scroll-margin-top: 40px;
       }
@@ -1347,6 +1372,10 @@
           max-width: 100%;
         }
 
+        #motion-teaser .video-pair__item--mobile {
+          order: -1;
+        }
+
         #motion-teaser .video-pair__controls {
           opacity: 1;
           visibility: visible;
@@ -1659,12 +1688,11 @@
                 <p class="meta__value">2 weeks</p>
               </div>
             </div>
-            <div class="hero-visual">
+            <div class="hero-visual is-loading" data-video-container>
               <video
                 class="hero-visual__video"
                 src="assets/since67/since67-cover-hero-loop.mp4"
                 poster="assets/since67/hero-cover.webp"
-                autoplay
                 muted
                 playsinline
                 loop
@@ -1672,6 +1700,9 @@
                 tabindex="-1"
                 aria-label="Since '67 campaign hero footage"
               ></video>
+              <div class="video-loader" data-video-loader aria-hidden="true">
+                <span class="dodollm-loader"></span>
+              </div>
             </div>
           </header>
 
@@ -1744,8 +1775,8 @@
               This was a small internal production tool-experiment. The point was to see how much a locked system compresses the gap between idea and output.
             </p>
             <div class="placeholder-stack">
-              <div class="tool-walkthrough" data-hover-play-video data-hover-reset="false">
-                <div class="video-pair__item video-pair__item--walkthrough" tabindex="0">
+              <div class="tool-walkthrough" data-video-autoplay-group data-hover-reset="false">
+                <div class="video-pair__item video-pair__item--walkthrough is-loading" data-video-container data-sound-muted="true" tabindex="0">
                   <span class="video-pair__label">Poster Builder Tool Walkthrough</span>
                   <video
                     class="video-pair__video video-pair__video--desktop"
@@ -1754,9 +1785,12 @@
                     height="2258"
                     muted
                     playsinline
-                    preload="metadata"
+                    preload="auto"
                     aria-label="Since '67 poster tool walkthrough"
                   ></video>
+                  <div class="video-loader" data-video-loader aria-hidden="true">
+                    <span class="dodollm-loader"></span>
+                  </div>
                   <div class="tool-walkthrough__feedback" aria-hidden="true">
                     <div class="tool-walkthrough__feedback-icon tool-walkthrough__feedback-icon--pause">
                       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1860,8 +1894,8 @@
             <p class="section__body">
               A short motion piece built for large-format display. The kind of thing that runs on arena screens, event backdrops, or conference openers before the room settles.
             </p>
-            <div class="video-pair" data-hover-play-video>
-              <div class="video-pair__item video-pair__item--desktop" tabindex="0">
+            <div class="video-pair" data-video-autoplay-group data-motion-teaser-pair>
+              <div class="video-pair__item video-pair__item--desktop is-loading" data-video-container tabindex="0">
                 <span class="video-pair__label">Desktop</span>
                 <video
                   class="video-pair__video video-pair__video--desktop"
@@ -1870,9 +1904,12 @@
                   height="1080"
                   muted
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   aria-label="Since '67 website intro — desktop"
                 ></video>
+                <div class="video-loader" data-video-loader aria-hidden="true">
+                  <span class="dodollm-loader"></span>
+                </div>
                 <div class="video-pair__controls">
                   <button class="video-pair__expand" type="button" aria-label="Expand desktop video" data-expand-video>
                     <svg class="video-pair__expand-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1891,7 +1928,7 @@
                   </button>
                 </div>
               </div>
-              <div class="video-pair__item video-pair__item--mobile" tabindex="0">
+              <div class="video-pair__item video-pair__item--mobile is-loading" data-video-container tabindex="0">
                 <span class="video-pair__label">Mobile</span>
                 <video
                   class="video-pair__video video-pair__video--mobile"
@@ -1900,9 +1937,12 @@
                   height="1920"
                   muted
                   playsinline
-                  preload="metadata"
+                  preload="auto"
                   aria-label="Since '67 website intro — mobile"
                 ></video>
+                <div class="video-loader" data-video-loader aria-hidden="true">
+                  <span class="dodollm-loader"></span>
+                </div>
                 <div class="video-pair__controls">
                   <button class="video-pair__expand" type="button" aria-label="Expand mobile video" data-expand-video>
                     <svg class="video-pair__expand-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2031,13 +2071,16 @@
 
     <div class="video-cinematic" id="video-cinematic" hidden aria-hidden="true">
       <button class="video-cinematic__backdrop" type="button" aria-label="Close cinematic video" data-cinematic-close></button>
-      <div class="video-cinematic__stage" role="dialog" aria-modal="true" aria-label="Cinematic video">
+      <div class="video-cinematic__stage is-loading" data-video-container role="dialog" aria-modal="true" aria-label="Cinematic video">
         <button class="video-cinematic__close" type="button" aria-label="Close cinematic video" data-cinematic-close>
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
         </button>
-        <video class="video-cinematic__video" playsinline preload="metadata" muted></video>
+        <video class="video-cinematic__video" playsinline preload="auto" muted></video>
+        <div class="video-loader" data-video-loader aria-hidden="true">
+          <span class="dodollm-loader"></span>
+        </div>
         <div class="video-cinematic__controls">
           <button class="video-pair__sound" type="button" aria-label="Mute video" aria-pressed="false" data-cinematic-sound-toggle>
             <svg class="video-pair__sound-icon video-pair__sound-icon--sound" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2205,156 +2248,357 @@
         });
       })();
 
-      (function initHoverPlayVideos() {
-        const isTouchUi = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+      (function initVideoAutoplay() {
+        const mobileMq = window.matchMedia("(max-width: 960px)");
+        const gestureEvents = ["pointerdown", "touchstart", "keydown", "scroll"];
+        let gestureBound = false;
+        const pendingEntries = new Set();
+        const entryMap = new Map();
+        let motionTeaserOverride = null;
+
+        const setLoading = (container, loading) => {
+          container.classList.toggle("is-loading", loading);
+        };
 
         const getVideoLabel = (item) => {
+          if (!item) return "video";
           if (item.classList.contains("video-pair__item--walkthrough")) return "poster tool walkthrough";
           if (item.classList.contains("video-pair__item--mobile")) return "mobile video";
           return "desktop video";
         };
 
         const updateSoundToggle = (item, isMuted) => {
-          const toggle = item.querySelector("[data-sound-toggle]");
+          const toggle = item?.querySelector("[data-sound-toggle]");
           if (!toggle) return;
-
           toggle.setAttribute("aria-pressed", String(isMuted));
-          toggle.setAttribute("aria-label", `${isMuted ? "Unmute" : "Mute"} ${getVideoLabel(item)}`);
+          toggle.setAttribute(
+            "aria-label",
+            `${isMuted ? "Unmute" : "Mute"} ${getVideoLabel(item)}`
+          );
         };
 
-        const resetVideo = (video, resetPosition = true) => {
-          video.pause();
-          if (resetPosition) {
-            video.currentTime = 0;
-            video.muted = true;
-          }
+        const getMotionTeaserDefault = () => (mobileMq.matches ? "mobile" : "desktop");
+
+        const getMotionTeaserActive = () => motionTeaserOverride || getMotionTeaserDefault();
+
+        const isMotionTeaserItemActive = (item) => {
+          const active = getMotionTeaserActive();
+          if (item.classList.contains("video-pair__item--desktop")) return active === "desktop";
+          if (item.classList.contains("video-pair__item--mobile")) return active === "mobile";
+          return false;
         };
 
-        const playVideo = (video, item, resetPosition = true) => {
-          if (resetPosition) video.currentTime = 0;
-          video.muted = item.dataset.soundMuted === "true";
-          video.play().catch(() => {
-            video.muted = true;
-            video.play().catch(() => {});
+        const bindGestureFallback = () => {
+          if (gestureBound) return;
+          gestureBound = true;
+
+          const retryPending = () => {
+            [...pendingEntries].forEach((entry) => {
+              if (!entry.inView && !entry.forcePlay) return;
+              attemptPlay(entry);
+            });
+          };
+
+          gestureEvents.forEach((eventName) => {
+            window.addEventListener(eventName, retryPending, { passive: true });
           });
         };
 
-        document.querySelectorAll("[data-hover-play-video]").forEach((group) => {
-          const items = [...group.querySelectorAll(".video-pair__item")];
-          const resetOnLeave = group.dataset.hoverReset !== "false";
+        const attemptPlay = (entry) => {
+          const { video, container, item } = entry;
+          if (entry.userPaused) return Promise.resolve();
+          if (entry.isMotionPair && item && !isMotionTeaserItemActive(item)) {
+            setLoading(container, false);
+            return Promise.resolve();
+          }
 
-          items.forEach((item) => {
-            const video = item.querySelector("video");
-            const soundToggle = item.querySelector("[data-sound-toggle]");
-            const isWalkthrough = item.classList.contains("video-pair__item--walkthrough");
-            const pauseFeedback = item.querySelector(".tool-walkthrough__feedback-icon--pause");
-            const playFeedback = item.querySelector(".tool-walkthrough__feedback-icon--play");
+          setLoading(container, true);
+          if (item) {
+            video.muted = item.dataset.soundMuted === "true";
+          } else {
+            video.muted = true;
+          }
+
+          return video
+            .play()
+            .then(() => {
+              pendingEntries.delete(entry);
+              setLoading(container, false);
+              item?.classList.add("is-previewing");
+            })
+            .catch(() => {
+              video.muted = true;
+              return video
+                .play()
+                .then(() => {
+                  pendingEntries.delete(entry);
+                  setLoading(container, false);
+                  item?.classList.add("is-previewing");
+                })
+                .catch(() => {
+                  pendingEntries.add(entry);
+                  bindGestureFallback();
+                });
+            });
+        };
+
+        const pauseEntry = (entry) => {
+          const { video, container, item } = entry;
+          video.pause();
+          item?.classList.remove("is-previewing");
+          pendingEntries.delete(entry);
+          if (entry.isMotionPair && item && !isMotionTeaserItemActive(item)) {
+            setLoading(container, false);
+          }
+        };
+
+        const wireVideoEvents = (entry) => {
+          const { video, container } = entry;
+
+          video.addEventListener("playing", () => {
+            pendingEntries.delete(entry);
+            setLoading(container, false);
+          });
+
+          video.addEventListener("waiting", () => {
+            if (!video.paused) setLoading(container, true);
+          });
+
+          video.addEventListener("stalled", () => {
+            if (!video.paused) setLoading(container, true);
+          });
+
+          video.addEventListener("canplay", () => {
+            if (entry.inView && !entry.userPaused && video.paused) {
+              if (entry.isMotionPair && entry.item && !isMotionTeaserItemActive(entry.item)) return;
+              attemptPlay(entry);
+            }
+          });
+        };
+
+        const registerEntry = (config) => {
+          const entry = {
+            video: config.video,
+            container: config.container,
+            item: config.item || null,
+            group: config.group || null,
+            isMotionPair: Boolean(config.isMotionPair),
+            isWalkthrough: Boolean(config.isWalkthrough),
+            inView: false,
+            userPaused: false,
+            forcePlay: Boolean(config.forcePlay),
+          };
+          entryMap.set(config.container, entry);
+          wireVideoEvents(entry);
+          observer.observe(config.container);
+          return entry;
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((ioEntry) => {
+              const entry = entryMap.get(ioEntry.target);
+              if (!entry) return;
+
+              if (ioEntry.isIntersecting) {
+                entry.inView = true;
+                if (entry.userPaused) return;
+                if (entry.isMotionPair && entry.item && !isMotionTeaserItemActive(entry.item)) {
+                  setLoading(entry.container, false);
+                  return;
+                }
+                attemptPlay(entry);
+              } else {
+                entry.inView = false;
+                entry.forcePlay = false;
+                pauseEntry(entry);
+              }
+            });
+          },
+          { threshold: 0.25 }
+        );
+
+        const heroContainer = document.querySelector(".hero-visual[data-video-container]");
+        const heroVideo = heroContainer?.querySelector("video");
+        if (heroContainer && heroVideo) {
+          heroVideo.muted = true;
+          registerEntry({ video: heroVideo, container: heroContainer });
+        }
+
+        document.querySelectorAll("[data-video-autoplay-group]").forEach((group) => {
+          const isMotionPair = group.hasAttribute("data-motion-teaser-pair");
+          const containers = [...group.querySelectorAll("[data-video-container]")];
+
+          containers.forEach((container) => {
+            const item = container.classList.contains("video-pair__item")
+              ? container
+              : container.closest(".video-pair__item");
+            const video = container.querySelector("video");
             if (!video) return;
-            item.dataset.soundMuted = "false";
-            updateSoundToggle(item, false);
 
-            const showPauseFeedback = () => {
-              if (!pauseFeedback) return;
-              pauseFeedback.classList.remove("is-hiding");
-              pauseFeedback.classList.add("is-visible");
-            };
+            const isWalkthrough = item?.classList.contains("video-pair__item--walkthrough");
+            if (item) {
+              item.dataset.soundMuted = item.dataset.soundMuted || "false";
+              updateSoundToggle(item, item.dataset.soundMuted === "true");
+            }
 
-            const hidePauseFeedback = () => {
-              if (!pauseFeedback) return;
-              if (!pauseFeedback.classList.contains("is-visible")) return;
-              pauseFeedback.classList.remove("is-visible");
-              pauseFeedback.classList.add("is-hiding");
-              window.setTimeout(() => {
-                pauseFeedback.classList.remove("is-hiding");
-              }, 420);
-            };
+            const entry = registerEntry({
+              video,
+              container,
+              item,
+              group,
+              isMotionPair,
+              isWalkthrough,
+            });
 
-            const showPlayFeedback = () => {
-              if (!playFeedback) return;
-              playFeedback.classList.remove("is-animating");
-              void playFeedback.offsetWidth;
-              playFeedback.classList.add("is-animating");
-              playFeedback.addEventListener(
-                "animationend",
-                () => {
-                  playFeedback.classList.remove("is-animating");
-                },
-                { once: true }
-              );
-            };
+            if (isMotionPair && item && !isMotionTeaserItemActive(item)) {
+              setLoading(container, false);
+            }
 
-            const toggleSound = () => {
+            item?.querySelector("[data-sound-toggle]")?.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
               const isMuted = item.dataset.soundMuted !== "true";
               item.dataset.soundMuted = String(isMuted);
               video.muted = isMuted;
               updateSoundToggle(item, isMuted);
-            };
-
-            const setPreviewing = (on) => {
-              item.classList.toggle("is-previewing", on);
-            };
-
-            const activate = () => {
-              if (isWalkthrough && item.dataset.userPaused === "true") return;
-
-              group.querySelectorAll("video").forEach((other) => {
-                if (other !== video) resetVideo(other, resetOnLeave);
-              });
-              playVideo(video, item, resetOnLeave);
-              setPreviewing(true);
-            };
-
-            const deactivate = () => {
-              if (isWalkthrough) {
-                item.dataset.userPaused = "false";
-                hidePauseFeedback();
-              }
-              resetVideo(video, resetOnLeave);
-              setPreviewing(false);
-            };
-
-            soundToggle?.addEventListener("click", (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              toggleSound();
             });
 
-            item.addEventListener("click", (event) => {
-              if (event.target.closest("[data-sound-toggle]")) return;
-              if (event.target.closest("[data-expand-video]")) return;
+            if (isWalkthrough && item) {
+              const pauseFeedback = item.querySelector(".tool-walkthrough__feedback-icon--pause");
+              const playFeedback = item.querySelector(".tool-walkthrough__feedback-icon--play");
 
-              if (isWalkthrough || isTouchUi) {
+              const showPauseFeedback = () => {
+                if (!pauseFeedback) return;
+                pauseFeedback.classList.remove("is-hiding");
+                pauseFeedback.classList.add("is-visible");
+              };
+
+              const hidePauseFeedback = () => {
+                if (!pauseFeedback) return;
+                if (!pauseFeedback.classList.contains("is-visible")) return;
+                pauseFeedback.classList.remove("is-visible");
+                pauseFeedback.classList.add("is-hiding");
+                window.setTimeout(() => pauseFeedback.classList.remove("is-hiding"), 420);
+              };
+
+              const showPlayFeedback = () => {
+                if (!playFeedback) return;
+                playFeedback.classList.remove("is-animating");
+                void playFeedback.offsetWidth;
+                playFeedback.classList.add("is-animating");
+                playFeedback.addEventListener(
+                  "animationend",
+                  () => playFeedback.classList.remove("is-animating"),
+                  { once: true }
+                );
+              };
+
+              item.addEventListener("click", (event) => {
+                if (event.target.closest("[data-sound-toggle]")) return;
+
                 if (video.paused) {
-                  item.dataset.userPaused = "false";
+                  entry.userPaused = false;
                   hidePauseFeedback();
-                  group.querySelectorAll("video").forEach((other) => {
-                    if (other !== video) resetVideo(other, resetOnLeave);
-                  });
-                  playVideo(video, item, isWalkthrough ? false : resetOnLeave);
-                  setPreviewing(true);
-                  if (isWalkthrough) showPlayFeedback();
+                  attemptPlay(entry);
+                  showPlayFeedback();
                 } else {
                   video.pause();
-                  item.dataset.userPaused = "true";
-                  setPreviewing(false);
-                  if (isWalkthrough) showPauseFeedback();
+                  entry.userPaused = true;
+                  item.classList.remove("is-previewing");
+                  setLoading(container, false);
+                  showPauseFeedback();
                 }
-                return;
-              }
+              });
+            } else if (isMotionPair && item) {
+              item.addEventListener("click", (event) => {
+                if (event.target.closest("[data-sound-toggle]")) return;
+                if (event.target.closest("[data-expand-video]")) return;
 
-              toggleSound();
-            });
+                motionTeaserOverride = item.classList.contains("video-pair__item--mobile")
+                  ? "mobile"
+                  : "desktop";
 
-            if (!isTouchUi) {
-              item.addEventListener("pointerenter", activate);
-              item.addEventListener("pointerleave", deactivate);
-              item.addEventListener("focusin", activate);
-              item.addEventListener("focusout", (event) => {
-                if (!item.contains(event.relatedTarget)) deactivate();
+                containers.forEach((otherContainer) => {
+                  const otherEntry = entryMap.get(otherContainer);
+                  if (!otherEntry?.item) return;
+
+                  if (otherEntry.item === item) {
+                    otherEntry.userPaused = false;
+                    otherEntry.forcePlay = true;
+                    if (otherEntry.inView) attemptPlay(otherEntry);
+                  } else {
+                    otherEntry.forcePlay = false;
+                    pauseEntry(otherEntry);
+                    setLoading(otherContainer, false);
+                  }
+                });
               });
             }
           });
         });
+
+        mobileMq.addEventListener("change", () => {
+          motionTeaserOverride = null;
+          document
+            .querySelectorAll("[data-motion-teaser-pair] [data-video-container]")
+            .forEach((container) => {
+              const entry = entryMap.get(container);
+              if (!entry?.item || !entry.inView) return;
+
+              if (isMotionTeaserItemActive(entry.item)) {
+                entry.userPaused = false;
+                attemptPlay(entry);
+              } else {
+                pauseEntry(entry);
+                setLoading(container, false);
+              }
+            });
+        });
+
+        const cinematicStage = document.querySelector("#video-cinematic [data-video-container]");
+        const cinematicVideo = cinematicStage?.querySelector("video");
+        let cinematicEntry = null;
+        if (cinematicStage && cinematicVideo) {
+          cinematicEntry = {
+            video: cinematicVideo,
+            container: cinematicStage,
+            item: null,
+            inView: false,
+            forcePlay: false,
+            userPaused: false,
+            isMotionPair: false,
+            isWalkthrough: false,
+          };
+          entryMap.set(cinematicStage, cinematicEntry);
+          wireVideoEvents(cinematicEntry);
+          setLoading(cinematicStage, false);
+        }
+
+        window.since67VideoController = {
+          setLoading,
+          attemptPlay(entry) {
+            if (!entry) return Promise.resolve();
+            entry.forcePlay = true;
+            return attemptPlay(entry);
+          },
+          getEntry(container) {
+            return entryMap.get(container);
+          },
+          playCinematic() {
+            if (!cinematicEntry) return Promise.resolve();
+            cinematicEntry.inView = true;
+            cinematicEntry.forcePlay = true;
+            return attemptPlay(cinematicEntry);
+          },
+          pauseCinematic() {
+            if (!cinematicEntry) return;
+            cinematicEntry.inView = false;
+            cinematicEntry.forcePlay = false;
+            pauseEntry(cinematicEntry);
+            setLoading(cinematicStage, false);
+          },
+        };
       })();
 
       (function initVideoCinematic() {
@@ -2408,6 +2652,9 @@
           cinematic.hidden = true;
           cinematic.setAttribute("aria-hidden", "true");
           document.body.style.overflow = "";
+          window.since67VideoController?.pauseCinematic();
+          const cinematicEntry = window.since67VideoController?.getEntry(stage);
+          if (cinematicEntry) cinematicEntry.item = null;
           cinematicVideo.pause();
           cinematicVideo.removeAttribute("src");
           cinematicVideo.load();
@@ -2441,18 +2688,18 @@
           cinematicVideo.muted = item.dataset.soundMuted === "true";
           cinematicVideo.currentTime = video.currentTime || 0;
           updateCinematicSoundToggle(item.dataset.soundMuted === "true");
+          const cinematicEntry = window.since67VideoController?.getEntry(stage);
+          if (cinematicEntry) cinematicEntry.item = item;
 
           cinematic.hidden = false;
           cinematic.removeAttribute("hidden");
           cinematic.setAttribute("aria-hidden", "false");
           document.body.style.overflow = "hidden";
+          window.since67VideoController?.setLoading(stage, true);
           requestAnimationFrame(() => {
             cinematic.classList.add("is-open");
             const tryPlay = () => {
-              cinematicVideo.play().catch(() => {
-                setCinematicMuted(true);
-                cinematicVideo.play().catch(() => {});
-              });
+              window.since67VideoController?.playCinematic();
             };
             if (cinematicVideo.readyState >= 2) {
               tryPlay();

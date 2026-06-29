@@ -3435,14 +3435,14 @@
 
         #intent-onboarding .onboarding-shell[data-layout="mobile"] {
           margin: 0;
-          padding: 0;
-          margin-inline: calc(-1 * clamp(1.25rem, 4vw, 2rem));
-          width: calc(100% + 2 * clamp(1.25rem, 4vw, 2rem));
-          max-width: 100vw;
+          margin-inline: 0;
+          width: 100%;
+          max-width: 100%;
+          padding-inline: clamp(0.5rem, 2vw, 0.85rem);
         }
 
         #intent-onboarding .onboarding-device[data-layout="mobile"] {
-          --ob-screen-radius: 0;
+          --ob-screen-radius: 16px;
           width: 100%;
           max-width: 100%;
           margin: 0;
@@ -3452,20 +3452,21 @@
         #intent-onboarding .onboarding-device[data-layout="mobile"] .onboarding-device__lid {
           margin: 0;
           padding: 0;
-          border-radius: 0;
+          border-radius: 16px;
         }
 
         #intent-onboarding .onboarding-device[data-layout="mobile"] .onboarding-device__screen {
           margin: 0;
           padding: 0;
-          border-radius: 0;
-          box-shadow: none;
+          border-radius: 16px;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 28px 56px -22px,
+            rgba(0, 0, 0, 0.3) 0px 16px 34px -28px;
         }
 
         #intent-onboarding .onboarding-device[data-layout="mobile"] .onboarding-device__scaler,
         #intent-onboarding .onboarding-device[data-layout="mobile"] .onboarding-device__content,
         #intent-onboarding .onboarding-demo[data-layout="mobile"] {
-          border-radius: 0;
+          border-radius: 16px;
         }
 
       }
@@ -3480,17 +3481,12 @@
 
         #intent-onboarding foreignObject,
         .onboarding-demo[data-layout="mobile"] foreignObject {
-          display: none;
+          display: block;
         }
 
         #intent-onboarding [data-figma-bg-blur-radius],
         .onboarding-demo[data-layout="mobile"] [data-figma-bg-blur-radius] {
           opacity: 1;
-        }
-
-        #intent-onboarding use[filter],
-        .onboarding-demo[data-layout="mobile"] use[filter] {
-          filter: none !important;
         }
 
         #intent-onboarding .user-types__icon-layer--bg,
@@ -3548,7 +3544,7 @@
 
         #download-flow .download-flow-strip--steps-3 .download-flow-strip__step,
         #download-flow .download-flow-strip--steps-5 .download-flow-strip__step {
-          flex: 0 0 clamp(260px, 72vw, 340px);
+          flex: 0 0 clamp(190px, 54vw, 235px);
           align-items: center;
           gap: 0.75rem;
         }
@@ -3558,7 +3554,7 @@
           width: 100%;
           max-width: 100%;
           margin-inline: 0;
-          aspect-ratio: 16 / 10;
+          aspect-ratio: 9 / 16;
           object-fit: cover;
           object-position: top center;
           border-radius: 8px;
@@ -3590,25 +3586,18 @@
           align-items: stretch;
           gap: 0;
           margin-top: clamp(1.5rem, 4vw, 2rem);
-          margin-left: calc(50% - 50vw);
-          margin-right: calc(50% - 50vw);
-          width: 100vw;
-          max-width: 100vw;
-          padding: 0;
-          border-radius: 0;
-          background: transparent;
+          margin-inline: clamp(1.25rem, 4vw, 2rem);
+          padding: 1.15rem 1rem;
+          border-radius: 8px;
+          background: rgba(214, 72, 62, 0.08);
         }
 
         #download-flow .download-flow-strip__results-body {
-          display: none;
+          display: block;
         }
 
         #download-flow .download-friction-marquee {
-          display: block;
-          width: 100vw;
-          max-width: 100vw;
-          padding-block: clamp(0.85rem, 3vw, 1.15rem);
-          background: rgba(214, 72, 62, 0.1);
+          display: none;
         }
 
         #download-flow .download-flow-strip__results-icon {
@@ -3670,9 +3659,24 @@
         max-height: 72vh;
         width: auto;
         height: auto;
+        margin-inline: auto;
         border-radius: 12px;
         object-fit: contain;
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      .img-modal__caption {
+        width: fit-content;
+        max-width: 100%;
+        margin: clamp(0.75rem, 1.5vw, 1rem) auto 0;
+        padding: 0.5rem 0.9rem;
+        border-radius: 8px;
+        background: #fff;
+        color: #1a1a1a;
+        font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+        font-weight: 500;
+        line-height: 1.4;
+        text-align: center;
       }
 
       .img-modal__btn {
@@ -3736,16 +3740,39 @@
 
       @media (max-width: 640px) {
         #img-modal {
-          padding: 3.5rem 0.5rem 1rem;
+          padding: 1.25rem 0.5rem 1rem;
         }
 
         .img-modal__dialog {
-          gap: 0.35rem;
+          display: grid;
+          grid-template-columns: auto auto;
+          justify-content: center;
+          justify-items: center;
+          align-items: start;
+          gap: 1.1rem 1rem;
+        }
+
+        .img-modal__frame {
+          grid-row: 1;
+          grid-column: 1 / -1;
+          justify-self: center;
+        }
+
+        #img-modal-prev {
+          grid-row: 2;
+          grid-column: 1;
+          justify-self: end;
+        }
+
+        #img-modal-next {
+          grid-row: 2;
+          grid-column: 2;
+          justify-self: start;
         }
 
         #img-modal-img {
-          max-width: 82vw;
-          max-height: 68vh;
+          max-width: 94vw;
+          max-height: 72vh;
         }
 
         .img-modal__nav,
@@ -3777,12 +3804,8 @@
       }
 
       @media (hover: none) {
-        #img-modal {
-          display: none !important;
-        }
-
         .download-flow-strip__img {
-          cursor: default !important;
+          cursor: pointer;
         }
       }
 
@@ -3944,6 +3967,10 @@
 
         .cs-nav-card {
           min-height: 148px;
+        }
+
+        .cs-nav-card--next {
+          order: -1;
         }
 
         .cs-nav-card__title {
@@ -4965,7 +4992,7 @@
                     height="568"
                   />
                   <p class="download-flow-strip__label">
-                    <span class="download-flow-strip__num">3.</span> No need to wait, as download already started.
+                    <span class="download-flow-strip__num">3.</span> User can close modal now, as download already started.
                   </p>
                 </div>
               </div>
@@ -5097,6 +5124,7 @@
         </button>
         <div class="img-modal__frame">
           <img id="img-modal-img" src="" alt="" />
+          <p class="img-modal__caption" id="img-modal-caption" aria-live="polite"></p>
           <button type="button" class="img-modal__btn img-modal__close" id="img-modal-close" aria-label="Close">
             <span class="icon-roll icon-roll--sm" aria-hidden="true">
               <span class="icon-roll__track">
@@ -5383,20 +5411,30 @@
       })();
 
       (function initImgModal() {
-        if (window.matchMedia("(hover: none)").matches) return;
-
         const modal = document.getElementById("img-modal");
         const mImg = document.getElementById("img-modal-img");
+        const mCap = document.getElementById("img-modal-caption");
         if (!modal || !mImg) return;
 
         let activeImages = [];
         let current = 0;
+
+        function labelFor(img) {
+          const step = img.closest(".download-flow-strip__step");
+          const label = step?.querySelector(".download-flow-strip__label");
+          return label ? label.textContent.replace(/\s+/g, " ").trim() : "";
+        }
 
         function openGallery(images, i) {
           activeImages = images;
           current = i;
           mImg.src = images[i].src;
           mImg.alt = images[i].alt;
+          if (mCap) {
+            const text = labelFor(images[i]);
+            mCap.textContent = text;
+            mCap.hidden = !text;
+          }
           modal.classList.add("open");
           document.body.style.overflow = "hidden";
         }

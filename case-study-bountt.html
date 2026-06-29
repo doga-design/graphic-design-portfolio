@@ -624,10 +624,6 @@
         outline-offset: 4px;
       }
 
-      .award-sticker.is-scrolling {
-        opacity: 0;
-      }
-
       .award-sticker.is-stowed {
         opacity: 0;
         visibility: hidden;
@@ -2320,6 +2316,10 @@
         .collection-surfer.is-mobile {
           --surfer-card-w: 220px;
         }
+
+        .collection-surfer.is-mobile .collection-surfer__track {
+          gap: 0.35rem;
+        }
       }
 
       @media (max-width: 430px) {
@@ -3254,7 +3254,7 @@
         }
 
         #the-result {
-          margin-top: calc(-1 * var(--section-gap) + clamp(0.5rem, 2vw, 1rem));
+          margin-top: calc(-1 * var(--section-gap) + clamp(3rem, 9vw, 4.5rem));
         }
 
         .feature-card {
@@ -3624,7 +3624,7 @@
         <ul class="sidebar-nav">
           <li><a href="#the-problem"><span>The Problem</span></a></li>
           <li><a href="#the-research"><span>The Research</span></a></li>
-          <li><a href="#the-solution"><span>The Solution</span></a></li>
+          <li><a href="#the-solution"><span>Product & Trade-offs</span></a></li>
           <li><a href="#the-result"><span>The Result</span></a></li>
           <li><a href="#reflection"><span>Reflection</span></a></li>
         </ul>
@@ -4323,7 +4323,7 @@
           </section>
 
           <section id="the-result" class="section">
-            <h2 class="section__label">The Solution</h2>
+            <h2 class="section__label">Solution</h2>
             <div
               class="collection-surfer"
               data-collection-surfer
@@ -4761,21 +4761,6 @@
           ).observe(bottomNav);
           mobileMq.addEventListener?.("change", syncStowed);
         }
-
-        // Mobile only: fade the sticker down while the page is actively scrolling.
-        let scrollTimer = null;
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (!mobileMq.matches || dragState) return;
-            sticker.classList.add("is-scrolling");
-            clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(() => {
-              sticker.classList.remove("is-scrolling");
-            }, 1100);
-          },
-          { passive: true }
-        );
       })();
 
       (function initHeroScrollToResult() {
@@ -5428,7 +5413,7 @@
         const getScrollIndex = () => {
           const maxScroll = getPageScrollRange();
           const viewportH = window.innerHeight || document.documentElement.clientHeight || 1;
-          const startY = viewportH * 0.52;
+          const startY = viewportH * 0.72;
           const t = Math.min(
             Math.max((startY - root.getBoundingClientRect().top) / maxScroll, 0),
             1

@@ -908,7 +908,7 @@
 
         .wordmark-note__pair > .wordmark-note__type:nth-child(1) .wordmark-note__copy {
           grid-column: 1;
-          grid-row: 2;
+          grid-row: 3;
           align-self: start;
         }
 
@@ -917,9 +917,16 @@
           grid-row: 1;
         }
 
-        .wordmark-note__pair > .wordmark-note__type:nth-child(2) .wordmark-note__copy {
+        .wordmark-note__pair > .wordmark-note__type:nth-child(2) .wordmark-note__type-note {
           grid-column: 2;
           grid-row: 2;
+          align-self: start;
+          margin: -0.5rem 0 0.35rem;
+        }
+
+        .wordmark-note__pair > .wordmark-note__type:nth-child(2) .wordmark-note__copy {
+          grid-column: 2;
+          grid-row: 3;
           align-self: start;
         }
 
@@ -930,7 +937,7 @@
 
         .wordmark-note__pair > .wordmark-note__type:nth-child(3) .wordmark-note__copy {
           grid-column: 3;
-          grid-row: 2;
+          grid-row: 3;
           align-self: start;
         }
 
@@ -970,6 +977,17 @@
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: clamp(1.15rem, 2.6vw, 1.5rem);
         font-weight: 700;
+      }
+
+      .wordmark-note__type-note {
+        margin: -0.15rem 0 0.5rem;
+        color: rgba(0, 0, 0, 0.72);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+        font-weight: 500;
+        font-style: normal;
+        line-height: 1.4;
+        letter-spacing: 0.01em;
       }
 
       .wordmark-note__type-name--slabo {
@@ -1695,6 +1713,7 @@
                     </div>
                     <div class="wordmark-note__type">
                       <p class="wordmark-note__type-name wordmark-note__type-name--helvetica">helvetica</p>
+                      <p class="wordmark-note__type-note">Project required Helvetica.</p>
                       <p class="wordmark-note__copy">
                         Helvetica on headers. It stays neutral and structured. It's the backbone for everything outside display type.
                       </p>
