@@ -283,6 +283,15 @@ body.dodollm-lock-scroll .dodollm-panel__chat {
   overflow-y: auto;
   background: transparent;
   padding: 20px 20px 0;
+  scrollbar-color: var(--accent, #b03a39) rgba(176, 58, 57, 0.14);
+}
+
+.dodollm-panel__chat::-webkit-scrollbar-track {
+  background: rgba(176, 58, 57, 0.14);
+}
+
+.dodollm-panel__chat::-webkit-scrollbar-thumb {
+  background: var(--accent, #b03a39);
 }
 
 .dodollm-empty {
