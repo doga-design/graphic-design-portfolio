@@ -9,9 +9,9 @@
   padding: 11px 18px 11px 14px;
   border: 0;
   border-radius: 999px;
-  background: #fff;
-  color: var(--accent, #b03a39);
-  box-shadow: 0 8px 22px rgba(19, 17, 33, 0.16);
+  background: var(--white);
+  color: var(--accent);
+  box-shadow: 0 8px 22px var(--shadow-ink-md);
   font-family: var(--font-copy, var(--font-body, system-ui, sans-serif));
   font-size: 0.8rem;
   font-weight: 600;
@@ -69,11 +69,11 @@
   box-sizing: border-box;
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid rgba(176, 58, 57, 0.12);
+  border: 1px solid var(--accent-border);
   border-radius: 10px;
-  background: #fff;
-  color: var(--accent, #b03a39);
-  box-shadow: 0 4px 14px rgba(19, 17, 33, 0.06);
+  background: var(--white);
+  color: var(--accent);
+  box-shadow: 0 4px 14px var(--shadow-ink-xs);
   font-family: var(--font-copy, var(--font-body, system-ui, sans-serif));
   font-size: 0.85rem;
   line-height: 1.4;
@@ -153,7 +153,7 @@
 
 .dodollm-selection-quote__remove:hover,
 .dodollm-selection-quote__remove:focus-visible {
-  background: rgba(176, 58, 57, 0.1);
+  background: var(--accent-fill);
   outline: none;
 }
 

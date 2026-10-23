@@ -1,0 +1,46 @@
+:root {
+  /* Base palette */
+  --paper: #f0ede6;
+  --paper-dock-top: #e6e2d8;
+  --paper-dock-mid: #ddd8cd;
+  --paper-dock-deep: #d3cdc1;
+  --ink: #1a1814;
+  --ink-strong: #131121;
+  --accent: #b03a39;
+  --accent-dark: #8e2e2d;
+  --accent-deep: #962f2e;
+  --accent-bright: #c0423f;
+  --brand-yellow: #faf0ca;
+  --on-accent: #f8f3eb;
+  --white: #fff;
+  --work-badge-secondary-bg: #f1e1d9;
+
+  /* Derived ink */
+  --ink-faint: color-mix(in srgb, var(--ink-strong) 4%, transparent);
+  --ink-dim: color-mix(in srgb, var(--ink-strong) 45%, transparent);
+  --ink-dimmer: color-mix(in srgb, var(--ink-strong) 42%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 55%, transparent);
+  --ink-mid: color-mix(in srgb, var(--ink-strong) 55%, transparent);
+  --ink-secondary: color-mix(in srgb, var(--ink-strong) 72%, transparent);
+  --ink-border: color-mix(in srgb, var(--ink-strong) 10%, transparent);
+  --ink-soft: color-mix(in srgb, var(--ink-strong) 12%, transparent);
+  --muted: color-mix(in srgb, #000 35%, transparent);
+  --rule: color-mix(in srgb, #000 10%, transparent);
+
+  /* Derived accent */
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-subtle: color-mix(in srgb, var(--accent) 8%, transparent);
+  --accent-border: color-mix(in srgb, var(--accent) 12%, transparent);
+  --accent-mid: color-mix(in srgb, var(--accent) 22%, transparent);
+  --accent-strong: color-mix(in srgb, var(--accent) 32%, transparent);
+  --accent-emphasis: color-mix(in srgb, var(--accent) 40%, transparent);
+  --accent-fill: color-mix(in srgb, var(--accent) 10%, transparent);
+
+  /* Shadows */
+  --shadow-ink-xs: color-mix(in srgb, var(--ink-strong) 6%, transparent);
+  --shadow-ink-sm: color-mix(in srgb, var(--ink-strong) 7%, transparent);
+  --shadow-ink: color-mix(in srgb, var(--ink-strong) 8%, transparent);
+  --shadow-ink-bar: color-mix(in srgb, var(--ink-strong) 14%, transparent);
+  --shadow-ink-md: color-mix(in srgb, var(--ink-strong) 16%, transparent);
+  --shadow-ink-lg: color-mix(in srgb, var(--ink-strong) 20%, transparent);
+}

@@ -1,3 +1,33 @@
+(function initSiteCursor() {
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+
+  const lock = document.createElement("style");
+  lock.textContent =
+    'html#site,html#site::before,html#site::after,html#site *,html#site *::before,html#site *::after{cursor:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0,none !important}';
+  document.head.appendChild(lock);
+
+  const cursor = document.createElement("div");
+  cursor.id = "site-cursor";
+  cursor.setAttribute("aria-hidden", "true");
+  cursor.hidden = true;
+  cursor.innerHTML =
+    '<svg width="23" height="23" viewBox="0 0 23 23" aria-hidden="true"><path d="M11.5 1.5V9.5M11.5 13.5V21.5M1.5 11.5H9.5M13.5 11.5H21.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="square"/><path d="M11.5 1.5V9.5M11.5 13.5V21.5M1.5 11.5H9.5M13.5 11.5H21.5" fill="none" stroke="#1a1814" stroke-width="1" stroke-linecap="square"/></svg>';
+  document.body.appendChild(cursor);
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      if (cursor.hidden) cursor.hidden = false;
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+    },
+    { passive: true }
+  );
+
+  document.documentElement.addEventListener("pointerleave", () => {
+    cursor.hidden = true;
+  });
+})();
+
 (function initDodollmSelection() {
   "use strict";
 

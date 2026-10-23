@@ -29,13 +29,10 @@
       }
 
       :root {
-        --paper: #f2f1ef;
-        --ink: #1a1a1a;
-        --muted: rgba(0, 0, 0, 0.35);
         --section-gap: clamp(72px, 10vw, 120px);
         --content-max: 1100px;
         --sidebar-width: 260px;
-        --bountt-accent: #faf0ca;
+        --bountt-accent: var(--brand-yellow);
         --font-body: "Geist Sans", system-ui, -apple-system, sans-serif;
         --font-bountt: "Bringbold Nineties", sans-serif;
       }
@@ -43,7 +40,7 @@
       @property --hero-toolchain-card-fill {
         syntax: "<color>";
         inherits: false;
-        initial-value: #f2f1ef;
+        initial-value: var(--paper);
       }
 
       *,
@@ -70,8 +67,8 @@
       }
 
       ::selection {
-        background: #b03a39;
-        color: #f8f3eb;
+        background: var(--accent);
+        color: var(--on-accent);
       }
 
       a,
@@ -431,7 +428,7 @@
         padding: 1rem;
         text-align: center;
         color: #2a2a2a;
-        border: 2.5px solid #fff;
+        border: 2.5px solid var(--white);
         box-shadow:
           0 2px 0 rgba(0, 0, 0, 0.137),
           0 6px 10px rgba(0, 0, 0, 0.40),
@@ -487,7 +484,7 @@
         font-size: clamp(1.75rem, 3.5vw, 2.75rem);
         font-weight: 400;
         line-height: 1;
-        color: #1a1a1a;
+        color: var(--ink);
       }
 
       .disc__label {
@@ -497,13 +494,15 @@
         opacity: 0.6;
         max-width: 11em;
         line-height: 1.35;
-        color: #1a1a1a;
+        color: var(--ink);
       }
 
       /* Main */
       .main {
+        position: relative;
         margin-left: var(--sidebar-width);
         padding: clamp(48px, 6vw, 80px) clamp(1.5rem, 5vw, 3rem) 120px  clamp(1.5rem, 5vw, 3rem);
+        overflow: visible;
       }
 
       .main__inner {
@@ -632,7 +631,7 @@
       }
 
       .award-sticker:focus-visible {
-        outline: 2px solid #b03a39;
+        outline: 2px solid var(--accent);
         outline-offset: 4px;
       }
 
@@ -687,7 +686,7 @@
       }
 
       .award-sticker__ring-em {
-        fill: #b03a39;
+        fill: var(--accent);
         font-weight: 800;
       }
 
@@ -731,7 +730,7 @@
         --hero-toolchain-card-bg-duration: 280ms;
         --hero-toolchain-card-bg-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
         --hero-toolchain-card-shadow: none;
-        --hero-toolchain-card-shadow-hover: 0 12px 32px rgba(19, 17, 33, 0.1);
+        --hero-toolchain-card-shadow-hover: 0 12px 32px var(--ink-border);
         --hero-toolchain-lovable-border: linear-gradient(
           120deg,
           #f5d0d8 0%,
@@ -786,7 +785,7 @@
         letter-spacing: -0.01em;
         line-height: 1;
         white-space: nowrap;
-        cursor: pointer;
+        cursor: default;
         transition:
           width 250ms cubic-bezier(0.22, 0.78, 0.18, 1),
           padding 250ms cubic-bezier(0.22, 0.78, 0.18, 1),
@@ -804,7 +803,7 @@
         gap: 0.45rem;
         padding-inline: 9px 14px;
         border-color: transparent;
-        background: #b03a39;
+        background: var(--accent);
         color: var(--paper);
         outline: none;
       }
@@ -933,6 +932,7 @@
         padding: 0;
         display: flex;
         justify-content: center;
+        cursor: default;
       }
 
       .hero-toolchain__connector {
@@ -1005,7 +1005,7 @@
         }
 
         .hero-toolchain__step.is-tilting .hero-toolchain__card {
-          background: #fff;
+          background: var(--white);
           box-shadow: var(--hero-toolchain-card-shadow-hover);
           transition-property: background, box-shadow;
           transition-duration:
@@ -1017,7 +1017,7 @@
         }
 
         .hero-toolchain__step--lovable.is-tilting .hero-toolchain__card {
-          --hero-toolchain-card-fill: #fff;
+          --hero-toolchain-card-fill: var(--white);
           transition-property: box-shadow, --hero-toolchain-card-fill;
           transition-duration:
             120ms,
@@ -1053,7 +1053,7 @@
         width: 32px;
         height: 32px;
         border-radius: 999px;
-        color: #fff;
+        color: var(--white);
         font-size: 0.95rem;
         font-weight: 600;
         line-height: 1;
@@ -1125,7 +1125,7 @@
         height: 0;
         margin: 0;
         border: 0;
-        border-top: 1px solid rgba(19, 17, 33, 0.1);
+        border-top: 1px solid var(--ink-border);
       }
 
       .hero-toolchain__desc,
@@ -1307,17 +1307,32 @@
           row-gap: clamp(2rem, 4vw, 3rem);
           grid-template-areas:
             "title ctas"
+            "image image"
             "meta meta"
-            "toolchain toolchain"
-            "image image";
+            "toolchain toolchain";
           align-items: center;
         }
 
+        .award-sticker,
+        .award-sticker.is-placed {
+          position: absolute;
+          width: var(--award-sticker-size);
+        }
+
         .award-sticker:not(.is-placed) {
-          top: clamp(32px, 4.5vw, 60px);
-          right: clamp(1.5rem, 3vw, 3rem);
+          /* Align with hero title band; .main padding-box is the CB */
+          top: calc(
+            clamp(48px, 6vw, 80px) + var(--desktop-nav-height, 0px) +
+              clamp(8px, 1.5vw, 16px)
+          );
+          right: 1rem;
           bottom: auto;
           left: auto;
+        }
+
+        .main__inner,
+        .hero {
+          overflow: visible;
         }
 
         .hero__title-row {
@@ -1957,14 +1972,14 @@
         inset: 0;
         z-index: -1;
         border-radius: 4px;
-        background: #b03a39;
+        background: var(--accent);
         clip-path: inset(0 100% 0 0);
         transition: clip-path 280ms cubic-bezier(0.65, 0, 0.35, 1);
         transition-delay: calc(var(--stat-delay, 0) * 140ms);
       }
 
       .problem-stat-highlight.is-visible {
-        color: var(--bountt-accent, #faf0ca);
+        color: var(--bountt-accent, var(--brand-yellow));
       }
 
       .problem-stat-highlight.is-visible::before {
@@ -1972,11 +1987,11 @@
       }
 
       .problem-stat-highlight--cream::before {
-        background: var(--bountt-accent, #faf0ca);
+        background: var(--bountt-accent, var(--brand-yellow));
       }
 
       .problem-stat-highlight--cream.is-visible {
-        color: #b03a39;
+        color: var(--accent);
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -2049,7 +2064,7 @@
         height: auto;
         object-fit: contain;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px var(--rule);
         flex-shrink: 0;
       }
 
@@ -2517,6 +2532,8 @@
         gap: 1rem;
         font-size: 0.95rem;
         line-height: 1.5;
+        background: var(--paper);
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
       }
 
       .feature-card__num {
@@ -2534,18 +2551,6 @@
 
       .feature-card__body p {
         margin: 0;
-      }
-
-      .feature-card--pink {
-        background: #f9c5d0;
-      }
-
-      .feature-card--periwinkle {
-        background: #c5c8f9;
-      }
-
-      .feature-card--sage {
-        background: #c8e8a0;
       }
 
       /* CTA */
@@ -3432,7 +3437,7 @@
         height: auto;
         border-radius: 12px;
         object-fit: contain;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 12px 40px var(--muted);
       }
 
       .img-modal__btn {
@@ -3534,7 +3539,7 @@
           height: 52px;
           border-radius: 50%;
           background: #f5f0e8;
-          color: #1a1a1a;
+          color: var(--ink);
         }
 
         .img-modal__nav:hover {
@@ -3552,7 +3557,7 @@
           top: 10px;
           right: 10px;
           background: #f5f0e8;
-          color: #1a1a1a;
+          color: var(--ink);
           backdrop-filter: none;
         }
 
@@ -3571,6 +3576,7 @@
           cursor: pointer;
         }
       }
+
 
       @media (min-width: 961px) {
         .marquee--problem .problem-evidence__card {
@@ -3607,6 +3613,7 @@
 
     </style>
     <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+    <link rel="stylesheet" href="assets/tokens.css" />
     <link rel="stylesheet" href="assets/mobile-nav.css" />
     <link rel="stylesheet" href="assets/case-study-tablet.css" />
     <link rel="stylesheet" href="assets/desktop-nav.css" />
@@ -3698,43 +3705,43 @@
       </div>
 
       <main class="main">
+        <div
+          class="award-sticker"
+          role="button"
+          tabindex="0"
+          aria-label="Draggable Applied Arts 2026 award sticker"
+          data-award-sticker
+        >
+          <div class="award-sticker__badge" aria-hidden="true">
+            <svg
+              class="award-sticker__ring"
+              viewBox="0 0 220 220"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <path
+                  id="award-sticker-circle-path"
+                  d="M110,110 m-95,0 a95,95 0 1,1 190,0 a95,95 0 1,1 -190,0"
+                />
+              </defs>
+              <text font-size="11.2">
+                <textPath href="#award-sticker-circle-path">
+                  APPLIED ARTS 2026 · <tspan class="award-sticker__ring-em">STUDENT AWARDS</tspan> · <tspan class="award-sticker__ring-em">WINNER</tspan> · APPS · SINGLE ·&nbsp;
+                </textPath>
+              </text>
+            </svg>
+            <div class="award-sticker__icon">
+              <img
+                src="assets/applied-arts-student-award-badge.png"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
         <div class="main__inner">
           <header class="hero">
-            <div
-              class="award-sticker"
-              role="button"
-              tabindex="0"
-              aria-label="Draggable Applied Arts 2026 award sticker"
-              data-award-sticker
-            >
-              <div class="award-sticker__badge" aria-hidden="true">
-                <svg
-                  class="award-sticker__ring"
-                  viewBox="0 0 220 220"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <defs>
-                    <path
-                      id="award-sticker-circle-path"
-                      d="M110,110 m-95,0 a95,95 0 1,1 190,0 a95,95 0 1,1 -190,0"
-                    />
-                  </defs>
-                  <text font-size="11.2">
-                    <textPath href="#award-sticker-circle-path">
-                      APPLIED ARTS 2026 · <tspan class="award-sticker__ring-em">STUDENT AWARDS</tspan> · <tspan class="award-sticker__ring-em">WINNER</tspan> · APPS · SINGLE ·&nbsp;
-                    </textPath>
-                  </text>
-                </svg>
-                <div class="award-sticker__icon">
-                  <img
-                    src="assets/applied-arts-student-award-badge.png"
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              </div>
-            </div>
             <div class="hero__title-row">
               <a class="hero__back" href="index.html">
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -3778,11 +3785,9 @@
             <figure class="hero-toolchain" aria-label="AI-native development workflow">
               <div class="hero-toolchain__title-row">
                 <h2 class="hero-toolchain__title">AI-native <span class="hero-toolchain__title-dev">development &amp; </span>building workflow</h2>
-                <button
+                <span
                   class="hero-toolchain__ask"
-                  type="button"
-                  data-dodollm-workflow-trigger
-                  aria-label="Ask DodoGPT about Bountt's AI-native development workflow"
+                  aria-hidden="true"
                 >
                   <svg class="hero-toolchain__ask-icon" viewBox="0 0 66 81" aria-hidden="true">
                     <path
@@ -3791,7 +3796,7 @@
                     />
                   </svg>
                   <span class="hero-toolchain__ask-label">Ask DodoGPT about this</span>
-                </button>
+                </span>
               </div>
               <div class="hero-toolchain__diagram">
               <svg
@@ -4242,9 +4247,9 @@
                     </span>
                   </span>
                 </p>
-                <h3>Splitwise has 10 million users and hasn't touched the emotional side of the problem in 8 years.</h3>
+                <h3>Splitwise has millions of users and hasn't touched the emotional side of the problem in years.</h3>
                 <p>
-                  I went through <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">200+</span> App Store and Reddit reviews. The same words kept showing up: nagging, petty, transactional, awkward. More than <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 1">20%</span> described an immediate sense of anxiety when the app was in view. Nearly <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 2">40%</span> felt like the app was making them cheap by being so precise about every cent. The app is good at math. It's not good at friendships.
+                  I went through <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">200+</span> App Store and Reddit reviews. More than <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 1">20%</span> described an immediate sense of anxiety when the app was in view. Nearly <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 2">40%</span> felt like the app was making them cheap by being so precise about every cent.
                 </p>
               </div>
             </div>
@@ -4508,24 +4513,9 @@
       </div>
     </div>
 
+
     <script src="assets/dodollm-panel.js"></script>
     <script src="assets/dodollm-selection.js"></script>
-    <script>
-      (function initWorkflowDodollmTrigger() {
-        const trigger = document.querySelector("[data-dodollm-workflow-trigger]");
-        if (!trigger) return;
-
-        trigger.addEventListener("click", (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          window.askDodollmAboutQuote?.({
-            quote: "Bountt's AI-native development workflow",
-            question: "Tell me about this",
-          });
-        });
-      })();
-    </script>
     <script src="assets/mobile-nav.js"></script>
     <script>
       (function initAwardStickerDrag() {
@@ -4539,7 +4529,6 @@
 
         const mobileMq = window.matchMedia("(max-width: 960px)");
         const desktopMq = window.matchMedia("(min-width: 961px)");
-        const heroTitleRow = document.querySelector(".hero__title-row");
 
         let dragState = null;
         let snapTimer = null;
@@ -4606,14 +4595,7 @@
         const syncDefaultPosition = () => {
           if (sticker.classList.contains("is-placed") || dragState) return;
 
-          if (desktopMq.matches && heroTitleRow) {
-            sticker.style.removeProperty("left");
-            sticker.style.right = "clamp(1.5rem, 3vw, 3rem)";
-            sticker.style.bottom = "auto";
-            sticker.style.top = `${heroTitleRow.getBoundingClientRect().top - 16}px`;
-            return;
-          }
-
+          // Desktop default is CSS absolute on .main (page-right, scrolls).
           sticker.style.removeProperty("top");
           sticker.style.removeProperty("left");
           sticker.style.removeProperty("right");
@@ -4636,12 +4618,6 @@
           sticker.style.removeProperty("top");
           sticker.style.removeProperty("right");
           sticker.style.removeProperty("bottom");
-
-          if (desktopMq.matches && heroTitleRow) {
-            sticker.style.right = "clamp(1.5rem, 3vw, 3rem)";
-            sticker.style.bottom = "auto";
-            sticker.style.top = `${heroTitleRow.getBoundingClientRect().top - 16}px`;
-          }
 
           cachedDefaultRect = sticker.getBoundingClientRect();
 
@@ -4678,6 +4654,17 @@
           sticker.style.right = "auto";
           sticker.style.bottom = "auto";
           const rect = sticker.getBoundingClientRect();
+
+          if (desktopMq.matches) {
+            const main = sticker.closest(".main");
+            const mainRect = main?.getBoundingClientRect();
+            if (mainRect) {
+              sticker.style.left = `${x - mainRect.left}px`;
+              sticker.style.top = `${y - mainRect.top}px`;
+              return;
+            }
+          }
+
           const maxX = Math.max(EDGE_GAP, window.innerWidth - rect.width - EDGE_GAP);
           const maxY = Math.max(EDGE_GAP, window.innerHeight - rect.height - EDGE_GAP);
           sticker.style.left = `${clamp(x, EDGE_GAP, maxX)}px`;
@@ -5865,6 +5852,7 @@
           }
         });
       })();
+
 
       (function initIconRoll() {
         document.querySelectorAll(".icon-roll__track").forEach((track) => {

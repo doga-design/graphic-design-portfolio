@@ -4,9 +4,6 @@
   const about = document.getElementById("about");
   if (!about) return;
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (reduceMotion.matches) return;
-
   const config = {
     colorBack: getComputedStyle(document.documentElement).getPropertyValue("--paper").trim() || "#f0ede6",
     colorFront: "#B03A39",
@@ -324,11 +321,18 @@ void main() {
   let visible = true;
   const startedAt = performance.now();
 
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
+  // Only time and resolution change per frame; the rest is uploaded once.
+  gl.useProgram(program);
+  gl.uniform4fv(locations.uColorBack, hexToRgba(config.colorBack));
+  gl.uniform4fv(locations.uColorFront, hexToRgba(config.colorFront));
+  gl.uniform1f(locations.uShape, config.shape);
+  gl.uniform1f(locations.uType, config.type);
+  gl.uniform1f(locations.uPxSize, config.pxSize);
+
+  function resize(cssWidth, cssHeight) {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    width = Math.max(1, Math.round(rect.width * dpr));
-    height = Math.max(1, Math.round(rect.height * dpr));
+    width = Math.max(1, Math.round(cssWidth * dpr));
+    height = Math.max(1, Math.round(cssHeight * dpr));
 
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
@@ -337,26 +341,24 @@ void main() {
     }
   }
 
+  function measure() {
+    const rect = canvas.getBoundingClientRect();
+    resize(rect.width, rect.height);
+  }
+
   function render(now) {
     if (!running) return;
 
-    resize();
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(program);
     gl.uniform1f(locations.uTime, ((now - startedAt) * 0.001) * config.speed);
     gl.uniform2f(locations.uResolution, width, height);
-    gl.uniform4fv(locations.uColorBack, hexToRgba(config.colorBack));
-    gl.uniform4fv(locations.uColorFront, hexToRgba(config.colorFront));
-    gl.uniform1f(locations.uShape, config.shape);
-    gl.uniform1f(locations.uType, config.type);
-    gl.uniform1f(locations.uPxSize, config.pxSize);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
     raf = requestAnimationFrame(render);
   }
 
   function start() {
-    if (running || !visible || reduceMotion.matches) return;
+    if (running || !visible) return;
     running = true;
     raf = requestAnimationFrame(render);
   }
@@ -376,18 +378,20 @@ void main() {
     { rootMargin: "160px" }
   );
 
-  observer.observe(about);
-  window.addEventListener("resize", resize, { passive: true });
-  reduceMotion.addEventListener("change", () => {
-    if (reduceMotion.matches) stop();
-    else start();
-  });
-  window.addEventListener("pagehide", () => {
-    stop();
-    observer.disconnect();
-    gl.deleteProgram(program);
+  const resizeObserver = new ResizeObserver(([entry]) => {
+    resize(entry.contentRect.width, entry.contentRect.height);
   });
 
-  resize();
+  observer.observe(about);
+  resizeObserver.observe(canvas);
+  // DPR changes (moving between screens) do not trigger the ResizeObserver.
+  window.addEventListener("resize", measure, { passive: true });
+  // Keep the GL program alive so the canvas resumes after a back/forward cache restore.
+  window.addEventListener("pagehide", stop);
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) start();
+  });
+
+  measure();
   start();
 })();

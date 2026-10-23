@@ -86,7 +86,7 @@ export function initLiquidEther(container, options = {}) {
       this.container = el;
       this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
       this.resize();
-      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
       this.renderer.autoClear = false;
       this.renderer.setClearColor(new THREE.Color(0x000000), 0);
       this.renderer.setPixelRatio(this.pixelRatio);
@@ -1038,15 +1038,6 @@ export function initLiquidEther(container, options = {}) {
     }
 
     start() {
-      const prefersReducedMotion =
-        typeof window !== "undefined" &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReducedMotion) {
-        this.running = false;
-        this.render();
-        return;
-      }
       if (!this.running) {
         this.running = true;
         this._loop();
@@ -1099,18 +1090,6 @@ export function initLiquidEther(container, options = {}) {
   );
   io.observe(container);
   intersectionObserverRef = io;
-
-  const reducedMotionMql =
-    typeof window !== "undefined" && window.matchMedia
-      ? window.matchMedia("(prefers-reduced-motion: reduce)")
-      : null;
-  if (reducedMotionMql && reducedMotionMql.addEventListener) {
-    reducedMotionMql.addEventListener("change", (e) => {
-      if (!webglRef) return;
-      if (e.matches) webglRef.pause();
-      else if (isVisibleRef && !document.hidden) webglRef.start();
-    });
-  }
 
   const ro = new ResizeObserver(() => {
     if (resizeRafRef) cancelAnimationFrame(resizeRafRef);

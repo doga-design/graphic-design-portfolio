@@ -12,8 +12,8 @@
     right: 0;
     z-index: 150;
     height: var(--desktop-nav-height);
-    background: var(--paper, #f0ede6);
-    border-bottom: 1px solid var(--ink-border, rgba(19, 17, 33, 0.1));
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink-border);
   }
 
   .desktop-nav__inner {
@@ -39,7 +39,7 @@
     letter-spacing: -0.01em;
     line-height: 1;
     text-decoration: none;
-    color: var(--ink, #1a1814);
+    color: var(--ink);
   }
 
   .desktop-nav__links {
@@ -57,19 +57,19 @@
     letter-spacing: 0.02em;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--muted, rgba(0, 0, 0, 0.35));
+    color: var(--muted);
     transition: color 180ms ease;
   }
 
   .desktop-nav__links a:focus-visible,
   .desktop-nav__llm:focus-visible {
-    color: var(--ink, #1a1814);
+    color: var(--ink);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .desktop-nav__links a:hover,
     .desktop-nav__llm:hover {
-      color: var(--ink, #1a1814);
+      color: var(--ink);
     }
   }
 
@@ -96,7 +96,7 @@
     width: auto;
     aspect-ratio: 66 / 81;
     fill: currentColor;
-    color: var(--accent, #b03a39);
+    color: var(--accent);
     flex-shrink: 0;
   }
 

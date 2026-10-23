@@ -17,9 +17,6 @@
     />
     <style>
       :root {
-        --paper: #f2f1ef;
-        --ink: #1a1a1a;
-        --muted: rgba(0, 0, 0, 0.35);
         --section-gap: clamp(72px, 10vw, 120px);
         --content-max: 1100px;
         --sidebar-width: 260px;
@@ -51,8 +48,8 @@
       }
 
       ::selection {
-        background: #b03a39;
-        color: #f8f3eb;
+        background: var(--accent);
+        color: var(--on-accent);
       }
 
       a,
@@ -370,7 +367,7 @@
         aspect-ratio: 1 / 1;
         border-radius: 12px;
         border: 2px solid;
-        background: #fff;
+        background: var(--white);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -482,7 +479,7 @@
         font-family: var(--font-display);
         font-size: 1.5rem;
         font-weight: 400;
-        color: #fff;
+        color: var(--white);
         line-height: 1.3;
       }
 
@@ -564,6 +561,34 @@
         justify-content: center;
         color: rgba(255, 255, 255, 0.45);
         font-size: 0.9rem;
+      }
+
+      /* Desktop: image between title and meta */
+      @media (min-width: 961px) {
+        .hero {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          column-gap: clamp(1.5rem, 3vw, 2.5rem);
+          row-gap: clamp(2rem, 4vw, 3rem);
+          grid-template-areas:
+            "title title"
+            "image image"
+            "meta meta";
+        }
+
+        .hero__title-row {
+          grid-area: title;
+          margin-bottom: 0;
+        }
+
+        .hero__meta {
+          grid-area: meta;
+          margin-bottom: 0;
+        }
+
+        .placeholder-hero {
+          grid-area: image;
+        }
       }
 
       /* Tablet: max-width 960px */
@@ -712,6 +737,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="assets/tokens.css" />
     <link rel="stylesheet" href="assets/mobile-nav.css" />
     <link rel="stylesheet" href="assets/case-study-tablet.css" />
     <link rel="stylesheet" href="assets/desktop-nav.css" />
