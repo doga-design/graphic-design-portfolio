@@ -2795,8 +2795,26 @@
           );
         }
 
+        .award-sticker,
+        .award-sticker.is-placed {
+          position: absolute;
+          width: var(--award-sticker-size);
+          z-index: 40;
+        }
+
+        .award-sticker:not(.is-placed) {
+          top: calc(
+            100dvh - env(safe-area-inset-bottom, 0px) - 1rem -
+              var(--award-sticker-size) - clamp(2.25rem, 10vw, 3.5rem)
+          );
+          right: 1rem;
+          bottom: auto;
+          left: auto;
+        }
+
         .award-sticker.is-dragging {
           transform: scale(1.18);
+          z-index: 120;
         }
 
         .award-sticker__ring text {
@@ -4336,7 +4354,7 @@
                   <span class="feature-card__num">1</span>
                   <div class="feature-card__body">
                     <p>Bountt has one <strong class="problem-stat-highlight problem-stat-highlight--cream" data-stat-highlight>hard language rule</strong>: no debt framing.</p>
-                    <p>The <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">trade-off was precision.</span> &ldquo;Pays&rdquo; instead of &ldquo;is responsible for.&rdquo; &ldquo;Covers&rdquo; instead of &ldquo;liable.&rdquo; The math stays clear, the obligation disappears.</p>
+                    <p>The <span class="problem-stat-highlight" data-stat-highlight style="--stat-delay: 0">trade-off was precision.</span> &ldquo;Pays&rdquo; instead of &ldquo;Gives&rdquo;, &ldquo;Covers&rdquo; instead of &ldquo;Owes.&rdquo; The math stays clear, the obligation disappears.</p>
                   </div>
                 </div>
                 <div class="feature-card feature-card--periwinkle">
@@ -4595,7 +4613,7 @@
         const syncDefaultPosition = () => {
           if (sticker.classList.contains("is-placed") || dragState) return;
 
-          // Desktop default is CSS absolute on .main (page-right, scrolls).
+          // Default position comes from CSS on .main (scrolls with the page).
           sticker.style.removeProperty("top");
           sticker.style.removeProperty("left");
           sticker.style.removeProperty("right");
@@ -4654,15 +4672,21 @@
           sticker.style.right = "auto";
           sticker.style.bottom = "auto";
           const rect = sticker.getBoundingClientRect();
+          const main = sticker.closest(".main");
+          const mainRect = main?.getBoundingClientRect();
 
-          if (desktopMq.matches) {
-            const main = sticker.closest(".main");
-            const mainRect = main?.getBoundingClientRect();
-            if (mainRect) {
-              sticker.style.left = `${x - mainRect.left}px`;
-              sticker.style.top = `${y - mainRect.top}px`;
-              return;
-            }
+          if (mainRect) {
+            const maxX = Math.max(
+              EDGE_GAP,
+              main.offsetWidth - rect.width - EDGE_GAP
+            );
+            const maxY = Math.max(
+              EDGE_GAP,
+              main.offsetHeight - rect.height - EDGE_GAP
+            );
+            sticker.style.left = `${clamp(x - mainRect.left, EDGE_GAP, maxX)}px`;
+            sticker.style.top = `${clamp(y - mainRect.top, EDGE_GAP, maxY)}px`;
+            return;
           }
 
           const maxX = Math.max(EDGE_GAP, window.innerWidth - rect.width - EDGE_GAP);

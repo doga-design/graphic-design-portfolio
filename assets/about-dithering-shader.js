@@ -271,10 +271,15 @@ void main() {
     return program;
   }
 
+  const host = document.createElement("div");
+  host.className = "about-dithering";
+  host.setAttribute("aria-hidden", "true");
+
   const canvas = document.createElement("canvas");
   canvas.id = "about-dithering-canvas";
   canvas.setAttribute("aria-hidden", "true");
-  about.prepend(canvas);
+  host.appendChild(canvas);
+  about.prepend(host);
 
   const gl = canvas.getContext("webgl2", {
     alpha: true,
@@ -284,13 +289,13 @@ void main() {
     powerPreference: "low-power",
   });
   if (!gl) {
-    canvas.remove();
+    host.remove();
     return;
   }
 
   const program = createProgram(gl);
   if (!program) {
-    canvas.remove();
+    host.remove();
     return;
   }
 
@@ -316,6 +321,8 @@ void main() {
 
   let width = 1;
   let height = 1;
+  let appliedWidth = 0;
+  let appliedHeight = 0;
   let raf = 0;
   let running = false;
   let visible = true;
@@ -330,20 +337,29 @@ void main() {
   gl.uniform1f(locations.uPxSize, config.pxSize);
 
   function resize(cssWidth, cssHeight) {
+    const nextWidth = Math.max(0, Math.round(cssWidth));
+    const nextHeight = Math.max(0, Math.round(cssHeight));
+    if (nextWidth < 1 || nextHeight < 1) return;
+    if (nextWidth === appliedWidth && nextHeight === appliedHeight) return;
+
+    appliedWidth = nextWidth;
+    appliedHeight = nextHeight;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    width = Math.max(1, Math.round(cssWidth * dpr));
-    height = Math.max(1, Math.round(cssHeight * dpr));
+    width = Math.max(1, Math.round(nextWidth * dpr));
+    height = Math.max(1, Math.round(nextHeight * dpr));
 
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
       canvas.height = height;
       gl.viewport(0, 0, width, height);
     }
+    canvas.style.width = `${nextWidth}px`;
+    canvas.style.height = `${nextHeight}px`;
   }
 
   function measure() {
-    const rect = canvas.getBoundingClientRect();
-    resize(rect.width, rect.height);
+    resize(about.clientWidth, about.clientHeight);
   }
 
   function render(now) {
@@ -378,12 +394,12 @@ void main() {
     { rootMargin: "160px" }
   );
 
-  const resizeObserver = new ResizeObserver(([entry]) => {
-    resize(entry.contentRect.width, entry.contentRect.height);
+  const resizeObserver = new ResizeObserver(() => {
+    measure();
   });
 
   observer.observe(about);
-  resizeObserver.observe(canvas);
+  resizeObserver.observe(about);
   // DPR changes (moving between screens) do not trigger the ResizeObserver.
   window.addEventListener("resize", measure, { passive: true });
   // Keep the GL program alive so the canvas resumes after a back/forward cache restore.

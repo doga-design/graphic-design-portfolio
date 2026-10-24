@@ -63,6 +63,8 @@
   const isCaseStudyPage = () =>
     Boolean(document.querySelector(".layout")) && !document.getElementById("home");
 
+  const isHomePage = () => Boolean(document.getElementById("home"));
+
   let inHero = false;
 
   const applyNavHidden = () => {
@@ -101,6 +103,12 @@
   };
 
   const injectMobileAiFab = () => {
+    if (isHomePage()) {
+      document.querySelector("[data-mobile-ai-fab]")?.remove();
+      mobileAiFab = null;
+      return;
+    }
+
     if (document.querySelector("[data-mobile-ai-fab]")) {
       mobileAiFab = document.querySelector("[data-mobile-ai-fab]");
       syncMobileAiFab();
@@ -142,6 +150,12 @@
   };
 
   const injectAiLink = () => {
+    if (isHomePage()) {
+      drawerInner.querySelector(".cs-nav__drawer-ai")?.remove();
+      syncDrawerOpenHeight();
+      return;
+    }
+
     let footer = drawerInner.querySelector(".cs-nav__drawer-ai");
     if (!footer) {
       footer = document.createElement("div");

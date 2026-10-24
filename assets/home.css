@@ -794,10 +794,6 @@ a {
 }
 
 #hero-copy {
-  /* Pastel of the placeholder avatar fill (#5674b0); script replaces these per face. */
-  --hero-chat-bubble: #d0d8e9;
-  --hero-chat-ink: #34486f;
-  --hero-chat-highlight: #5674b0;
   position: absolute;
   /* Anchor on the wordmark's top-right, then shift inward so it overlaps the ink. */
   left: calc(50% + var(--hero-name-w) / 2);
@@ -923,9 +919,6 @@ a {
 }
 
 .hero-chat__invite {
-  --hero-chat-bubble: #e9c8c8;
-  --hero-chat-ink: #693a3a;
-  --hero-chat-highlight: #b03a39;
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
@@ -965,14 +958,17 @@ a {
   width: max-content;
   max-width: 100%;
   margin: 0;
-  padding: 0.55rem 0.95rem;
-  border-radius: 1.15rem;
-  background: var(--hero-chat-bubble, var(--accent));
-  color: var(--hero-chat-ink, var(--on-accent));
-  font-size: clamp(15px, 1.5vw, 18px);
-  font-weight: 400;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  padding: clamp(9px, 1.1vw, 11px) clamp(18px, 2vw, 22px);
+  border-radius: 999px;
+  background: var(--work-badge-secondary-bg);
+  color: var(--accent);
+  font-size: clamp(12px, 1.35vw, 15px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.012em;
+  box-shadow:
+    0 6px 22px var(--shadow-ink-sm),
+    0 2px 8px var(--shadow-ink-xs);
 }
 
 .hero-chat__bubble--mobile {
@@ -988,22 +984,27 @@ a {
 .hero-chat__bubble--tail {
   position: relative;
   z-index: 1;
+  /* Contact shadow falls down/right so it does not wash over the tail. */
+  box-shadow:
+    0 8px 26px var(--shadow-ink-sm),
+    4px 10px 20px -4px var(--shadow-ink-sm),
+    0 3px 10px var(--shadow-ink-xs);
 }
 
 .hero-chat__tail {
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   right: calc(100% - 14px);
   bottom: 0;
   width: 26px;
   height: 1.35rem;
-  color: var(--hero-chat-bubble, var(--accent));
+  color: var(--work-badge-secondary-bg);
   pointer-events: none;
 }
 
 #hero-copy .accent {
-  color: var(--hero-chat-highlight, var(--work-badge-secondary-bg));
-  font-weight: 700;
+  color: inherit;
+  font-weight: inherit;
 }
 
 .hero-divider.visible {
@@ -1020,22 +1021,13 @@ a {
 
   #hero-canvas {
     margin-top: -0.2rem;
-    margin-bottom: clamp(0.4rem, 1.5cqi, 0.9rem);
+    margin-bottom: 0;
     touch-action: none;
   }
 
   .about-section {
     padding-left: max(0px, calc((100% - var(--hero-width)) / 2));
     padding-right: max(0px, calc((100% - var(--hero-width)) / 2));
-  }
-
-  .hero-chat__bubble {
-    padding: clamp(9px, 1.1vw, 11px) clamp(18px, 2vw, 22px);
-    border-radius: 999px;
-    font-size: clamp(12px, 1.35vw, 15px);
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: 0.010em;
   }
 }
 
@@ -1619,7 +1611,7 @@ body.work-pill-active .work-thumb * {
   width: 100%;
   margin-bottom: 0;
   background: var(--paper);
-  overflow: hidden;
+  overflow: clip;
 }
 
 .about-section {
@@ -1630,29 +1622,34 @@ body.work-pill-active .work-thumb * {
   scroll-margin-top: 72px;
 }
 
-#about-dithering-canvas {
+.about-dithering {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: -1px;
+  bottom: 0;
   left: 0;
   z-index: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#about-dithering-canvas {
   display: block;
   width: 100%;
-  height: calc(100% + 1px);
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
   background: var(--paper);
   opacity: 0.72;
   pointer-events: none;
 }
 
 @media (min-width: 961px) {
-  #about-dithering-canvas {
+  .about-dithering {
     top: 22%;
-    right: 0;
-    bottom: -50px;
-    left: 0;
-    width: 100%;
-    height: auto;
+    bottom: 0;
   }
 }
 
@@ -2573,7 +2570,8 @@ body.about-email-pill-active .about-text__link--email {
   }
 
   #hero-canvas {
-    margin-block: clamp(1.5rem, 6vw, 2.75rem);
+    margin-top: clamp(1.5rem, 6vw, 2.75rem);
+    margin-bottom: 0;
   }
 
   #hero-copy {
@@ -2612,18 +2610,6 @@ body.about-email-pill-active .about-text__link--email {
       width: 36px;
       height: 36px;
     }
-  }
-
-  .hero-chat__bubble {
-    font-size: clamp(13px, 3.2vw, 15px);
-    padding: 0.4rem 0.72rem;
-    border-radius: 1rem;
-  }
-
-  .hero-chat__tail {
-    right: calc(100% - 11px);
-    width: 20px;
-    height: 1.05rem;
   }
 
   .hero-chat__bubble--split {
