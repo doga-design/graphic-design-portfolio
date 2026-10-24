@@ -225,21 +225,281 @@
             <canvas id="hero-canvas" aria-label="Interactive dotted hero display"></canvas>
             <div class="hero-chat" id="hero-copy">
               <div class="hero-chat__float">
-                <img
-                  class="hero-chat__avatar"
-                  src="assets/hero-chat-avatar.webp"
-                  alt=""
-                  width="44"
-                  height="44"
-                  decoding="async"
-                />
+                <a
+                  class="hero-chat__avatar-wrap"
+                  href="https://www.linkedin.com/in/dogacimen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <img
+                    class="hero-chat__avatar"
+                    id="hero-chat-avatar"
+                    src="assets/hero-chat-avatar.svg"
+                    alt=""
+                    width="44"
+                    height="44"
+                    fetchpriority="high"
+                  />
+                </a>
+                <script>
+                  (function () {
+                    var el = document.getElementById("hero-chat-avatar");
+                    var root = document.getElementById("hero-copy");
+                    if (!el || !root) return;
+
+                    function hexToRgb(hex) {
+                      var n = parseInt(hex.slice(1), 16);
+                      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+                    }
+
+                    function rgbToHex(r, g, b) {
+                      return (
+                        "#" +
+                        [r, g, b]
+                          .map(function (v) {
+                            return ("0" + Math.round(v).toString(16)).slice(-2);
+                          })
+                          .join("")
+                      );
+                    }
+
+                    function pastel(hex) {
+                      var c = hexToRgb(hex);
+                      return rgbToHex(
+                        c[0] + (255 - c[0]) * 0.72,
+                        c[1] + (255 - c[1]) * 0.72,
+                        c[2] + (255 - c[2]) * 0.72
+                      );
+                    }
+
+                    function ink(hex) {
+                      var c = hexToRgb(hex).map(function (v) {
+                        return v / 255;
+                      });
+                      var max = Math.max(c[0], c[1], c[2]);
+                      var min = Math.min(c[0], c[1], c[2]);
+                      var l = (max + min) / 2;
+                      var d = max - min;
+                      var h = 0;
+                      var s = 0;
+                      if (d) {
+                        s = d / (1 - Math.abs(2 * l - 1));
+                        if (max === c[0]) h = ((c[1] - c[2]) / d) % 6;
+                        else if (max === c[1]) h = (c[2] - c[0]) / d + 2;
+                        else h = (c[0] - c[1]) / d + 4;
+                        h *= 60;
+                        if (h < 0) h += 360;
+                      }
+                      l = 0.32;
+                      var chroma = (1 - Math.abs(2 * l - 1)) * s;
+                      var x = chroma * (1 - Math.abs(((h / 60) % 2) - 1));
+                      var m = l - chroma / 2;
+                      var r = 0;
+                      var g = 0;
+                      var b = 0;
+                      if (h < 60) {
+                        r = chroma;
+                        g = x;
+                      } else if (h < 120) {
+                        r = x;
+                        g = chroma;
+                      } else if (h < 180) {
+                        g = chroma;
+                        b = x;
+                      } else if (h < 240) {
+                        g = x;
+                        b = chroma;
+                      } else if (h < 300) {
+                        r = x;
+                        b = chroma;
+                      } else {
+                        r = chroma;
+                        b = x;
+                      }
+                      return rgbToHex((r + m) * 255, (g + m) * 255, (b + m) * 255);
+                    }
+
+                    function themeFill(svg) {
+                      var re = /fill="#([0-9a-fA-F]{6})"/g;
+                      var match;
+                      while ((match = re.exec(svg))) {
+                        var hex = "#" + match[1].toLowerCase();
+                        if (
+                          hex === "#ffffff" ||
+                          hex === "#d9d9d9"
+                        ) {
+                          continue;
+                        }
+                        return hex;
+                      }
+                      return null;
+                    }
+
+                    function apply(hex) {
+                      root.style.setProperty("--hero-chat-bubble", pastel(hex));
+                      root.style.setProperty("--hero-chat-ink", ink(hex));
+                      root.style.setProperty("--hero-chat-highlight", hex);
+                    }
+
+                    var ACCENT = "#b03a39";
+                    var wrap = el.parentElement;
+                    var currentHex = "#5674b0";
+                    var restSrc = "";
+                    var hoverSrc = "";
+                    var hovered = false;
+                    var remoteReady = false;
+
+                    function svgUrl(svg) {
+                      return "data:image/svg+xml," + encodeURIComponent(svg);
+                    }
+
+                    function recolor(svg, from, to) {
+                      var rected = svg.replace(
+                        new RegExp(
+                          '(<rect\\b[^>]*\\bwidth="135"[^>]*\\bfill=")' +
+                            from +
+                            '(")',
+                          "i"
+                        ),
+                        "$1" + to + "$2"
+                      );
+                      var next =
+                        rected !== svg
+                          ? rected
+                          : svg.replace(
+                              new RegExp('fill="' + from + '"', "i"),
+                              'fill="' + to + '"'
+                            );
+                      return next.replace(
+                        "mix-blend-mode:overlay",
+                        "mix-blend-mode:normal"
+                      );
+                    }
+
+                    function show() {
+                      if (!restSrc) return;
+                      el.src = hovered ? hoverSrc : restSrc;
+                    }
+
+                    function adopt(svg) {
+                      var hex = themeFill(svg);
+                      if (!hex) return;
+                      currentHex = hex;
+                      restSrc = svgUrl(svg);
+                      hoverSrc = svgUrl(recolor(svg, hex, ACCENT));
+                      apply(currentHex);
+                      show();
+                    }
+
+                    if (wrap) {
+                      wrap.addEventListener("mouseenter", function () {
+                        hovered = true;
+                        show();
+                      });
+                      wrap.addEventListener("mouseleave", function () {
+                        hovered = false;
+                        show();
+                      });
+                    }
+
+                    fetch("assets/hero-chat-avatar.svg")
+                      .then(function (response) {
+                        return response.ok ? response.text() : Promise.reject();
+                      })
+                      .then(function (svg) {
+                        if (remoteReady) return;
+                        adopt(svg);
+                      })
+                      .catch(function () {});
+
+                    var seed =
+                      typeof crypto !== "undefined" && crypto.randomUUID
+                        ? crypto.randomUUID()
+                        : String(Math.random()).slice(2);
+                    var url =
+                      "https://api.dicebear.com/10.x/disco/svg?seed=" +
+                      encodeURIComponent(seed);
+
+                    fetch(url)
+                      .then(function (response) {
+                        return response.ok ? response.text() : Promise.reject();
+                      })
+                      .then(function (svg) {
+                        remoteReady = true;
+                        adopt(svg);
+                      })
+                      .catch(function () {});
+                  })();
+                </script>
                 <div class="hero-chat__stack">
-                  <p class="hero-chat__bubble hero-chat__bubble--tail">
-                    I'm a <span class="accent">product designer</span>
-                  </p>
+                  <div class="hero-chat__messages">
+                  <div class="hero-chat__row">
+                    <p class="hero-chat__bubble hero-chat__bubble--tail">
+                      I'm a <span class="accent">product designer</span>
+                    </p>
+                    <svg
+                      class="hero-chat__tail"
+                      width="26"
+                      height="22"
+                      viewBox="13 0 26 22"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <mask id="hero-chat-tail-mask">
+                        <path
+                          fill="white"
+                          d="M19 0h20v8a16 14 0 0 1-16 14H19V0z"
+                        />
+                        <path
+                          fill="black"
+                          d="M0 0h26v12a10 10 0 0 1-10 10H0V0z"
+                        />
+                      </mask>
+                      <rect
+                        width="26"
+                        height="22"
+                        x="13"
+                        fill="currentColor"
+                        mask="url(#hero-chat-tail-mask)"
+                      />
+                    </svg>
+                  </div>
                   <p class="hero-chat__bubble hero-chat__bubble--split">bridging design &amp;</p>
                   <p class="hero-chat__bubble hero-chat__bubble--split">development.</p>
                   <p class="hero-chat__bubble hero-chat__bubble--mobile">bridging design &amp; development.</p>
+                  </div>
+                  <div class="hero-chat__invite" aria-hidden="true">
+                    <div class="hero-chat__row">
+                      <p class="hero-chat__bubble hero-chat__bubble--tail">Let's talk about you!</p>
+                      <svg
+                        class="hero-chat__tail"
+                        width="26"
+                        height="22"
+                        viewBox="13 0 26 22"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <mask id="hero-chat-invite-tail-mask">
+                          <path
+                            fill="white"
+                            d="M19 0h20v8a16 14 0 0 1-16 14H19V0z"
+                          />
+                          <path
+                            fill="black"
+                            d="M0 0h26v12a10 10 0 0 1-10 10H0V0z"
+                          />
+                        </mask>
+                        <rect
+                          width="26"
+                          height="22"
+                          x="13"
+                          fill="currentColor"
+                          mask="url(#hero-chat-invite-tail-mask)"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

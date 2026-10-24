@@ -716,9 +716,15 @@ const heroWordMobileMq = window.matchMedia("(max-width: 640px)");
 const heroCenteredMq = window.matchMedia("(max-width: 960px)");
 // Dot grid aims for this spacing, kept between these many rows across the name,
 // so dots grow relatively chunkier as the name shrinks without any jumps.
-const HERO_DOT_SPACING = 8.6;
-const HERO_DOT_ROWS_MIN = 14;
-const HERO_DOT_ROWS_MAX = 32;
+const HERO_DOT_SPACING = 8.55;
+const HERO_DOT_ROWS_MIN = 15;
+const HERO_DOT_ROWS_MAX = 33;
+// Narrow viewports: tighter grid + smaller dot radius.
+const heroDotSizeMobileMq = window.matchMedia("(max-width: 955px)");
+const HERO_MOBILE_DOT_RADIUS_SCALE = 0.9;
+const HERO_MOBILE_DOT_SPACING = 3.44;
+const HERO_MOBILE_DOT_ROWS_MIN = 26;
+const HERO_MOBILE_DOT_ROWS_MAX = 58;
 // Halo blur around the name, as a fraction of the font size.
 const HERO_HALO_RADIUS = 0.067;
 const HERO_MOBILE_WORDMARK_URL = "assets/hero-doga-wordmark.svg";
@@ -1229,98 +1235,212 @@ function startHero(
 
   const buildParticles = () => {
     const list = [];
-    const maxDotSize = dotSpacing * 1.45;
-    const textMaxDot = maxDotSize * 0.92;
-    const bgMinDot = dotSpacing * 0.02;
-    const bgMaxDot = dotSpacing * 0.42;
+    const mobileDense = heroDotSizeMobileMq.matches;
+    const radiusScale = mobileDense ? HERO_MOBILE_DOT_RADIUS_SCALE : 1;
+    const dotSizeMul = mobileDense ? 1.14 : 1;
+    const maxDotMul = mobileDense ? 1.52 : 1.38;
+    const bgMaxMul = mobileDense ? 0.48 : 0.4;
+    const bgMinMul = mobileDense ? 0.02 : 0.01;
+    const maxDotSize = dotSpacing * maxDotMul * radiusScale * dotSizeMul;
+    const textMaxDot = maxDotSize * (mobileDense ? 0.92 : 0.96);
+    const bgMinDot = dotSpacing * bgMinMul * radiusScale * dotSizeMul;
+    const bgMaxDot = dotSpacing * bgMaxMul * radiusScale * dotSizeMul;
     const sampleRadius = dotSpacing * 0.5;
     const centerX = width / 2;
     const centerY = height / 2;
+    const softGamma = 0.65;
+    const mobileThickCenterX = centerX;
+    const mobileThickCenterY =
+      textLayout?.inkHeight != null
+        ? textLayout.textBottom - textLayout.inkHeight * 0.5
+        : centerY;
+    const heroCenterReach = Math.min(
+      width * 0.34,
+      Math.max(textLayout?.inkHeight ?? 0, height * 0.2) * 0.82
+    );
+    const heroCoreReach = Math.min(
+      width * 0.4,
+      Math.max(textLayout?.inkHeight ?? 0, height * 0.18) * 0.72
+    );
+    const heroCoreCenterY =
+      textLayout?.inkHeight != null && !mobileDense
+        ? mobileThickCenterY - textLayout.inkHeight * 0.08
+        : mobileThickCenterY;
+
+    const heroCenterFieldAt = (px, py) => {
+      const rx = heroCenterReach * 1.08;
+      const ry = heroCenterReach * 0.86;
+      const dx = (px - mobileThickCenterX) / rx;
+      const dy = (py - mobileThickCenterY) / ry;
+      const d = Math.hypot(dx, dy);
+      const angle = Math.atan2(dy, dx);
+      const organic =
+        1 +
+        0.18 * Math.sin(angle * 2.35 + 0.9) +
+        0.14 * (hash2d(px * 0.055, py * 0.055) - 0.5);
+      const shaped = d / clamp(organic, 0.74, 1.26);
+      const t = 1 - smoothstep(0.06, 1.48, shaped);
+      return t * t * (3 - 2 * t);
+    };
+
+    const heroCoreFieldAt = (px, py) => {
+      const rx = heroCoreReach * 1.42;
+      const ry = heroCoreReach * 0.64;
+      const dx = (px - mobileThickCenterX) / rx;
+      const dy = (py - heroCoreCenterY) / ry;
+      const d = Math.hypot(dx, dy);
+      const angle = Math.atan2(dy, dx);
+      const organic =
+        1 +
+        0.17 * Math.sin(angle * 2.15 + 0.75) +
+        0.13 * (hash2d(px * 0.046, py * 0.046) - 0.5);
+      const shaped = d / clamp(organic, 0.75, 1.24);
+      const t = 1 - smoothstep(0.05, 1.52, shaped);
+      return t * t * (3 - 2 * t);
+    };
 
     for (let x = 0; x < width; x += dotSpacing) {
       for (let y = 0; y < height; y += dotSpacing) {
-        const gridX = (x / dotSpacing) | 0;
-        const gridY = (y / dotSpacing) | 0;
-        const crisp = smoothBrightness(masks.crisp, x, y, sampleRadius);
-        const isText = crisp > 45;
-        let isWing = false;
-        let wingLayer = 0;
-        let wingOverlap = false;
-        if (isText && masks.wing) {
-          const upper = sampleBrightness(masks.wing.upper, x, y);
-          const lower = sampleBrightness(masks.wing.lower, x, y);
-          if (upper > 45 && lower > 45) {
-            isWing = true;
-            wingLayer = 0;
-            wingOverlap = true;
-          } else if (upper > 45) {
-            isWing = true;
-            wingLayer = 0;
-          } else if (lower > 45) {
-            isWing = true;
-            wingLayer = 1;
+        const cellThick = heroCenterFieldAt(x, y);
+        const half = dotSpacing * 0.5;
+        const samplePoints = [{ px: x, py: y, sub: false }];
+        if (mobileDense && cellThick > 0.03) {
+          samplePoints.push({ px: x + half, py: y, sub: true });
+          samplePoints.push({ px: x, py: y + half, sub: true });
+          samplePoints.push({ px: x + half, py: y + half, sub: true });
+        }
+        if (mobileDense && cellThick > 0.14) {
+          const quarter = dotSpacing * 0.25;
+          samplePoints.push({ px: x + quarter, py: y + quarter, sub: true });
+          samplePoints.push({ px: x + half + quarter, py: y + quarter, sub: true });
+          samplePoints.push({ px: x + quarter, py: y + half + quarter, sub: true });
+        }
+        const cellCore = mobileDense ? 0 : heroCoreFieldAt(x, y);
+        if (!mobileDense && cellCore > 0.3) {
+          samplePoints.push({ px: x + half, py: y, sub: true });
+          samplePoints.push({ px: x, py: y + half, sub: true });
+        }
+        if (!mobileDense && cellCore > 0.48) {
+          samplePoints.push({ px: x + half, py: y + half, sub: true });
+        }
+
+        for (let si = 0; si < samplePoints.length; si += 1) {
+          const { px, py, sub } = samplePoints[si];
+          if (px >= width || py >= height) continue;
+
+          const gridX = (px / dotSpacing) | 0;
+          const gridY = (py / dotSpacing) | 0;
+          const crisp = smoothBrightness(masks.crisp, px, py, sampleRadius);
+          const isText = crisp > 45;
+          const thickField = heroCenterFieldAt(px, py);
+          const coreField = mobileDense ? thickField : heroCoreFieldAt(px, py);
+
+          if (sub && coreField < (mobileDense ? 0.1 : 0.2)) continue;
+          if (sub && isText && (mobileDense || coreField < 0.6)) continue;
+
+          let isWing = false;
+          let wingLayer = 0;
+          let wingOverlap = false;
+          if (isText && masks.wing) {
+            const upper = sampleBrightness(masks.wing.upper, px, py);
+            const lower = sampleBrightness(masks.wing.lower, px, py);
+            if (upper > 45 && lower > 45) {
+              isWing = true;
+              wingLayer = 0;
+              wingOverlap = true;
+            } else if (upper > 45) {
+              isWing = true;
+              wingLayer = 0;
+            } else if (lower > 45) {
+              isWing = true;
+              wingLayer = 1;
+            }
           }
-        }
 
-        let soft = smoothBrightness(masks.soft, x, y, sampleRadius) / 255;
-        soft = Math.pow(clamp(soft * 2, 0, 1), 0.65);
+          let soft = smoothBrightness(masks.soft, px, py, sampleRadius) / 255;
+          soft = Math.pow(clamp(soft * 2, 0, 1), softGamma);
 
-        // 1 on the name, easing to 0 at the edge of the halo, so background
-        // dots thin out with distance instead of being cut off by the canvas.
-        const wordFalloff = isText ? 1 : smoothstep(0, 1, soft);
+          const wordFalloff = isText ? 1 : smoothstep(0, 1, soft);
 
-        // Distance from the canvas centre; only drives the intro reveal.
-        const dxn = (x - centerX) / (width / 2);
-        const dyn = (y - centerY) / (height / 2);
-        const edge = clamp(Math.sqrt(dxn * dxn + dyn * dyn), 0, 1);
+          const dxn = (px - centerX) / (width / 2);
+          const dyn = (py - centerY) / (height / 2);
+          const edge = clamp(Math.sqrt(dxn * dxn + dyn * dyn), 0, 1);
 
-        if (!isText) {
-          const keepProbability = 0.92 * wordFalloff;
-          if (hash2d(gridX * 19.7, gridY * 23.3) > keepProbability) continue;
-        }
+          if (!isText) {
+            let keepProbability = (mobileDense ? 0.94 : 0.93) * wordFalloff;
+            if (mobileDense) {
+              const edgeSparse = lerp(0.68, 1.18, Math.pow(thickField, 0.48));
+              keepProbability = Math.min(0.995, keepProbability * edgeSparse);
+              if (sub) keepProbability = Math.min(0.998, keepProbability + 0.09);
+            } else {
+              const coreBoost = Math.pow(coreField, 0.7);
+              keepProbability = Math.min(
+                0.99,
+                keepProbability * lerp(1, 1.14, coreBoost)
+              );
+              if (sub) {
+                keepProbability = Math.min(0.995, keepProbability + 0.045 * coreField);
+              }
+            }
+            if (hash2d(gridX * 19.7 + si * 3.7, gridY * 23.3 + si * 5.1) > keepProbability) {
+              continue;
+            }
+          }
 
-        const jitter = hash2d(gridX, gridY) * 2 - 1;
-        const jitterAmount = 0.18 * wordFalloff;
-        const phase = hash2d(gridX * 3.1, gridY * 3.1) * Math.PI * 2;
+          const jitter = hash2d(gridX + si * 0.31, gridY + si * 0.47) * 2 - 1;
+          const jitterAmount = (mobileDense ? 0.18 : 0.26) * wordFalloff;
+          const phase = hash2d(gridX * 3.1 + si, gridY * 3.1 + si) * Math.PI * 2;
 
-        let baseSize = 0;
-        if (isText) {
-          const baseDot = dotSpacing * 0.52;
-          baseSize = lerp(baseDot * 0.85, textMaxDot, crisp / 255);
-          baseSize *= 1 + jitter * jitterAmount * 0.45;
-        } else {
-          baseSize = lerp(bgMinDot, bgMaxDot, wordFalloff) * lerp(0.3, 0.75, soft);
-          baseSize *= 1 + jitter * jitterAmount;
-        }
+          let baseSize = 0;
+          if (isText) {
+            const baseDot = dotSpacing * (mobileDense ? 0.56 : 0.52) * radiusScale;
+            const textMin = mobileDense ? 0.85 : 0.72;
+            const textCrisp = mobileDense ? crisp / 255 : Math.pow(crisp / 255, 0.82);
+            baseSize = lerp(baseDot * textMin, textMaxDot, textCrisp);
+            baseSize *= 1 + jitter * jitterAmount * (mobileDense ? 0.45 : 0.62);
+          } else {
+            const softWeight = mobileDense ? lerp(0.3, 0.75, soft) : lerp(0.22, 0.88, soft);
+            baseSize = lerp(bgMinDot, bgMaxDot, wordFalloff) * softWeight;
+            baseSize *= 1 + jitter * jitterAmount;
+          }
 
-        if (baseSize < 0.12) continue;
+          if (mobileDense) {
+            baseSize *= lerp(0.62, 1.12, Math.pow(thickField, 0.58));
+          } else {
+            const grain = hash2d(gridX * 8.17, gridY * 12.91);
+            baseSize *= lerp(0.62, 1.12, Math.pow(grain, 0.78));
+            if (sub) baseSize *= isText ? 0.9 : 0.94;
+          }
 
-        const heatSeed = hash2d(gridX * 11.7, gridY * 17.3);
+          if (baseSize < 0.12) continue;
 
-        const particle = {
-          ox: x,
-          oy: y,
-          x,
-          y,
-          vx: 0,
-          vy: 0,
-          baseSize,
-          isText,
-          isWing,
-          wingLayer,
-          crisp,
-          edge,
-          wordFalloff,
-          phase,
-          jitter,
-          jitterAmount,
-          gravityWeight: lerp(0.6, 1.45, heatSeed),
-          springWeight: lerp(0.5, 1.2, hash2d(gridX * 29.3, gridY * 31.1)),
-          settleFreq: lerp(0.9, 2.2, heatSeed),
-        };
-        list.push(particle);
-        if (wingOverlap) {
-          list.push({ ...particle, wingLayer: 1 });
+          const heatSeed = hash2d(gridX * 11.7, gridY * 17.3);
+
+          const particle = {
+            ox: px,
+            oy: py,
+            x: px,
+            y: py,
+            vx: 0,
+            vy: 0,
+            baseSize,
+            isText,
+            isWing,
+            wingLayer,
+            crisp,
+            edge,
+            wordFalloff,
+            phase,
+            jitter,
+            jitterAmount,
+            gravityWeight: lerp(0.6, 1.45, heatSeed),
+            springWeight: lerp(0.5, 1.2, hash2d(gridX * 29.3, gridY * 31.1)),
+            settleFreq: lerp(0.9, 2.2, heatSeed),
+          };
+          list.push(particle);
+          if (wingOverlap && !sub) {
+            list.push({ ...particle, wingLayer: 1 });
+          }
         }
       }
     }
@@ -1579,10 +1699,13 @@ function startHero(
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     masks = buildMasks(width, height, getHeroFrame(canvas, width), wordOverride, textOffset);
     textLayout = masks.layout;
+    const mobileDots = heroDotSizeMobileMq.matches;
     dotSpacing = clamp(
-      HERO_DOT_SPACING,
-      textLayout.inkHeight / HERO_DOT_ROWS_MAX,
-      textLayout.inkHeight / HERO_DOT_ROWS_MIN
+      mobileDots ? HERO_MOBILE_DOT_SPACING : HERO_DOT_SPACING,
+      textLayout.inkHeight /
+        (mobileDots ? HERO_MOBILE_DOT_ROWS_MAX : HERO_DOT_ROWS_MAX),
+      textLayout.inkHeight /
+        (mobileDots ? HERO_MOBILE_DOT_ROWS_MIN : HERO_DOT_ROWS_MIN)
     );
     particles = buildParticles();
     if (!hasRevealed) reveal = 0;
@@ -1851,6 +1974,9 @@ function startHero(
     needsResize = true;
   };
   heroWordMobileMq.addEventListener("change", onHeroWordMobileMqChange);
+  heroDotSizeMobileMq.addEventListener("change", () => {
+    needsResize = true;
+  });
   window.addEventListener("hero-mobile-wordmark-ready", onHeroMobileWordmarkReady);
 
   // Stop drawing while the hero is scrolled out of view.

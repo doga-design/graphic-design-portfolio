@@ -43,4 +43,5 @@
   --shadow-ink-bar: color-mix(in srgb, var(--ink-strong) 14%, transparent);
   --shadow-ink-md: color-mix(in srgb, var(--ink-strong) 16%, transparent);
   --shadow-ink-lg: color-mix(in srgb, var(--ink-strong) 20%, transparent);
+  --work-pill-shadow: 0 4px 14px var(--shadow-ink-xs);
 }
