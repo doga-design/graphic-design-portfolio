@@ -804,7 +804,7 @@ a {
   margin: 0;
   padding: 0;
   pointer-events: none;
-  transform: translate(-78%, calc(0.35rem + 28px));
+  transform: translate(-88%, calc(0.8rem + 28px));
 }
 
 .hero-divider {
@@ -855,7 +855,7 @@ a {
 }
 
 #hero-copy.visible {
-  transform: translate(-78%, 0.35rem);
+  transform: translate(-88%, 0.8rem);
 }
 
 .hero-chat__float {
@@ -873,8 +873,8 @@ a {
 
 .hero-chat__avatar-wrap {
   display: block;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--accent);
@@ -960,8 +960,8 @@ a {
   margin: 0;
   padding: clamp(9px, 1.1vw, 11px) clamp(18px, 2vw, 22px);
   border-radius: 999px;
-  background: var(--work-badge-secondary-bg);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--white) 92%, var(--paper));
+  color: var(--ink);
   font-size: clamp(12px, 1.35vw, 15px);
   font-weight: 500;
   line-height: 1;
@@ -998,7 +998,7 @@ a {
   bottom: 0;
   width: 26px;
   height: 1.35rem;
-  color: var(--work-badge-secondary-bg);
+  color: color-mix(in srgb, var(--white) 92%, var(--paper));
   pointer-events: none;
 }
 
@@ -1015,8 +1015,8 @@ a {
   #hero-stack {
     --hero-name-fill: 0.99;
     --hero-ink-scale: 1.09;
-    --hero-bleed-top: clamp(1.65rem, 6cqi, 5.35rem);
-    --hero-trailing-pad: clamp(0.85rem, 2.4cqi, 1.5rem);
+    --hero-bleed-top: clamp(2.5rem, 7.5cqi, 6.5rem);
+    --hero-trailing-pad: clamp(1.85rem, 5.2cqi, 3.25rem);
   }
 
   #hero-canvas {
@@ -1028,6 +1028,11 @@ a {
   .about-section {
     padding-left: max(0px, calc((100% - var(--hero-width)) / 2));
     padding-right: max(0px, calc((100% - var(--hero-width)) / 2));
+  }
+
+  .hero-chat__avatar-wrap {
+    margin-top: calc(0.55rem - 2px);
+    margin-left: -0.4rem;
   }
 }
 
@@ -2601,14 +2606,14 @@ body.about-email-pill-active .about-text__link--email {
   }
 
   .hero-chat__avatar-wrap {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .hero-chat__avatar-wrap:hover {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
     }
   }
 

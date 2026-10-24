@@ -713,6 +713,7 @@ const WORD_MOBILE = "doğa";
 // Same breakpoints as home.css, so the word and alignment always match the
 // canvas height CSS gives us.
 const heroWordMobileMq = window.matchMedia("(max-width: 640px)");
+const heroDesktopCreditMq = window.matchMedia("(min-width: 961px)");
 const heroCenteredMq = window.matchMedia("(max-width: 960px)");
 // Dot grid aims for this spacing, kept between these many rows across the name,
 // so dots grow relatively chunkier as the name shrinks without any jumps.
@@ -842,6 +843,14 @@ function getHeroFrame(canvas, width) {
     trailingPad: readCssPxVar("--hero-trailing-pad", 0, host),
     inkScale: readCssNumberVar("--hero-ink-scale", 1, host),
   };
+}
+
+// Right edge of .hero-divider ink band (nudged into the visible stroke).
+function readHeroDividerVisibleRight(canvasWidth, host) {
+  const contentW = readCssPxVar("--hero-content-w", canvasWidth, host);
+  const dividerW = Math.min(canvasWidth, contentW * 0.8);
+  const dividerLeft = (canvasWidth - dividerW) / 2;
+  return dividerLeft + dividerW * 0.92;
 }
 
 function smoothstep(a, b, value) {
@@ -1056,6 +1065,8 @@ function buildMasks(width, height, frame, wordOverride = null, textOffset = null
       inkHeight,
       textBottom,
       textRight,
+      canvasWidth: width,
+      canvasHeight: height,
     },
     wing,
   };
@@ -1063,7 +1074,6 @@ function buildMasks(width, height, frame, wordOverride = null, textOffset = null
 
 function drawCredit(ctx, layout, reveal, showIcon = true) {
   const size = clamp(layout.fontSize * 0.11, 10, 13);
-  const y = layout.textBottom;
   const muted = INK_MUTED;
 
   ctx.save();
@@ -1075,9 +1085,27 @@ function drawCredit(ctx, layout, reveal, showIcon = true) {
   const totalWidth = prefixWidth + linkWidth;
   const circleR = size * 0.72;
   const iconLift = layout.fontSize * 0.08;
-  const creditY = y - iconLift;
-  const circleCX = layout.textRight - circleR;
-  const circleCY = creditY + size * 0.52;
+  const useDividerAnchor =
+    showIcon &&
+    heroDesktopCreditMq.matches &&
+    layout.canvasWidth > 0 &&
+    layout.canvasHeight > 0;
+
+  let creditY;
+  let circleCX;
+  let circleCY;
+  if (useDividerAnchor) {
+    const anchorRight = layout.dividerVisibleRight ?? layout.canvasWidth * 0.78;
+    const bottomGap = Math.max(14, size * 1.2);
+    circleCX = anchorRight - circleR;
+    circleCY = layout.canvasHeight - bottomGap - circleR;
+    creditY = circleCY - size * 0.52 + iconLift;
+  } else {
+    const y = layout.textBottom;
+    creditY = y - iconLift;
+    circleCX = layout.textRight - circleR;
+    circleCY = creditY + size * 0.52;
+  }
 
   layout.iconHit = showIcon
     ? {
@@ -1109,7 +1137,10 @@ function drawCredit(ctx, layout, reveal, showIcon = true) {
 
   if (reveal > 0.01) {
     const slide = (1 - reveal) * 14;
-    const startX = layout.textRight - totalWidth + slide;
+    const textAnchorRight = useDividerAnchor
+      ? circleCX - circleR - 8
+      : layout.textRight;
+    const startX = textAnchorRight - totalWidth + slide;
 
     ctx.globalAlpha = reveal;
     ctx.textAlign = "left";
@@ -1179,6 +1210,8 @@ function startHero(
   let hovering = false;
   let creditHover = false;
   let creditReveal = 0;
+  const shouldShowDesktopCredit = () =>
+    showCredit && heroDesktopCreditMq.matches;
   let centeredHero = false;
   let wingBurstStart = -1e9;
   let wingNextBurst = null;
@@ -1699,6 +1732,8 @@ function startHero(
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     masks = buildMasks(width, height, getHeroFrame(canvas, width), wordOverride, textOffset);
     textLayout = masks.layout;
+    const layoutHost = canvas.parentElement || document.documentElement;
+    textLayout.dividerVisibleRight = readHeroDividerVisibleRight(width, layoutHost);
     const mobileDots = heroDotSizeMobileMq.matches;
     dotSpacing = clamp(
       mobileDots ? HERO_MOBILE_DOT_SPACING : HERO_DOT_SPACING,
@@ -1771,11 +1806,11 @@ function startHero(
     }
     ctx.fill();
 
-    creditReveal = showCredit
+    creditReveal = shouldShowDesktopCredit()
       ? lerp(creditReveal, creditHover ? 1 : 0, creditHover ? 0.22 : 0.14)
       : 0;
-    if (showCredit && textLayout) {
-      drawCredit(ctx, textLayout, creditReveal, !heroWordMobileMq.matches);
+    if (shouldShowDesktopCredit() && textLayout) {
+      drawCredit(ctx, textLayout, creditReveal, true);
     }
 
     if (inView) frame = window.requestAnimationFrame(draw);
@@ -1846,7 +1881,7 @@ function startHero(
     const { x, y } = canvasPoint(
       event ?? { clientX, clientY }
     );
-    if (!showCredit) return;
+    if (!shouldShowDesktopCredit()) return;
     if (hitCreditLink(x, y)) {
       window.open(CREDIT_URL, "_blank", "noopener,noreferrer");
     }
@@ -1858,9 +1893,9 @@ function startHero(
   const applyPointerFromClient = (clientX, clientY, event) => {
     setPointer(clientX, clientY);
     const { x, y } = canvasPoint(event);
-    creditHover = showCredit && hitCreditZone(x, y);
+    creditHover = shouldShowDesktopCredit() && hitCreditZone(x, y);
     canvas.style.cursor =
-      showCredit &&
+      shouldShowDesktopCredit() &&
       (hitCreditLink(x, y) || (creditReveal < 0.2 && hitCreditIcon(x, y)))
         ? "pointer"
         : "crosshair";
@@ -1974,6 +2009,12 @@ function startHero(
     needsResize = true;
   };
   heroWordMobileMq.addEventListener("change", onHeroWordMobileMqChange);
+  const onHeroDesktopCreditMqChange = () => {
+    creditHover = false;
+    creditReveal = 0;
+    needsResize = true;
+  };
+  heroDesktopCreditMq.addEventListener("change", onHeroDesktopCreditMqChange);
   heroDotSizeMobileMq.addEventListener("change", () => {
     needsResize = true;
   });
@@ -2008,6 +2049,7 @@ function startHero(
     observer.disconnect();
     viewObserver.disconnect();
     heroWordMobileMq.removeEventListener("change", onHeroWordMobileMqChange);
+    heroDesktopCreditMq.removeEventListener("change", onHeroDesktopCreditMqChange);
     window.removeEventListener(
       "hero-mobile-wordmark-ready",
       onHeroMobileWordmarkReady
