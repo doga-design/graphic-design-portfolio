@@ -558,22 +558,3 @@
     display: none !important;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  @media (max-width: 960px) {
-    .cs-nav-shell,
-    .cs-nav__drawer,
-    .cs-nav-backdrop,
-    .cs-nav__drawer .icon-btn,
-    .cs-nav__drawer-ai-link,
-    .mobile-ai-fab {
-      transition-duration: 0.01ms !important;
-      animation: none !important;
-    }
-
-    .cs-nav__drawer-ai-link:active,
-    .mobile-ai-fab:active {
-      transform: none;
-    }
-  }
-}

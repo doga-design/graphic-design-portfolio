@@ -66,6 +66,12 @@ label[for] {
   cursor: pointer;
 }
 
+/* Paper on the root too: it is what shows if a browser still overscrolls. */
+html {
+  background: var(--paper);
+  overscroll-behavior: none;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -355,10 +361,6 @@ a {
 @media (min-width: 961px) {
   #dock {
     display: block;
-  }
-
-  #page {
-    padding-bottom: 0;
   }
 
   .dock__item[data-section]::after {
@@ -946,14 +948,6 @@ a {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-chat__avatar,
-  .hero-chat__messages,
-  .hero-chat__invite {
-    transition: none;
-  }
-}
-
 .hero-chat__bubble {
   width: max-content;
   max-width: 100%;
@@ -1023,11 +1017,6 @@ a {
     margin-top: -0.2rem;
     margin-bottom: 0;
     touch-action: none;
-  }
-
-  .about-section {
-    padding-left: max(0px, calc((100% - var(--hero-width)) / 2));
-    padding-right: max(0px, calc((100% - var(--hero-width)) / 2));
   }
 
   .hero-chat__avatar-wrap {
@@ -1629,32 +1618,27 @@ body.work-pill-active .work-thumb * {
 
 .about-dithering {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: 0;
-  min-height: 0;
-  max-height: 100%;
   overflow: hidden;
+  contain: strict;
+  background: var(--paper);
   pointer-events: none;
 }
 
-#about-dithering-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  max-height: 100%;
-  background: var(--paper);
+/* Sized by about-dithering-shader.js. Anchored bottom-left, it overshoots the
+   host by less than one cell, which the host clips at the top and right. */
+.about-dithering canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   opacity: 0.72;
-  pointer-events: none;
+  image-rendering: pixelated;
 }
 
 @media (min-width: 961px) {
   .about-dithering {
     top: 22%;
-    bottom: 0;
   }
 }
 
@@ -1676,7 +1660,7 @@ body.work-pill-active .work-thumb * {
   flex-direction: column;
   align-items: flex-start;
   gap: clamp(16px, 2vw, 22px);
-  max-width: 500px;
+  max-width: 455px;
   grid-column: 1;
   grid-row: 1;
   align-self: center;
@@ -2331,14 +2315,6 @@ body.about-email-pill-active .about-text__link--email {
 
 /* Tablet: max-width 960px */
 @media (max-width: 960px) {
-  :root {
-    --mobile-nav-height: 2.95rem;
-  }
-
-  html {
-    overscroll-behavior-y: none;
-  }
-
   #dock {
     display: none !important;
   }
@@ -2756,7 +2732,6 @@ body.about-email-pill-active .about-text__link--email {
   .about-chip {
     max-width: 100%;
     gap: 9px;
-    margin-top: clamp(-6px, -1.5vw, 0);
     padding: 10px 14px 10px 11px;
     font-size: 11.5px;
     grid-row: 4;
@@ -2830,7 +2805,7 @@ body.about-email-pill-active .about-text__link--email {
     height: 100%;
     overflow-x: clip;
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior: none;
     scrollbar-width: none;
   }
 

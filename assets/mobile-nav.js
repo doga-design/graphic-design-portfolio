@@ -48,7 +48,6 @@
   })();
 
   const mobileMq = window.matchMedia("(max-width: 960px)");
-  const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const SCROLL_THRESHOLD = 6;
   const TOP_SHOW_Y = 32;
@@ -259,18 +258,17 @@
           event.preventDefault();
           const targetId = href.slice(1);
           const target = targetId ? document.getElementById(targetId) : null;
-          const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
           close();
 
           window.requestAnimationFrame(() => {
             if (target) {
               target.scrollIntoView({
-                behavior: reduceMotion ? "auto" : "smooth",
+                behavior: "smooth",
                 block: "start",
               });
             } else {
-              window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }
             history.pushState(null, "", href);
           });
@@ -350,12 +348,6 @@
 
     if (inHero) {
       setScrollHidden(true);
-      lastY = y;
-      return;
-    }
-
-    if (reducedMq.matches) {
-      setScrollHidden(false);
       lastY = y;
       return;
     }
@@ -512,7 +504,6 @@
     syncDrawerOpenHeight();
   });
   mobileMq.addEventListener("change", reset);
-  reducedMq.addEventListener("change", reset);
   reset();
 
   window.csMobileNav = {

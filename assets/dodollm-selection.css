@@ -163,17 +163,3 @@
     transform: translateY(0);
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .dodollm-selection-trigger,
-  .dodollm-selection-trigger.is-repositioning {
-    transition: none;
-    transform: translate3d(-50%, calc(-100% - var(--dodollm-selection-gap, 10px)), 0);
-  }
-
-  .dodollm-selection-chat-quote {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-}

@@ -320,13 +320,13 @@
 
   const SUGGESTION_ANSWERS = {
     "What kind of work do you do?":
-      "I work across product design, UX, branding, motion, and frontend development — building digital experiences end-to-end.",
+      "I work across product design, UX, branding, motion, and frontend development - building digital experiences end-to-end.",
     "Tell me about Bountt":
-      "Bountt is a live React-based expense app I designed and built solo in an 8-week sprint to MVP (Mar–May 2026). I focused on making group expenses feel clearer, calmer, and less transactional. It also won an Applied Arts Magazine 2026 Student Award in Apps, Single.",
+      "Bountt is a live React-based expense app I designed and built solo in an 8-week sprint to MVP (Mar-May 2026). I focused on making group expenses feel clearer, calmer, and less transactional. It also won an Applied Arts Magazine 2026 Student Award in Apps, Single.",
     "Tell me about your internal design tool project.":
       "I built an internal poster-design tool around the Since '67 Leafs campaign concept. It turns a visual system into something interactive, so designers can generate campaign posters while the brand rules stay consistent, without needing any tools.",
     "What makes your process different?":
-      "I move between design and code instead of treating them as separate handoffs, and I bring years of real business experience from a family operation — logistics, sales, and client work — so I think about outcomes and constraints, not just screens.",
+      "I move between design and code instead of treating them as separate handoffs, and I bring years of real business experience from a family operation - logistics, sales, and client work - so I think about outcomes and constraints, not just screens.",
     "How do you approach a new project?":
       "I start by clarifying the problem, the audience, and what needs to change for the user. Then I move through research, structure, visual direction, prototyping, and iteration until the work feels useful and coherent.",
     "What tools do you use?":
@@ -340,7 +340,7 @@
       "It reduces tension by making the status of shared costs visible and easy to act on. Instead of relying on memory or uncomfortable reminders, the app gives the group a calmer shared source of truth.",
     "What award did Bountt win?": BOUNTT_AWARD_ANSWER,
     "How long did Bountt take to build?":
-      "I built Bountt solo in an 8-week sprint to MVP, from Mar–May 2026. I used an AI-native workflow — Figma, Lovable, Supabase, GitHub, and Cursor — to move from concept to a live shipped product without a traditional design-to-dev handoff.",
+      "I built Bountt solo in an 8-week sprint to MVP, from Mar-May 2026. I used an AI-native workflow - Figma, Lovable, Supabase, GitHub, and Cursor - to move from concept to a live shipped product without a traditional design-to-dev handoff.",
     "What does AI-native mean here?": BOUNTT_WORKFLOW_ANSWER,
 
     "What was wrong with the VisuGenie landing page?":
@@ -466,7 +466,7 @@
     {
       key: "applied-arts",
       aliases: ["applied arts", "applied arts magazine", "appliedarts"],
-      title: "Applied Arts Magazine 2026 Student Award Winner — Bountt App, Apps (Single).",
+      title: "Applied Arts Magazine 2026 Student Award Winner - Bountt App, Apps (Single).",
       image: "assets/appliedartsmag.webp",
       alt: "Applied Arts Magazine thumbnail",
       href: "https://www.appliedartsmag.com/",
@@ -1192,17 +1192,6 @@
     const bot = document.createElement("div");
     bot.className = "dodollm-message-bot dodollm-message-bot--plain";
     messages.append(bot);
-
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setBotMessageContent(bot, text);
-      onDone?.();
-      scrollChatToBottom();
-      return;
-    }
 
     const cursor = document.createElement("span");
     cursor.className = "dodollm-cursor";

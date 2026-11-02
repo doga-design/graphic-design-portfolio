@@ -747,8 +747,6 @@ const HERO_WING_BURST_MAX = 8.2;
 const HERO_WING_MAX_RAD = (3.6 * Math.PI) / 180;
 const HERO_WING_LOWER_LAG = 0.032;
 
-const heroReduceMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
-
 let heroMobileWordmarkImage = null;
 let heroMobileWordmarkLoadPromise = null;
 
@@ -1579,7 +1577,7 @@ function startHero(
   };
 
   const wingAnglesAt = (now) => {
-    if (heroReduceMotionMq.matches || !masks?.wing) return null;
+    if (!masks?.wing) return null;
     if (wingNextBurst == null) wingNextBurst = now + 2.4;
     if (now >= wingNextBurst) scheduleWingBurst(now);
 
@@ -2321,7 +2319,6 @@ function initHeroChatPull() {
   const float = document.querySelector(".hero-chat__float");
   if (!stack || !float) return;
 
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   const INFLUENCE = 240;
   const PULL_X = 22;
   const PULL_Y = -28;
@@ -2355,7 +2352,6 @@ function initHeroChatPull() {
   };
 
   stack.addEventListener("pointermove", (event) => {
-    if (reduced.matches) return;
     const rect = float.getBoundingClientRect();
     const dist = Math.hypot(
       event.clientX - (rect.left + rect.width / 2),
@@ -2397,7 +2393,10 @@ initHeroChatPull();
 
 window.addEventListener("pageshow", (event) => {
   if (!event.persisted) return;
-  window.scrollTo(0, 0);
+  // Instant: every element inherits scroll-behavior: smooth. Wide layouts scroll #page.
+  const top = { top: 0, behavior: "instant" };
+  window.scrollTo(top);
+  document.getElementById("page")?.scrollTo(top);
   if (hasSeenIntro()) {
     skipEntranceToFinalState();
     return;
