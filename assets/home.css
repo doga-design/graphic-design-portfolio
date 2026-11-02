@@ -1660,7 +1660,7 @@ body.work-pill-active .work-thumb * {
   flex-direction: column;
   align-items: flex-start;
   gap: clamp(16px, 2vw, 22px);
-  max-width: 455px;
+  max-width: 450px;
   grid-column: 1;
   grid-row: 1;
   align-self: center;
